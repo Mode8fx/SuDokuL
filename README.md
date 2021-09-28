@@ -18,7 +18,7 @@ This game was designed for 640x480 (Gamecube resolution) displays, but it is com
 Everything in this game is made by me except for the following assets:
 
 #### Music
-- [Nuke of Anarchy - "Wonder Flow"](http://modarchive.org/index.php?request=view_by_moduleid&query=38132) (version used in Digital Innovation; the original can be found [here](http://modarchive.org/index.php?request=view_by_moduleid&query=133262))
+- [Nuke of Anarchy - "Wonder Flow"](http://modarchive.org/index.php?request=view_by_moduleid&query=38132) (alternate version can be found [here](http://modarchive.org/index.php?request=view_by_moduleid&query=133262))
 - [Okeanos - "Sudoku Padawan"](http://modarchive.org/index.php?request=view_by_moduleid&query=64812)
 - [Nuke of Anarchy - "Electroquest"](http://modarchive.org/index.php?request=view_by_moduleid&query=41515)
 - [Soundscape - "Main Menu"](http://modarchive.org/index.php?request=view_by_moduleid&query=49158)
