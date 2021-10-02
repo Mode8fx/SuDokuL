@@ -1,23 +1,26 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL2. It is currently only playable in Windows, but I intend to port it to Gamecube, Wii, Vita, and possibly other systems.
+This is a Sudoku game made in C++ and SDL2. It is currently available for Wii U and PC, but I intend to also port it to Vita and Switch.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
   - These puzzles are generated on-demand using a built-in algorithm; however, to eliminate computation time on weaker devices, Hard and Very Hard puzzles have been pre-generated.
-- Supports both mouse and keyboard controls
+- Mouse, keyboard, and controller support
 - Supports many resolution options ranging from 320x240 to 5120x2160
 - Scrolling background with customizable settings (scroll speed, angle, size)
-- Includes calm and envigorating MOD music to suit your mood
+- Calm and envigorating MOD music to suit your mood
 - Shaded text for a nice, 3D look
 - Runs on a potato
+- Optional auto-fill cheat, in case you get stuck
 
 ## Screenshots (click for full size)
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
+All screenshots are from the PC version. More can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
 
-This game was designed for 640x480 (Gamecube resolution) displays, but it is compatible with any resolution, and higher resolutions will utilize more detailed text and support for smaller background tiles.
+<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
+This game was initially designed for 640x480 displays, but it is compatible with any resolution, and higher resolutions will utilize more detailed text and support for smaller background tiles.
+
+<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
 
 ## Credits
 Everything in this game is made by me except for the following assets:
@@ -37,8 +40,21 @@ Commodore Pixelized v1.2 by by Devin Cook
 ### Sound Effects
 [Luke.RUSTLTD](https://opengameart.org/users/lukerustltd)
 
-### Libraries
+### Libraries / Tools
+##### All
+- Visual Studio 2019
+##### PC
 - SDL2 2.0.14
 - SDL2_image 2.0.5
 - SDL2_ttf 2.0.15
 - SDL2_mixer 2.0.4
+##### Wii U
+- devkitPro
+- Wii U Toolkit
+- SDL2 for Wii U
+
+## How to Compile
+### PC
+Use the Visual Studio project file from the repo with Visual Studio 2019.
+### Wii U
+Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a *make_wii_u.sh* file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
