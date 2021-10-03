@@ -348,3 +348,13 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+dist/
+SDL2/
+build_wii_u/
+fonts/
+graphics/
+music/
+sfx/
+
+settings.bin
