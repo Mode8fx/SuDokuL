@@ -22,6 +22,19 @@ This game was initially designed for 640x480 displays, but it is compatible with
 
 <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
 
+## How to Compile
+(Note: To run any compiled version, you must have the *fonts*, *graphics*, *music*, and *sfx* folders which can be obtained from the latest release.)
+#### PC
+1. Download the latest SDL2 development libraries (Visual C++ versions):
+- [SDL2](https://www.libsdl.org/download-2.0.php)
+- [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
+- [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
+- [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
+2. Extract the above ZIP files into a folder called SDL2, which should be located in the SuDokuLVS2019 directory.
+3. From there, use the Visual Studio project file from the repo with Visual Studio 2019.
+#### Wii U
+Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a *make_wii_u.sh* file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+
 ## Credits
 Everything in this game is made by me except for the following assets:
 
@@ -41,28 +54,14 @@ Commodore Pixelized v1.2 by by Devin Cook
 [Luke.RUSTLTD](https://opengameart.org/users/lukerustltd)
 
 ### Libraries / Tools
-##### All
-- Visual Studio 2019
 ##### PC
 - SDL2 2.0.16
 - SDL2_image 2.0.5
 - SDL2_ttf 2.0.15
 - SDL2_mixer 2.0.4
+- Visual Studio 2019
 ##### Wii U
 - devkitPro
 - Wii U Toolkit
 - SDL2 for Wii U
 - CMake
-
-## How to Compile
-(Note: To run any compiled version, you must have the *fonts*, *graphics*, *music*, and *sfx* folders which can be obtained from the latest release.)
-### PC
-1. Download the latest SDL2 development libraries (Visual C++ versions):
-- [SDL2](https://www.libsdl.org/download-2.0.php)
-- [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
-- [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
-- [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
-2. Extract the above ZIP files into a folder called SDL2, which should be located in the SuDokuLVS2019 directory.
-3. From there, use the Visual Studio project file from the repo with Visual Studio 2019.
-### Wii U
-Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a *make_wii_u.sh* file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
