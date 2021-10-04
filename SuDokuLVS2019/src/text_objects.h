@@ -26,6 +26,7 @@
 #define TEXT_PRESS_START_AMPLITUDE        (text_pressStartAmplitude)
 #define TEXT_STANDARD_AMPLITUDE           (text_standardAmplitude)
 #define TEXT_PRESS_START_Y                (text_menuChoice3) /* 300 on 480p; top of text, not middle */
+#define TEXT_VERSION_NUMBER_Y             (gameHeight - (text_Version_Number.rect.h * 1.5))
 #define TEXT_PLAY_Y                       (text_menuChoice1)
 #define TEXT_CONTROLS_Y                   (text_menuChoice2)
 #define TEXT_OPTIONS_Y                    (text_menuChoice3)
@@ -38,9 +39,12 @@
 #define TEXT_LOADING_Y                    (text_midScreen_Y)
 #define TEXT_PAUSED_Y                     (text_midScreen_Y - FONT_SIZE)
 #define TEXT_QUIT_TO_MENU_Y               (text_quitToMenu_Y)
-#define TEXT_VIDEO_Y                      (text_menuChoice1)
-#define TEXT_SOUND_Y                      (text_menuChoice2)
-#define TEXT_BACKGROUND_Y                 (text_menuChoice3)
+#define TEXT_CONTROLS_MENU_Y              (text_menuChoice1)
+#define TEXT_VIDEO_Y                      (text_menuChoice2)
+#define TEXT_SOUND_Y                      (text_menuChoice3)
+#define TEXT_BACKGROUND_Y                 (text_menuChoice4)
+#define TEXT_CONTROLLER_INPUT_Y           (text_menuChoice1)
+#define TEXT_TOUCH_SCREEN_INPUT_Y         (text_menuChoice3)
 #define TEXT_VIDEO_WARNING_Y              (text_videoWarning_Y)
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
@@ -54,13 +58,17 @@
 #define TEXT_MUSIC_Y                      (text_menuChoice1)
 #define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
 #define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
+#define CONTROLS_MENU_CURSOR_POSITION_X   (gameWidth / 8)
 #define VIDEO_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define VIDEO_MENU_NUM_POSITION_X         (videoMenuNumPosition_X)
 #define BACKGROUND_MENU_CURSOR_POSITION_X (deepMenuCursorPosition_X)
 #define BACKGROUND_MENU_NUM_POSITION_X    (backgroundMenuNumPosition_X)
 #define SOUND_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define SOUND_MENU_NUM_POSITION_X         (backgroundMenuNumPosition_X) // shared with background
-
+#define TEXT_A_CONFIRM_Y                  (text_menuChoice1 - CONTROLS_SPACER)
+#define TEXT_B_BACK_Y                     (text_menuChoice1 + CONTROLS_SPACER)
+#define TEXT_B_CONFIRM_Y                  (TEXT_A_CONFIRM_Y)
+#define TEXT_A_BACK_Y                     (TEXT_B_BACK_Y)
 #define BASE_FONT_SIZE                    20 // default font size (480 / 24)
 #define TEXT_TIME_Y                       (game_sidebar_small.rect.y + (game_sidebar_small.rect.h / 4))
 #define TEXT_EMPTY_Y                      (game_sidebar_small.rect.y + (game_sidebar_small.rect.h / 4))
@@ -69,6 +77,7 @@
 #define TEXT_GAME_HARD_Y                  (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_VHARD_Y                 (TEXT_GAME_EASY_Y)
 #define TEXT_YOU_WIN_Y                    ((game_grid.rect.y + game_grid.rect.h + gameHeight - FONT_SIZE) / 2)
+#define CONTROLS_MENU_ENDPOINT            (text_A_Confirm.rect.x + text_A_Confirm.rect.w)
 #define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (FONT_SIZE * 2))
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (FONT_SIZE * 3))
 
@@ -270,7 +279,7 @@ struct TextObjectAnimated {
     textObj.rect.x = pos_x;                                                                    \
     textObj.rect.y = pos_y;
 
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else
@@ -384,19 +393,19 @@ struct TextObjectAnimated {
     text_colon.rect.y = pos_y;                        \
     RENDER_TEXT(text_colon);
 
-#define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                       \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2), textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (GRID_SIZE_A3 - textNumsObj[num].outline_rect.h), textNumsObj[num].outlineOffset_y);       \
+#define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                                      \
+    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + NUM_OFFSET_Y, textNumsObj[num].outlineOffset_y); \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
-#define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                      \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1, textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (((num - 1) / 3) * GRID_SIZE_A), textNumsObj[num].outlineOffset_y);     \
+#define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                                     \
+    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (((num - 1) / 3) * GRID_SIZE_A), textNumsObj[num].outlineOffset_y);                    \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
-#define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                          \
-    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2), textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + (GRID_SIZE_A3 - textNumsObj[num].outline_rect.h), textNumsObj[num].outlineOffset_y);             \
+#define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                                         \
+    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + NUM_OFFSET_Y, textNumsObj[num].outlineOffset_y);       \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
 #define SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num)                                                                                                                                 \
@@ -433,7 +442,7 @@ struct TextObjectAnimated {
 
 #define CONTROLS_SPACER (FONT_SIZE * 0.75)
 
-#ifdef WII_U
+#if defined(WII_U)
 #define CONTROLS_STEP 1.89
 #define SET_CONTROLS_TEXT()                                                                                                                                                     \
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
@@ -462,6 +471,38 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
+	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) - CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) + CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
+#elif defined(VITA)
+#define CONTROLS_STEP 1.89
+#define SET_CONTROLS_TEXT()                                                                                                                                                     \
+	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
+	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3)) - CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("Touch Screen",          text_Controls_2b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3)) + CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
+	SET_TEXT_WITH_OUTLINE("O",                     text_Controls_3a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) - CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("Tap",                   text_Controls_3b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) + CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("Confirm",               text_Controls_3c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_TEXT_WITH_OUTLINE("X",                     text_Controls_4a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_4b,  0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
+	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  9))                  ); \
+	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  9))                  ); \
+	SET_TEXT_WITH_OUTLINE("R",                     text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (FONT_SIZE * (CONTROLS_STEP * 11))                  ); \
+	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b, 0.7),  (FONT_SIZE * (CONTROLS_STEP * 11))                  ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a,  0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7b,  0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7c,  0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE("(1/2)",                 text_Controls_P1,  (gameWidth - (text_Controls_P1.rect.w * 1.25)),    (gameHeight - (text_Controls_P1.rect.h * 1.5))      ); \
+	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
+	SET_TEXT_WITH_OUTLINE("Start",                 text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
+	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
+	SET_TEXT_WITH_OUTLINE("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
+	SET_TEXT_WITH_OUTLINE("Square / Triangle",     text_Controls_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) - CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
@@ -514,9 +555,13 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("(4/4)",                          text_Controls_c_P2,  (gameWidth - (text_Controls_c_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_c_P2.rect.h * 1.5)));
 #endif
 
+#if defined(WII_U) || defined(VITA)
+#define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)
+#else
 #define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)                             \
     divider.y = (textObj1.rect.y + textObj2.rect.y + FONT_SIZE - divider.h) / 2; \
     SDL_RenderFillRect(renderer, &divider);
+#endif
 
 #define RENDER_CONTROLS_TEXT_PAGE_1()                             \
 	RENDER_TEXT_LARGE(text_Controls_1);                           \
@@ -559,7 +604,7 @@ struct TextObjectAnimated {
 	RENDER_TEXT(text_Controls_12c);                                 \
 	RENDER_TEXT(text_Controls_P2);
 
-#ifndef WII_U
+#if !defined(WII_U) && !defined(VITA)
 #define RENDER_CONTROLS_TEXT_PAGE_3()                             \
 	RENDER_TEXT_LARGE(text_Controls_c_1);                         \
 	RENDER_TEXT(text_Controls_c_2a);                              \
@@ -643,8 +688,10 @@ struct TextObjectAnimated {
     SET_TEXT_WITH_OUTLINE("- Mips96",                   text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP *   11))          ); \
 	SET_TEXT_WITH_OUTLINE("(6/6)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
 
-#ifdef WII_U
+#if defined(WII_U)
 #define CHEAT_TEXT "press X or Y 10 times"
+#elif defined(VITA)
+#define CHEAT_TEXT "press Square or Triangle 10 times"
 #else
 #define CHEAT_TEXT "press the Period key 10 times"
 #endif

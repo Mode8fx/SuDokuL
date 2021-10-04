@@ -4,11 +4,12 @@
 #define SUDOKUGEN_H
 
 #define BACKTRACKING_VAL 100
-#define TIMEOUT 10000
+#define TIMEOUT 5000
+#define MAX_TIMEOUT 10000
 
 void test_main();
 void test_PuzzleDifficulty();
-void generateGridAndSolution(Uint16, Uint16);
+Uint8 generateGridAndSolution(Uint16, Uint16);
 Uint8 generateGrid_Backtracking();
 Uint8 digHoles(Sint16, Sint16);
 Sint16 solvePuzzle(Sint16);

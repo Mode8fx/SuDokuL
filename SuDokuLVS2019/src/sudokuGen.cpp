@@ -132,6 +132,8 @@ Uint32 seed;
 
 Uint32 startTime;
 
+Uint32 beginning;
+
 void test_main() {
     // srand(0);
     // shuffleBoard();
@@ -171,16 +173,24 @@ void test_PuzzleDifficulty() {
 /* Generates player grid in grid and solution grid in solutionGrid, and stores
  * difficulty in difficulty.
  */
-void generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
+Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
     seed = SDL_GetTicks();
     srand(seed);
     // If either step fails (it times out or an invalid puzzle is created), retry the entire process
+    // If the MAX_TIMEOUT has passed, give up and use a pre-generated puzzle
+    beginning = SDL_GetTicks();
     while (true) {
         if (generateGrid_Backtracking() != 0) {
+            if (SDL_GetTicks() - beginning > MAX_TIMEOUT) {
+                return 0;
+            }
             continue;
         }
         COPY_GRID(solutionGrid, grid);
         if (digHoles(minDiff, maxDiff) != 0) {
+            if (SDL_GetTicks() - beginning > MAX_TIMEOUT) {
+                return 0;
+            }
             continue;
         }
         break;
@@ -201,6 +211,7 @@ void generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
     printBoard();
     PRINT(endl << "SOLUTION:");
     printSolutionGrid();
+    return 1;
 }
 
 Uint8 generateGrid_Backtracking() {

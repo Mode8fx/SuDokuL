@@ -1,6 +1,15 @@
 #ifndef SOUND_LOGIC_H
 #define SOUND_LOGIC_H
 
+#if defined (VITA)
+#define MUSIC_1 "ux0:data/SuDokuL/music/dgtlnnv2.mod"
+#define MUSIC_2 "ux0:data/SuDokuL/music/sudoku_padawan.mod"
+#define MUSIC_3 "ux0:data/SuDokuL/music/electroq.mod"
+#define MUSIC_4 "ux0:data/SuDokuL/music/mainmenu.mod"
+#define MUSIC_5 "ux0:data/SuDokuL/music/insomnia.mod"
+#define MUSIC_6 "ux0:data/SuDokuL/music/ontario.mod"
+#define MUSIC_7 "ux0:data/SuDokuL/music/addicti.mod"
+#else
 #define MUSIC_1 "music/dgtlnnv2.mod"
 #define MUSIC_2 "music/sudoku_padawan.mod"
 #define MUSIC_3 "music/electroq.mod"
@@ -8,6 +17,7 @@
 #define MUSIC_5 "music/insomnia.mod"
 #define MUSIC_6 "music/ontario.mod"
 #define MUSIC_7 "music/addicti.mod"
+#endif
 
 #define MUSIC_CHANNEL 0
 #define SFX_CHANNEL 1

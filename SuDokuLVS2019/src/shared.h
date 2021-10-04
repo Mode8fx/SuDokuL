@@ -3,6 +3,11 @@
 #ifndef SHARED_H
 #define SHARED_H
 
+struct ControlSettings {
+	Sint8 swapConfirmAndBack;
+	Sint8 enableTouchscreen;
+};
+
 struct VideoSettings {
 	Sint8 resolutionIndex;
 	Sint8 aspectRatioIndex;
@@ -78,14 +83,20 @@ extern Uint16 gameHeight;
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-	};
+	};                                                                                                                           \
+	const Sint8 numOffset = (gameHeight % 240 != 0);
 
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
-#ifdef WII_U
+#if defined(WII_U)
 #define DEFAULT_WIDTH         1280
 #define DEFAULT_HEIGHT        720
 #define DEFAULT_RI            4
+#define DEFAULT_ARI           1
+#elif defined(VITA)
+#define DEFAULT_WIDTH         960
+#define DEFAULT_HEIGHT        544
+#define DEFAULT_RI            2
 #define DEFAULT_ARI           1
 #else
 #define DEFAULT_WIDTH         640
@@ -116,6 +127,13 @@ extern Uint16 gameHeight;
 #define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
+#if defined(VITA)
+#define NUM_OFFSET_X          (numOffset)
+#define NUM_OFFSET_Y          (numOffset)
+#else
+#define NUM_OFFSET_X          0
+#define NUM_OFFSET_Y          0
+#endif
 
 #define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))
 
@@ -135,46 +153,59 @@ extern Uint16 gameHeight;
     textObj.endPos_x           = textObj.startPos_x + (gameWidth * 3 / 4); \
     textObj.endPos_y           = textObj.startPos_y - (gameWidth * 3 / 4);
 
-#define LOAD_SETTINGS_FILE()                                                                                                                   \
-	settingsFile = SDL_RWFromFile("settings.bin", "rb");                                                                                       \
-	if (settingsFile == NULL) {                                                                                                                \
-		INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 15, 22, DEFAULT_BG_SCALE);   \
-	} else {                                                                                                                                   \
-		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);                                                                    \
-		SDL_RWread(settingsFile, &soundSettings, sizeof(SoundSettings), 1);                                                                    \
-		SDL_RWread(settingsFile, &bgSettings, sizeof(BackgroundSettings), 1);                                                                  \
-		SDL_RWclose(settingsFile);                                                                                                             \
+#if defined(VITA)
+#define SETTINGS_FILE "ux0:data/SuDokuL/settings.bin"
+#else
+#define SETTINGS_FILE "settings.bin"
+#endif
+
+#define LOAD_SETTINGS_FILE()                                                                                                                             \
+	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");                                                                                                  \
+	if (settingsFile == NULL) {                                                                                                                          \
+		INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 15, 22, DEFAULT_BG_SCALE); \
+	} else {                                                                                                                                             \
+		SDL_RWread(settingsFile, &controlSettings, sizeof(ControlSettings), 1);                                                                          \
+		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);                                                                              \
+		SDL_RWread(settingsFile, &soundSettings, sizeof(SoundSettings), 1);                                                                              \
+		SDL_RWread(settingsFile, &bgSettings, sizeof(BackgroundSettings), 1);                                                                            \
+		SDL_RWclose(settingsFile);                                                                                                                       \
 	}
 
-#define INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(ri, ari, gw, gh, mi, bgmv, sfxv, sm, sd, s) \
-    settingsFile = SDL_RWFromFile("settings.bin", "w+b");                                  \
-    if (settingsFile != NULL) {                                                            \
-		videoSettings.resolutionIndex = ri;                                                \
-		videoSettings.aspectRatioIndex = ari;                                              \
-        videoSettings.widthSetting = gw;                                                   \
-        videoSettings.heightSetting = gh;                                                  \
-		soundSettings.musicIndex = mi;                                                     \
-		soundSettings.bgmVolume = bgmv;                                                    \
-		soundSettings.sfxVolume = sfxv;                                                    \
-		bgSettings.speedMult = sm;                                                         \
-		bgSettings.scrollDir = sd;                                                         \
-		bgSettings.scale = s;                                                              \
-		SDL_RWwrite(settingsFile, &videoSettings.resolutionIndex, sizeof(Uint8), 1);       \
-		SDL_RWwrite(settingsFile, &videoSettings.aspectRatioIndex, sizeof(Uint8), 1);      \
-        SDL_RWwrite(settingsFile, &videoSettings.widthSetting, sizeof(Uint16), 1);         \
-        SDL_RWwrite(settingsFile, &videoSettings.heightSetting, sizeof(Uint16), 1);        \
-		SDL_RWwrite(settingsFile, &soundSettings.musicIndex, sizeof(Sint8), 1);            \
-		SDL_RWwrite(settingsFile, &soundSettings.bgmVolume, sizeof(Sint8), 1);             \
-		SDL_RWwrite(settingsFile, &soundSettings.sfxVolume, sizeof(Sint8), 1);             \
-		SDL_RWwrite(settingsFile, &bgSettings.speedMult, sizeof(Sint8), 1);                \
-		SDL_RWwrite(settingsFile, &bgSettings.scrollDir, sizeof(Sint8), 1);                \
-		SDL_RWwrite(settingsFile, &bgSettings.scale, sizeof(Sint8), 1);                    \
-        SDL_RWclose(settingsFile);                                                         \
+#define INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(scab, et, ri, ari, gw, gh, mi, bgmv, sfxv, sm, sd, s) \
+    settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");                                             \
+    if (settingsFile != NULL) {                                                                      \
+		controlSettings.swapConfirmAndBack = scab;                                                   \
+		controlSettings.enableTouchscreen = et;                                                      \
+		videoSettings.resolutionIndex = ri;                                                          \
+		videoSettings.aspectRatioIndex = ari;                                                        \
+        videoSettings.widthSetting = gw;                                                             \
+        videoSettings.heightSetting = gh;                                                            \
+		soundSettings.musicIndex = mi;                                                               \
+		soundSettings.bgmVolume = bgmv;                                                              \
+		soundSettings.sfxVolume = sfxv;                                                              \
+		bgSettings.speedMult = sm;                                                                   \
+		bgSettings.scrollDir = sd;                                                                   \
+		bgSettings.scale = s;                                                                        \
+		SDL_RWwrite(settingsFile, &controlSettings.swapConfirmAndBack, sizeof(Uint8), 1);            \
+		SDL_RWwrite(settingsFile, &controlSettings.enableTouchscreen, sizeof(Uint8), 1);             \
+		SDL_RWwrite(settingsFile, &videoSettings.resolutionIndex, sizeof(Uint8), 1);                 \
+		SDL_RWwrite(settingsFile, &videoSettings.aspectRatioIndex, sizeof(Uint8), 1);                \
+        SDL_RWwrite(settingsFile, &videoSettings.widthSetting, sizeof(Uint16), 1);                   \
+        SDL_RWwrite(settingsFile, &videoSettings.heightSetting, sizeof(Uint16), 1);                  \
+		SDL_RWwrite(settingsFile, &soundSettings.musicIndex, sizeof(Sint8), 1);                      \
+		SDL_RWwrite(settingsFile, &soundSettings.bgmVolume, sizeof(Sint8), 1);                       \
+		SDL_RWwrite(settingsFile, &soundSettings.sfxVolume, sizeof(Sint8), 1);                       \
+		SDL_RWwrite(settingsFile, &bgSettings.speedMult, sizeof(Sint8), 1);                          \
+		SDL_RWwrite(settingsFile, &bgSettings.scrollDir, sizeof(Sint8), 1);                          \
+		SDL_RWwrite(settingsFile, &bgSettings.scale, sizeof(Sint8), 1);                              \
+        SDL_RWclose(settingsFile);                                                                   \
     }
 
-#define SAVE_CURRENT_SETTINGS() \
-	INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting, \
-	soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+#define SAVE_CURRENT_SETTINGS()                                                                                                 \
+	INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,               \
+		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting, \
+		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,                                             \
+		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 
 #define SDL_TOGGLE_FULLSCREEN()                                 \
 	if (isWindowed)                                             \
@@ -227,12 +258,20 @@ extern Uint16 gameHeight;
 	SDL_DestroyWindow(window);                           \
 	SDL_Quit();                                          \
 	/* [Wii U] SD Card */                                \
-	UNMOUNT_SD_CARD();
+	UNMOUNT_SD_CARD();                                   \
+	/* [Vita] Exit to Kernel */                          \
+	KERNEL_EXIT_PROCESS();
 
-#ifdef WII_U
+#if defined(WII_U)
 #define UNMOUNT_SD_CARD() WHBUnmountSdCard();
 #else
 #define UNMOUNT_SD_CARD()
+#endif
+
+#if defined(VITA)
+#define KERNEL_EXIT_PROCESS() sceKernelExitProcess(0);
+#else
+#define KERNEL_EXIT_PROCESS()
 #endif
 
 #endif

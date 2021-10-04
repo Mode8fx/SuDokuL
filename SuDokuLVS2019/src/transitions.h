@@ -5,6 +5,7 @@
     /* Animate Logo and Text */                                                                              \
     logo.rect.y = logo.endPos_y + MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1); \
     MENU_MOVE_TEXT_RIGHT(text_PressStart, time_anim1);                                                       \
+    MENU_MOVE_TEXT_RIGHT(text_Version_Number, time_anim1);                                                   \
     /* Check For Finished Animation */                                                                       \
     if (time_anim1 >= 1) {                                                                                   \
         logo.rect.y = logo.endPos_y;                                                                         \
@@ -13,12 +14,14 @@
     }                                                                                                        \
     /* Draw Logo and Text */                                                                                 \
     SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);                                                \
-    RENDER_TEXT(text_PressStart);
+    RENDER_TEXT(text_PressStart);                                                                            \
+    RENDER_TEXT(text_Version_Number);
 
 #define TRANSITION_GRAPHICS_TO_TITLE_SCREEN()                                                                  \
     /* Animate Logo and Text */                                                                                \
     logo.rect.y = logo.startPos_y - MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1); \
     MENU_MOVE_TEXT_LEFT(text_PressStart, time_anim1);                                                          \
+    MENU_MOVE_TEXT_LEFT(text_Version_Number, time_anim1);                                                      \
     /* Check For Finished Animation */                                                                         \
     if (time_anim1 >= 1) {                                                                                     \
         logo.rect.y = logo.startPos_y;                                                                         \
@@ -26,7 +29,8 @@
     }                                                                                                          \
     /* Draw Logo and Text */                                                                                   \
     SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);                                                  \
-    RENDER_TEXT(text_PressStart);
+    RENDER_TEXT(text_PressStart);                                                                              \
+    RENDER_TEXT(text_Version_Number);
 
 #define TRANSITION_GRAPHICS_FROM_MAIN_MENU()        \
     /* Animate and Draw Text */                     \

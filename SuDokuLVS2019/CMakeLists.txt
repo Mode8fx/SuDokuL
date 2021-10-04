@@ -54,5 +54,46 @@ if (WIIU)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/sudokul.rpx"
 			DESTINATION "${CMAKE_INSTALL_PREFIX}")
 endif()
+
+if (VITA)
+	include("${VITASDK}/share/vita.cmake" REQUIRED)
+	# find_package(PkgConfig REQUIRED)
+	add_definitions(-DVITA)
+	
+	set(VITA_APP_NAME "SuDokuL")
+	set(VITA_TITLEID  "SDKL39690")
+	set(VITA_VERSION  "01.00")
+
+	target_link_libraries(sudokul SDL2_ttf SDL2_mixer SDL2_image SDL2 freetype png png16 bz2 jpeg z mikmod mpg123 FLAC vorbisfile vorbis ogg webp pthread)
+	# find_package(SDL2 REQUIRED)
+	# target_link_libraries(sudokul SDL2_ttf SDL2_mixer SDL2_image SDL2)
+	target_link_libraries(sudokul
+		SceDisplay_stub
+		SceCtrl_stub
+		SceAudio_stub
+		SceSysmodule_stub
+		SceGxm_stub
+		SceCommonDialog_stub
+		SceAppMgr_stub
+		SceTouch_stub
+		SceMotion_stub
+		SceHid_stub
+		m
+	)
+
+	include_directories("${VITASDK}/arm-vita-eabi/include;${VITASDK}/arm-vita-eabi/include/SDL2;")
+
+	vita_create_self(sudokul.self sudokul)
+	vita_create_vpk(sudokul.vpk ${VITA_TITLEID} sudokul.self
+		VERSION ${VITA_VERSION}
+		NAME ${VITA_APP_NAME}
+		FILE sce_sys/icon0.png sce_sys/icon0.png
+		FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
+		FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
+		FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
+	)
+endif()
+
 unset(WINDOWS32 CACHE)
 unset(WIIU CACHE)
+unset(VITA CACHE)

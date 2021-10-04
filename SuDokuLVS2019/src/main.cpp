@@ -30,7 +30,7 @@ SDL_GameController *controller = nullptr;
 /* Window Width and Height */
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
-#ifdef WII_U
+#if defined(WII_U)
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[5]   = { 320, 640, 720,  800,  960 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[5]  = { 240, 480, 576,  600,  720 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[5]  = { 480, 854, 960, 1176, 1280 };
@@ -39,6 +39,15 @@ const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[2] = { 720, 1152 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[2] = { 480, 720 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 1280 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 548 };
+#elif defined(VITA)
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[3] = { 320, 640, 726 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[3] = { 240, 480, 544 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[3] = { 480, 854, 960 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[3] = { 272, 480, 544 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1] = { 720 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 480 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 960 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 410 };
 #else
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880};
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160};
@@ -104,6 +113,7 @@ Uint16 charWidthCounter;
 double deltaTime;
 Timer timer_global;
 double time_anim1;
+double time_anim_PressStart;
 Timer timer_game;
 double timer_buttonHold;
 Uint8 heldButtons;
@@ -116,11 +126,15 @@ Uint8 programState;
 BackgroundSettings bgSettings;
 BGScroll bgScroll;
 
+/* Controls */
+ControlSettings controlSettings;
+
 /* Menu Cursors */
 Sint8 menuCursorIndex_main;
 Sint8 menuCursorIndex_play;
 Sint8 menuIndex_controls;
 Sint8 menuCursorIndex_options;
+Sint8 menuCursorIndex_controls;
 Sint8 menuCursorIndex_video;
 Sint8 menuCursorIndex_sound;
 Sint8 menuCursorIndex_background;
@@ -157,7 +171,7 @@ std::stringstream ss;
 
 int main(int argv, char **args) {
 	/* [Wii U] Set SD Card Mount Path */
-#ifdef WII_U
+#if defined(WII_U)
 	if (!WHBMountSdCard()) {
 		return 0;
 	}
@@ -169,6 +183,11 @@ int main(int argv, char **args) {
 	sdPathStr = sdPathStart + sdPathStr;
 	const char *sdPath = sdPathStr.c_str();
 	chdir(sdPath);
+#endif
+
+	/* [Vita] Disable rear touch pad */
+#if defined(VITA)
+	SDL_setenv("VITA_DISABLE_TOUCH_BACK", "1", 1);
 #endif
 
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -212,8 +231,11 @@ int main(int argv, char **args) {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		PRINT(Mix_GetError());
 	}
-	//bgm = Mix_LoadMUS("music/sudoku_padawan.mod");
+#if defined(VITA)
+	sfx = Mix_LoadWAV("ux0:data/SuDokuL/sfx/coin1.wav");
+#else
 	sfx = Mix_LoadWAV("sfx/coin1.wav");
+#endif
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 
@@ -232,6 +254,41 @@ int main(int argv, char **args) {
 	//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
 
 	/* Set Textures */
+#if defined(VITA)
+	PREPARE_SPRITE(tile, "ux0:data/SuDokuL/graphics/tile.png", 0, 0, 1);
+	SET_SPRITE_SCALE_TILE();
+	if (gameHeight < 720) {
+		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_480.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
+	} else if (gameHeight < 1080) {
+		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_720.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
+	} else if (gameHeight < 1440) {
+		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_1080.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
+	} else if (gameHeight < 2160) {
+		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_1440.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
+	} else {
+		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_2160.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
+	}
+	logo.startPos_y = logo.rect.y;
+	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
+	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
+	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
+	PREPARE_SPRITE(menuCursor, "ux0:data/SuDokuL/graphics/menu_cursor.png", 0, 0, 1);
+	PREPARE_SPRITE(game_grid, "ux0:data/SuDokuL/graphics/grid_384.png", GRID_POS_X, GRID_POS_Y, 1);
+	PREPARE_SPRITE(gridCursor_bottom_left, "ux0:data/SuDokuL/graphics/grid_cursor_bottom_left.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
+	PREPARE_SPRITE(gridCursor_bottom_right, "ux0:data/SuDokuL/graphics/grid_cursor_bottom_right.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
+	PREPARE_SPRITE(gridCursor_top_left, "ux0:data/SuDokuL/graphics/grid_cursor_top_left.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
+	PREPARE_SPRITE(gridCursor_top_right, "ux0:data/SuDokuL/graphics/grid_cursor_top_right.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
+	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
+	PREPARE_SPRITE(game_sidebar_small, "ux0:data/SuDokuL/graphics/sidebar_small.png", SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
+	PREPARE_SPRITE(miniGrid_bottom_left, "ux0:data/SuDokuL/graphics/grid_mini_bottom_left.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_bottom_right, "ux0:data/SuDokuL/graphics/grid_mini_bottom_right.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_left, "ux0:data/SuDokuL/graphics/grid_mini_top_left.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_right, "ux0:data/SuDokuL/graphics/grid_mini_top_right.png", 0, 0, 1);
+#else
 	PREPARE_SPRITE(tile, "graphics/tile.png", 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
 	if (gameHeight < 720) {
@@ -265,6 +322,7 @@ int main(int argv, char **args) {
 	PREPARE_SPRITE(miniGrid_bottom_right, "graphics/grid_mini_bottom_right.png", 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_left, "graphics/grid_mini_top_left.png", 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_right, "graphics/grid_mini_top_right.png", 0, 0, 1);
+#endif
 
 	/* Set Rectangles */
 	// The larger the difference between the display resolution and game resolution, the larger the right and bottom rectangles need to be... I think
@@ -283,10 +341,17 @@ int main(int argv, char **args) {
 
 	/* Set Text */
 	/* General - Fonts */
+#if defined(VITA)
+	pixelFont = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
+	pixelFont_large = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
+	pixelFont_grid = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
+	pixelFont_grid_mini = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
+#else
 	pixelFont = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
 	pixelFont_large = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
 	pixelFont_grid_mini = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
+#endif
 	/* General */
 	for (int_i = 32; int_i < LEN(textChars); int_i++) {
 		ss.str(std::string());
@@ -332,11 +397,13 @@ int main(int argv, char **args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), FONT_SIZE * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), FONT_SIZE * 15);
 	/* Title Screen */
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.1",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 3 / 16);
 	/* Main Menu */
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Play",     text_Play,             OBJ_TO_MID_SCREEN_X(text_Play),       TEXT_PLAY_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Controls", text_Controls,         OBJ_TO_MID_SCREEN_X(text_Controls),   TEXT_CONTROLS_Y + (gameWidth * 3 / 4));
@@ -360,7 +427,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_SIDEBAR(text_Game_Hard),   TEXT_GAME_HARD_Y);
 	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_SIDEBAR(text_Game_VHard),  TEXT_GAME_VHARD_Y);
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
 #else
@@ -370,17 +437,42 @@ int main(int argv, char **args) {
 	/* Controls */
 	SET_CONTROLS_TEXT();
 	/* Options Menu */
+	SET_TEXT_WITH_OUTLINE("Controls",         text_Controls_Menu,    OBJ_TO_MID_SCREEN_X(text_Controls_Menu), TEXT_CONTROLS_MENU_Y);
 	SET_TEXT_WITH_OUTLINE("Video",            text_Video,            OBJ_TO_MID_SCREEN_X(text_Video),      TEXT_VIDEO_Y);
 	SET_TEXT_WITH_OUTLINE("Sound",            text_Sound,            OBJ_TO_MID_SCREEN_X(text_Sound),      TEXT_SOUND_Y);
 	SET_TEXT_WITH_OUTLINE("Background",       text_Background,       OBJ_TO_MID_SCREEN_X(text_Background), TEXT_BACKGROUND_Y);
 	//SET_TEXT_WITH_OUTLINE("Scores",           text_Scores,           OBJ_TO_MID_SCREEN_X(text_Scores),     TEXT_SCORES_Y);
+	/* Controls Menu */
+	SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X,                 TEXT_CONTROLLER_INPUT_Y);
+	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
+#if defined(VITA)
+	SET_TEXT_WITH_OUTLINE("X - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("O - Back", text_B_Back, OBJ_TO_SCREEN_AT_FRACTION(text_B_Back, 0.75), TEXT_B_BACK_Y);
+	SET_TEXT_WITH_OUTLINE("O - Confirm", text_B_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("X - Back", text_A_Back, OBJ_TO_SCREEN_AT_FRACTION(text_A_Back, 0.75), TEXT_A_BACK_Y);
+#else
+	SET_TEXT_WITH_OUTLINE("A - Confirm",      text_A_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("B - Back",         text_B_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_B_Back,    0.75), TEXT_B_BACK_Y);
+	SET_TEXT_WITH_OUTLINE("B - Confirm",      text_B_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("A - Back",         text_A_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_A_Back,    0.75), TEXT_A_BACK_Y);
+#endif
+	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	/* Video Menu */
-#ifdef WII_U
+#if defined(WII_U)
 	string warningString;
 	if (gameWidth == 1280 && gameHeight == 720) {
 		warningString = "! Changing these is not recommended !";
 	} else {
 		warningString = "! 1280x720 (16:9) is recommended !";
+	}
+	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
+#elif defined(VITA)
+	string warningString;
+	if (gameWidth == 960 && gameHeight == 544) {
+		warningString = "! Changing these is not recommended !";
+	} else {
+		warningString = "! 960x544 (16:9) is recommended !";
 	}
 	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #else
@@ -414,11 +506,13 @@ int main(int argv, char **args) {
 	menuCursorIndex_main = 0;
 	menuCursorIndex_play = 0;
 	menuCursorIndex_options = 0;
+	menuCursorIndex_controls = 0;
 	menuCursorIndex_video = 0;
+	menuCursorIndex_sound = 0;
 	menuCursorIndex_background = 0;
 	programState = 0;
 	isRunning = true;
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 	isWindowed = false;
 #else
 	isWindowed = true;
@@ -429,6 +523,7 @@ int main(int argv, char **args) {
 		UPDATE_TIMER(timer_global);
 		deltaTime = timer_global.now - timer_global.last;
 		time_anim1 += deltaTime;
+		time_anim_PressStart += deltaTime;
 		if (heldButtons > 0) {
 			timer_buttonHold += deltaTime;
 		} else {
@@ -552,6 +647,7 @@ int main(int argv, char **args) {
 						keyInputs |= INPUT_FULLSCREEN;
 						break;
 					}
+#if !defined(WII_U) && !defined(VITA)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -571,6 +667,7 @@ int main(int argv, char **args) {
 				case SDL_MOUSEBUTTONUP:
 					justClickedInMiniGrid = false;
 					break;
+#endif
 				case SDL_CONTROLLERBUTTONDOWN:
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
 						keyInputs |= INPUT_UP;
@@ -596,13 +693,30 @@ int main(int argv, char **args) {
 						cheatCounter = 0;
 						break;
 					}
+#if defined(WII_U)
+					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
+#else
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
-						keyInputs |= INPUT_CONFIRM;
+#endif
+						if (!controlSettings.swapConfirmAndBack) {
+							keyInputs |= INPUT_CONFIRM;
+						} else {
+							keyInputs |= INPUT_BACK;
+						}
 						cheatCounter = 0;
 						break;
 					}
+#if defined(WII_U)
+					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
+#else
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
-						keyInputs |= INPUT_BACK;
+#endif
+						if (!controlSettings.swapConfirmAndBack) {
+							keyInputs |= INPUT_BACK;
+						}
+						else {
+							keyInputs |= INPUT_CONFIRM;
+						}
 						cheatCounter = 0;
 						break;
 					}
@@ -650,20 +764,24 @@ int main(int argv, char **args) {
 					}
 					break;
 				case SDL_FINGERDOWN:
-					mouseInput_x = event.tfinger.x * gameWidth;
-					mouseInput_y = event.tfinger.y * gameHeight;
-					keyInputs |= INPUT_CONFIRM_ALT;
-					cheatCounter = 0;
+					if (controlSettings.enableTouchscreen) {
+						mouseInput_x = event.tfinger.x * gameWidth;
+						mouseInput_y = event.tfinger.y * gameHeight;
+						keyInputs |= INPUT_CONFIRM_ALT;
+						cheatCounter = 0;
+					}
 					break;
 				case SDL_FINGERMOTION:
-					mouseInput_x = event.tfinger.x * gameWidth;
-					mouseInput_y = event.tfinger.y * gameHeight;
-					cheatCounter = 0;
+					if (controlSettings.enableTouchscreen) {
+						mouseInput_x = event.tfinger.x * gameWidth;
+						mouseInput_y = event.tfinger.y * gameHeight;
+						cheatCounter = 0;
+					}
 					break;
 				case SDL_FINGERUP:
-					// mouseInput_x_last = -1;
-					// mouseInput_y_last = -1;
-					justClickedInMiniGrid = false;
+					if (controlSettings.enableTouchscreen) {
+						justClickedInMiniGrid = false;
+					}
 					break;
 				default:
 					break;
@@ -734,10 +852,11 @@ int main(int argv, char **args) {
 					programState = 1;
 				}
 				/* Animate Text */
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim1, 1.25, TEXT_PRESS_START_AMPLITUDE));
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				RENDER_TEXT(text_PressStart);
+				RENDER_TEXT(text_Version_Number);
 				break;
 			/* 1 = Title Screen -> Main Menu */
 			case 1:
@@ -745,6 +864,7 @@ int main(int argv, char **args) {
 				TRANSITION_GRAPHICS_TO_MAIN_MENU(-1);
 				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 2);
 				UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
 			/* 2 = Main Menu */
 			case 2:
@@ -804,6 +924,7 @@ int main(int argv, char **args) {
 				TRANSITION_GRAPHICS_FROM_MAIN_MENU();
 				TRANSITION_GRAPHICS_TO_TITLE_SCREEN();
 				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 0);
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
 			/* 7 = Play Menu */
 			case 7:
@@ -842,8 +963,9 @@ int main(int argv, char **args) {
 						ZERO_OUT_ARRAY(originalGrid);
 						ZERO_OUT_ARRAY(solutionGrid);
 						ZERO_OUT_ARRAY(miniGrid);
-						generateGridAndSolution(RANDINT(30,35), 52); // it will always be the minimum, hence the use of RANDINT
-						// setPremadePuzzle(0, RANDINT(0, 999));
+						if (!generateGridAndSolution(RANDINT(30, 35), 52)) { // it will always be the minimum, hence the use of RANDINT
+							setPremadePuzzle(0, RANDINT(0, 999));
+						}
 						programState = 9;
 						break;
 					case 1:
@@ -851,8 +973,9 @@ int main(int argv, char **args) {
 						ZERO_OUT_ARRAY(originalGrid);
 						ZERO_OUT_ARRAY(solutionGrid);
 						ZERO_OUT_ARRAY(miniGrid);
-						generateGridAndSolution(RANDINT(50,52), 75); // it will always be the minimum, hence the use of RANDINT
-						// setPremadePuzzle(1, RANDINT(0, 999));
+						if (!generateGridAndSolution(RANDINT(50, 52), 75)) { // it will always be the minimum, hence the use of RANDINT
+							setPremadePuzzle(1, RANDINT(0, 999));
+						}
 						programState = 9;
 						break;
 					case 2:
@@ -946,7 +1069,7 @@ int main(int argv, char **args) {
 				MENU_HANDLE_MENU_BUTTON();
 				DRAW_SIDEBAR();
 				RENDER_TEXT(text_Paused);
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 				RENDER_TEXT(text_Quit_to_Menu_1);
 				RENDER_TEXT(text_Quit_to_Menu_2);
 #else
@@ -982,7 +1105,7 @@ int main(int argv, char **args) {
 			case 12:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
-#ifdef WII_U
+#if defined(WII_U) || defined(VITA)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 3) {
@@ -999,7 +1122,7 @@ int main(int argv, char **args) {
 					case 1:
 						RENDER_CONTROLS_TEXT_PAGE_2();
 						break;
-#ifndef WII_U
+#if !defined(WII_U) && !defined(VITA)
 					case 2:
 						RENDER_CONTROLS_TEXT_PAGE_3();
 						break;
@@ -1015,33 +1138,38 @@ int main(int argv, char **args) {
 			case 13:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 3);
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 4);
 				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Video, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Sound, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Background, 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Controls_Menu, 0);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Video, 1);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Sound, 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Background, 3);
 					// MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Scores, 3);
 				}
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Video.rect)
-					|| MOUSE_IS_IN_RECT(text_Sound.rect) || MOUSE_IS_IN_RECT(text_Background.rect)))) {
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Controls_Menu.rect)
+					|| MOUSE_IS_IN_RECT(text_Video.rect) || MOUSE_IS_IN_RECT(text_Sound.rect) || MOUSE_IS_IN_RECT(text_Background.rect)))) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_options) {
 						case 0:
+							programState = 28;
+							UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
+							break;
+						case 1:
 							// programState = 14;
 							programState = 20;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
 							break;
-						case 1:
+						case 2:
 							// programState = 15;
 							programState = 22;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
 							break;
-						case 2:
+						case 3:
 							// programState = 16;
 							programState = 24;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
 							break;
-						case 3:
+						case 4:
 							// programState = 17;
 							programState = 26;
 							break;
@@ -1054,6 +1182,7 @@ int main(int argv, char **args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				RENDER_TEXT(text_Controls_Menu);
 				RENDER_TEXT(text_Video);
 				RENDER_TEXT(text_Sound);
 				RENDER_TEXT(text_Background);
@@ -1222,7 +1351,7 @@ int main(int argv, char **args) {
 						case 3:
 							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+									INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 								} else {
 									SAVE_CURRENT_SETTINGS();
 								}
@@ -1448,6 +1577,61 @@ int main(int argv, char **args) {
 			/* 26 = Scores Menu */
 			case 26:
 				MENU_HANDLE_BACK_BUTTON(13);
+				break;
+			/* 28 = Controls Menu */
+			case 28:
+				/* Key Presses */
+				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
+				if (KEY_PRESSED(INPUT_LEFT)) {
+					switch (menuCursorIndex_controls) {
+						case 0:
+							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
+							break;
+						case 1:
+							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
+							break;
+						default:
+							break;
+					}
+				}
+				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
+					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+					switch (menuCursorIndex_controls) {
+						case 0:
+							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
+							break;
+						case 1:
+							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
+							break;
+						default:
+							break;
+					}
+				}
+				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
+				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
+					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
+				}
+				/* Animate Cursor */
+				UPDATE_CONTROLS_MENU_CURSOR_POSITION_X();
+				/* Draw Logo and Text */
+				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				RENDER_TEXT(text_Controller_Input);
+				RENDER_TEXT(text_Touch_Screen_Input);
+				if (controlSettings.swapConfirmAndBack) {
+					RENDER_TEXT(text_A_Confirm);
+					RENDER_TEXT(text_B_Back);
+				} else {
+					RENDER_TEXT(text_B_Confirm);
+					RENDER_TEXT(text_A_Back);
+				}
+				if (controlSettings.enableTouchscreen) {
+					RENDER_TEXT(text_Enabled);
+				} else {
+					RENDER_TEXT(text_Disabled);
+				}
 				break;
 			default:
 				break;
