@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\game_logic.h" />
     <ClInclude Include="src\general.h" />
@@ -112,6 +113,12 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\puzzleBank.cpp" />
     <ClCompile Include="src\sudokuGen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SuDokuLVS2019.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="logo_icon_pc.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
