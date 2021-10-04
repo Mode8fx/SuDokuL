@@ -46,6 +46,8 @@ INCLUDES	:=	include
 
 APP_TITLE   := SuDokuL
 APP_AUTHOR  := Mips96
+APP_VERSION := 1.1
+ICON        := logo_icon_switch.jpg
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -156,7 +158,6 @@ endif
 all: $(BUILD)
 
 $(BUILD):
-	cd "D:/GitHub/SuDokuL/SuDokuLVS2019"
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
