@@ -1,5 +1,5 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL2. It's currently available for Wii U, Vita, and PC.
+This is a Sudoku game made in C++ and SDL2. It's currently available for Switch, Wii U, Vita, and PC.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
@@ -23,7 +23,7 @@ This game was initially designed for 640x480 displays, but it is compatible with
 <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
 
 ## How to Compile
-(Note: To run any compiled version, you must have the *fonts*, *graphics*, *music*, and *sfx* folders which can be obtained from the latest release.)
+(Note: To run any compiled version, you must have the `fonts`, `graphics`, `music`, and `sfx` folders which can be obtained from the latest release.)
 #### PC
 1. Download the latest SDL2 development libraries (Visual C++ versions):
 - [SDL2](https://www.libsdl.org/download-2.0.php)
@@ -33,9 +33,11 @@ This game was initially designed for 640x480 displays, but it is compatible with
 2. Extract the above ZIP files into a folder called SDL2, which should be located in the SuDokuLVS2019 directory.
 3. From there, use the Visual Studio project file from the repo with Visual Studio 2019.
 #### Wii U
-Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a *make_wii_u.sh* file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
 #### Vita
-Install VitaSDK, then build with CMake. I've included a *make_vita.sh* file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+#### Switch
+Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
 
 ## Credits
 Everything in this game is made by me except for the following assets:
@@ -70,3 +72,7 @@ Commodore Pixelized v1.2 by by Devin Cook
 ##### Vita
 - VitaSDK
 - CMake
+##### Switch
+- devkitpro
+- SDL2 for Switch
+- Make
