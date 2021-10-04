@@ -351,6 +351,7 @@ MigrationBackup/
 
 dist/
 SDL2/
+build_switch/
 build_vita/
 build_wii_u/
 fonts/

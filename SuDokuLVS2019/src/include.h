@@ -20,6 +20,8 @@
 #include <whb/sdcard.h>
 #elif defined(VITA)
 #include <psp2/kernel/processmgr.h>
+#elif defined(SWITCH)
+#include <switch.h>
 #endif
 
 using namespace std;

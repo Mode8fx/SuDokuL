@@ -98,6 +98,11 @@ extern Uint16 gameHeight;
 #define DEFAULT_HEIGHT        544
 #define DEFAULT_RI            2
 #define DEFAULT_ARI           1
+#elif defined(SWITCH)
+#define DEFAULT_WIDTH         1920
+#define DEFAULT_HEIGHT        1080
+#define DEFAULT_RI            7
+#define DEFAULT_ARI           1
 #else
 #define DEFAULT_WIDTH         640
 #define DEFAULT_HEIGHT        480
@@ -257,21 +262,14 @@ extern Uint16 gameHeight;
 	SDL_DestroyRenderer(renderer);                       \
 	SDL_DestroyWindow(window);                           \
 	SDL_Quit();                                          \
-	/* [Wii U] SD Card */                                \
-	UNMOUNT_SD_CARD();                                   \
-	/* [Vita] Exit to Kernel */                          \
-	KERNEL_EXIT_PROCESS();
+	SYSTEM_SPECIFIC_CLOSE();
 
 #if defined(WII_U)
-#define UNMOUNT_SD_CARD() WHBUnmountSdCard();
+#define SYSTEM_SPECIFIC_CLOSE() WHBUnmountSdCard();
+#elif defined(VITA)
+#define SYSTEM_SPECIFIC_CLOSE() sceKernelExitProcess(0);
 #else
-#define UNMOUNT_SD_CARD()
-#endif
-
-#if defined(VITA)
-#define KERNEL_EXIT_PROCESS() sceKernelExitProcess(0);
-#else
-#define KERNEL_EXIT_PROCESS()
+#define SYSTEM_SPECIFIC_CLOSE()
 #endif
 
 #endif

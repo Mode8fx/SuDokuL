@@ -31,28 +31,37 @@ SDL_GameController *controller = nullptr;
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
 #if defined(WII_U)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[5]   = { 320, 640, 720,  800,  960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[5]  = { 240, 480, 576,  600,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[5]  = { 480, 854, 960, 1176, 1280 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[5] = { 272, 480, 544,  664,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[2] = { 720, 1152 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[2] = { 480, 720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 1280 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 548 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[5]   =  {  320, 640, 720,  800,  960 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[5]  =  {  240, 480, 576,  600,  720 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[5]  =  {  480, 854, 960, 1176, 1280 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[5] =  {  272, 480, 544,  664,  720 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[2] =  {  720, 1152 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[2] = {  480, 720 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] =   { 1280 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] =  {  548 };
 #elif defined(VITA)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[3] = { 320, 640, 726 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[3] = { 240, 480, 544 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[3] = { 480, 854, 960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[3] = { 272, 480, 544 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1] = { 720 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[3]    = { 320, 640, 726 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[3]   = { 240, 480, 544 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[3]   = { 480, 854, 960 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[3]  = { 272, 480, 544 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1]  = { 720 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 480 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 410 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 960 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = { 410 };
+#elif defined(SWITCH)
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[9]    = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[9]   = {  240,  480,  576,  600,  720,  768,  864,  960, 1080 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[18]  = {  480,  854,  960, 1176, 1280, 1360, 1600, 1920 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[18] = {  272,  480,  544,  664,  720,  768,  900, 1080 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[6]  = {  720, 1152, 1280, 1440, 1600, 1680 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[6] = {  480,  720,  800,  900, 1024, 1050 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 1280 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = {  548 };
 #else
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880};
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160};
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[10]  = {  480,  854,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3840};
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[10] = {  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2160};
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[10]  = {  480,  854,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3840 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[10] = {  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2160 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[9]  = {  720, 1152, 1280, 1440, 1600, 1680, 1920, 2560, 3840 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[9] = {  480,  720,  800,  900, 1024, 1050, 1200, 1600, 2400 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[4]   = { 1280, 2560, 3440, 5120 };
@@ -188,6 +197,11 @@ int main(int argv, char **args) {
 	/* [Vita] Disable rear touch pad */
 #if defined(VITA)
 	SDL_setenv("VITA_DISABLE_TOUCH_BACK", "1", 1);
+#endif
+
+	/* [Switch] Set SD Card mount path */
+#if defined(SWITCH)
+	chdir("/switch/SuDokuL");
 #endif
 
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -399,6 +413,8 @@ int main(int argv, char **args) {
 	/* Title Screen */
 #if defined(WII_U) || defined(VITA)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
+#elif defined(SWITCH)
+	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
@@ -430,6 +446,8 @@ int main(int argv, char **args) {
 #if defined(WII_U) || defined(VITA)
 	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
+#elif defined(SWITCH)
+	SET_TEXT_WITH_OUTLINE("Press - to Quit",  text_Quit_to_Menu,     OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q to Quit",  text_Quit_to_Menu,     OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu), TEXT_QUIT_TO_MENU_Y);
 #endif
@@ -512,7 +530,7 @@ int main(int argv, char **args) {
 	menuCursorIndex_background = 0;
 	programState = 0;
 	isRunning = true;
-#if defined(WII_U) || defined(VITA)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH)
 	isWindowed = false;
 #else
 	isWindowed = true;
@@ -647,7 +665,7 @@ int main(int argv, char **args) {
 						keyInputs |= INPUT_FULLSCREEN;
 						break;
 					}
-#if !defined(WII_U) && !defined(VITA)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -693,7 +711,7 @@ int main(int argv, char **args) {
 						cheatCounter = 0;
 						break;
 					}
-#if defined(WII_U)
+#if defined(WII_U) || defined(SWITCH)
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
 #else
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
@@ -706,7 +724,7 @@ int main(int argv, char **args) {
 						cheatCounter = 0;
 						break;
 					}
-#if defined(WII_U)
+#if defined(WII_U) || defined(SWITCH)
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
 #else
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
@@ -1105,7 +1123,7 @@ int main(int argv, char **args) {
 			case 12:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
-#if defined(WII_U) || defined(VITA)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 3) {
@@ -1122,7 +1140,7 @@ int main(int argv, char **args) {
 					case 1:
 						RENDER_CONTROLS_TEXT_PAGE_2();
 						break;
-#if !defined(WII_U) && !defined(VITA)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
 					case 2:
 						RENDER_CONTROLS_TEXT_PAGE_3();
 						break;
