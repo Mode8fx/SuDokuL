@@ -1,5 +1,4 @@
 export DEVKITPRO=/opt/devkitpro
-cd "C:/SuDokuL/SuDokuLVS2019"
 rm -r build_wii_u
 mkdir build_wii_u
 cd build_wii_u

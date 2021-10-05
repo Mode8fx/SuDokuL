@@ -14,7 +14,7 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for Switch,
 
 ## Screenshots (click for full size)
 
-All screenshots are from the PC version. More can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
+All screenshots are from PC version 1.0. More can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
 
 <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
 
@@ -33,9 +33,9 @@ This game was initially designed for 640x480 displays, but it is compatible with
 2. Extract the above ZIP files into a folder called SDL2, which should be located in the SuDokuLVS2019 directory.
 3. From there, use the Visual Studio project file from the repo with Visual Studio 2019.
 #### Wii U
-Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed.
 #### Vita
-Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed (make sure you change the directory in this file to your appropriate SuDokuL directory).
+Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed.
 #### Switch
 Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
 
