@@ -212,13 +212,16 @@ extern Uint16 gameHeight;
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,                                             \
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 
+#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#define SDL_TOGGLE_FULLSCREEN()
+#else
 #define SDL_TOGGLE_FULLSCREEN()                                 \
 	if (isWindowed)                                             \
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); \
 	else                                                        \
 		SDL_SetWindowFullscreen(window, 0);                     \
 	isWindowed = !isWindowed;
-	//SDL_ShowCursor(isWindowed);
+#endif
 
 #define SDL_DESTROY_ALL()                                \
 	/* Destroy Everything and Quit Game */               \

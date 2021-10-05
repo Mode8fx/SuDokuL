@@ -98,7 +98,7 @@ SpriteObjectWithPos *currMiniGrid;
 /* Fonts */
 SDL_Color color_black = {0, 0, 0};
 SDL_Color color_white = {255, 255, 255};
-SDL_Color color_blue = {0, 0, 255};
+SDL_Color color_blue = {0, 0, 192};
 SDL_Color color_gray_240 = {240, 240, 240};
 SDL_Color color_light_blue = {240, 240, 255};
 TTF_Font *pixelFont;
@@ -418,7 +418,7 @@ int main(int argv, char **args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.1",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.11",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 3 / 16);
 	/* Main Menu */
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Play",     text_Play,             OBJ_TO_MID_SCREEN_X(text_Play),       TEXT_PLAY_Y + (gameWidth * 3 / 4));
@@ -445,12 +445,12 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
 #if defined(WII_U) || defined(VITA)
 	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
-	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
 #elif defined(SWITCH)
-	SET_TEXT_WITH_OUTLINE("Press - to Quit",  text_Quit_to_Menu,     OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press -",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
-	SET_TEXT_WITH_OUTLINE("Press Q to Quit",  text_Quit_to_Menu,     OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press Q",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
+	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
 	SET_TEXT_WITH_OUTLINE("You Win!",         text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),    TEXT_YOU_WIN_Y);
 	/* Controls */
 	SET_CONTROLS_TEXT();
@@ -501,8 +501,13 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE("Fullscreen",       text_Fullscreen,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_FULLSCREEN_Y);
+#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+	SET_TEXT_WITH_OUTLINE("UNUSED", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
+	SET_TEXT_WITH_OUTLINE("UNUSED", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
+#else
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
+#endif
 	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
 	/* Music Menu */
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
@@ -1087,12 +1092,8 @@ int main(int argv, char **args) {
 				MENU_HANDLE_MENU_BUTTON();
 				DRAW_SIDEBAR();
 				RENDER_TEXT(text_Paused);
-#if defined(WII_U) || defined(VITA)
 				RENDER_TEXT(text_Quit_to_Menu_1);
 				RENDER_TEXT(text_Quit_to_Menu_2);
-#else
-				RENDER_TEXT(text_Quit_to_Menu);
-#endif
 				break;
 			/* 11 = Victory Screen */
 			case 11:
