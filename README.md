@@ -6,7 +6,7 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for Switch,
   - These puzzles are generated on-demand using a built-in algorithm; however, to eliminate computation time on weaker devices, Hard and Very Hard puzzles have been pre-generated.
 - Mouse, keyboard, controller, and touch screen support
 - Supports many resolution options ranging from 320x240 to 5120x2160
-- Scrolling background with customizable settings (scroll speed, angle, size)
+- Scrolling background with customizable settings (size, scroll speed, angle)
 - Calm and envigorating MOD music to suit your mood
 - Shaded text for a nice, 3D look
 - Runs on a potato
@@ -14,13 +14,13 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for Switch,
 
 ## Screenshots (click for full size)
 
-All screenshots are from PC version 1.0. More can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
+All screenshots are from PC version 1.0, and can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
+<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
 
 This game was initially designed for 640x480 displays, but it is compatible with any resolution, and higher resolutions will utilize more detailed text and support for smaller background tiles.
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920_1080_1.png?raw=true" width="480" height="270"/>
+<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
 
 ## How to Compile
 (Note: To run any compiled version, you must have the `fonts`, `graphics`, `music`, and `sfx` folders which can be obtained from the latest release.)
