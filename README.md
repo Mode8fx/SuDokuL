@@ -14,7 +14,7 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for Switch,
 
 ## Screenshots (click for full size)
 
-All screenshots are from PC version 1.0 and can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
+All screenshots are from PC version 1.11 (unless otherwise specified) and can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
 
 <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920-1080_1.png?raw=true" width="480" height="270"/>
 
