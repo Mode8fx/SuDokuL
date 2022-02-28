@@ -168,7 +168,12 @@ Sint32 int_i;
 Uint32 uint_i;
 
 /* Other */
+Sint16 controllerAxis_leftStickX;
+Sint16 controllerAxis_leftStickX_last;
+Sint16 controllerAxis_leftStickY;
+Sint16 controllerAxis_leftStickY_last;
 Uint32 keyInputs;
+Uint8 dirInputs;
 Sint32 mouseInput_x;
 Sint32 mouseInput_x_last;
 Sint32 mouseInput_y;
@@ -418,7 +423,7 @@ int main(int argv, char **args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.11",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.12",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 3 / 16);
 	/* Main Menu */
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Play",     text_Play,             OBJ_TO_MID_SCREEN_X(text_Play),       TEXT_PLAY_Y + (gameWidth * 3 / 4));
@@ -554,8 +559,38 @@ int main(int argv, char **args) {
 			timer_buttonHold_repeater = 0;
 		}
 
-		/* Update Key Presses and Mouse Input */
 		keyInputs = 0;
+		dirInputs = 0;
+		/* Update Controller Axes */
+		controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+		controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+		if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+			controllerAxis_leftStickX = 0;
+		}
+		if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+			controllerAxis_leftStickY = 0;
+		}
+		/* Update Key Presses and Mouse Input */
+		if ((controllerAxis_leftStickX < 0) && !(controllerAxis_leftStickX_last < 0)) {
+			dirInputs |= LEFT_PRESSED;
+		} else if (!(controllerAxis_leftStickX < 0) && (controllerAxis_leftStickX_last < 0)) { // a little redundant, but easier to read
+			dirInputs |= LEFT_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickX > 0) && !(controllerAxis_leftStickX_last > 0)) {
+			dirInputs |= RIGHT_PRESSED;
+		} else if (!(controllerAxis_leftStickX > 0) && (controllerAxis_leftStickX_last > 0)) {
+			dirInputs |= RIGHT_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickY < 0) && !(controllerAxis_leftStickY_last < 0)) {
+			dirInputs |= UP_PRESSED;
+		} else if (!(controllerAxis_leftStickY < 0) && (controllerAxis_leftStickY_last < 0)) {
+			dirInputs |= UP_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickY > 0) && !(controllerAxis_leftStickY_last > 0)) {
+			dirInputs |= DOWN_PRESSED;
+		} else if (!(controllerAxis_leftStickY > 0) && (controllerAxis_leftStickY_last > 0)) {
+			dirInputs |= DOWN_DEPRESSED;
+		}
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_QUIT:
@@ -693,27 +728,19 @@ int main(int argv, char **args) {
 #endif
 				case SDL_CONTROLLERBUTTONDOWN:
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-						keyInputs |= INPUT_UP;
-						heldButtons |= INPUT_UP;
-						cheatCounter = 0;
+						dirInputs |= UP_PRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-						keyInputs |= INPUT_DOWN;
-						heldButtons |= INPUT_DOWN;
-						cheatCounter = 0;
+						dirInputs |= DOWN_PRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-						keyInputs |= INPUT_LEFT;
-						heldButtons |= INPUT_LEFT;
-						cheatCounter = 0;
+						dirInputs |= LEFT_PRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-						keyInputs |= INPUT_RIGHT;
-						heldButtons |= INPUT_RIGHT;
-						cheatCounter = 0;
+						dirInputs |= RIGHT_PRESSED;
 						break;
 					}
 #if defined(WII_U) || defined(SWITCH)
@@ -770,19 +797,19 @@ int main(int argv, char **args) {
 					break;
 				case SDL_CONTROLLERBUTTONUP:
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-						heldButtons &= !INPUT_UP;
+						dirInputs |= UP_DEPRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-						heldButtons &= !INPUT_DOWN;
+						dirInputs |= DOWN_DEPRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-						heldButtons &= !INPUT_LEFT;
+						dirInputs |= LEFT_DEPRESSED;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-						heldButtons &= !INPUT_RIGHT;
+						dirInputs |= RIGHT_DEPRESSED;
 						break;
 					}
 					break;
@@ -810,6 +837,10 @@ int main(int argv, char **args) {
 					break;
 			}
 		}
+		DIR_HANDLER(UP_PRESSED, UP_DEPRESSED, INPUT_UP);
+		DIR_HANDLER(DOWN_PRESSED, DOWN_DEPRESSED, INPUT_DOWN);
+		DIR_HANDLER(LEFT_PRESSED, LEFT_DEPRESSED, INPUT_LEFT);
+		DIR_HANDLER(RIGHT_PRESSED, RIGHT_DEPRESSED, INPUT_RIGHT);
 		if (timer_buttonHold > 0.5) {
 			timer_buttonHold_repeater += deltaTime;
 			if (timer_buttonHold_repeater >= 0.033) {
@@ -1657,6 +1688,8 @@ int main(int argv, char **args) {
 		}
 
 		/* Miscellaneous */
+		controllerAxis_leftStickX_last = controllerAxis_leftStickX;
+		controllerAxis_leftStickY_last = controllerAxis_leftStickY;
 		mouseInput_x_last = mouseInput_x;
 		mouseInput_y_last = mouseInput_y;
 

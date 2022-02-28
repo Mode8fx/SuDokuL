@@ -25,4 +25,24 @@
 #define INPUT_NUM_9       (1 << 29)
 #define INPUT_FULLSCREEN  (1 << 30)
 
+#define STICK_DEADZONE  13107 // (32767 * 0.4)
+
+#define LEFT_PRESSED    (1 << 0)
+#define LEFT_DEPRESSED  (1 << 1)
+#define RIGHT_PRESSED   (1 << 2)
+#define RIGHT_DEPRESSED (1 << 3)
+#define UP_PRESSED      (1 << 4)
+#define UP_DEPRESSED    (1 << 5)
+#define DOWN_PRESSED    (1 << 6)
+#define DOWN_DEPRESSED  (1 << 7)
+
+#define DIR_HANDLER(pressedVal, depressedVal, inputVal)  \
+	if (dirInputs & pressedVal) {                        \
+		keyInputs |= inputVal;                           \
+		heldButtons |= inputVal;                         \
+		cheatCounter = 0;                                \
+	} else if (dirInputs & depressedVal) {               \
+		heldButtons &= ~inputVal;                        \
+	}
+
 #endif
