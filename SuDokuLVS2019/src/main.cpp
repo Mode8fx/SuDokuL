@@ -214,18 +214,6 @@ int main(int argv, char **args) {
 
 	/* Get settings from settings.bin */
 	LOAD_SETTINGS_FILE();
-	gameWidth = videoSettings.widthSetting;
-	gameHeight = videoSettings.heightSetting;
-
-	INIT_STARTING_WIDTH_HEIGHT_MULTS();
-	INIT_STARTING_SHARED_VARIABLES();
-	INIT_STARTING_TEXT_VARIABLES();
-	SET_BG_SCROLL_SPEED();
-
-	/* Set Window/Renderer */
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, 0);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
 	/* Set Video Settings */
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
@@ -245,6 +233,17 @@ int main(int argv, char **args) {
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
 			break;
 	}
+	gameWidth = videoSettings.widthSetting;
+	gameHeight = videoSettings.heightSetting;
+
+	INIT_STARTING_WIDTH_HEIGHT_MULTS();
+	INIT_STARTING_SHARED_VARIABLES();
+	INIT_STARTING_TEXT_VARIABLES();
+	SET_BG_SCROLL_SPEED();
+
+	/* Set Window/Renderer */
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -541,6 +540,7 @@ int main(int argv, char **args) {
 	programState = 0;
 	isRunning = true;
 #if defined(WII_U) || defined(VITA) || defined(SWITCH)
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	isWindowed = false;
 #else
 	isWindowed = true;
