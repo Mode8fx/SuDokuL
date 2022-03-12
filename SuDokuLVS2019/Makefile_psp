@@ -1,8 +1,10 @@
+PSP_LARGE_MEMORY=1
+
 TARGET = sudokul
-OBJS = main.o
+OBJS = main.o puzzleBank.o sudokuGen.o
 
 INCDIR =
-CFLAGS = -G0 -Wall -Wextra -Werror -DPSP
+CFLAGS = -G0 -Wall -DPSP
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
@@ -13,7 +15,7 @@ LIBS = -lSDL2_image -lpng -ljpeg -lSDL2_Mixer -lstdc++ -lSDL2_ttf -lSDL2 -lGL -l
          -lpspnet_adhocmatching -lpspnet_adhoc -lpspnet_adhocctl -lm -lpspvram
 
 EXTRA_TARGETS = EBOOT.PBP
-PSP_EBOOT_TITLE = SuDokuL
+PSP_EBOOT_TITLE = sudokul
 PSP_EBOOT_ICON=icon.png
 PSP_EBOOT_PIC1=pic.png
 # psp sound file: PSP_EBOOT_SND0=SND0.at3

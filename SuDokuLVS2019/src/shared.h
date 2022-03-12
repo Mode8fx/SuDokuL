@@ -172,6 +172,8 @@ extern Uint16 gameHeight;
 
 #if defined(VITA)
 #define SETTINGS_FILE "ux0:data/SuDokuL/settings.bin"
+#elif defined(PSP)
+#define SETTINGS_FILE "ms0:/PSP/GAME/sudokul/settings.bin"
 #else
 #define SETTINGS_FILE "settings.bin"
 #endif

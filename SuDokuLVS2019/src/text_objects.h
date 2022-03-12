@@ -81,10 +81,10 @@
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (FONT_SIZE * 3))
 
 struct TextRect {
-    Sint16 x = 0;
-    Sint16 y = 0;
-    Sint16 w = 0;
-    Sint16 h = 0;
+    Sint16 x;
+    Sint16 y;
+    Sint16 w;
+    Sint16 h;
 };
 
 /* Single Characters */
@@ -108,6 +108,12 @@ struct TextObjectAnimated {
     Sint16 startPos_x, endPos_x;
     Sint16 startPos_y, endPos_y;
 };
+
+#define INIT_TEXT_OBJECT_VALS(textObj) \
+    textObj.rect.x = 0;                \
+    textObj.rect.y = 0;                \
+    textObj.rect.w = 0;                \
+    textObj.rect.h = 0;
 
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]
 
@@ -257,14 +263,17 @@ struct TextObjectAnimated {
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
     TextObject textObj;                                    \
+    INIT_TEXT_OBJECT_VALS(textObj);                        \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
     TextObject textObj;                                          \
+    INIT_TEXT_OBJECT_VALS(textObj);                              \
     SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y) \
     TextObjectAnimated textObj;                                     \
+    INIT_TEXT_OBJECT_VALS(textObj);                                 \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);      \
     INIT_MENU_OPTION_POSITIONS(textObj);
 

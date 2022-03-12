@@ -25,7 +25,11 @@ SDL_Rect divider;
 SDL_RWops *settingsFile;
 
 /* SDL Controller */
+#if defined(PSP)
+SDL_GameController *controller = NULL;
+#else
 SDL_GameController *controller = nullptr;
+#endif
 
 /* Window Width and Height */
 Uint16 gameWidth = 640;
@@ -218,7 +222,10 @@ int main(int argv, char **args) {
 	chdir("/switch/SuDokuL");
 #endif
 
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+		return 1;
+	}
 	TTF_Init();
 
 	/* Get settings from settings.bin */
@@ -260,6 +267,8 @@ int main(int argv, char **args) {
 	}
 #if defined(VITA)
 	sfx = Mix_LoadWAV("ux0:data/SuDokuL/sfx/coin1.wav");
+#elif defined(PSP)
+	sfx = Mix_LoadWAV("ms0:/PSP/GAME/sudokul/sfx/coin1.wav");
 #else
 	sfx = Mix_LoadWAV("sfx/coin1.wav");
 #endif
@@ -315,6 +324,40 @@ int main(int argv, char **args) {
 	PREPARE_SPRITE(miniGrid_bottom_right, "ux0:data/SuDokuL/graphics/grid_mini_bottom_right.png", 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_left, "ux0:data/SuDokuL/graphics/grid_mini_top_left.png", 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_right, "ux0:data/SuDokuL/graphics/grid_mini_top_right.png", 0, 0, 1);
+#elif defined(PSP)
+	PREPARE_SPRITE(tile, "ms0:/PSP/GAME/sudokul/graphics/tile.png", 0, 0, 1);
+	SET_SPRITE_SCALE_TILE();
+	if (gameHeight < 720) {
+		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_480.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
+	} else if (gameHeight < 1080) {
+		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_720.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
+	} else if (gameHeight < 1440) {
+		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_1080.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
+	} else if (gameHeight < 2160) {
+		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_1440.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
+	} else {
+		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_2160.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
+	}
+	logo.startPos_y = logo.rect.y;
+	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
+	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
+	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
+	PREPARE_SPRITE(menuCursor, "ms0:/PSP/GAME/sudokul/graphics/menu_cursor.png", 0, 0, 1);
+	PREPARE_SPRITE(game_grid, "ms0:/PSP/GAME/sudokul/graphics/grid_384.png", GRID_POS_X, GRID_POS_Y, 1);
+	PREPARE_SPRITE(gridCursor_bottom_left, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_bottom_left.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
+	PREPARE_SPRITE(gridCursor_bottom_right, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_bottom_right.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
+	PREPARE_SPRITE(gridCursor_top_left, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_top_left.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
+	PREPARE_SPRITE(gridCursor_top_right, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_top_right.png", 0, 0, 1);
+	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
+	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
+	PREPARE_SPRITE(game_sidebar_small, "ms0:/PSP/GAME/sudokul/graphics/sidebar_small.png", SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
+	PREPARE_SPRITE(miniGrid_bottom_left, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_bottom_left.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_bottom_right, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_bottom_right.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_left, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_top_left.png", 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_right, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_top_right.png", 0, 0, 1);
 #else
 	PREPARE_SPRITE(tile, "graphics/tile.png", 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
@@ -373,6 +416,11 @@ int main(int argv, char **args) {
 	pixelFont_large = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
 	pixelFont_grid_mini = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
+#elif defined(PSP)
+	pixelFont = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
+	pixelFont_large = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
+	pixelFont_grid = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
+	pixelFont_grid_mini = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
 #else
 	pixelFont = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
 	pixelFont_large = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
