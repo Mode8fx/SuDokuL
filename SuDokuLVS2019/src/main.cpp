@@ -57,6 +57,15 @@ const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[6]  = {  720, 1152, 1280, 1440, 1600
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[6] = {  480,  720,  800,  900, 1024, 1050 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 1280 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = {  548 };
+#elif defined(PSP)
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[2] = { 320, 362 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[2] = { 240, 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[2] = { 426, 480 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[2] = { 240, 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1] = { 435 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 480 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 205 };
 #else
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
@@ -415,7 +424,7 @@ int main(int argv, char **args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), FONT_SIZE * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), FONT_SIZE * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA)
+#if defined(WII_U) || defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -447,7 +456,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_SIDEBAR(text_Game_Hard),   TEXT_GAME_HARD_Y);
 	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_SIDEBAR(text_Game_VHard),  TEXT_GAME_VHARD_Y);
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
-#if defined(WII_U) || defined(VITA)
+#if defined(WII_U) || defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE("Press -",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
@@ -467,7 +476,7 @@ int main(int argv, char **args) {
 	/* Controls Menu */
 	SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X,                 TEXT_CONTROLLER_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
-#if defined(VITA)
+#if defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("X - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("O - Back", text_B_Back, OBJ_TO_SCREEN_AT_FRACTION(text_B_Back, 0.75), TEXT_B_BACK_Y);
 	SET_TEXT_WITH_OUTLINE("O - Confirm", text_B_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
@@ -497,6 +506,14 @@ int main(int argv, char **args) {
 		warningString = "! 960x544 (16:9) is recommended !";
 	}
 	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
+#elif defined(PSP)
+	string warningString;
+	if (gameWidth == 480 && gameHeight == 272) {
+		warningString = "! Changing these is not recommended !";
+	} else {
+		warningString = "! 480x272 (16:9) is recommended !";
+	}
+	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #else
 	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #endif
@@ -505,7 +522,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE("Fullscreen",       text_Fullscreen,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_FULLSCREEN_Y);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("UNUSED", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
 	SET_TEXT_WITH_OUTLINE("UNUSED", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
 #else
@@ -539,7 +556,7 @@ int main(int argv, char **args) {
 	menuCursorIndex_background = 0;
 	programState = 0;
 	isRunning = true;
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	isWindowed = false;
 #else
@@ -705,7 +722,7 @@ int main(int argv, char **args) {
 						keyInputs |= INPUT_FULLSCREEN;
 						break;
 					}
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -813,6 +830,7 @@ int main(int argv, char **args) {
 						break;
 					}
 					break;
+#if !defined(PSP)
 				case SDL_FINGERDOWN:
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
@@ -833,6 +851,7 @@ int main(int argv, char **args) {
 						justClickedInMiniGrid = false;
 					}
 					break;
+#endif
 				default:
 					break;
 			}
@@ -938,22 +957,18 @@ int main(int argv, char **args) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_main) {
 						case 0:
-							// programState = 4;
 							programState = 7;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_play);
 							break;
 						case 1:
-							// programState = 5;
 							programState = 12;
 							menuIndex_controls = 0;
 							break;
 						case 2:
-							// programState = 6;
 							programState = 13;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);
 							break;
 						case 3:
-							// programState = 7;
 							programState = 18;
 							menuIndex_credits = 0;
 							break;
@@ -1155,7 +1170,7 @@ int main(int argv, char **args) {
 			case 12:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 3) {
@@ -1172,7 +1187,7 @@ int main(int argv, char **args) {
 					case 1:
 						RENDER_CONTROLS_TEXT_PAGE_2();
 						break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP)
 					case 2:
 						RENDER_CONTROLS_TEXT_PAGE_3();
 						break;
@@ -1205,22 +1220,18 @@ int main(int argv, char **args) {
 							UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
 							break;
 						case 1:
-							// programState = 14;
 							programState = 20;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
 							break;
 						case 2:
-							// programState = 15;
 							programState = 22;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
 							break;
 						case 3:
-							// programState = 16;
 							programState = 24;
 							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
 							break;
 						case 4:
-							// programState = 17;
 							programState = 26;
 							break;
 						default:

@@ -84,7 +84,14 @@ extern Uint16 gameHeight;
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 	};                                                                                                                           \
+	INIT_NUM_OFFSET();
+
+#if defined(VITA)
+#define INIT_NUM_OFFSET() \
 	const Sint8 numOffset = (gameHeight % 240 != 0);
+#else
+#define INIT_NUM_OFFSET()
+#endif
 
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
@@ -102,6 +109,11 @@ extern Uint16 gameHeight;
 #define DEFAULT_WIDTH         1920
 #define DEFAULT_HEIGHT        1080
 #define DEFAULT_RI            7
+#define DEFAULT_ARI           1
+#elif defined(PSP)
+#define DEFAULT_WIDTH         480
+#define DEFAULT_HEIGHT        272
+#define DEFAULT_RI            0
 #define DEFAULT_ARI           1
 #else
 #define DEFAULT_WIDTH         640
@@ -212,7 +224,7 @@ extern Uint16 gameHeight;
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,                                             \
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 #define SDL_TOGGLE_FULLSCREEN()
 #else
 #define SDL_TOGGLE_FULLSCREEN()                                 \

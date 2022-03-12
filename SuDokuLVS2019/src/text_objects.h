@@ -16,7 +16,6 @@
     const Uint16 text_videoWarning_Y = (TEXT_PRESS_START_Y + (FONT_SIZE * 5));                         \
     const Uint16 text_midScreen_Y = ((gameHeight - FONT_SIZE) / 2);                                    \
     const Uint16 text_quitToMenu_Y = (TEXT_PAUSED_Y + (FONT_SIZE * 2.5));                              \
-    const Uint16 text_youWin_Y = ((game_grid.rect.y + game_grid.rect.h + gameHeight - FONT_SIZE) / 2); \
     const Uint16 deepMenuCursorPosition_X = (gameWidth / 6);                                           \
     const Uint16 videoMenuNumPosition_X = (gameWidth * 3 / 5);                                         \
     const Uint16 backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
@@ -279,7 +278,7 @@ struct TextObjectAnimated {
     textObj.rect.x = pos_x;                                                                    \
     textObj.rect.y = pos_y;
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else
@@ -474,7 +473,7 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) - CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
-#elif defined(VITA)
+#elif defined(VITA) || defined(PSP)
 #define CONTROLS_STEP 1.89
 #define SET_CONTROLS_TEXT()                                                                                                                                                     \
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
@@ -587,7 +586,7 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("(4/4)",                          text_Controls_c_P2,  (gameWidth - (text_Controls_c_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_c_P2.rect.h * 1.5)));
 #endif
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 #define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)
 #else
 #define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)                             \
@@ -636,7 +635,7 @@ struct TextObjectAnimated {
 	RENDER_TEXT(text_Controls_12c);                                 \
 	RENDER_TEXT(text_Controls_P2);
 
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP)
 #define RENDER_CONTROLS_TEXT_PAGE_3()                             \
 	RENDER_TEXT_LARGE(text_Controls_c_1);                         \
 	RENDER_TEXT(text_Controls_c_2a);                              \
@@ -722,7 +721,7 @@ struct TextObjectAnimated {
 
 #if defined(WII_U) || defined(SWITCH)
 #define CHEAT_TEXT "press X or Y 10 times"
-#elif defined(VITA)
+#elif defined(VITA) || defined(PSP)
 #define CHEAT_TEXT "press Square or Triangle 10 times"
 #else
 #define CHEAT_TEXT "press the Period key 10 times"
