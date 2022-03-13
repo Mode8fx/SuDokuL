@@ -11,6 +11,43 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 
+#if defined(PSP)
+/* Define the module info section */
+PSP_MODULE_INFO("SUDOKUL", 0, 1, 1);
+
+/* Define the main thread's attribute value (optional) */
+//PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
+
+/* Exit callback */
+int exit_callback(int arg1, int arg2, void *common) {
+	return 0;
+}
+
+/* Callback thread */
+int CallbackThread(SceSize args, void *argp) {
+	int cbid;
+
+	cbid = sceKernelCreateCallback("Exit Callback", exit_callback, NULL);
+	sceKernelRegisterExitCallback(cbid);
+	sceKernelSleepThreadCB();
+
+	return 0;
+}
+
+/* Sets up the callback thread and returns its thread id */
+int SetupCallbacks(void) {
+	int thid = 0;
+
+	thid = sceKernelCreateThread("update_thread", CallbackThread,
+		0x11, 0xFA0, 0, 0);
+	if (thid >= 0) {
+		sceKernelStartThread(thid, 0, 0);
+	}
+
+	return thid;
+}
+#endif
+
 /* SDL Window */
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -222,11 +259,18 @@ int main(int argv, char **args) {
 	chdir("/switch/SuDokuL");
 #endif
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+#if defined(PSP)
+	pspDebugScreenInit();
+	SetupCallbacks();
+#endif
+
+	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS) != 0) {
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return 1;
 	}
 	TTF_Init();
+
+	INIT_DEFAULT_BG_SCALE();
 
 	/* Get settings from settings.bin */
 	LOAD_SETTINGS_FILE();
@@ -1379,6 +1423,7 @@ int main(int argv, char **args) {
 								// isRunning = false;
 								// End the program here; otherwise, text and sprites will be resized and look weird for one frame before closing
 								SDL_DESTROY_ALL();
+								SYSTEM_SPECIFIC_CLOSE();
 								return 0;
 							}
 							break;
@@ -1673,6 +1718,7 @@ int main(int argv, char **args) {
 	}
 
 	SDL_DESTROY_ALL();
+	SYSTEM_SPECIFIC_CLOSE();
 
 	return 0;
 }

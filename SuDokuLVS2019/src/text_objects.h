@@ -259,7 +259,7 @@ struct TextObjectAnimated {
     textObj.surface = TTF_RenderText_Solid(font, text, text_color);                                    \
     textObj.texture = SDL_CreateTextureFromSurface(renderer, textObj.surface);                         \
     TTF_SizeText(font, text, &textObj.rect.w, &textObj.rect.h);                                        \
-    TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));                 \
+    SET_FONT_OUTLINE(font, textObj);                                                                   \
     textObj.outline_surface = TTF_RenderText_Solid(font, text, outline_color);                         \
     textObj.outline_texture = SDL_CreateTextureFromSurface(renderer, textObj.outline_surface);         \
     TTF_SizeText(font, text, &textObj.outline_rect.w, &textObj.outline_rect.h);                        \
@@ -268,6 +268,14 @@ struct TextObjectAnimated {
     SDL_FreeSurface(textObj.outline_surface);
     //SET_TEXT_POS_X(textObj, 0, charArray[charNum].outlineOffset_x);
     //SET_TEXT_POS_Y(textObj, 0, charArray[charNum].outlineOffset_y);
+
+#if defined(PSP)
+#define SET_FONT_OUTLINE(font, textObj) \
+    TTF_SetFontOutline(font, 0);
+#else
+#define SET_FONT_OUTLINE(font, textObj) \
+    TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
+#endif
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
     TextObject textObj;                                    \

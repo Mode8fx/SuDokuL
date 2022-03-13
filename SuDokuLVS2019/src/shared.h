@@ -43,6 +43,10 @@ struct Timer {
 extern Uint16 gameWidth;
 extern Uint16 gameHeight;
 
+#define INIT_DEFAULT_BG_SCALE()                                \
+	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480)); \
+	const Uint16 defaultBGScale = max((Uint16)(uint_i), (Uint16)1);
+
 #define INIT_STARTING_WIDTH_HEIGHT_MULTS()              \
 	const double gameWidthMult = (gameWidth / 640.0);   \
 	const double gameHeightMult = (gameHeight / 480.0); \
@@ -121,7 +125,7 @@ extern Uint16 gameHeight;
 #define DEFAULT_RI            1
 #define DEFAULT_ARI           0
 #endif
-#define DEFAULT_BG_SCALE      (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480))
+#define DEFAULT_BG_SCALE      (defaultBGScale)
 
 // the grid is a square; these sizes represent both X and Y dimensions
 #define GRID_SIZE_A           (gridSizeA) // length of 1/3 of a cell (one mini-cell)
@@ -238,7 +242,7 @@ extern Uint16 gameHeight;
 #endif
 
 #define SDL_DESTROY_ALL()                                \
-	/* Destroy Everything and Quit Game */               \
+	/* Destroy Everything */                             \
 	/* Textures */                                       \
 	SDL_DestroyTexture(tile.texture);                    \
 	SDL_DestroyTexture(logo.texture);                    \
@@ -278,13 +282,14 @@ extern Uint16 gameHeight;
 	/* Renderer and Window */                            \
 	SDL_DestroyRenderer(renderer);                       \
 	SDL_DestroyWindow(window);                           \
-	SDL_Quit();                                          \
-	SYSTEM_SPECIFIC_CLOSE();
+	SDL_Quit();
 
 #if defined(WII_U)
 #define SYSTEM_SPECIFIC_CLOSE() WHBUnmountSdCard();
 #elif defined(VITA)
 #define SYSTEM_SPECIFIC_CLOSE() sceKernelExitProcess(0);
+#elif defined(PSP)
+#define SYSTEM_SPECIFIC_CLOSE() sceKernelExitGame();
 #else
 #define SYSTEM_SPECIFIC_CLOSE()
 #endif

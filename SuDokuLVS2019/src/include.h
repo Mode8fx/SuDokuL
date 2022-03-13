@@ -29,6 +29,10 @@
 #include <psp2/kernel/processmgr.h>
 #elif defined(SWITCH)
 #include <switch.h>
+#elif defined(PSP)
+#include <pspkernel.h>
+#include <pspdebug.h>
+#include <pspctrl.h>
 #endif
 
 using namespace std;
