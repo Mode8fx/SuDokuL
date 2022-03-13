@@ -3,6 +3,14 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
+#if defined(VITA)
+#define FONT_COMMODORE "ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf"
+#elif defined(PSP)
+#define FONT_COMMODORE "ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf"
+#else
+#define FONT_COMMODORE "fonts/Commodore Pixelized v1.2.ttf"
+#endif
+
 #define INIT_STARTING_TEXT_VARIABLES()                                                                 \
 	const Uint16 fontSize = (max(gameHeight / 24, 8));                                                 \
     const Uint16 gridNumSize = (GRID_SIZE_A * 3);                                                      \

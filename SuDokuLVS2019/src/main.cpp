@@ -265,13 +265,7 @@ int main(int argv, char **args) {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		PRINT(Mix_GetError());
 	}
-#if defined(VITA)
-	sfx = Mix_LoadWAV("ux0:data/SuDokuL/sfx/coin1.wav");
-#elif defined(PSP)
-	sfx = Mix_LoadWAV("ms0:/PSP/GAME/sudokul/sfx/coin1.wav");
-#else
-	sfx = Mix_LoadWAV("sfx/coin1.wav");
-#endif
+	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 
@@ -290,109 +284,39 @@ int main(int argv, char **args) {
 	//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
 
 	/* Set Textures */
-#if defined(VITA)
-	PREPARE_SPRITE(tile, "ux0:data/SuDokuL/graphics/tile.png", 0, 0, 1);
+	PREPARE_SPRITE(tile, SPRITE_PATH_TILE, 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
 	if (gameHeight < 720) {
-		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_480.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_480, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
 	} else if (gameHeight < 1080) {
-		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_720.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_720, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
 	} else if (gameHeight < 1440) {
-		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_1080.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_1080, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
 	} else if (gameHeight < 2160) {
-		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_1440.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_1440, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
 	} else {
-		PREPARE_SPRITE(logo, "ux0:data/SuDokuL/graphics/logo_2160.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_2160, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
 	}
 	logo.startPos_y = logo.rect.y;
 	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	PREPARE_SPRITE(menuCursor, "ux0:data/SuDokuL/graphics/menu_cursor.png", 0, 0, 1);
-	PREPARE_SPRITE(game_grid, "ux0:data/SuDokuL/graphics/grid_384.png", GRID_POS_X, GRID_POS_Y, 1);
-	PREPARE_SPRITE(gridCursor_bottom_left, "ux0:data/SuDokuL/graphics/grid_cursor_bottom_left.png", 0, 0, 1);
+	PREPARE_SPRITE(menuCursor, SPRITE_PATH_MENU_CURSOR, 0, 0, 1);
+	PREPARE_SPRITE(game_grid, SPRITE_PATH_GRID_384, GRID_POS_X, GRID_POS_Y, 1);
+	PREPARE_SPRITE(gridCursor_bottom_left, SPRITE_PATH_GRID_CURSOR_BOTTOM_LEFT, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
-	PREPARE_SPRITE(gridCursor_bottom_right, "ux0:data/SuDokuL/graphics/grid_cursor_bottom_right.png", 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_bottom_right, SPRITE_PATH_GRID_CURSOR_BOTTOM_RIGHT, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
-	PREPARE_SPRITE(gridCursor_top_left, "ux0:data/SuDokuL/graphics/grid_cursor_top_left.png", 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_top_left, SPRITE_PATH_GRID_CURSOR_TOP_LEFT, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
-	PREPARE_SPRITE(gridCursor_top_right, "ux0:data/SuDokuL/graphics/grid_cursor_top_right.png", 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_top_right, SPRITE_PATH_GRID_CURSOR_TOP_RIGHT, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
 	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	PREPARE_SPRITE(game_sidebar_small, "ux0:data/SuDokuL/graphics/sidebar_small.png", SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
-	PREPARE_SPRITE(miniGrid_bottom_left, "ux0:data/SuDokuL/graphics/grid_mini_bottom_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_bottom_right, "ux0:data/SuDokuL/graphics/grid_mini_bottom_right.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_left, "ux0:data/SuDokuL/graphics/grid_mini_top_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_right, "ux0:data/SuDokuL/graphics/grid_mini_top_right.png", 0, 0, 1);
-#elif defined(PSP)
-	PREPARE_SPRITE(tile, "ms0:/PSP/GAME/sudokul/graphics/tile.png", 0, 0, 1);
-	SET_SPRITE_SCALE_TILE();
-	if (gameHeight < 720) {
-		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_480.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
-	} else if (gameHeight < 1080) {
-		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_720.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
-	} else if (gameHeight < 1440) {
-		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_1080.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
-	} else if (gameHeight < 2160) {
-		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_1440.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
-	} else {
-		PREPARE_SPRITE(logo, "ms0:/PSP/GAME/sudokul/graphics/logo_2160.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
-	}
-	logo.startPos_y = logo.rect.y;
-	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
-	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
-	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	PREPARE_SPRITE(menuCursor, "ms0:/PSP/GAME/sudokul/graphics/menu_cursor.png", 0, 0, 1);
-	PREPARE_SPRITE(game_grid, "ms0:/PSP/GAME/sudokul/graphics/grid_384.png", GRID_POS_X, GRID_POS_Y, 1);
-	PREPARE_SPRITE(gridCursor_bottom_left, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_bottom_left.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
-	PREPARE_SPRITE(gridCursor_bottom_right, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_bottom_right.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
-	PREPARE_SPRITE(gridCursor_top_left, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_top_left.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
-	PREPARE_SPRITE(gridCursor_top_right, "ms0:/PSP/GAME/sudokul/graphics/grid_cursor_top_right.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
-	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	PREPARE_SPRITE(game_sidebar_small, "ms0:/PSP/GAME/sudokul/graphics/sidebar_small.png", SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
-	PREPARE_SPRITE(miniGrid_bottom_left, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_bottom_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_bottom_right, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_bottom_right.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_left, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_top_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_right, "ms0:/PSP/GAME/sudokul/graphics/grid_mini_top_right.png", 0, 0, 1);
-#else
-	PREPARE_SPRITE(tile, "graphics/tile.png", 0, 0, 1);
-	SET_SPRITE_SCALE_TILE();
-	if (gameHeight < 720) {
-		PREPARE_SPRITE(logo, "graphics/logo_480.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
-	} else if (gameHeight < 1080) {
-		PREPARE_SPRITE(logo, "graphics/logo_720.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
-	} else if (gameHeight < 1440) {
-		PREPARE_SPRITE(logo, "graphics/logo_1080.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
-	} else if (gameHeight < 2160) {
-		PREPARE_SPRITE(logo, "graphics/logo_1440.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
-	} else {
-		PREPARE_SPRITE(logo, "graphics/logo_2160.png", (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
-	}
-	logo.startPos_y = logo.rect.y;
-	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
-	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
-	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	PREPARE_SPRITE(menuCursor, "graphics/menu_cursor.png", 0, 0, 1);
-	PREPARE_SPRITE(game_grid, "graphics/grid_384.png", GRID_POS_X, GRID_POS_Y, 1);
-	PREPARE_SPRITE(gridCursor_bottom_left, "graphics/grid_cursor_bottom_left.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
-	PREPARE_SPRITE(gridCursor_bottom_right, "graphics/grid_cursor_bottom_right.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
-	PREPARE_SPRITE(gridCursor_top_left, "graphics/grid_cursor_top_left.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
-	PREPARE_SPRITE(gridCursor_top_right, "graphics/grid_cursor_top_right.png", 0, 0, 1);
-	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
-	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	PREPARE_SPRITE(game_sidebar_small, "graphics/sidebar_small.png", SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
-	PREPARE_SPRITE(miniGrid_bottom_left, "graphics/grid_mini_bottom_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_bottom_right, "graphics/grid_mini_bottom_right.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_left, "graphics/grid_mini_top_left.png", 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_right, "graphics/grid_mini_top_right.png", 0, 0, 1);
-#endif
+	PREPARE_SPRITE(game_sidebar_small, SPRITE_PATH_SIDEBAR_SMALL, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
+	PREPARE_SPRITE(miniGrid_bottom_left, SPRITE_PATH_GRID_MINI_BOTTOM_LEFT, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_bottom_right, SPRITE_PATH_GRID_MINI_BOTTOM_RIGHT, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_left, SPRITE_PATH_GRID_MINI_TOP_LEFT, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_right, SPRITE_PATH_GRID_MINI_TOP_RIGHT, 0, 0, 1);
 
 	/* Set Rectangles */
 	// The larger the difference between the display resolution and game resolution, the larger the right and bottom rectangles need to be... I think
@@ -411,22 +335,10 @@ int main(int argv, char **args) {
 
 	/* Set Text */
 	/* General - Fonts */
-#if defined(VITA)
-	pixelFont = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
-	pixelFont_large = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
-	pixelFont_grid = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
-	pixelFont_grid_mini = TTF_OpenFont("ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
-#elif defined(PSP)
-	pixelFont = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
-	pixelFont_large = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
-	pixelFont_grid = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
-	pixelFont_grid_mini = TTF_OpenFont("ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
-#else
-	pixelFont = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE);
-	pixelFont_large = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", FONT_SIZE * 1.5);
-	pixelFont_grid = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", GRID_NUM_SIZE);
-	pixelFont_grid_mini = TTF_OpenFont("fonts/Commodore Pixelized v1.2.ttf", (int)GRID_SIZE_A);
-#endif
+	pixelFont = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE);
+	pixelFont_large = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE * 1.5);
+	pixelFont_grid = TTF_OpenFont(FONT_COMMODORE, GRID_NUM_SIZE);
+	pixelFont_grid_mini = TTF_OpenFont(FONT_COMMODORE, (int)GRID_SIZE_A);
 	/* General */
 	for (int_i = 32; int_i < LEN(textChars); int_i++) {
 		ss.str(std::string());
