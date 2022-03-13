@@ -63,7 +63,7 @@ SDL_RWops *settingsFile;
 
 /* SDL Controller */
 #if defined(PSP)
-SDL_GameController *controller = NULL;
+SDL_Joystick *controller = NULL;
 #else
 SDL_GameController *controller = nullptr;
 #endif
@@ -120,8 +120,8 @@ const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[4]  = {  548, 1080, 1440, 2160 };
 VideoSettings videoSettings;
 
 /* Sound */
-Mix_Music* bgm;
-Mix_Chunk* sfx;
+Mix_Music *bgm;
+Mix_Chunk *sfx;
 SoundSettings soundSettings;
 
 /* Keyboard State */
@@ -223,7 +223,7 @@ Sint16 controllerAxis_leftStickX_last;
 Sint16 controllerAxis_leftStickY;
 Sint16 controllerAxis_leftStickY_last;
 Uint32 keyInputs;
-Uint8 dirInputs;
+Uint8  dirInputs;
 Sint32 mouseInput_x;
 Sint32 mouseInput_x_last;
 Sint32 mouseInput_y;
@@ -264,7 +264,11 @@ int main(int argv, char **args) {
 	SetupCallbacks();
 #endif
 
+#if defined(PSP)
+	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_EVENTS) != 0) {
+#else
 	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS) != 0) {
+#endif
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return 1;
 	}
@@ -307,19 +311,24 @@ int main(int argv, char **args) {
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-		PRINT(Mix_GetError());
+		SDL_Log(Mix_GetError());
 	}
 	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 
 	/* Controller */
+#if !defined(PSP)
 	for (i = 0; i < SDL_NumJoysticks(); i++) {
 		if (SDL_IsGameController(i)) {
 			controller = SDL_GameControllerOpen(i);
 			break;
 		}
 	}
+#else
+	SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+	controller = SDL_JoystickOpen(0);
+#endif
 
 	/* Set Background Scrolling Variables */
 	//bgSettings.scrollDir = 22;
@@ -582,6 +591,7 @@ int main(int argv, char **args) {
 
 		keyInputs = 0;
 		dirInputs = 0;
+#if !defined(PSP)
 		/* Update Controller Axes */
 		controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
 		controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
@@ -592,26 +602,6 @@ int main(int argv, char **args) {
 			controllerAxis_leftStickY = 0;
 		}
 		/* Update Key Presses and Mouse Input */
-		if ((controllerAxis_leftStickX < 0) && !(controllerAxis_leftStickX_last < 0)) {
-			dirInputs |= LEFT_PRESSED;
-		} else if (!(controllerAxis_leftStickX < 0) && (controllerAxis_leftStickX_last < 0)) { // a little redundant, but easier to read
-			dirInputs |= LEFT_DEPRESSED;
-		}
-		if ((controllerAxis_leftStickX > 0) && !(controllerAxis_leftStickX_last > 0)) {
-			dirInputs |= RIGHT_PRESSED;
-		} else if (!(controllerAxis_leftStickX > 0) && (controllerAxis_leftStickX_last > 0)) {
-			dirInputs |= RIGHT_DEPRESSED;
-		}
-		if ((controllerAxis_leftStickY < 0) && !(controllerAxis_leftStickY_last < 0)) {
-			dirInputs |= UP_PRESSED;
-		} else if (!(controllerAxis_leftStickY < 0) && (controllerAxis_leftStickY_last < 0)) {
-			dirInputs |= UP_DEPRESSED;
-		}
-		if ((controllerAxis_leftStickY > 0) && !(controllerAxis_leftStickY_last > 0)) {
-			dirInputs |= DOWN_PRESSED;
-		} else if (!(controllerAxis_leftStickY > 0) && (controllerAxis_leftStickY_last > 0)) {
-			dirInputs |= DOWN_DEPRESSED;
-		}
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_QUIT:
@@ -726,7 +716,7 @@ int main(int argv, char **args) {
 						keyInputs |= INPUT_FULLSCREEN;
 						break;
 					}
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -834,7 +824,6 @@ int main(int argv, char **args) {
 						break;
 					}
 					break;
-#if !defined(PSP)
 				case SDL_FINGERDOWN:
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
@@ -855,10 +844,133 @@ int main(int argv, char **args) {
 						justClickedInMiniGrid = false;
 					}
 					break;
-#endif
 				default:
 					break;
 			}
+		}
+#else
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+				case SDL_JOYAXISMOTION:
+					if (event.jaxis.which == 0) {
+						if (event.jaxis.axis == 0) {
+							controllerAxis_leftStickX = event.jaxis.value;
+							if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+								controllerAxis_leftStickX = 0;
+							}
+						}
+						if (event.jaxis.axis == 1) {
+							controllerAxis_leftStickY = event.jaxis.value;
+							if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+								controllerAxis_leftStickY = 0;
+							}
+						}
+					}
+					break;
+				case SDL_JOYBUTTONDOWN:
+					if (event.jbutton.which == 0) {
+						if (event.jbutton.button == 8) { // Up
+							dirInputs |= UP_PRESSED;
+							break;
+						}
+						if (event.jbutton.button == 6) { // Down
+							dirInputs |= DOWN_PRESSED;
+							break;
+						}
+						if (event.jbutton.button == 7) { // Left
+							dirInputs |= LEFT_PRESSED;
+							break;
+						}
+						if (event.jbutton.button == 9) { // Right
+							dirInputs |= RIGHT_PRESSED;
+							break;
+						}
+						if (event.jbutton.button == 1) { // O
+							if (!controlSettings.swapConfirmAndBack) {
+								keyInputs |= INPUT_CONFIRM;
+							} else {
+								keyInputs |= INPUT_BACK;
+							}
+							cheatCounter = 0;
+							break;
+						}
+						if (event.jbutton.button == 2) { // X
+							if (!controlSettings.swapConfirmAndBack) {
+								keyInputs |= INPUT_BACK;
+							} else {
+								keyInputs |= INPUT_CONFIRM;
+							}
+							cheatCounter = 0;
+							break;
+						}
+						if (event.jbutton.button == 11) { // Start
+							keyInputs |= INPUT_START;
+							cheatCounter = 0;
+							break;
+						}
+						if (event.jbutton.button == 10) { // Select
+							keyInputs |= INPUT_SELECT;
+							cheatCounter = 0;
+							break;
+						}
+						if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
+							keyInputs |= INPUT_SWAP;
+							break;
+						}
+						if (event.jbutton.button == 4) { // L
+							keyInputs |= INPUT_PREV_TRACK;
+							cheatCounter = 0;
+							break;
+						}
+						if (event.jbutton.button == 5) { // R
+							keyInputs |= INPUT_NEXT_TRACK;
+							cheatCounter = 0;
+							break;
+						}
+					}
+					break;
+				case SDL_JOYBUTTONUP:
+					if (event.jbutton.button == 8) { // Up
+						dirInputs |= UP_DEPRESSED;
+						break;
+					}
+					if (event.jbutton.button == 6) { // Down
+						dirInputs |= DOWN_DEPRESSED;
+						break;
+					}
+					if (event.jbutton.button == 7) { // Left
+						dirInputs |= LEFT_DEPRESSED;
+						break;
+					}
+					if (event.jbutton.button == 9) { // Right
+						dirInputs |= RIGHT_DEPRESSED;
+						break;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+#endif
+		if ((controllerAxis_leftStickX < 0) && !(controllerAxis_leftStickX_last < 0)) {
+			dirInputs |= LEFT_PRESSED;
+		} else if (!(controllerAxis_leftStickX < 0) && (controllerAxis_leftStickX_last < 0)) { // a little redundant, but easier to read
+			dirInputs |= LEFT_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickX > 0) && !(controllerAxis_leftStickX_last > 0)) {
+			dirInputs |= RIGHT_PRESSED;
+		} else if (!(controllerAxis_leftStickX > 0) && (controllerAxis_leftStickX_last > 0)) {
+			dirInputs |= RIGHT_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickY < 0) && !(controllerAxis_leftStickY_last < 0)) {
+			dirInputs |= UP_PRESSED;
+		} else if (!(controllerAxis_leftStickY < 0) && (controllerAxis_leftStickY_last < 0)) {
+			dirInputs |= UP_DEPRESSED;
+		}
+		if ((controllerAxis_leftStickY > 0) && !(controllerAxis_leftStickY_last > 0)) {
+			dirInputs |= DOWN_PRESSED;
+		} else if (!(controllerAxis_leftStickY > 0) && (controllerAxis_leftStickY_last > 0)) {
+			dirInputs |= DOWN_DEPRESSED;
 		}
 		DIR_HANDLER(UP_PRESSED, UP_DEPRESSED, INPUT_UP);
 		DIR_HANDLER(DOWN_PRESSED, DOWN_DEPRESSED, INPUT_DOWN);

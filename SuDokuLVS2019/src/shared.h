@@ -117,7 +117,7 @@ extern Uint16 gameHeight;
 #elif defined(PSP)
 #define DEFAULT_WIDTH         480
 #define DEFAULT_HEIGHT        272
-#define DEFAULT_RI            0
+#define DEFAULT_RI            1
 #define DEFAULT_ARI           1
 #else
 #define DEFAULT_WIDTH         640
@@ -276,13 +276,20 @@ extern Uint16 gameHeight;
 	Mix_CloseAudio();                                    \
 	Mix_Quit();                                          \
 	/* Controller */                                     \
-	if (controller != NULL) {                            \
-		SDL_GameControllerClose(controller);             \
-	}                                                    \
+	CLOSE_CONTROLLER();                                  \
 	/* Renderer and Window */                            \
 	SDL_DestroyRenderer(renderer);                       \
 	SDL_DestroyWindow(window);                           \
 	SDL_Quit();
+
+#if defined(PSP)
+#define CLOSE_CONTROLLER() SDL_JoystickClose(controller);
+#else
+#define CLOSE_CONTROLLER()                   \
+	if (controller != NULL) {                \
+		SDL_GameControllerClose(controller); \
+	}
+#endif
 
 #if defined(WII_U)
 #define SYSTEM_SPECIFIC_CLOSE() WHBUnmountSdCard();
