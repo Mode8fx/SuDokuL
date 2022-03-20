@@ -1,5 +1,5 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL2. It's currently available for Switch, Wii U, Vita, and PC.
+This is a Sudoku game made in C++ and SDL2. It's currently available for Switch, Wii U, Vita, PC, and Android.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
@@ -38,6 +38,8 @@ Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I'v
 Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed.
 #### Switch
 Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
+#### Android
+Install Android Studio, then follow [this tutorial](https://discourse.libsdl.org/t/building-sdl2-0-10-in-android-studio-3-4-2-in-windows-10/26481).
 
 ## Credits
 Everything in this game is made by me except for the following assets:
@@ -76,3 +78,5 @@ Commodore Pixelized v1.2 by by Devin Cook
 - devkitpro
 - SDL2 for Switch
 - Make
+##### Android
+- Android Studio
