@@ -35,39 +35,47 @@
 
 #define PLAY_MUSIC_AT_INDEX(index)      \
 	soundSettings.musicIndex = index;   \
-	Mix_HaltMusic();                    \
-	Mix_FreeMusic(bgm);                 \
+	STOP_MUSIC(bgm);                    \
 	switch (soundSettings.musicIndex) { \
 		case 1:                         \
-			bgm = Mix_LoadMUS(MUSIC_1); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_1);        \
 			break;                      \
 		case 2:                         \
-			bgm = Mix_LoadMUS(MUSIC_2); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_2);        \
 			break;                      \
 		case 3:                         \
-			bgm = Mix_LoadMUS(MUSIC_3); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_3);        \
 			break;                      \
 		case 4:                         \
-			bgm = Mix_LoadMUS(MUSIC_4); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_4);        \
 			break;                      \
 		case 5:                         \
-			bgm = Mix_LoadMUS(MUSIC_5); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_5);        \
 			break;                      \
 		case 6:                         \
-			bgm = Mix_LoadMUS(MUSIC_6); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_6);        \
 			break;                      \
 		case 7:                         \
-			bgm = Mix_LoadMUS(MUSIC_7); \
-			Mix_PlayMusic(bgm, -1);     \
+			PLAY_MUSIC(MUSIC_7);        \
 			break;                      \
 		default:                        \
 			break;                      \
 	}
+
+#define STOP_MUSIC(bgm) \
+	Mix_HaltMusic();    \
+	Mix_FreeMusic(bgm);
+
+#if !defined(PSP)
+#define PLAY_MUSIC(musicPath)                                             \
+	bgm = Mix_LoadMUS(musicPath);                                         \
+	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
+	if (Mix_PlayMusic(bgm, -1) == NULL) SDL_Log("Failed to play music: %s", SDL_GetError());
+#else
+#define PLAY_MUSIC(musicPath)                                             \
+	bgm = Mix_LoadMUS(musicPath);                                         \
+	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
+	if (Mix_PlayMusic(bgm, 0) == NULL) SDL_Log("Failed to play music: %s", SDL_GetError());
+#endif
 
 #endif
