@@ -279,6 +279,7 @@ int main(int argv, char **args) {
 	/* Get settings from settings.bin */
 	LOAD_SETTINGS_FILE();
 	/* Set Video Settings */
+#if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_16_9)];
@@ -297,6 +298,13 @@ int main(int argv, char **args) {
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
 			break;
 	}
+#else
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	videoSettings.widthSetting = max(DM.w, DM.h);
+	videoSettings.heightSetting = min(DM.w, DM.h);
+	SDL_SetHint(SDL_HINT_ORIENTATIONS, "Landscape");
+#endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
 
@@ -311,7 +319,9 @@ int main(int argv, char **args) {
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+#if !defined(ANDROID)
 		SDL_Log(Mix_GetError());
+#endif
 	}
 	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
@@ -437,7 +447,7 @@ int main(int argv, char **args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), FONT_SIZE * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), FONT_SIZE * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(PSP) || defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -451,7 +461,9 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Controls", text_Controls,         OBJ_TO_MID_SCREEN_X(text_Controls),   TEXT_CONTROLS_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Options",  text_Options,          OBJ_TO_MID_SCREEN_X(text_Options),    TEXT_OPTIONS_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Credits",  text_Credits,          OBJ_TO_MID_SCREEN_X(text_Credits),    TEXT_CREDITS_Y + (gameWidth * 3 / 4));
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Quit",     text_Quit,             OBJ_TO_MID_SCREEN_X(text_Quit),       TEXT_QUIT_Y + (gameWidth * 3 / 4));
+#endif
 	/* Play Menu */
 	SET_TEXT_WITH_OUTLINE("Easy",             text_Easy,             OBJ_TO_MID_SCREEN_X(text_Easy),       TEXT_EASY_Y);
 	SET_TEXT_WITH_OUTLINE("Normal",           text_Normal,           OBJ_TO_MID_SCREEN_X(text_Normal),     TEXT_NORMAL_Y);
@@ -473,6 +485,8 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE("Press -",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+#elif defined(ANDROID)
+	SET_TEXT_WITH_OUTLINE("Press Back", text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
@@ -488,7 +502,9 @@ int main(int argv, char **args) {
 	//SET_TEXT_WITH_OUTLINE("Scores",           text_Scores,           OBJ_TO_MID_SCREEN_X(text_Scores),     TEXT_SCORES_Y);
 	/* Controls Menu */
 	SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X,                 TEXT_CONTROLLER_INPUT_Y);
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
+#endif
 #if defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("X - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("O - Back", text_B_Back, OBJ_TO_SCREEN_AT_FRACTION(text_B_Back, 0.75), TEXT_B_BACK_Y);
@@ -500,8 +516,10 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("B - Confirm",      text_B_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("A - Back",         text_A_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_A_Back,    0.75), TEXT_A_BACK_Y);
 #endif
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+#endif
 	/* Video Menu */
 #if defined(WII_U)
 	string warningString;
@@ -530,9 +548,11 @@ int main(int argv, char **args) {
 #else
 	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #endif
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("x",                text_x,                0,                                    TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
+#endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE("Fullscreen",       text_Fullscreen,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_FULLSCREEN_Y);
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
@@ -542,7 +562,9 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
 #endif
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
+#endif
 	/* Music Menu */
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
 	SET_TEXT_WITH_OUTLINE("Music Volume",     text_Music_Volume,     SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_VOLUME_Y);
@@ -569,7 +591,7 @@ int main(int argv, char **args) {
 	menuCursorIndex_background = 0;
 	programState = 0;
 	isRunning = true;
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	isWindowed = false;
 #else
@@ -716,7 +738,15 @@ int main(int argv, char **args) {
 						keyInputs |= INPUT_FULLSCREEN;
 						break;
 					}
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH)
+#if defined(ANDROID)
+					if (event.key.keysym.sym == SDLK_AC_BACK) {
+						keyInputs |= INPUT_BACK;
+						keyInputs |= INPUT_START;
+						keyInputs |= INPUT_SELECT;
+						break;
+					}
+#endif
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -1059,17 +1089,29 @@ int main(int argv, char **args) {
 			case 2:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(3);
+#if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 5);
+#else
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 4);
+#endif
 				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Play, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Controls, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Options, 2);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Credits, 3);
+#if !defined(ANDROID)
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Quit, 4);
+#endif
 				}
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Play.rect)
 					|| MOUSE_IS_IN_RECT(text_Controls.rect) || MOUSE_IS_IN_RECT(text_Options.rect)
 					|| MOUSE_IS_IN_RECT(text_Credits.rect) || MOUSE_IS_IN_RECT(text_Quit.rect)))) {
+#else
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Play.rect)
+					|| MOUSE_IS_IN_RECT(text_Controls.rect) || MOUSE_IS_IN_RECT(text_Options.rect)
+					|| MOUSE_IS_IN_RECT(text_Credits.rect)))) {
+#endif
 					time_anim1 = 0;
 					switch (menuCursorIndex_main) {
 						case 0:
@@ -1102,7 +1144,9 @@ int main(int argv, char **args) {
 				RENDER_TEXT(text_Controls);
 				RENDER_TEXT(text_Options);
 				RENDER_TEXT(text_Credits);
+#if !defined(ANDROID)
 				RENDER_TEXT(text_Quit);
+#endif
 				break;
 			/* 3 = Main Menu -> Title Screen */
 			case 3:
@@ -1248,7 +1292,11 @@ int main(int argv, char **args) {
 			/* 10 = Pause Screen */
 			case 10:
 				/* Key Presses */
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_START)) {
+#else
+				if (KEY_PRESSED(INPUT_START) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+#endif
 					programState = 9;
 				}
 				MENU_HANDLE_MENU_BUTTON();
@@ -1288,6 +1336,8 @@ int main(int argv, char **args) {
 				MENU_HANDLE_BACK_BUTTON(2);
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
+#elif defined(ANDROID)
+				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 3) {
 #endif
@@ -1303,7 +1353,7 @@ int main(int argv, char **args) {
 					case 1:
 						RENDER_CONTROLS_TEXT_PAGE_2();
 						break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP) && !defined(ANDROID)
 					case 2:
 						RENDER_CONTROLS_TEXT_PAGE_3();
 						break;
@@ -1369,7 +1419,11 @@ int main(int argv, char **args) {
 			case 18:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_credits < 5) {
+#else
+				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_credits < 5) {
+#endif
 					menuIndex_credits++;
 				}
 				else if (KEY_PRESSED(INPUT_LEFT) && menuIndex_credits > 0) {
@@ -1404,6 +1458,7 @@ int main(int argv, char **args) {
 				MENU_HANDLE_BACK_BUTTON(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
+#if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1462,16 +1517,26 @@ int main(int argv, char **args) {
 						case 2:
 							SDL_TOGGLE_FULLSCREEN();
 							break;
+#else
+						case 0:
+							SDL_TOGGLE_FULLSCREEN();
+							break;
+#endif
 						default:
 							break;
 					}
 				}
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
 					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Fullscreen.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| MOUSE_IS_IN_RECT(text_Apply.rect)))) {
+#else
+				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT))) {
+#endif
 					switch (menuCursorIndex_video) {
+#if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1539,10 +1604,16 @@ int main(int argv, char **args) {
 								return 0;
 							}
 							break;
+#else
+						case 0:
+							SDL_TOGGLE_FULLSCREEN();
+							break;
+#endif
 						default:
 							break;
 					}
 				}
+#if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
 				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
@@ -1550,9 +1621,16 @@ int main(int argv, char **args) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (text_Off.rect.x + text_Off.rect.w), 2);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_video, text_Apply, 3);
 				}
+#else
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
+				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+				}
+#endif
 				/* Animate Cursor */
 				UPDATE_VIDEO_MENU_CURSOR_POSITION_X();
 				/* Set and Draw Numbers */
+#if !defined(ANDROID)
 				SET_AND_RENDER_NUM_RESOLUTION(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				switch (videoSettings.aspectRatioIndex) {
 					case 0:
@@ -1570,19 +1648,22 @@ int main(int argv, char **args) {
 					default:
 						break;
 				}
+#endif
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+#if !defined(ANDROID)
 				RENDER_TEXT(text_Video_Warning);
 				RENDER_TEXT(text_Resolution);
 				RENDER_TEXT(text_Aspect_Ratio);
+				RENDER_TEXT(text_Apply);
+#endif
 				RENDER_TEXT(text_Fullscreen);
 				if (isWindowed) {
 					RENDER_TEXT(text_Off);
 				} else {
 					RENDER_TEXT(text_On);
 				}
-				RENDER_TEXT(text_Apply);
 				break;
 			/* 22 = Sound Menu */
 			case 22:
@@ -1772,9 +1853,14 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
 					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+#else
+				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+#endif
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
@@ -1786,10 +1872,14 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
+#if !defined(ANDROID)
 				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
+#endif
 				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
+#if !defined(ANDROID)
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
+#endif
 				}
 				/* Animate Cursor */
 				UPDATE_CONTROLS_MENU_CURSOR_POSITION_X();
@@ -1797,7 +1887,9 @@ int main(int argv, char **args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				RENDER_TEXT(text_Controller_Input);
+#if !defined(ANDROID)
 				RENDER_TEXT(text_Touch_Screen_Input);
+#endif
 				if (controlSettings.swapConfirmAndBack) {
 					RENDER_TEXT(text_A_Confirm);
 					RENDER_TEXT(text_B_Back);
@@ -1805,11 +1897,13 @@ int main(int argv, char **args) {
 					RENDER_TEXT(text_B_Confirm);
 					RENDER_TEXT(text_A_Back);
 				}
+#if !defined(ANDROID)
 				if (controlSettings.enableTouchscreen) {
 					RENDER_TEXT(text_Enabled);
 				} else {
 					RENDER_TEXT(text_Disabled);
 				}
+#endif
 				break;
 			default:
 				break;

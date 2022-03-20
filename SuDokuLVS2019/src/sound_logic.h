@@ -69,8 +69,7 @@
 #if !defined(PSP)
 #define PLAY_MUSIC(musicPath)                                             \
 	bgm = Mix_LoadMUS(musicPath);                                         \
-	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
-	if (Mix_PlayMusic(bgm, -1) == NULL) SDL_Log("Failed to play music: %s", SDL_GetError());
+	Mix_PlayMusic(bgm, -1);
 #else
 #define PLAY_MUSIC(musicPath)                                             \
 	bgm = Mix_LoadMUS(musicPath);                                         \

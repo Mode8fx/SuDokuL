@@ -4,6 +4,7 @@
 #ifndef MENU_LOGIC_H
 #define MENU_LOGIC_H
 
+#if !defined(ANDROID)
 #define UPDATE_MAIN_MENU_CURSOR_POSITION_X()                                                      \
     switch (menuCursorIndex_main) {                                                               \
         case 0:                                                                                   \
@@ -22,6 +23,23 @@
             menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Quit) - MENU_CURSOR_X_OFFSET);     \
             break;                                                                                \
     }
+#else
+#define UPDATE_MAIN_MENU_CURSOR_POSITION_X()                                                      \
+    switch (menuCursorIndex_main) {                                                               \
+        case 0:                                                                                   \
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Play) - MENU_CURSOR_X_OFFSET);     \
+            break;                                                                                \
+        case 1:                                                                                   \
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls) - MENU_CURSOR_X_OFFSET); \
+            break;                                                                                \
+        case 2:                                                                                   \
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Options) - MENU_CURSOR_X_OFFSET);  \
+            break;                                                                                \
+        default:                                                                                  \
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Credits) - MENU_CURSOR_X_OFFSET);  \
+            break;                                                                                \
+    }
+#endif
 
 #define UPDATE_PLAY_MENU_CURSOR_POSITION_X()                                                       \
     switch (menuCursorIndex_play) {                                                                \
