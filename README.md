@@ -16,11 +16,11 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for Switch,
 
 All screenshots are from PC version 1.11 (unless otherwise specified) and can be found in the [screenshots](https://github.com/Mips96/SuDokuL/tree/main/screenshots) folder.
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-1920-1080_1.png?raw=true" width="480" height="270"/>
+<img src="https://github.com/Mips96/SuDokuL/blob/main/screenshots/screenshot-1920-1080_1.png?raw=true" width="480" height="270"/>
 
 This game was initially designed for 640x480 displays, but it is compatible with any resolution, and higher resolutions will utilize more detailed text and support for smaller background tiles.
 
-<img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/GateGuy/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
+<img src="https://github.com/Mips96/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/Mips96/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/Mips96/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
 
 ## How to Compile
 (Note: To run any compiled version, you must have the `fonts`, `graphics`, `music`, and `sfx` folders which can be obtained from the latest release.)
