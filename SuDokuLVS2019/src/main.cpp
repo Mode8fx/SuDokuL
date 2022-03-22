@@ -753,6 +753,7 @@ int main(int argv, char **args) {
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
+						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 						break;
@@ -1094,7 +1095,7 @@ int main(int argv, char **args) {
 #else
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 4);
 #endif
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Play, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Controls, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Options, 2);
@@ -1160,7 +1161,7 @@ int main(int argv, char **args) {
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_play, 4);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Easy, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Normal, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Hard, 2);
@@ -1247,7 +1248,7 @@ int main(int argv, char **args) {
 				if (KEY_PRESSED(INPUT_START)) {
 					programState = 10;
 				}
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					GAME_HANDLE_MOUSE_MOVEMENT_MAIN();
 					GAME_HANDLE_MOUSE_MOVEMENT_MINI();
 				}
@@ -1370,7 +1371,7 @@ int main(int argv, char **args) {
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 4);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Controls_Menu, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Video, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Sound, 2);
@@ -1615,7 +1616,7 @@ int main(int argv, char **args) {
 				}
 #if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (text_Off.rect.x + text_Off.rect.w), 2);
@@ -1623,7 +1624,7 @@ int main(int argv, char **args) {
 				}
 #else
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 				}
 #endif
@@ -1734,7 +1735,7 @@ int main(int argv, char **args) {
 					}
 				}
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_sound, 4);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
@@ -1813,7 +1814,7 @@ int main(int argv, char **args) {
 					}
 				}
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_background, 4);
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
@@ -1875,7 +1876,7 @@ int main(int argv, char **args) {
 #if !defined(ANDROID)
 				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
 #endif
-				if ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last)) {
+				if (MOUSE_MOVED()) {
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
 #if !defined(ANDROID)
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
@@ -1912,6 +1913,10 @@ int main(int argv, char **args) {
 		/* Miscellaneous */
 		controllerAxis_leftStickX_last = controllerAxis_leftStickX;
 		controllerAxis_leftStickY_last = controllerAxis_leftStickY;
+		if (KEY_PRESSED(INPUT_CONFIRM_ALT)) { // fix the cursor resetting back to the last-tapped position
+			mouseInput_x = 0;
+			mouseInput_y = 0;
+		}
 		mouseInput_x_last = mouseInput_x;
 		mouseInput_y_last = mouseInput_y;
 

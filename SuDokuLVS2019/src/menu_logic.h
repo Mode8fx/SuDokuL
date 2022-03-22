@@ -186,4 +186,8 @@
     bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180); \
     bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
 
+// Used for both menu and game
+#define MOUSE_MOVED() \
+    ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last) || KEY_PRESSED(INPUT_CONFIRM_ALT))
+
 #endif
