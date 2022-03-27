@@ -16,7 +16,7 @@
 PSP_MODULE_INFO("SUDOKUL", 0, 1, 1);
 
 /* Define the main thread's attribute value (optional) */
-//PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
+PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 
 /* Exit callback */
 int exit_callback(int arg1, int arg2, void *common) {
@@ -314,8 +314,13 @@ int main(int argv, char **args) {
 	SET_BG_SCROLL_SPEED();
 
 	/* Set Window/Renderer */
+#if !defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#else
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+#endif
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -454,7 +459,7 @@ int main(int argv, char **args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.12",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.13",        text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 3 / 16);
 	/* Main Menu */
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Play",     text_Play,             OBJ_TO_MID_SCREEN_X(text_Play),       TEXT_PLAY_Y + (gameWidth * 3 / 4));
