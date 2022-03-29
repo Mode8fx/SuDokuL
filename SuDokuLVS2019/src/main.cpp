@@ -98,15 +98,6 @@ const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[6]  = {  720, 1152, 1280, 1440, 1600
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[6] = {  480,  720,  800,  900, 1024, 1050 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 1280 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = {  548 };
-#elif defined(PSP)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[2] = { 320, 362 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[2] = { 240, 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[2] = { 426, 480 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[2] = { 240, 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1] = { 435 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 480 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 205 };
 #else
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
@@ -279,7 +270,7 @@ int main(int argv, char **args) {
 	/* Get settings from settings.bin */
 	LOAD_SETTINGS_FILE();
 	/* Set Video Settings */
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_16_9)];
@@ -298,12 +289,15 @@ int main(int argv, char **args) {
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
 			break;
 	}
-#else
+#elif defined(ANDROID)
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
 	videoSettings.widthSetting = max(DM.w, DM.h);
 	videoSettings.heightSetting = min(DM.w, DM.h);
 	SDL_SetHint(SDL_HINT_ORIENTATIONS, "Landscape");
+#elif defined(PSP)
+	videoSettings.widthSetting = 480;
+	videoSettings.heightSetting = 272;
 #endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
@@ -499,6 +493,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("You Win!",         text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),    TEXT_YOU_WIN_Y);
 	/* Controls */
 	SET_CONTROLS_TEXT();
+	CONTROLS_SET_CONFIRM_BACK_POS();
 	/* Options Menu */
 	SET_TEXT_WITH_OUTLINE("Controls",         text_Controls_Menu,    OBJ_TO_MID_SCREEN_X(text_Controls_Menu), TEXT_CONTROLS_MENU_Y);
 	SET_TEXT_WITH_OUTLINE("Video",            text_Video,            OBJ_TO_MID_SCREEN_X(text_Video),      TEXT_VIDEO_Y);
@@ -507,7 +502,7 @@ int main(int argv, char **args) {
 	//SET_TEXT_WITH_OUTLINE("Scores",           text_Scores,           OBJ_TO_MID_SCREEN_X(text_Scores),     TEXT_SCORES_Y);
 	/* Controls Menu */
 	SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X,                 TEXT_CONTROLLER_INPUT_Y);
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
@@ -521,7 +516,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("B - Confirm",      text_B_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("A - Back",         text_A_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_A_Back,    0.75), TEXT_A_BACK_Y);
 #endif
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -542,18 +537,10 @@ int main(int argv, char **args) {
 		warningString = "! 960x544 (16:9) is recommended !";
 	}
 	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#elif defined(PSP)
-	string warningString;
-	if (gameWidth == 480 && gameHeight == 272) {
-		warningString = "! Changing these is not recommended !";
-	} else {
-		warningString = "! 480x272 (16:9) is recommended !";
-	}
-	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #else
 	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #endif
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("x",                text_x,                0,                                    TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
@@ -567,7 +554,7 @@ int main(int argv, char **args) {
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
 #endif
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
 #endif
 	/* Music Menu */
@@ -751,7 +738,7 @@ int main(int argv, char **args) {
 						break;
 					}
 #endif
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					cheatCounter = 0;
@@ -1464,7 +1451,7 @@ int main(int argv, char **args) {
 				MENU_HANDLE_BACK_BUTTON(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1532,7 +1519,7 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
 					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
@@ -1542,7 +1529,7 @@ int main(int argv, char **args) {
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT))) {
 #endif
 					switch (menuCursorIndex_video) {
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1619,7 +1606,7 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
 				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
@@ -1636,7 +1623,7 @@ int main(int argv, char **args) {
 				/* Animate Cursor */
 				UPDATE_VIDEO_MENU_CURSOR_POSITION_X();
 				/* Set and Draw Numbers */
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				SET_AND_RENDER_NUM_RESOLUTION(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				switch (videoSettings.aspectRatioIndex) {
 					case 0:
@@ -1658,7 +1645,7 @@ int main(int argv, char **args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				RENDER_TEXT(text_Video_Warning);
 				RENDER_TEXT(text_Resolution);
 				RENDER_TEXT(text_Aspect_Ratio);
@@ -1851,6 +1838,7 @@ int main(int argv, char **args) {
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
+							CONTROLS_SET_CONFIRM_BACK_POS();
 							break;
 						case 1:
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
@@ -1859,7 +1847,7 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
 					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
@@ -1870,6 +1858,7 @@ int main(int argv, char **args) {
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
+							CONTROLS_SET_CONFIRM_BACK_POS();
 							break;
 						case 1:
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
@@ -1878,12 +1867,12 @@ int main(int argv, char **args) {
 							break;
 					}
 				}
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
 #endif
 				if (MOUSE_MOVED()) {
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
 #endif
 				}
@@ -1893,7 +1882,7 @@ int main(int argv, char **args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				RENDER_TEXT(text_Controller_Input);
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				RENDER_TEXT(text_Touch_Screen_Input);
 #endif
 				if (controlSettings.swapConfirmAndBack) {
@@ -1903,7 +1892,7 @@ int main(int argv, char **args) {
 					RENDER_TEXT(text_B_Confirm);
 					RENDER_TEXT(text_A_Back);
 				}
-#if !defined(ANDROID)
+#if !defined(ANDROID) && !defined(PSP)
 				if (controlSettings.enableTouchscreen) {
 					RENDER_TEXT(text_Enabled);
 				} else {
