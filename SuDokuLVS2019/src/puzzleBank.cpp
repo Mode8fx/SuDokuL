@@ -16029,7 +16029,7 @@ int generatePuzzleBank() {
         GENERATE_PUZZLES("puzzles_veryHard", 1000,            300, 500);
         puzzleFile.close();
     } else {
-        cout << "Unable to open file";
+        PRINT("Unable to open file.");
     }
     return 0;
 }

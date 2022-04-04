@@ -11,43 +11,6 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 
-#if defined(PSP)
-/* Define the module info section */
-PSP_MODULE_INFO("SUDOKUL", 0, 1, 1);
-
-/* Define the main thread's attribute value (optional) */
-PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
-
-/* Exit callback */
-int exit_callback(int arg1, int arg2, void *common) {
-	return 0;
-}
-
-/* Callback thread */
-int CallbackThread(SceSize args, void *argp) {
-	int cbid;
-
-	cbid = sceKernelCreateCallback("Exit Callback", exit_callback, NULL);
-	sceKernelRegisterExitCallback(cbid);
-	sceKernelSleepThreadCB();
-
-	return 0;
-}
-
-/* Sets up the callback thread and returns its thread id */
-int SetupCallbacks(void) {
-	int thid = 0;
-
-	thid = sceKernelCreateThread("update_thread", CallbackThread,
-		0x11, 0xFA0, 0, 0);
-	if (thid >= 0) {
-		sceKernelStartThread(thid, 0, 0);
-	}
-
-	return thid;
-}
-#endif
-
 /* SDL Window */
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -222,7 +185,8 @@ Sint32 mouseInput_y_last;
 bool isRunning;
 bool isWindowed;
 bool wentPastTitleScreen = 0;
-std::stringstream ss;
+
+char tempCharArr[2];
 
 int main(int argv, char **args) {
 	/* [Wii U] Set SD Card Mount Path */
@@ -248,11 +212,6 @@ int main(int argv, char **args) {
 	/* [Switch] Set SD Card mount path */
 #if defined(SWITCH)
 	chdir("/switch/SuDokuL");
-#endif
-
-#if defined(PSP)
-	pspDebugScreenInit();
-	SetupCallbacks();
 #endif
 
 #if defined(PSP)
@@ -401,38 +360,34 @@ int main(int argv, char **args) {
 	pixelFont_large = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFont(FONT_COMMODORE, GRID_NUM_SIZE);
 	pixelFont_grid_mini = TTF_OpenFont(FONT_COMMODORE, (int)GRID_SIZE_A);
+	tempCharArr[1] = '\0';
 	/* General */
-	for (int_i = 32; int_i < LEN(textChars); int_i++) {
-		ss.str(std::string());
-		ss << static_cast<char>(int_i);
-		SET_TEXT_CHAR_WITH_OUTLINE(ss.str().c_str(), int_i, pixelFont, color_white, color_black, textChars[int_i], textChars);
-		ADJUST_CHAR_OUTLINE_OFFSET(textChars, int_i, -1, -1.5);
+	for (k = 32; k < LEN(textChars); k++) {
+		tempCharArr[0] = k;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont, color_white, color_black, textChars[k], textChars);
+		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
 	}
 	/* General (Large) */
-	for (int_i = 32; int_i < 91; int_i++) {
-		ss.str(std::string());
-		ss << static_cast<char>(int_i);
-		SET_TEXT_CHAR_WITH_OUTLINE(ss.str().c_str(), int_i, pixelFont_large, color_light_blue, color_blue, textChars_large[int_i], textChars_large);
-		ADJUST_CHAR_OUTLINE_OFFSET(textChars_large, int_i, -1, -1.5);
+	for (k = 32; k < 91; k++) {
+		tempCharArr[0] = k;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_large, color_light_blue, color_blue, textChars_large[k], textChars_large);
+		ADJUST_CHAR_OUTLINE_OFFSET(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
-	for (int_i = 0; int_i < 10; int_i++) {
-		ss.str(std::string());
-		ss << int_i;
-		SET_TEXT_CHAR_WITH_OUTLINE(ss.str().c_str(), int_i, pixelFont_grid, color_gray_240, color_black, gridNums_black[int_i], gridNums_black);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_black, int_i, -1, -1.5);
+	for (k = 0; k < 10; k++) {
+		tempCharArr[0] = k + 48;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid, color_gray_240, color_black, gridNums_black[k], gridNums_black);
+		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_black, k, -1, -1.5);
 	}
-	for (int_i = 0; int_i < 10; int_i++) {
-		ss.str(std::string());
-		ss << int_i;
-		SET_TEXT_CHAR_WITH_OUTLINE(ss.str().c_str(), int_i, pixelFont_grid, color_light_blue, color_blue, gridNums_blue[int_i], gridNums_blue);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue, int_i, -1, -1.5);
+	for (k = 0; k < 10; k++) {
+		tempCharArr[0] = k + 48;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid, color_light_blue, color_blue, gridNums_blue[k], gridNums_blue);
+		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue, k, -1, -1.5);
 	}
-	for (int_i = 0; int_i < 10; int_i++) {
-		ss.str(std::string());
-		ss << int_i;
-		SET_TEXT_CHAR_WITH_OUTLINE(ss.str().c_str(), int_i, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[int_i], gridNums_blue_mini);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, int_i, -1, -1.5);
+	for (k = 0; k < 10; k++) {
+		tempCharArr[0] = k + 48;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[k], gridNums_blue_mini);
+		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Fix Outlines */
 	//FIX_CHAR_OUTLINE_OFFSETS();

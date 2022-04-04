@@ -273,13 +273,8 @@ struct TextObjectAnimated {
     //SET_TEXT_POS_X(textObj, 0, charArray[charNum].outlineOffset_x);
     //SET_TEXT_POS_Y(textObj, 0, charArray[charNum].outlineOffset_y);
 
-#if defined(PSP)
-#define SET_FONT_OUTLINE(font, textObj) \
-    TTF_SetFontOutline(font, 0);
-#else
 #define SET_FONT_OUTLINE(font, textObj) \
     TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
-#endif
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
     TextObject textObj;                                    \
@@ -890,14 +885,23 @@ struct TextObjectAnimated {
         text_Controls_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7));                   \
         text_Controls_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)) - CONTROLS_SPACER; \
     }
+#elif defined(PSP)
+#define CONTROLS_SET_CONFIRM_BACK_POS()                              \
+    if (controlSettings.swapConfirmAndBack) {                        \
+        text_Controls_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)); \
+        text_Controls_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7)); \
+    } else {                                                         \
+        text_Controls_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7)); \
+        text_Controls_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)); \
+    }
 #else
-#define CONTROLS_SET_CONFIRM_BACK_POS()                                                  \
-    if (controlSettings.swapConfirmAndBack) {                                            \
-        text_Controls_c_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5));                   \
-        text_Controls_c_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7));                   \
-    } else {                                                                             \
-        text_Controls_c_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7));                   \
-        text_Controls_c_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5));                   \
+#define CONTROLS_SET_CONFIRM_BACK_POS()                                \
+    if (controlSettings.swapConfirmAndBack) {                          \
+        text_Controls_c_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)); \
+        text_Controls_c_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7)); \
+    } else {                                                           \
+        text_Controls_c_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7)); \
+        text_Controls_c_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)); \
     }
 #endif
 

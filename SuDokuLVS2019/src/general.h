@@ -15,8 +15,12 @@
 #define ZERO_OUT_ARRAY(arr) \
     (memset(arr, 0, sizeof(arr)))
 
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 #define PRINT(str) \
     cout << str << endl
+#else
+#define PRINT(str)
+#endif
 
 #define SIN_WAVE(timeVal, period, amplitude) \
     (sin((timeVal) * PI / (period)) * (amplitude))

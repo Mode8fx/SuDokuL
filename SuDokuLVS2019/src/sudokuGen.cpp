@@ -520,6 +520,7 @@ Uint8 validateGridAndSolution() {
     return 0;
 }
 
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 void printBoard() {
     cout << endl;
     for (row = 0; row < 9; row++) {
@@ -609,3 +610,13 @@ void printSolutionGrid() {
         cout << endl;
     }
 }
+#else
+void printBoard() {
+}
+
+void printTempGrid() {
+}
+
+void printSolutionGrid() {
+}
+#endif
