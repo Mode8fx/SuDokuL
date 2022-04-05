@@ -194,6 +194,7 @@ Sint32 mouseInput_x;
 Sint32 mouseInput_x_last;
 Sint32 mouseInput_y;
 Sint32 mouseInput_y_last;
+double screenScale;
 bool isRunning;
 bool isWindowed;
 bool isIntegerScale = true;
@@ -707,11 +708,15 @@ int main(int argv, char** args) {
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+					mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
+					mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 					cheatCounter = 0;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
 						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
+						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 						break;
@@ -817,6 +822,8 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
+						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
+						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 					}
@@ -825,6 +832,8 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
+						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
+						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 						cheatCounter = 0;
 					}
 					break;

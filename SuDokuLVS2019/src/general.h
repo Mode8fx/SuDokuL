@@ -35,6 +35,5 @@ extern Sint8 i, j, k;
 extern Sint8 char_x1, char_y1, char_x2, char_y2;
 extern Sint32 int_i;
 extern Uint32 uint_i;
-extern double d;
 
 #endif
