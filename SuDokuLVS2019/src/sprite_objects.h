@@ -5,6 +5,7 @@
 
 #if defined(VITA)
 #define SPRITE_PATH_TILE                     "ux0:data/SuDokuL/graphics/tile.png"
+#define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
 #define SPRITE_PATH_LOGO_480                 "ux0:data/SuDokuL/graphics/logo_480.png"
 #define SPRITE_PATH_LOGO_720                 "ux0:data/SuDokuL/graphics/logo_720.png"
 #define SPRITE_PATH_LOGO_1080                "ux0:data/SuDokuL/graphics/logo_1080.png"
@@ -23,6 +24,7 @@
 #define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "ux0:data/SuDokuL/graphics/grid_mini_top_right.png"
 #elif defined(PSP)
 #define SPRITE_PATH_TILE                     "ms0:/PSP/GAME/sudokul/graphics/tile.png"
+#define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
 #define SPRITE_PATH_LOGO_480                 "ms0:/PSP/GAME/sudokul/graphics/logo_480.png"
 #define SPRITE_PATH_LOGO_720                 "ms0:/PSP/GAME/sudokul/graphics/logo_720.png"
 #define SPRITE_PATH_LOGO_1080                "ms0:/PSP/GAME/sudokul/graphics/logo_1080.png"
