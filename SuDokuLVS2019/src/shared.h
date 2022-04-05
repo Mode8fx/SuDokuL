@@ -97,6 +97,13 @@ extern Uint16 gameHeight;
 #define INIT_NUM_OFFSET()
 #endif
 
+#if !defined(ANDROID)
+#define SYSTEM_WIDTH  DM.w
+#define SYSTEM_HEIGHT DM.h
+#else
+#define SYSTEM_WIDTH  max(DM.w, DM.h)
+#define SYSTEM_HEIGHT min(DM.w, DM.h)
+#endif
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
 #if defined(WII_U)
@@ -234,12 +241,43 @@ extern Uint16 gameHeight;
 #define SDL_TOGGLE_FULLSCREEN()
 #else
 #define SDL_TOGGLE_FULLSCREEN()                                 \
+	isWindowed = !isWindowed;                                   \
 	if (isWindowed)                                             \
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); \
-	else                                                        \
 		SDL_SetWindowFullscreen(window, 0);                     \
-	isWindowed = !isWindowed;
+	else                                                        \
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); \
+	SET_INTEGER_SCALE();
 #endif
+
+#define SDL_TOGGLE_INTEGER_SCALE()    \
+	isIntegerScale = !isIntegerScale; \
+	SET_INTEGER_SCALE();
+
+#define SET_INTEGER_SCALE()                                                                                     \
+	if (isIntegerScale) {                                                                                       \
+		int_i = min(SDL_GetWindowSurface(window)->w / gameWidth, SDL_GetWindowSurface(window)->h / gameHeight); \
+		int_i = max(int_i, 1);                                                                                  \
+		centerViewport.w = gameWidth * int_i;                                                                   \
+		centerViewport.h = gameHeight * int_i;                                                                  \
+		centerViewport.x = max((SDL_GetWindowSurface(window)->w - centerViewport.w) / 2 / int_i, 0);            \
+		centerViewport.y = max((SDL_GetWindowSurface(window)->h - centerViewport.h) / 2 / int_i, 0);            \
+		SDL_RenderSetScale(renderer, int_i, int_i);                                                             \
+		SDL_RenderSetViewport(renderer, &centerViewport);                                                       \
+	} else {                                                                                                    \
+		d = (double)SDL_GetWindowSurface(window)->w / gameWidth;                                                \
+		if ((double)SDL_GetWindowSurface(window)->h / gameHeight < d) {                                         \
+			d = (double)SDL_GetWindowSurface(window)->h / gameHeight;                                           \
+		}                                                                                                       \
+		if (d < 1) d = 1;                                                                                       \
+		centerViewport.w = (int)(gameWidth * d);                                                                \
+		centerViewport.h = (int)(gameHeight * d);                                                               \
+		centerViewport.x = max((int)((SDL_GetWindowSurface(window)->w - centerViewport.w) / 2 / d), 0);         \
+		centerViewport.y = max((int)((SDL_GetWindowSurface(window)->h - centerViewport.h) / 2 / d), 0);         \
+		SDL_RenderSetScale(renderer, d, d);                                                                     \
+		SDL_RenderSetViewport(renderer, &centerViewport);                                                       \
+	}                                                                                                           \
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                                             \
+	SDL_RenderClear(renderer);
 
 #define SDL_DESTROY_ALL()                                \
 	/* Destroy Everything */                             \

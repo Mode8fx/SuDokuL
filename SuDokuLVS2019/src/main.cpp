@@ -34,6 +34,7 @@ SDL_GameController *controller = nullptr;
 /* Window Width and Height */
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
+SDL_DisplayMode DM;
 #if defined(WII_U)
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[5]   =  {  320, 640, 720,  800,  960 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[5]  =  {  240, 480, 576,  600,  720 };
@@ -61,6 +62,15 @@ const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[6]  = {  720, 1152, 1280, 1440, 1600
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[6] = {  480,  720,  800,  900, 1024, 1050 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 1280 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = {  548 };
+#elif defined(PSP)
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[2] = { 320, 362 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[2] = { 240, 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[2] = { 426, 480 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[2] = { 240, 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1] = { 435 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 272 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1] = { 480 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 205 };
 #else
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
@@ -72,6 +82,7 @@ const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[4]   = { 1280, 2560, 3440, 5120 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[4]  = {  548, 1080, 1440, 2160 };
 #endif
 VideoSettings videoSettings;
+SDL_Rect centerViewport;
 
 /* Sound */
 Mix_Music *bgm;
@@ -170,6 +181,7 @@ Sint8 i, j, k;
 Sint8 char_x1, char_y1, char_x2, char_y2;
 Sint32 int_i;
 Uint32 uint_i;
+double d;
 
 /* Other */
 Sint16 controllerAxis_leftStickX;
@@ -184,6 +196,7 @@ Sint32 mouseInput_y;
 Sint32 mouseInput_y_last;
 bool isRunning;
 bool isWindowed;
+bool isIntegerScale = true;
 bool wentPastTitleScreen = 0;
 
 int main(int argv, char** args) {
@@ -227,7 +240,8 @@ int main(int argv, char** args) {
 	/* Get settings from settings.bin */
 	LOAD_SETTINGS_FILE();
 	/* Set Video Settings */
-#if !defined(ANDROID) && !defined(PSP)
+	SDL_GetCurrentDisplayMode(0, &DM);
+#if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_16_9)];
@@ -246,15 +260,10 @@ int main(int argv, char** args) {
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
 			break;
 	}
-#elif defined(ANDROID)
-	SDL_DisplayMode DM;
-	SDL_GetCurrentDisplayMode(0, &DM);
-	videoSettings.widthSetting = max(DM.w, DM.h);
-	videoSettings.heightSetting = min(DM.w, DM.h);
+#else
+	videoSettings.widthSetting = SYSTEM_WIDTH;
+	videoSettings.heightSetting = SYSTEM_HEIGHT;
 	SDL_SetHint(SDL_HINT_ORIENTATIONS, "Landscape");
-#elif defined(PSP)
-	videoSettings.widthSetting = 480;
-	videoSettings.heightSetting = 272;
 #endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
@@ -265,13 +274,17 @@ int main(int argv, char** args) {
 	SET_BG_SCROLL_SPEED();
 
 	/* Set Window/Renderer */
-#if !defined(PSP)
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, 0);
+#if defined(PSP)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #else
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #endif
+	SET_INTEGER_SCALE();
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -307,8 +320,10 @@ int main(int argv, char** args) {
 	SET_SPRITE_SCALE_TILE();
 	if (gameHeight < 480) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_272, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 272);
-	} else if (gameHeight < 720) {
+	} else if (gameHeight < 544) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_480, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
+	} else if (gameHeight < 720) {
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_544, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 544);
 	} else if (gameHeight < 1080) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_720, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
 	} else if (gameHeight < 1440) {
@@ -479,20 +494,20 @@ int main(int argv, char** args) {
 	/* Video Menu */
 #if defined(WII_U)
 	string warningString;
-	if (gameWidth == 1280 && gameHeight == 720) {
-		warningString = "! Changing these is not recommended !";
-	} else {
-		warningString = "! 1280x720 (16:9) is recommended !";
-	}
+	warningString = "( Recommended: 1280x720 )";
 	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #elif defined(VITA)
 	string warningString;
-	if (gameWidth == 960 && gameHeight == 544) {
-		warningString = "! Changing these is not recommended !";
-	} else {
-		warningString = "! 960x544 (16:9) is recommended !";
-	}
+	warningString = "( Recommended: 960x544 )";
 	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
+#elif defined(SWITCH)
+	string warningString;
+	warningString = "( Recommended: 1920x1080 )";
+	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
+#elif defined(PSP)
+	string warningString;
+	warningString = "( Recommended: 480x272 )";
+	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #else
 	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #endif
@@ -502,14 +517,9 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
-	SET_TEXT_WITH_OUTLINE("Fullscreen",       text_Fullscreen,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_FULLSCREEN_Y);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
-	SET_TEXT_WITH_OUTLINE("UNUSED", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
-	SET_TEXT_WITH_OUTLINE("UNUSED", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_FULLSCREEN_Y);
-#else
-	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
-	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_FULLSCREEN_Y);
-#endif
+	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
 #endif
@@ -538,6 +548,7 @@ int main(int argv, char** args) {
 	menuCursorIndex_sound = 0;
 	menuCursorIndex_background = 0;
 	programState = 0;
+	time_anim_PressStart = 0;
 	isRunning = true;
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
@@ -551,7 +562,6 @@ int main(int argv, char** args) {
 		UPDATE_TIMER(timer_global);
 		deltaTime = timer_global.now - timer_global.last;
 		time_anim1 += deltaTime;
-		time_anim_PressStart += deltaTime;
 		if (heldButtons > 0) {
 			timer_buttonHold += deltaTime;
 		} else {
@@ -982,11 +992,17 @@ int main(int argv, char** args) {
 			if (--soundSettings.musicIndex < 1)
 				soundSettings.musicIndex = 7;
 			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
+				SAVE_CURRENT_SETTINGS();
+			}
 		}
 		if (KEY_PRESSED(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
 			if (++soundSettings.musicIndex > 7)
 				soundSettings.musicIndex = 1;
 			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+			if (programState != 20) {
+				SAVE_CURRENT_SETTINGS();
+			}
 		}
 
 		/* Clear Screen */
@@ -1009,6 +1025,7 @@ int main(int argv, char** args) {
 		switch (programState) {
 			/* 0 = Title Screen */
 			case 0:
+				time_anim_PressStart += deltaTime;
 				/* Key Presses */
 				if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT) || KEY_PRESSED(INPUT_START)) {
 					Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
@@ -1038,6 +1055,9 @@ int main(int argv, char** args) {
 			case 2:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(3);
+				if (programState == 0) {
+					time_anim_PressStart = 0;
+				}
 #if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 5);
 #else
@@ -1369,9 +1389,9 @@ int main(int argv, char** args) {
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_credits < 5) {
+				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_credits < 6) {
 #else
-				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_credits < 5) {
+				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_credits < 6) {
 #endif
 					menuIndex_credits++;
 				}
@@ -1397,6 +1417,9 @@ int main(int argv, char** args) {
 					case 5:
 						RENDER_CREDITS_TEXT_PAGE_6();
 						break;
+					case 6:
+						RENDER_CREDITS_TEXT_PAGE_7();
+						break;
 					default:
 						break;
 				}
@@ -1407,7 +1430,7 @@ int main(int argv, char** args) {
 				MENU_HANDLE_BACK_BUTTON(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1464,28 +1487,28 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-							SDL_TOGGLE_FULLSCREEN();
+							SDL_TOGGLE_INTEGER_SCALE();
 							break;
 #else
 						case 0:
-							SDL_TOGGLE_FULLSCREEN();
+							SDL_TOGGLE_INTEGER_SCALE();
 							break;
 #endif
 						default:
 							break;
 					}
 				}
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
 					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
 					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Fullscreen.rect, (text_Off.rect.x + text_Off.rect.w))
+					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| MOUSE_IS_IN_RECT(text_Apply.rect)))) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT))) {
 #endif
 					switch (menuCursorIndex_video) {
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
@@ -1537,7 +1560,7 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-							SDL_TOGGLE_FULLSCREEN();
+							SDL_TOGGLE_INTEGER_SCALE();
 							break;
 						case 3:
 							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
@@ -1555,7 +1578,7 @@ int main(int argv, char** args) {
 							break;
 #else
 						case 0:
-							SDL_TOGGLE_FULLSCREEN();
+							SDL_TOGGLE_INTEGER_SCALE();
 							break;
 #endif
 						default:
@@ -1567,13 +1590,13 @@ int main(int argv, char** args) {
 				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (text_Off.rect.x + text_Off.rect.w), 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_video, text_Apply, 3);
 				}
 #else
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
 				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Fullscreen, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 				}
 #endif
 				/* Animate Cursor */
@@ -1607,11 +1630,11 @@ int main(int argv, char** args) {
 				RENDER_TEXT(text_Aspect_Ratio);
 				RENDER_TEXT(text_Apply);
 #endif
-				RENDER_TEXT(text_Fullscreen);
-				if (isWindowed) {
-					RENDER_TEXT(text_Off);
-				} else {
+				RENDER_TEXT(text_Integer_Scale);
+				if (isIntegerScale) {
 					RENDER_TEXT(text_On);
+				} else {
+					RENDER_TEXT(text_Off);
 				}
 				break;
 			/* 22 = Sound Menu */

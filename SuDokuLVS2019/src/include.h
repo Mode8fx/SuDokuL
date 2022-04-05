@@ -13,6 +13,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #endif
+
 #include <iostream>
 // #include <stdio.h>
 #include <string.h>
@@ -23,6 +24,7 @@
 #include <math.h>
 //#include <chrono>
 #include <algorithm>
+
 #if defined(WII_U)
 #include <unistd.h>
 #include <whb/sdcard.h>
