@@ -186,9 +186,7 @@ bool isRunning;
 bool isWindowed;
 bool wentPastTitleScreen = 0;
 
-char tempCharArr[2];
-
-int main(int argv, char **args) {
+int main(int argv, char** args) {
 	/* [Wii U] Set SD Card Mount Path */
 #if defined(WII_U)
 	if (!WHBMountSdCard()) {
@@ -360,33 +358,34 @@ int main(int argv, char **args) {
 	pixelFont_large = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFont(FONT_COMMODORE, GRID_NUM_SIZE);
 	pixelFont_grid_mini = TTF_OpenFont(FONT_COMMODORE, (int)GRID_SIZE_A);
+	char tempCharArr[2];
 	tempCharArr[1] = '\0';
 	/* General */
 	for (k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont, color_white, color_black, textChars[k], textChars);
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont, color_white, color_black, textChars[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
 	}
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_large, color_light_blue, color_blue, textChars_large[k], textChars_large);
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_large, color_light_blue, color_blue, textChars_large[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid, color_gray_240, color_black, gridNums_black[k], gridNums_black);
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid, color_gray_240, color_black, gridNums_black[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_black, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid, color_light_blue, color_blue, gridNums_blue[k], gridNums_blue);
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid, color_light_blue, color_blue, gridNums_blue[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, k, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[k], gridNums_blue_mini);
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Fix Outlines */

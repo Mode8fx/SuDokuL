@@ -259,19 +259,17 @@ struct TextObjectAnimated {
     textObj.rect.y = (pos_y);                  \
     textObj.outline_rect.y = (pos_y) + (offset);
 
-#define SET_TEXT_CHAR_WITH_OUTLINE(text, charNum, font, text_color, outline_color, textObj, charArray) \
-    textObj.surface = TTF_RenderText_Solid(font, text, text_color);                                    \
-    textObj.texture = SDL_CreateTextureFromSurface(renderer, textObj.surface);                         \
-    TTF_SizeText(font, text, &textObj.rect.w, &textObj.rect.h);                                        \
-    SET_FONT_OUTLINE(font, textObj);                                                                   \
-    textObj.outline_surface = TTF_RenderText_Solid(font, text, outline_color);                         \
-    textObj.outline_texture = SDL_CreateTextureFromSurface(renderer, textObj.outline_surface);         \
-    TTF_SizeText(font, text, &textObj.outline_rect.w, &textObj.outline_rect.h);                        \
-    TTF_SetFontOutline(font, 0);                                                                       \
-    SDL_FreeSurface(textObj.surface);                                                                  \
+#define SET_TEXT_CHAR_WITH_OUTLINE(text, font, text_color, outline_color, textObj)             \
+    textObj.surface = TTF_RenderText_Solid(font, text, text_color);                            \
+    textObj.texture = SDL_CreateTextureFromSurface(renderer, textObj.surface);                 \
+    TTF_SizeText(font, text, &textObj.rect.w, &textObj.rect.h);                                \
+    SET_FONT_OUTLINE(font, textObj);                                                           \
+    textObj.outline_surface = TTF_RenderText_Solid(font, text, outline_color);                 \
+    textObj.outline_texture = SDL_CreateTextureFromSurface(renderer, textObj.outline_surface); \
+    TTF_SizeText(font, text, &textObj.outline_rect.w, &textObj.outline_rect.h);                \
+    TTF_SetFontOutline(font, 0);                                                               \
+    SDL_FreeSurface(textObj.surface);                                                          \
     SDL_FreeSurface(textObj.outline_surface);
-    //SET_TEXT_POS_X(textObj, 0, charArray[charNum].outlineOffset_x);
-    //SET_TEXT_POS_Y(textObj, 0, charArray[charNum].outlineOffset_y);
 
 #define SET_FONT_OUTLINE(font, textObj) \
     TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
@@ -504,10 +502,10 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3)) - CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Touch Screen",          text_Controls_2b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("O",                     text_Controls_3a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) - CONTROLS_SPACER); \
+	SET_TEXT_WITH_OUTLINE("X",                     text_Controls_3a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) - CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Tap",                   text_Controls_3b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Confirm",               text_Controls_3c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
-	SET_TEXT_WITH_OUTLINE("X",                     text_Controls_4a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
+	SET_TEXT_WITH_OUTLINE("O",                     text_Controls_4a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_4b,  0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  9))                  ); \
@@ -536,10 +534,10 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_2b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("O",                     text_Controls_3a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_TEXT_WITH_OUTLINE("X",                     text_Controls_3a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_3b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3b, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  5)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Confirm",               text_Controls_3c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
-	SET_TEXT_WITH_OUTLINE("X",                     text_Controls_4a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
+	SET_TEXT_WITH_OUTLINE("O",                     text_Controls_4a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_4b,  0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  9))                  ); \

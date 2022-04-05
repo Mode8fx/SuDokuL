@@ -74,7 +74,7 @@
 #define PLAY_MUSIC(musicPath)                                             \
 	bgm = Mix_LoadMUS(musicPath);                                         \
 	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
-	if (Mix_PlayMusic(bgm, 0) == NULL) SDL_Log("Failed to play music: %s", SDL_GetError());
+	Mix_PlayMusic(bgm, 0);
 #endif
 
 #endif

@@ -10,7 +10,7 @@ ASFLAGS = $(CFLAGS)
 
 LIBDIR =
 LDFLAGS =
-LIBS = -lSDL2main -lSDL2_image -lpng -ljpeg -lSDL2_mixer -lstdc++ -lSDL2_ttf -lSDL2 -lGL -lGLU -lglut -lfreetype -lz -lpspmp3 -lmad -logg -lvorbisenc -lvorbisidec -lvorbis -lvorbisfile \
+LIBS = -lSDL2main -lSDL2_image -lpng -ljpeg -lSDL2_mixer -lstdc++ -lSDL2_ttf -lSDL2 -lGL -lGLU -lglut -lfreetype -lz -lpspmp3 -lmad -logg -lvorbisenc -lvorbisidec -lvorbis -lvorbisfile -lmikmod \
          -lpspvfpu -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgum -lpspgu -lpspaudiolib -lpspaudio \
          -lm -lpspvram
 
@@ -25,3 +25,6 @@ PSP_EBOOT_PIC1=pic.png
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
 #PSPSDK=/usr/local/pspdev/psp/sdk
+
+#PSPSDK=C:/pspsdk/psp/sdk
+#include C:/pspsdk/psp/sdk/lib/build.mak
