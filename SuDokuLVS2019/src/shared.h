@@ -246,14 +246,14 @@ extern Uint16 gameHeight;
 		SDL_SetWindowFullscreen(window, 0);                     \
 	else                                                        \
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); \
-	SET_INTEGER_SCALE();
+	SET_SCALING();
 #endif
 
 #define SDL_TOGGLE_INTEGER_SCALE()    \
 	isIntegerScale = !isIntegerScale; \
-	SET_INTEGER_SCALE();
+	SET_SCALING();
 
-#define SET_INTEGER_SCALE()                                                                                       \
+#define SET_SCALING()                                                                                             \
 	if (isIntegerScale) {                                                                                         \
 		int_i = min(SDL_GetWindowSurface(window)->w / gameWidth, SDL_GetWindowSurface(window)->h / gameHeight);   \
 		int_i = max(int_i, 1);                                                                                    \
