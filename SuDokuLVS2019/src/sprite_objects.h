@@ -41,6 +41,7 @@
 #define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "ms0:/PSP/GAME/sudokul/graphics/grid_mini_top_right.png"
 #else
 #define SPRITE_PATH_TILE                     "graphics/tile.png"
+#define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
 #define SPRITE_PATH_LOGO_480                 "graphics/logo_480.png"
 #define SPRITE_PATH_LOGO_720                 "graphics/logo_720.png"
 #define SPRITE_PATH_LOGO_1080                "graphics/logo_1080.png"
