@@ -5,8 +5,6 @@
 
 #if defined(VITA)
 #define FONT_COMMODORE "ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf"
-#elif defined(PSP)
-#define FONT_COMMODORE "ms0:/PSP/GAME/sudokul/fonts/Commodore Pixelized v1.2.ttf"
 #else
 #define FONT_COMMODORE "fonts/Commodore Pixelized v1.2.ttf"
 #endif
@@ -55,7 +53,7 @@
 #define TEXT_VIDEO_WARNING_Y              (text_videoWarning_Y)
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 #define TEXT_INTEGER_SCALE_Y                 (text_menuChoice3)
 #else
 #define TEXT_INTEGER_SCALE_Y                 (text_menuChoice1)
@@ -894,7 +892,7 @@ struct TextObjectAnimated {
     RENDER_TEXT(text_Credits_37);       \
     RENDER_TEXT(text_Credits_38);       \
     RENDER_TEXT(text_Credits_39);       \
-    RENDER_TEXT(text_Credits_P6);
+    RENDER_TEXT(text_Credits_P7);
 
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID)
 #define CONTROLS_SET_CONFIRM_BACK_POS()                                                \

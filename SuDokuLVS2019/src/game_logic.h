@@ -122,10 +122,10 @@
     }
 
 #define MOUSE_BOUNDS_X(start, end) \
-    (mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (GRID_SIZE_A3)))
+    ((mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (GRID_SIZE_A3))))
 
 #define MOUSE_BOUNDS_Y(start, end) \
-    (mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (GRID_SIZE_A3)))
+    ((mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (GRID_SIZE_A3))))
 
 #define CLICKED_WITHIN_GRID() \
     (KEY_PRESSED(INPUT_CONFIRM_ALT) && MOUSE_IS_INSIDE_GRID_SQUARE())

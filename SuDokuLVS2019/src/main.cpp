@@ -276,8 +276,8 @@ int main(int argv, char** args) {
 
 	/* Set Window/Renderer */
 #if defined(PSP)
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -512,7 +512,7 @@ int main(int argv, char** args) {
 #else
 	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
 #endif
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("x",                text_x,                0,                                    TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
@@ -521,7 +521,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
 #endif
 	/* Music Menu */
@@ -1075,9 +1075,6 @@ int main(int argv, char** args) {
 			case 2:
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(3);
-				if (programState == 0) {
-					time_anim_PressStart = 0;
-				}
 #if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 5);
 #else
@@ -1139,6 +1136,7 @@ int main(int argv, char** args) {
 				break;
 			/* 3 = Main Menu -> Title Screen */
 			case 3:
+				time_anim_PressStart = 0;
 				TRANSITION_GRAPHICS_FROM_MAIN_MENU();
 				TRANSITION_GRAPHICS_TO_TITLE_SCREEN();
 				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 0);
@@ -1605,7 +1603,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
 				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
@@ -1622,7 +1620,7 @@ int main(int argv, char** args) {
 				/* Animate Cursor */
 				UPDATE_VIDEO_MENU_CURSOR_POSITION_X();
 				/* Set and Draw Numbers */
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 				SET_AND_RENDER_NUM_RESOLUTION(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				switch (videoSettings.aspectRatioIndex) {
 					case 0:
@@ -1644,7 +1642,7 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-#if !defined(ANDROID) && !defined(PSP)
+#if !defined(ANDROID)
 				RENDER_TEXT(text_Video_Warning);
 				RENDER_TEXT(text_Resolution);
 				RENDER_TEXT(text_Aspect_Ratio);

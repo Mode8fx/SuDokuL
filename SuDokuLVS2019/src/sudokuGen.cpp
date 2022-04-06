@@ -344,7 +344,7 @@ Sint16 solvePuzzle(Sint16 recursiveDifficulty) {
             currNumVals = 0;
             for (j = 9; j > 0; j--) {
                 passed = true;
-                for (k = 0; k < LEN(relevantIndicesTable_All[i]); k++) {
+                for (k = 0; (Uint32)k < LEN(relevantIndicesTable_All[i]); k++) {
                     if (j == tempGrid[relevantIndicesTable_All[i][k]]) {
                         passed = false;
                         break;

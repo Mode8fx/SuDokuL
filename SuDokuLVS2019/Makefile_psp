@@ -4,7 +4,7 @@ TARGET = sudokul
 OBJS = main.o puzzleBank.o sudokuGen.o
 
 INCDIR =
-CFLAGS = -G0 -Wall -O2 -DPSP -Wchar-subscripts
+CFLAGS = -G0 -O2 -DPSP
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -fpermissive
 ASFLAGS = $(CFLAGS)
 
