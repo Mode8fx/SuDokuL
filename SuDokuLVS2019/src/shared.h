@@ -162,17 +162,27 @@ extern Uint16 gameHeight;
 		const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };       \
 	}
 #elif defined(PSP)
-#define INIT_NUM_OFFSETS()                                            \
-	if (gameHeight % 240 != 0) {                                      \
-		const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };     \
-		const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 }; \
-		const Sint8 numOffset_small_x[9] = { 2,1,2,2,1,1,1,1,1 };     \
-		const Sint8 numOffset_small_y[9] = { 1,1,0,1,1,0,1,1,0 };     \
-	} else {                                                          \
-		const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };     \
-		const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };     \
-		const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };     \
-		const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };     \
+// My PSP compiler can't initialize a const in a conditional
+//const Sint8 numOffset_large_x[9] = { 1,1,1,1,1,1,1,1,1 };
+//const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 };
+//const Sint8 numOffset_small_x[9] = { 2,1,2,2,1,1,1,1,1 };
+//const Sint8 numOffset_small_y[9] = { 1,1,0,1,1,0,1,1,0 };
+#define INIT_NUM_OFFSETS()                                \
+	Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };   \
+	Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };   \
+	Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };   \
+	Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };   \
+	if (gameHeight % 240 != 0) {                          \
+		for (i = 0; i < 9; i++) numOffset_large_x[i] = 1; \
+		numOffset_large_y[2] = -1;                        \
+		numOffset_large_y[5] = -1;                        \
+		numOffset_large_y[6] = -1;                        \
+		numOffset_large_y[8] = -1;                        \
+		for (i = 0; i < 9; i++) numOffset_small_x[i] = 1; \
+		for (i = 0; i < 9; i+=3) {                        \
+			numOffset_small_y[i] = 1;                     \
+			numOffset_small_y[i+1] = 1;                   \
+		}                                                 \
 	}
 #else
 #define INIT_NUM_OFFSETS()                                    \

@@ -5,6 +5,7 @@
 
 #if defined(VITA)
 #define SPRITE_PATH_TILE                     "ux0:data/SuDokuL/graphics/tile.png"
+#define SPRITE_PATH_LOGO_240                 "ux0:data/SuDokuL/graphics/logo_240.png"
 #define SPRITE_PATH_LOGO_272                 "ux0:data/SuDokuL/graphics/logo_272.png"
 #define SPRITE_PATH_LOGO_480                 "ux0:data/SuDokuL/graphics/logo_480.png"
 #define SPRITE_PATH_LOGO_544                 "ux0:data/SuDokuL/graphics/logo_544.png"
@@ -25,6 +26,7 @@
 #define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "ux0:data/SuDokuL/graphics/grid_mini_top_right.png"
 #else
 #define SPRITE_PATH_TILE                     "graphics/tile.png"
+#define SPRITE_PATH_LOGO_240                 "graphics/logo_240.png"
 #define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
 #define SPRITE_PATH_LOGO_480                 "graphics/logo_480.png"
 #define SPRITE_PATH_LOGO_544                 "graphics/logo_544.png"

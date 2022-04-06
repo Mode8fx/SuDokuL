@@ -320,7 +320,9 @@ int main(int argv, char** args) {
 	/* Set Textures */
 	PREPARE_SPRITE(tile, SPRITE_PATH_TILE, 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
-	if (gameHeight < 480) {
+	if (gameHeight < 272) {
+		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_240, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 240);
+	} else if (gameHeight < 480) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_272, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 272);
 	} else if (gameHeight < 544) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_480, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
