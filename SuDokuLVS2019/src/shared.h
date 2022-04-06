@@ -88,14 +88,7 @@ extern Uint16 gameHeight;
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
 	};                                                                                                                           \
-	INIT_NUM_OFFSET();
-
-#if defined(VITA)
-#define INIT_NUM_OFFSET() \
-	const Sint8 numOffset = (gameHeight % 240 != 0);
-#else
-#define INIT_NUM_OFFSET()
-#endif
+	INIT_NUM_OFFSETS();
 
 #if !defined(ANDROID)
 #define SYSTEM_WIDTH  DM.w
@@ -156,11 +149,37 @@ extern Uint16 gameHeight;
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 #if defined(VITA)
-#define NUM_OFFSET_X          (numOffset)
-#define NUM_OFFSET_Y          (numOffset)
+#define INIT_NUM_OFFSETS()                                              \
+	if (gameHeight % 240 != 0) {                                        \
+		const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };       \
+		const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };       \
+		const Sint8 numOffset_small_x[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 }; \
+		const Sint8 numOffset_small_y[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 }; \
+	} else {                                                            \
+		const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };       \
+		const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };       \
+		const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };       \
+		const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };       \
+	}
+#elif defined(PSP)
+#define INIT_NUM_OFFSETS()                                            \
+	if (gameHeight % 240 != 0) {                                      \
+		const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };     \
+		const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 }; \
+		const Sint8 numOffset_small_x[9] = { 2,1,2,2,1,1,1,1,1 };     \
+		const Sint8 numOffset_small_y[9] = { 1,1,0,1,1,0,1,1,0 };     \
+	} else {                                                          \
+		const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };     \
+		const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };     \
+		const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };     \
+		const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };     \
+	}
 #else
-#define NUM_OFFSET_X          0
-#define NUM_OFFSET_Y          0
+#define INIT_NUM_OFFSETS()                                    \
+	const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 }; \
+	const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 }; \
+	const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 }; \
+	const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };
 #endif
 
 #define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))

@@ -412,19 +412,22 @@ struct TextObjectAnimated {
     text_colon.rect.y = pos_y;                        \
     RENDER_TEXT(text_colon);
 
-#define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                                      \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + NUM_OFFSET_Y, textNumsObj[num].outlineOffset_y); \
+#define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                                              \
+    k = index / 9;                                                                                                                                                                \
+    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);         \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
-#define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                                     \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (((num - 1) / 3) * GRID_SIZE_A), textNumsObj[num].outlineOffset_y);                    \
+#define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                                             \
+    k = index / 9;                                                                                                                                             \
+    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);             \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
-#define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                                         \
-    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + NUM_OFFSET_X, textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + NUM_OFFSET_Y, textNumsObj[num].outlineOffset_y);       \
+#define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                                                 \
+    k = (num - 1) / 3;                                                                                                                                                                                                                                       \
+    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
+    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);                     \
     RENDER_TEXT_CHAR(textNumsObj[num]);
 
 #define SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num)                                                                                                                                 \
