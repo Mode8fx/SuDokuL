@@ -92,34 +92,16 @@
     if (KEY_PRESSED(INPUT_BACK)) {                                       \
         time_anim1 = 0;                                                  \
         programState = state;                                            \
-        switch (state) {                                                 \
-            case 2:                                                      \
-                UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);     \
-                break;                                                   \
-            case 13:                                                     \
-                UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);  \
-                break;                                                   \
-            default:                                                     \
-            break;                                                       \
-        }                                                                \
         LOAD_SETTINGS_FILE();                                            \
+        changedProgramState = true;                                      \
     }
 
 #define MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(state)                    \
     if (KEY_PRESSED(INPUT_BACK)) {                                      \
         time_anim1 = 0;                                                 \
         programState = state;                                           \
-        switch (state) {                                                \
-            case 2:                                                     \
-                UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);    \
-                break;                                                  \
-            case 13:                                                    \
-                UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options); \
-                break;                                                  \
-            default:                                                    \
-            break;                                                      \
-        }                                                               \
         SAVE_CURRENT_SETTINGS();                                        \
+        changedProgramState = true;                                     \
     }
 
 #define UPDATE_MENU_CURSOR_POSITION_Y(cursor) \

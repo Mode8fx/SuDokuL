@@ -145,6 +145,7 @@ double timer_buttonHold_repeater;
 
 /* Program State */
 Uint8 programState;
+bool changedProgramState;
 
 /* Background */
 BackgroundSettings bgSettings;
@@ -1073,6 +1074,10 @@ int main(int argv, char** args) {
 				break;
 			/* 2 = Main Menu */
 			case 2:
+				if (changedProgramState) {
+					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(3);
 #if !defined(ANDROID)
@@ -1354,6 +1359,10 @@ int main(int argv, char** args) {
 				break;
 			/* 13 = Options Menu */
 			case 13:
+				if (changedProgramState) {
+					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(2);
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 4);
@@ -1370,19 +1379,19 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_options) {
 						case 0:
 							programState = 28;
-							UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
+							changedProgramState = true;
 							break;
 						case 1:
 							programState = 20;
-							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
+							changedProgramState = true;
 							break;
 						case 2:
 							programState = 22;
-							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
+							changedProgramState = true;
 							break;
 						case 3:
 							programState = 24;
-							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
+							changedProgramState = true;
 							break;
 						case 4:
 							programState = 26;
@@ -1444,6 +1453,10 @@ int main(int argv, char** args) {
 				break;
 			/* 20 = Video Menu */
 			case 20:
+				if (changedProgramState) {
+					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
@@ -1657,6 +1670,10 @@ int main(int argv, char** args) {
 				break;
 			/* 22 = Sound Menu */
 			case 22:
+				if (changedProgramState) {
+					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
@@ -1746,6 +1763,10 @@ int main(int argv, char** args) {
 				break;
 			/* 24 = Background Menu */
 			case 24:
+				if (changedProgramState) {
+					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
@@ -1829,6 +1850,10 @@ int main(int argv, char** args) {
 				break;
 			/* 28 = Controls Menu */
 			case 28:
+				if (changedProgramState) {
+					UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
+					changedProgramState = false;
+				}
 				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
