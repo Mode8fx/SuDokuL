@@ -297,6 +297,46 @@ int main(int argv, char** args) {
 #endif
 	SET_SCALING();
 
+	/* Set only things that are used on the initial loading screen */
+	/* Set Textures */
+	PREPARE_SPRITE(tile, SPRITE_PATH_TILE, 0, 0, 1);
+	SET_SPRITE_SCALE_TILE();
+	/* Set Rectangles */
+	UPDATE_BORDER_RECTS();
+	/* General - Fonts */
+	pixelFont = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE);
+	char tempCharArr[2];
+	tempCharArr[1] = '\0';
+	/* General */
+	for (k = 32; k < LEN(textChars); k++) {
+		tempCharArr[0] = k;
+		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont, color_white, color_black, textChars[k]);
+		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
+	}
+	/* Loading Screen */
+	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
+
+	/* Render loading screen */
+#if defined(PSP)
+	UPDATE_GLOBAL_TIMER();
+	deltaTime = timer_global.now - timer_global.last;
+	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
+	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile.rect.h;
+	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
+	bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile.rect.w;
+	for (bgScroll.j = -tile.rect.h; bgScroll.j <= gameHeight + tile.rect.h; bgScroll.j += tile.rect.h) {
+		for (bgScroll.i = -tile.rect.w; bgScroll.i <= gameWidth + tile.rect.w; bgScroll.i += tile.rect.w) {
+			tile.rect.x = bgScroll.i + bgScroll.speedStep_x_int;
+			tile.rect.y = bgScroll.j + bgScroll.speedStep_y_int;
+			SDL_RenderCopy(renderer, tile.texture, NULL, &tile.rect);
+		}
+	}
+	RENDER_TEXT(text_Loading);
+	RENDER_BORDER_RECTS();
+	SDL_RenderPresent(renderer);
+	PREPARE_PAUSE_TIMER();
+#endif
+
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 #if !defined(ANDROID)
@@ -334,8 +374,6 @@ int main(int argv, char** args) {
 	//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
 
 	/* Set Textures */
-	PREPARE_SPRITE(tile, SPRITE_PATH_TILE, 0, 0, 1);
-	SET_SPRITE_SCALE_TILE();
 	if (gameHeight < 272) {
 		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_240, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 240);
 	} else if (gameHeight < 480) {
@@ -375,9 +413,6 @@ int main(int argv, char** args) {
 	PREPARE_SPRITE(miniGrid_top_right, SPRITE_PATH_GRID_MINI_TOP_RIGHT, 0, 0, 1);
 
 	/* Set Rectangles */
-	// The larger the difference between the display resolution and game resolution, the larger the right and bottom rectangles need to be... I think
-	UPDATE_BORDER_RECTS();
-
 	divider.w = gameWidth * 17 / 20;
 	divider.h = gameHeight / 96;
 	divider.x = (gameWidth - divider.w) / 2;
@@ -385,18 +420,9 @@ int main(int argv, char** args) {
 
 	/* Set Text */
 	/* General - Fonts */
-	pixelFont = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE);
 	pixelFont_large = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFont(FONT_COMMODORE, GRID_NUM_SIZE);
 	pixelFont_grid_mini = TTF_OpenFont(FONT_COMMODORE, (int)GRID_SIZE_A);
-	char tempCharArr[2];
-	tempCharArr[1] = '\0';
-	/* General */
-	for (k = 32; k < LEN(textChars); k++) {
-		tempCharArr[0] = k;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont, color_white, color_black, textChars[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
-	}
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
@@ -453,8 +479,6 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Normal",           text_Normal,           OBJ_TO_MID_SCREEN_X(text_Normal),     TEXT_NORMAL_Y);
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Hard,             OBJ_TO_MID_SCREEN_X(text_Hard),       TEXT_HARD_Y);
 	SET_TEXT_WITH_OUTLINE("Very Hard",        text_Very_Hard,        OBJ_TO_MID_SCREEN_X(text_Very_Hard),  TEXT_VERY_HARD_Y);
-	/* Loading Screen */
-	SET_TEXT_WITH_OUTLINE("Loading...",       text_Loading,          OBJ_TO_MID_SCREEN_X(text_Loading),    TEXT_LOADING_Y);
 	/* Game */
 	SET_TEXT_WITH_OUTLINE("Time",             text_Time,             OBJ_TO_MID_SIDEBAR(text_Time),        TEXT_TIME_Y);
 	game_sidebar_small.rect.y = SIDEBAR_SMALL_2_POS_Y;
@@ -550,7 +574,7 @@ int main(int argv, char** args) {
 	SET_CREDITS_TEXT();
 
 	/* Set Initial Time Values */
-	timer_global.now = SDL_GetTicks() / 1000.0;
+	//timer_global.now = (SDL_GetTicks() - timer_paused.now) / 1000.0;
 	time_anim1 = 0;
 
 	/* Set Other Initial Variable Values */
@@ -565,6 +589,10 @@ int main(int argv, char** args) {
 	time_anim_PressStart = 0;
 	isRunning = true;
 	isWindowed = true;
+
+#if defined(PSP)
+	UPDATE_PAUSE_TIMER();
+#endif
 
 	while (isRunning) {
 		/* Update Timers */
