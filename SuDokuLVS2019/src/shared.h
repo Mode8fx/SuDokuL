@@ -149,20 +149,28 @@ extern Uint16 gameHeight;
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 #if defined(VITA)
-#define INIT_NUM_OFFSETS()                                              \
-	if (gameHeight % 240 != 0) {                                        \
-		const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };       \
-		const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };       \
-		const Sint8 numOffset_small_x[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 }; \
-		const Sint8 numOffset_small_y[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 }; \
-	} else {                                                            \
-		const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };       \
-		const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };       \
-		const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };       \
-		const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };       \
+//const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };
+//const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };
+//const Sint8 numOffset_small_x[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 };
+//const Sint8 numOffset_small_y[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 };
+#define INIT_NUM_OFFSETS()                                 \
+	Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };    \
+	Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };    \
+	Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };    \
+	Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };    \
+	if (gameHeight % 240 != 0) {                           \
+		for (i = 0; i < 9; i++) numOffset_large_x[i] = 2;  \
+		numOffset_large_y[0] = 1;                          \
+		numOffset_large_y[1] = 1;                          \
+		numOffset_large_y[3] = 1;                          \
+		numOffset_large_y[4] = 1;                          \
+		numOffset_large_y[8] = 1;                          \
+		numOffset_small_x[2] = -1;                         \
+		for (i = 4; i < 9; i++) numOffset_small_x[i] = -1; \
+		numOffset_small_y[2] = -1;                         \
+		for (i = 4; i < 9; i++) numOffset_small_y[i] = -1; \
 	}
 #elif defined(PSP)
-// My PSP compiler can't initialize a const in a conditional
 //const Sint8 numOffset_large_x[9] = { 1,1,1,1,1,1,1,1,1 };
 //const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 };
 //const Sint8 numOffset_small_x[9] = { 2,1,2,2,1,1,1,1,1 };
