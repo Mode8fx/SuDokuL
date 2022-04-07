@@ -87,7 +87,13 @@ VideoSettings videoSettings;
 SDL_Rect centerViewport;
 
 /* Sound */
-Mix_Music *bgm;
+Mix_Music *bgm_1;
+Mix_Music *bgm_2;
+Mix_Music *bgm_3;
+Mix_Music *bgm_4;
+Mix_Music *bgm_5;
+Mix_Music *bgm_6;
+Mix_Music *bgm_7;
 Mix_Chunk *sfx;
 SoundSettings soundSettings;
 
@@ -297,6 +303,13 @@ int main(int argv, char** args) {
 		SDL_Log(Mix_GetError());
 #endif
 	}
+	bgm_1 = Mix_LoadMUS(MUSIC_1);
+	bgm_2 = Mix_LoadMUS(MUSIC_2);
+	bgm_3 = Mix_LoadMUS(MUSIC_3);
+	bgm_4 = Mix_LoadMUS(MUSIC_4);
+	bgm_5 = Mix_LoadMUS(MUSIC_5);
+	bgm_6 = Mix_LoadMUS(MUSIC_6);
+	bgm_7 = Mix_LoadMUS(MUSIC_7);
 	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));

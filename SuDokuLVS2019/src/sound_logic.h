@@ -28,28 +28,28 @@
 
 #define PLAY_MUSIC_AT_INDEX(index)      \
 	soundSettings.musicIndex = index;   \
-	STOP_MUSIC(bgm);                    \
+	Mix_HaltMusic();                    \
 	switch (soundSettings.musicIndex) { \
 		case 1:                         \
-			PLAY_MUSIC(MUSIC_1);        \
+			PLAY_MUSIC(bgm_1);          \
 			break;                      \
 		case 2:                         \
-			PLAY_MUSIC(MUSIC_2);        \
+			PLAY_MUSIC(bgm_2);          \
 			break;                      \
 		case 3:                         \
-			PLAY_MUSIC(MUSIC_3);        \
+			PLAY_MUSIC(bgm_3);          \
 			break;                      \
 		case 4:                         \
-			PLAY_MUSIC(MUSIC_4);        \
+			PLAY_MUSIC(bgm_4);          \
 			break;                      \
 		case 5:                         \
-			PLAY_MUSIC(MUSIC_5);        \
+			PLAY_MUSIC(bgm_5);          \
 			break;                      \
 		case 6:                         \
-			PLAY_MUSIC(MUSIC_6);        \
+			PLAY_MUSIC(bgm_6);          \
 			break;                      \
 		case 7:                         \
-			PLAY_MUSIC(MUSIC_7);        \
+			PLAY_MUSIC(bgm_7);          \
 			break;                      \
 		default:                        \
 			break;                      \
@@ -60,18 +60,11 @@
 	Mix_FreeMusic(bgm);
 
 #if !defined(PSP)
-#define PLAY_MUSIC(musicPath)                                             \
-	PREPARE_PAUSE_TIMER();                                                \
-	bgm = Mix_LoadMUS(musicPath);                                         \
-	Mix_PlayMusic(bgm, -1);                                               \
-	UPDATE_PAUSE_TIMER();
+#define PLAY_MUSIC(bgm) \
+	Mix_PlayMusic(bgm, -1);
 #else
-#define PLAY_MUSIC(musicPath)                                             \
-	PREPARE_PAUSE_TIMER();                                                \
-	bgm = Mix_LoadMUS(musicPath);                                         \
-	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
-	Mix_PlayMusic(bgm, 0);                                                \
-	UPDATE_PAUSE_TIMER();
+#define PLAY_MUSIC(bgm) \
+	Mix_PlayMusic(bgm, 0);
 #endif
 
 #endif
