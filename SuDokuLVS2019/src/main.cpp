@@ -554,12 +554,7 @@ int main(int argv, char** args) {
 	programState = 0;
 	time_anim_PressStart = 0;
 	isRunning = true;
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-	isWindowed = false;
-#else
 	isWindowed = true;
-#endif
 
 	while (isRunning) {
 		/* Update Timers */

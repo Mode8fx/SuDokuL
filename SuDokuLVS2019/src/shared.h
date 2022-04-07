@@ -320,7 +320,8 @@ extern Uint16 gameHeight;
 		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
 	}                                                                                            \
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
-	SDL_RenderClear(renderer);
+	SDL_RenderClear(renderer);                                                                   \
+	//SDL_RenderSetClipRect(renderer, &centerViewport);
 
 #define SDL_DESTROY_ALL()                                \
 	/* Destroy Everything */                             \
