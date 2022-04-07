@@ -172,4 +172,12 @@
 #define MOUSE_MOVED() \
     ((mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last) || KEY_PRESSED(INPUT_CONFIRM_ALT))
 
+#define UPDATE_MOUSE_POS_VIEWPORT_MOUSE()                                   \
+    mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x); \
+    mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                \
+    mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
+    mouseInput_y = (Sint32)(mouseInput_y * screenScale);
+
 #endif

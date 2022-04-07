@@ -1,3 +1,5 @@
+#include "shared.h"
+
 #ifndef SOUND_LOGIC_H
 #define SOUND_LOGIC_H
 
@@ -59,13 +61,17 @@
 
 #if !defined(PSP)
 #define PLAY_MUSIC(musicPath)                                             \
+	PREPARE_PAUSE_TIMER();                                                \
 	bgm = Mix_LoadMUS(musicPath);                                         \
-	Mix_PlayMusic(bgm, -1);
+	Mix_PlayMusic(bgm, -1);                                               \
+	UPDATE_PAUSE_TIMER();
 #else
 #define PLAY_MUSIC(musicPath)                                             \
+	PREPARE_PAUSE_TIMER();                                                \
 	bgm = Mix_LoadMUS(musicPath);                                         \
 	if (bgm == NULL) SDL_Log("Failed to load music: %s", SDL_GetError()); \
-	Mix_PlayMusic(bgm, 0);
+	Mix_PlayMusic(bgm, 0);                                                \
+	UPDATE_PAUSE_TIMER();
 #endif
 
 #endif

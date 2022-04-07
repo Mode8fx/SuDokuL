@@ -144,6 +144,7 @@ Timer timer_game;
 double timer_buttonHold;
 Uint8 heldButtons;
 double timer_buttonHold_repeater;
+Timer timer_paused;
 
 /* Program State */
 Uint8 programState;
@@ -554,7 +555,7 @@ int main(int argv, char** args) {
 
 	while (isRunning) {
 		/* Update Timers */
-		UPDATE_TIMER(timer_global);
+		UPDATE_GLOBAL_TIMER();
 		deltaTime = timer_global.now - timer_global.last;
 		time_anim1 += deltaTime;
 		if (heldButtons > 0) {
@@ -702,15 +703,13 @@ int main(int argv, char** args) {
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
-					mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
-					mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+					UPDATE_MOUSE_POS_VIEWPORT_MOUSE();
 					cheatCounter = 0;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
 						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
-						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
-						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+						UPDATE_MOUSE_POS_VIEWPORT_MOUSE();
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 						break;
@@ -816,8 +815,7 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
-						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
-						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+						UPDATE_MOUSE_POS_VIEWPORT_TOUCH();
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 					}
@@ -826,8 +824,7 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
-						mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
-						mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+						UPDATE_MOUSE_POS_VIEWPORT_TOUCH();
 						cheatCounter = 0;
 					}
 					break;
@@ -1172,6 +1169,7 @@ int main(int argv, char** args) {
 				RENDER_BORDER_RECTS();
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
+				PREPARE_PAUSE_TIMER();
 				switch (menuCursorIndex_play) {
 					case 0:
 						ZERO_OUT_ARRAY(grid);
@@ -1214,6 +1212,7 @@ int main(int argv, char** args) {
 					default:
 						break;
 				}
+				UPDATE_PAUSE_TIMER();
 				timer_game.now = 0.0;
 				gridCursorIndex_x = 0;
 				gridCursorIndex_y = 0;

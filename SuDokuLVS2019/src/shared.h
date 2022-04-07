@@ -201,9 +201,15 @@ extern Uint16 gameHeight;
 
 #define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))
 
-#define UPDATE_TIMER(timer) \
-    timer.last = timer.now; \
-    timer.now = SDL_GetTicks() / 1000.0;
+#define UPDATE_GLOBAL_TIMER()             \
+    timer_global.last = timer_global.now; \
+    timer_global.now = (SDL_GetTicks() - timer_paused.now) / 1000.0;
+
+#define PREPARE_PAUSE_TIMER() \
+	timer_paused.last = SDL_GetTicks();
+
+#define UPDATE_PAUSE_TIMER() \
+	timer_paused.now += (SDL_GetTicks() - timer_paused.last);
 
 #define KEY_PRESSED(key) \
     (keyInputs & key)
@@ -324,25 +330,25 @@ extern Uint16 gameHeight;
 	UPDATE_BORDER_RECTS();
 	//SDL_RenderSetClipRect(renderer, &centerViewport);
 
-#define UPDATE_BORDER_RECTS()                            \
-	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 5;    \
-	topRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 10; \
-	topRect.w = SCALING_WIDTH + 10;                      \
-	topRect.h = (SCALING_HEIGHT - gameHeight) / 2 + 10;  \
-	bottomRect.x = topRect.x;                            \
-	bottomRect.y = gameHeight;                           \
-	bottomRect.w = topRect.w;                            \
-	bottomRect.h = topRect.h;                            \
-	leftRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 10;  \
-	leftRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 5; \
-	leftRect.w = (SCALING_WIDTH - gameWidth) / 2 + 10;   \
-	leftRect.h = SCALING_HEIGHT + 10;                    \
-	rightRect.x = gameWidth;                             \
-	rightRect.y = leftRect.y;                            \
-	rightRect.w = leftRect.w;                            \
+#define UPDATE_BORDER_RECTS()                             \
+	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 50;    \
+	topRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 100; \
+	topRect.w = SCALING_WIDTH + 100;                      \
+	topRect.h = (SCALING_HEIGHT - gameHeight) / 2 + 100;  \
+	bottomRect.x = topRect.x;                             \
+	bottomRect.y = gameHeight;                            \
+	bottomRect.w = topRect.w;                             \
+	bottomRect.h = topRect.h;                             \
+	leftRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 100;  \
+	leftRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 50; \
+	leftRect.w = (SCALING_WIDTH - gameWidth) / 2 + 100;   \
+	leftRect.h = SCALING_HEIGHT + 100;                    \
+	rightRect.x = gameWidth;                              \
+	rightRect.y = leftRect.y;                             \
+	rightRect.w = leftRect.w;                             \
 	rightRect.h = leftRect.h;
 
-#define RENDER_BORDER_RECTS() \
+#define RENDER_BORDER_RECTS()                  \
 	SDL_RenderFillRect(renderer, &topRect);    \
 	SDL_RenderFillRect(renderer, &bottomRect); \
 	SDL_RenderFillRect(renderer, &leftRect);   \
