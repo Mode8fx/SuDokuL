@@ -151,7 +151,7 @@ extern Uint16 gameHeight;
 #if defined(VITA)
 //const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };
 //const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };
-//const Sint8 numOffset_small_x[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 };
+//const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };
 //const Sint8 numOffset_small_y[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 };
 #define INIT_NUM_OFFSETS()                                 \
 	Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };    \
@@ -165,8 +165,7 @@ extern Uint16 gameHeight;
 		numOffset_large_y[3] = 1;                          \
 		numOffset_large_y[4] = 1;                          \
 		numOffset_large_y[8] = 1;                          \
-		numOffset_small_x[2] = -1;                         \
-		for (i = 4; i < 9; i++) numOffset_small_x[i] = -1; \
+		numOffset_small_y[0] = -1;                         \
 		numOffset_small_y[2] = -1;                         \
 		for (i = 4; i < 9; i++) numOffset_small_y[i] = -1; \
 	}
@@ -288,61 +287,40 @@ extern Uint16 gameHeight;
 	isIntegerScale = !isIntegerScale; \
 	SET_SCALING();
 
-#if !defined(PSP)
-#define SET_SCALING()                                                                                             \
-	if (isIntegerScale) {                                                                                         \
-		int_i = min((int)(SDL_GetWindowSurface(window)->w / gameWidth), (int)(SDL_GetWindowSurface(window)->h / gameHeight));   \
-		if (int_i < 1) int_i = 1;                                                                                 \
-		centerViewport.w = gameWidth * int_i;                                                                     \
-		centerViewport.h = gameHeight * int_i;                                                                    \
-		centerViewport.x = max((int)((SDL_GetWindowSurface(window)->w - centerViewport.w) / 2 / int_i), 0);       \
-		centerViewport.y = max((int)((SDL_GetWindowSurface(window)->h - centerViewport.h) / 2 / int_i), 0);       \
-		SDL_RenderSetScale(renderer, int_i, int_i);                                                               \
-		SDL_RenderSetViewport(renderer, &centerViewport);                                                         \
-		screenScale = (double)int_i;                                                                              \
-	} else {                                                                                                      \
-		screenScale = (double)SDL_GetWindowSurface(window)->w / gameWidth;                                        \
-		if ((double)SDL_GetWindowSurface(window)->h / gameHeight < screenScale) {                                 \
-			screenScale = (double)SDL_GetWindowSurface(window)->h / gameHeight;                                   \
-		}                                                                                                         \
-		if (screenScale < 1) screenScale = 1;                                                                     \
-		centerViewport.w = (int)(gameWidth * screenScale);                                                        \
-		centerViewport.h = (int)(gameHeight * screenScale);                                                       \
-		centerViewport.x = max((int)((SDL_GetWindowSurface(window)->w - centerViewport.w) / 2 / screenScale), 0); \
-		centerViewport.y = max((int)((SDL_GetWindowSurface(window)->h - centerViewport.h) / 2 / screenScale), 0); \
-		SDL_RenderSetScale(renderer, screenScale, screenScale);                                                   \
-		SDL_RenderSetViewport(renderer, &centerViewport);                                                         \
-	}                                                                                                             \
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                                               \
-	SDL_RenderClear(renderer);
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
+#define SCALING_WIDTH DEFAULT_WIDTH
+#define SCALING_HEIGHT DEFAULT_HEIGHT
 #else
-#define SET_SCALING()                                                                 \
-	if (isIntegerScale) {                                                             \
-		int_i = min((int)(480 / gameWidth), (int)(272 / gameHeight));                 \
-		if (int_i < 1) int_i = 1;                                                     \
-		centerViewport.w = gameWidth * int_i;                                         \
-		centerViewport.h = gameHeight * int_i;                                        \
-		centerViewport.x = max((int)((480 - centerViewport.w) / 2 / int_i), 0);       \
-		centerViewport.y = max((int)((272 - centerViewport.h) / 2 / int_i), 0);       \
-		SDL_RenderSetScale(renderer, int_i, int_i);                                   \
-		SDL_RenderSetViewport(renderer, &centerViewport);                             \
-		screenScale = (double)int_i;                                                  \
-	} else {                                                                          \
-		screenScale = (double)480 / gameWidth;                                        \
-		if ((double)272 / gameHeight < screenScale) {                                 \
-			screenScale = (double)272 / gameHeight;                                   \
-		}                                                                             \
-		if (screenScale < 1) screenScale = 1;                                         \
-		centerViewport.w = (int)(gameWidth * screenScale);                            \
-		centerViewport.h = (int)(gameHeight * screenScale);                           \
-		centerViewport.x = max((int)((480 - centerViewport.w) / 2 / screenScale), 0); \
-		centerViewport.y = max((int)((272 - centerViewport.h) / 2 / screenScale), 0); \
-		SDL_RenderSetScale(renderer, screenScale, screenScale);                       \
-		SDL_RenderSetViewport(renderer, &centerViewport);                             \
-	}                                                                                 \
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                   \
-	SDL_RenderClear(renderer);
+#define SCALING_WIDTH SDL_GetWindowSurface(window)->w
+#define SCALING_HEIGHT SDL_GetWindowSurface(window)->h
 #endif
+
+#define SET_SCALING()                                                                            \
+	if (isIntegerScale) {                                                                        \
+		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));       \
+		if (int_i < 1) int_i = 1;                                                                \
+		centerViewport.w = gameWidth * int_i;                                                    \
+		centerViewport.h = gameHeight * int_i;                                                   \
+		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);        \
+		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);       \
+		SDL_RenderSetScale(renderer, int_i, int_i);                                              \
+		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
+		screenScale = (double)int_i;                                                             \
+	} else {                                                                                     \
+		screenScale = (double)SCALING_WIDTH / gameWidth;                                         \
+		if ((double)SCALING_HEIGHT / gameHeight < screenScale) {                                 \
+			screenScale = (double)SCALING_HEIGHT / gameHeight;                                   \
+		}                                                                                        \
+		if (screenScale < 1) screenScale = 1;                                                    \
+		centerViewport.w = (int)(gameWidth * screenScale);                                       \
+		centerViewport.h = (int)(gameHeight * screenScale);                                      \
+		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / screenScale), 0);  \
+		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / screenScale), 0); \
+		SDL_RenderSetScale(renderer, screenScale, screenScale);                                  \
+		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
+	}                                                                                            \
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
+	SDL_RenderClear(renderer);
 
 #define SDL_DESTROY_ALL()                                \
 	/* Destroy Everything */                             \
