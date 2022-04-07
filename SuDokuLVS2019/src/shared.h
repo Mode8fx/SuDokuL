@@ -321,7 +321,32 @@ extern Uint16 gameHeight;
 	}                                                                                            \
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
 	SDL_RenderClear(renderer);                                                                   \
+	UPDATE_BORDER_RECTS();
 	//SDL_RenderSetClipRect(renderer, &centerViewport);
+
+#define UPDATE_BORDER_RECTS()                            \
+	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 5;    \
+	topRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 10; \
+	topRect.w = SCALING_WIDTH + 10;                      \
+	topRect.h = (SCALING_HEIGHT - gameHeight) / 2 + 10;  \
+	bottomRect.x = topRect.x;                            \
+	bottomRect.y = gameHeight;                           \
+	bottomRect.w = topRect.w;                            \
+	bottomRect.h = topRect.h;                            \
+	leftRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 10;  \
+	leftRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 5; \
+	leftRect.w = (SCALING_WIDTH - gameWidth) / 2 + 10;   \
+	leftRect.h = SCALING_HEIGHT + 10;                    \
+	rightRect.x = gameWidth;                             \
+	rightRect.y = leftRect.y;                            \
+	rightRect.w = leftRect.w;                            \
+	rightRect.h = leftRect.h;
+
+#define RENDER_BORDER_RECTS() \
+	SDL_RenderFillRect(renderer, &topRect);    \
+	SDL_RenderFillRect(renderer, &bottomRect); \
+	SDL_RenderFillRect(renderer, &leftRect);   \
+	SDL_RenderFillRect(renderer, &rightRect);
 
 #define SDL_DESTROY_ALL()                                \
 	/* Destroy Everything */                             \

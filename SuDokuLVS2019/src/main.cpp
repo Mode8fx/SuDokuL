@@ -17,8 +17,10 @@ SDL_Renderer *renderer;
 SDL_Event event;
 
 /* SDL Rectangles */
-SDL_Rect rightRect;
+SDL_Rect topRect;
 SDL_Rect bottomRect;
+SDL_Rect leftRect;
+SDL_Rect rightRect;
 SDL_Rect divider;
 
 /* SDL Settings File */
@@ -38,7 +40,7 @@ SDL_DisplayMode DM;
 #if defined(WII_U)
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[5]   =  {  320, 640, 720,  800,  960 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[5]  =  {  240, 480, 576,  600,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[5]  =  {  480, 854, 960, 1176, 1280 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[5]  =  {  480, 853, 960, 1176, 1280 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[5] =  {  272, 480, 544,  664,  720 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[2] =  {  720, 1152 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[2] = {  480, 720 };
@@ -47,7 +49,7 @@ const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] =  {  548 };
 #elif defined(VITA)
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[3]    = { 320, 640, 726 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[3]   = { 240, 480, 544 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[3]   = { 480, 854, 960 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[3]   = { 480, 853, 960 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[3]  = { 272, 480, 544 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1]  = { 720 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 480 };
@@ -56,7 +58,7 @@ const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = { 410 };
 #elif defined(SWITCH)
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[9]    = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[9]   = {  240,  480,  576,  600,  720,  768,  864,  960, 1080 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[8]  = {  480,  854,  960, 1176, 1280, 1360, 1600, 1920 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[8]  = {  480,  853,  960, 1176, 1280, 1360, 1600, 1920 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[8] = {  272,  480,  544,  664,  720,  768,  900, 1080 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[6]  = {  720, 1152, 1280, 1440, 1600, 1680 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[6] = {  480,  720,  800,  900, 1024, 1050 };
@@ -74,7 +76,7 @@ const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1] = { 205 };
 #else
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[12]   = {  320,  640,  720,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[12]  = {  240,  480,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[10]  = {  480,  854,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3840 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[10]  = {  480,  853,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3840 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[10] = {  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2160 };
 const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[9]  = {  720, 1152, 1280, 1440, 1600, 1680, 1920, 2560, 3840 };
 const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[9] = {  480,  720,  800,  900, 1024, 1050, 1200, 1600, 2400 };
@@ -360,14 +362,8 @@ int main(int argv, char** args) {
 
 	/* Set Rectangles */
 	// The larger the difference between the display resolution and game resolution, the larger the right and bottom rectangles need to be... I think
-	rightRect.x = gameWidth;
-	rightRect.y = 0;
-	rightRect.w = (tile.rect.w * 2) * 3840 / gameWidth;
-	rightRect.h = (gameHeight + tile.rect.h) * 2160 / gameHeight;
-	bottomRect.x = 0;
-	bottomRect.y = gameHeight;
-	bottomRect.w = (gameHeight + tile.rect.w) * 3840 / gameWidth;
-	bottomRect.h = (tile.rect.h * 2) * 2160 / gameHeight;
+	UPDATE_BORDER_RECTS();
+
 	divider.w = gameWidth * 17 / 20;
 	divider.h = gameHeight / 96;
 	divider.x = (gameWidth - divider.w) / 2;
@@ -1173,6 +1169,7 @@ int main(int argv, char** args) {
 			case 8:
 				/* Draw Text */
 				RENDER_TEXT(text_Loading);
+				RENDER_BORDER_RECTS();
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
 				switch (menuCursorIndex_play) {
@@ -1934,8 +1931,7 @@ int main(int argv, char** args) {
 		mouseInput_y_last = mouseInput_y;
 
 		/* Draw Black Rectangles (to fix background scrolling bug for some aspect ratios in fullscreen) */
-		SDL_RenderFillRect(renderer, &rightRect);
-		SDL_RenderFillRect(renderer, &bottomRect);
+		RENDER_BORDER_RECTS();
 
 		/* Update Screen */
         SDL_RenderPresent(renderer);
