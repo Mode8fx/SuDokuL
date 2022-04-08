@@ -152,45 +152,24 @@ extern Uint16 gameHeight;
 //const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };
 //const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };
 //const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };
-//const Sint8 numOffset_small_y[9] = { 0,0,-1,0,-1,-1,-1,-1,-1 };
-#define INIT_NUM_OFFSETS()                                 \
-	Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };    \
-	Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };    \
-	Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };    \
-	Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };    \
-	if (gameHeight % 240 != 0) {                           \
-		for (i = 0; i < 9; i++) numOffset_large_x[i] = 2;  \
-		numOffset_large_y[0] = 1;                          \
-		numOffset_large_y[1] = 1;                          \
-		numOffset_large_y[3] = 1;                          \
-		numOffset_large_y[4] = 1;                          \
-		numOffset_large_y[8] = 1;                          \
-		numOffset_small_y[0] = -1;                         \
-		numOffset_small_y[2] = -1;                         \
-		for (i = 4; i < 9; i++) numOffset_small_y[i] = -1; \
-	}
+//const Sint8 numOffset_small_y[9] = { -1,0,-1,0,-1,-1,-1,-1,-1 };
+#define INIT_NUM_OFFSETS()                                                                                                                                       \
+	d = (double)gameHeight / SCALING_HEIGHT;                                                                                                                     \
+	const Sint8 numOffset_large_x[9] = { (Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d) }; \
+	const Sint8 numOffset_large_y[9] = { (Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0,0,0,(Sint8)(d) };                                                       \
+	const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };                                                                                                    \
+	const Sint8 numOffset_small_y[9] = { (Sint8)(-d),0,(Sint8)(-d),0,(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d) };
 #elif defined(PSP)
 //const Sint8 numOffset_large_x[9] = { 1,1,1,1,1,1,1,1,1 };
 //const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 };
-//const Sint8 numOffset_small_x[9] = { 2,1,2,2,1,1,1,1,1 };
+//const Sint8 numOffset_small_x[9] = { 1,1,1,1,1,1,1,1,1 };
 //const Sint8 numOffset_small_y[9] = { 1,1,0,1,1,0,1,1,0 };
-#define INIT_NUM_OFFSETS()                                \
-	Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 };   \
-	Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 };   \
-	Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };   \
-	Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };   \
-	if (gameHeight % 240 != 0) {                          \
-		for (i = 0; i < 9; i++) numOffset_large_x[i] = 1; \
-		numOffset_large_y[2] = -1;                        \
-		numOffset_large_y[5] = -1;                        \
-		numOffset_large_y[6] = -1;                        \
-		numOffset_large_y[8] = -1;                        \
-		for (i = 0; i < 9; i++) numOffset_small_x[i] = 1; \
-		for (i = 0; i < 9; i+=3) {                        \
-			numOffset_small_y[i] = 1;                     \
-			numOffset_small_y[i+1] = 1;                   \
-		}                                                 \
-	}
+#define INIT_NUM_OFFSETS()                                                                                                                     \
+	d = (double)gameHeight / SCALING_HEIGHT;                                                                                                   \
+	const Sint8 numOffset_large_x[9] = { (Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d) }; \
+	const Sint8 numOffset_large_y[9] = { 0,0,(Sint8)(-d),0,0,(Sint8)(-d),(Sint8)(-d),0,(Sint8)(-d) };                                          \
+	const Sint8 numOffset_small_x[9] = { (Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d) }; \
+	const Sint8 numOffset_small_y[9] = { (Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0 };
 #else
 #define INIT_NUM_OFFSETS()                                    \
 	const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 }; \
@@ -302,6 +281,8 @@ extern Uint16 gameHeight;
 #endif
 
 #define SET_SCALING()                                                                            \
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
+	SDL_RenderClear(renderer);                                                                   \
 	if (isIntegerScale) {                                                                        \
 		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));       \
 		if (int_i < 1) int_i = 1;                                                                \
@@ -325,8 +306,6 @@ extern Uint16 gameHeight;
 		SDL_RenderSetScale(renderer, screenScale, screenScale);                                  \
 		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
 	}                                                                                            \
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
-	SDL_RenderClear(renderer);                                                                   \
 	UPDATE_BORDER_RECTS();
 	//SDL_RenderSetClipRect(renderer, &centerViewport);
 
