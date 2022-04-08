@@ -673,31 +673,31 @@ struct TextObjectAnimated {
 #endif
 
 #if defined (SWITCH)
-#define SET_SELECT_BTN_TEXT()                                                                                                                                        \
-    TextObject text_Controls_c_10a;                                                                                                                                  \
-    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                      \
-    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                     \
-        SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
-    } else {                                                                                                                                                         \
-        SET_TEXT_WITH_OUTLINE_HELPER("- (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+#define SET_SELECT_BTN_TEXT()                                                                                                                                      \
+    TextObject text_Controls_10a;                                                                                                                                  \
+    INIT_TEXT_OBJECT_VALS(text_Controls_10a);                                                                                                                      \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                   \
+        SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                       \
+        SET_TEXT_WITH_OUTLINE_HELPER("- (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
     }
 #elif defined(ANDROID)
-#define SET_SELECT_BTN_TEXT()                                                                                                                                           \
-    TextObject text_Controls_c_10a;                                                                                                                                     \
-    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                         \
-    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                        \
-        SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
-    } else {                                                                                                                                                            \
-        SET_TEXT_WITH_OUTLINE_HELPER("Back (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+#define SET_SELECT_BTN_TEXT()                                                                                                                                         \
+    TextObject text_Controls_10a;                                                                                                                                     \
+    INIT_TEXT_OBJECT_VALS(text_Controls_10a);                                                                                                                         \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                      \
+        SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                          \
+        SET_TEXT_WITH_OUTLINE_HELPER("Back (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
     }
 #elif defined(VITA) || defined(WII_U) || defined(PSP)
-#define SET_SELECT_BTN_TEXT()                                                                                                                                             \
-    TextObject text_Controls_c_10a;                                                                                                                                       \
-    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                           \
-    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                          \
-        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
-    } else {                                                                                                                                                              \
-        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+#define SET_SELECT_BTN_TEXT()                                                                                                                                           \
+    TextObject text_Controls_10a;                                                                                                                                       \
+    INIT_TEXT_OBJECT_VALS(text_Controls_10a);                                                                                                                           \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                        \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                            \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
     }
 #else
 #define SET_SELECT_BTN_TEXT()                                                                                                                                               \
