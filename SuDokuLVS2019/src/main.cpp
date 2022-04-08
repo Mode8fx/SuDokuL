@@ -317,7 +317,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
 
 	/* Render loading screen */
-#if defined(PSP)
+#if defined(PSP) || defined(VITA) || defined(WII_U)
 	UPDATE_GLOBAL_TIMER();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
@@ -590,7 +590,7 @@ int main(int argv, char** args) {
 	isRunning = true;
 	isWindowed = true;
 
-#if defined(PSP)
+#if defined(PSP) || defined(VITA) || defined(WII_U)
 	UPDATE_PAUSE_TIMER();
 #endif
 

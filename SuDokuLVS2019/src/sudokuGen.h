@@ -4,8 +4,8 @@
 #define SUDOKUGEN_H
 
 #define BACKTRACKING_VAL 100
-#define TIMEOUT 5000
-#define MAX_TIMEOUT 10000
+#define TIMEOUT 4000
+#define MAX_TIMEOUT 8000
 
 void test_main();
 void test_PuzzleDifficulty();

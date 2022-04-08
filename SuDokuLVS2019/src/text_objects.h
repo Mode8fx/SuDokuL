@@ -488,7 +488,7 @@ struct TextObjectAnimated {
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("Start",                 text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                      \
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
@@ -520,7 +520,7 @@ struct TextObjectAnimated {
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("Start",                 text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                      \
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
@@ -552,7 +552,7 @@ struct TextObjectAnimated {
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("Start",                 text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                      \
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
@@ -584,7 +584,7 @@ struct TextObjectAnimated {
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("+",                     text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("- (while paused)",      text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                      \
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
@@ -616,7 +616,7 @@ struct TextObjectAnimated {
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("+",                     text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("Back (while paused)",   text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                      \
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                   ); \
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                   ); \
@@ -665,12 +665,49 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("(3/4)",                          text_Controls_c_P1,  (gameWidth - (text_Controls_c_P1.rect.w * 1.25)),    (gameHeight - (text_Controls_c_P1.rect.h * 1.5))    ); \
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME (CONTROLLER)",        text_Controls_c_8,   OBJ_TO_MID_SCREEN_X(text_Controls_c_8),              (FONT_SIZE * (CONTROLS_STEP *  1))                  ); \
 	SET_TEXT_WITH_OUTLINE("Start",                          text_Controls_c_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_9a, 0.3),  (FONT_SIZE * (CONTROLS_STEP *  3))                  ); \
-	SET_TEXT_WITH_OUTLINE("Select (while paused)",          text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                  ); \
-	SET_TEXT_WITH_OUTLINE("Select (paused)",                text_Controls_c_10aa, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10aa, 0.3), (FONT_SIZE * (CONTROLS_STEP *  5))                ); \
+	SET_SELECT_BTN_TEXT();                                                                                                                                                                   \
 	SET_TEXT_WITH_OUTLINE("X / Y",                          text_Controls_c_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_12a, 0.3), (FONT_SIZE * (CONTROLS_STEP *  7))                  ); \
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",                   text_Controls_c_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_12b, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) - CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",                      text_Controls_c_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_12c, 0.7), (FONT_SIZE * (CONTROLS_STEP *  7)) + CONTROLS_SPACER); \
 	SET_TEXT_WITH_OUTLINE("(4/4)",                          text_Controls_c_P2,  (gameWidth - (text_Controls_c_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_c_P2.rect.h * 1.5)));
+#endif
+
+#if defined (SWITCH)
+#define SET_SELECT_BTN_TEXT()                                                                                                                                        \
+    TextObject text_Controls_c_10a;                                                                                                                                  \
+    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                      \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                     \
+        SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                         \
+        SET_TEXT_WITH_OUTLINE_HELPER("- (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+    }
+#elif defined(ANDROID)
+#define SET_SELECT_BTN_TEXT()                                                                                                                                           \
+    TextObject text_Controls_c_10a;                                                                                                                                     \
+    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                         \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                        \
+        SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                            \
+        SET_TEXT_WITH_OUTLINE_HELPER("Back (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+    }
+#elif defined(VITA) || defined(WII_U) || defined(PSP)
+#define SET_SELECT_BTN_TEXT()                                                                                                                                             \
+    TextObject text_Controls_c_10a;                                                                                                                                       \
+    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                           \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                          \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                              \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+    }
+#else
+#define SET_SELECT_BTN_TEXT()                                                                                                                                               \
+    TextObject text_Controls_c_10a;                                                                                                                                         \
+    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);                                                                                                                             \
+    if (gameWidth == 320 && gameHeight == 240) {                                                                                                                            \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
+    } else {                                                                                                                                                                \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+    }
 #endif
 
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
@@ -746,11 +783,7 @@ struct TextObjectAnimated {
 	RENDER_TEXT(text_Controls_c_9a);                                   \
 	RENDER_TEXT(text_Controls_9b);                                     \
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_c_9a, text_Controls_c_10a); \
-    if (videoSettings.aspectRatioIndex == 0) {                         \
-	    RENDER_TEXT(text_Controls_c_10aa);                             \
-    } else {                                                           \
-        RENDER_TEXT(text_Controls_c_10a);                              \
-    }                                                                  \
+    RENDER_TEXT(text_Controls_c_10a);                                  \
 	RENDER_TEXT(text_Controls_10b);                                    \
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_10a, text_Controls_c_12a);  \
 	RENDER_TEXT(text_Controls_c_12a);                                  \
@@ -817,11 +850,11 @@ struct TextObjectAnimated {
 	SET_TEXT_WITH_OUTLINE("(7/7)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
 
 #if defined(WII_U) || defined(SWITCH) || defined(ANDROID)
-#define CHEAT_TEXT "press X or Y 10 times"
+#define CHEAT_TEXT "press X or Y 8 times"
 #elif defined(VITA) || defined(PSP)
-#define CHEAT_TEXT "press Square or Triangle 10 times"
+#define CHEAT_TEXT "press Square or Triangle 8 times"
 #else
-#define CHEAT_TEXT "press the Period key 10 times"
+#define CHEAT_TEXT "press the Period key 8 times"
 #endif
 
 #define RENDER_CREDITS_TEXT_PAGE_1()   \

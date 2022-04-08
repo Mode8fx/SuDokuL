@@ -324,7 +324,7 @@
     if (KEY_PRESSED(INPUT_SWAP) && miniGridState == 0) { \
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x; \
         if (originalGrid[i] == 0) {                      \
-            if (++cheatCounter >= 10) {                  \
+            if (++cheatCounter >= 8) {                   \
                 Mix_PlayChannel(SFX_CHANNEL, sfx, 0);    \
                 SET_GRID_NUM(i, solutionGrid[i]);        \
                 cheatCounter = 0;                        \
