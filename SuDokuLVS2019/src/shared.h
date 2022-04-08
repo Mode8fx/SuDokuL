@@ -102,17 +102,17 @@ extern Uint16 gameHeight;
 #if defined(WII_U)
 #define DEFAULT_WIDTH         1280
 #define DEFAULT_HEIGHT        720
-#define DEFAULT_RI            4
+#define DEFAULT_RI            5
 #define DEFAULT_ARI           1
 #elif defined(VITA)
 #define DEFAULT_WIDTH         960
 #define DEFAULT_HEIGHT        544
-#define DEFAULT_RI            2
+#define DEFAULT_RI            3
 #define DEFAULT_ARI           1
 #elif defined(SWITCH)
 #define DEFAULT_WIDTH         1920
 #define DEFAULT_HEIGHT        1080
-#define DEFAULT_RI            7
+#define DEFAULT_RI            8
 #define DEFAULT_ARI           1
 #elif defined(PSP)
 #define DEFAULT_WIDTH         480
@@ -122,7 +122,7 @@ extern Uint16 gameHeight;
 #else
 #define DEFAULT_WIDTH         640
 #define DEFAULT_HEIGHT        480
-#define DEFAULT_RI            1
+#define DEFAULT_RI            2
 #define DEFAULT_ARI           0
 #endif
 #define DEFAULT_BG_SCALE      (defaultBGScale)
@@ -158,7 +158,10 @@ extern Uint16 gameHeight;
 	const Sint8 numOffset_large_x[9] = { (Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d) }; \
 	const Sint8 numOffset_large_y[9] = { (Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0,0,0,(Sint8)(d) };                                                       \
 	const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };                                                                                                    \
-	const Sint8 numOffset_small_y[9] = { (Sint8)(-d),0,(Sint8)(-d),0,(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d) };
+	Sint8 numOffset_small_y[9] = { (Sint8)(-d),0,(Sint8)(-d),0,(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d) };                                    \
+	if (gameHeight <= 240) {                                                                                                                                     \
+		for (i = 0; i < 9; i++) numOffset_small_y[i] -= 1;                                                                                                       \
+	}
 #elif defined(PSP)
 //const Sint8 numOffset_large_x[9] = { 1,1,1,1,1,1,1,1,1 };
 //const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 };

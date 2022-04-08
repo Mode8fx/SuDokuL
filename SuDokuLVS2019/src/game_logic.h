@@ -170,7 +170,6 @@
                 miniGridState = 0;                                                                          \
                 SET_GRID_CURSOR_BY_LARGE_X();                                                               \
                 SET_GRID_CURSOR_BY_LARGE_Y();                                                               \
-                GAME_HANDLE_MOUSE_MOVEMENT_MAIN();                                                          \
             }                                                                                               \
             if ((KEY_PRESSED(INPUT_CONFIRM) || CLICKED_WITHIN_MINI_GRID())) {                               \
                 i = (gridCursorIndex_y * 9) + gridCursorIndex_x;                                            \

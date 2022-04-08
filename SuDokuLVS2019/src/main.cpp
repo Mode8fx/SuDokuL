@@ -1975,10 +1975,10 @@ int main(int argv, char** args) {
 		/* Miscellaneous */
 		controllerAxis_leftStickX_last = controllerAxis_leftStickX;
 		controllerAxis_leftStickY_last = controllerAxis_leftStickY;
-		if (KEY_PRESSED(INPUT_CONFIRM_ALT)) { // fix the cursor resetting back to the last-tapped position
-			mouseInput_x = 0;
-			mouseInput_y = 0;
-		}
+		//if (KEY_PRESSED(INPUT_CONFIRM_ALT)) { // fix the cursor resetting back to the last-tapped position
+		//	mouseInput_x = 0;
+		//	mouseInput_y = 0;
+		//}
 		mouseInput_x_last = mouseInput_x;
 		mouseInput_y_last = mouseInput_y;
 

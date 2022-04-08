@@ -176,8 +176,14 @@
     mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x); \
     mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 
+#if !defined(WII_U)
 #define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                \
     mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
     mouseInput_y = (Sint32)(mouseInput_y * screenScale);
+#else
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                              \
+    mouseInput_x = (Sint32)(mouseInput_x * screenScale * screenScale); \
+    mouseInput_y = (Sint32)(mouseInput_y * screenScale * screenScale);
+#endif
 
 #endif
