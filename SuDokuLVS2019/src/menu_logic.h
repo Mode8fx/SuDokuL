@@ -88,20 +88,38 @@
     menuCursor.rect.x = (int)(BACKGROUND_MENU_CURSOR_POSITION_X - MENU_CURSOR_X_OFFSET);
 
 // Settings are re-loaded so that any unsaved changes from the video menu are undone
-#define MENU_HANDLE_BACK_BUTTON(state)                                   \
-    if (KEY_PRESSED(INPUT_BACK)) {                                       \
-        time_anim1 = 0;                                                  \
-        programState = state;                                            \
-        LOAD_SETTINGS_FILE();                                            \
-        changedProgramState = true;                                      \
+#define MENU_HANDLE_BACK_BUTTON(state)      \
+    if (KEY_PRESSED(INPUT_BACK)) {          \
+        time_anim1 = 0;                     \
+        programState = state;               \
+        MENU_RESET_CURSOR_POSITIONS(state); \
+        LOAD_SETTINGS_FILE();               \
+        changedProgramState = true;         \
     }
 
-#define MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(state)                    \
-    if (KEY_PRESSED(INPUT_BACK)) {                                      \
-        time_anim1 = 0;                                                 \
-        programState = state;                                           \
-        SAVE_CURRENT_SETTINGS();                                        \
-        changedProgramState = true;                                     \
+#define MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(state) \
+    if (KEY_PRESSED(INPUT_BACK)) {                   \
+        time_anim1 = 0;                              \
+        programState = state;                        \
+        MENU_RESET_CURSOR_POSITIONS(state);          \
+        SAVE_CURRENT_SETTINGS();                     \
+        changedProgramState = true;                  \
+    }
+
+#define MENU_RESET_CURSOR_POSITIONS(state)  \
+    switch(state) {                         \
+        case 2:                             \
+            menuCursorIndex_play = 0;       \
+            menuCursorIndex_options = 0;    \
+            break;                          \
+        case 13:                            \
+            menuCursorIndex_controls = 0;   \
+            menuCursorIndex_video = 0;      \
+            menuCursorIndex_sound = 0;      \
+            menuCursorIndex_background = 0; \
+            break;                          \
+        default:                            \
+            break;                          \
     }
 
 #define UPDATE_MENU_CURSOR_POSITION_Y(cursor) \
@@ -181,9 +199,9 @@
     mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
     mouseInput_y = (Sint32)(mouseInput_y * screenScale);
 #else
-#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                              \
-    mouseInput_x = (Sint32)(mouseInput_x * screenScale * screenScale); \
-    mouseInput_y = (Sint32)(mouseInput_y * screenScale * screenScale);
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                                                          \
+    mouseInput_x = (Sint32)((mouseInput_x - centerViewport.x) * SCALING_WIDTH / centerViewport.w); \
+    mouseInput_y = (Sint32)((mouseInput_y - centerViewport.y) * SCALING_HEIGHT / centerViewport.h);
 #endif
 
 #endif

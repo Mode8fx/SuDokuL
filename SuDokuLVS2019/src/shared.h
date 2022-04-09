@@ -366,6 +366,7 @@ extern Uint16 gameHeight;
 	TTF_CloseFont(pixelFont_grid_mini);                  \
 	TTF_Quit();                                          \
 	/* Sound */                                          \
+	Mix_HaltMusic();                                     \
 	Mix_FreeMusic(bgm_1);                                \
 	Mix_FreeMusic(bgm_2);                                \
 	Mix_FreeMusic(bgm_3);                                \
