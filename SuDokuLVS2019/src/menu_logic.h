@@ -199,9 +199,9 @@
     mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
     mouseInput_y = (Sint32)(mouseInput_y * screenScale);
 #else
-#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                                                          \
-    mouseInput_x = (Sint32)((mouseInput_x - centerViewport.x) * SCALING_WIDTH / centerViewport.w); \
-    mouseInput_y = (Sint32)((mouseInput_y - centerViewport.y) * SCALING_HEIGHT / centerViewport.h);
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                                                           \
+    mouseInput_x = (Sint32)((mouseInput_x * SCALING_WIDTH  / centerViewport.w) - centerViewport.x); \
+    mouseInput_y = (Sint32)((mouseInput_y * SCALING_HEIGHT / centerViewport.h) - centerViewport.y);
 #endif
 
 #endif
