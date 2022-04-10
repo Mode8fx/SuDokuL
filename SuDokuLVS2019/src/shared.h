@@ -284,8 +284,6 @@ extern Uint16 gameHeight;
 #endif
 
 #define SET_SCALING()                                                                            \
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                                              \
-	SDL_RenderClear(renderer);                                                                   \
 	if (isIntegerScale) {                                                                        \
 		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));       \
 		if (int_i < 1) int_i = 1;                                                                \

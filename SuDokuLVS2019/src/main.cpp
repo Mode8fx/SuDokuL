@@ -556,10 +556,7 @@ int main(int argv, char** args) {
 #endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
 	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
-#if defined(SWITCH)
-	SET_TEXT_WITH_OUTLINE("Always On", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
-	SET_TEXT_WITH_OUTLINE("Always On", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
-#elif defined(ANDROID)
+#if defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("N/A", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("N/A", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
 #else
@@ -603,6 +600,7 @@ int main(int argv, char** args) {
 #endif
 
 	while (isRunning) {
+		SDL_RenderClear(renderer);
 		/* Update Timers */
 		UPDATE_GLOBAL_TIMER();
 		deltaTime = timer_global.now - timer_global.last;
@@ -1560,9 +1558,7 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-#if !defined(SWITCH)
 							SDL_TOGGLE_INTEGER_SCALE();
-#endif
 							break;
 #else
 						case 0:
@@ -1635,9 +1631,7 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-#if !defined(SWITCH)
 							SDL_TOGGLE_INTEGER_SCALE();
-#endif
 							break;
 						case 3:
 							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
