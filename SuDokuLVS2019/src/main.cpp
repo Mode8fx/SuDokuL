@@ -445,8 +445,6 @@ int main(int argv, char** args) {
 		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, k, -1, -1.5);
 	}
-	/* Fix Outlines */
-	//FIX_CHAR_OUTLINE_OFFSETS();
 	/* Test Strings */
 	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), FONT_SIZE * 1);
 	//SET_TEXT_WITH_OUTLINE("N O P Q R S T U V W X Y Z", text_test_2, OBJ_TO_MID_SCREEN_X(text_test_2), FONT_SIZE * 3);

@@ -141,27 +141,6 @@
     RENDER_TEXT(text_Credits);
 #endif
 
-#define TRANSITION_GRAPHICS_TO_OPTIONS_MENU()                   \
-    /* Animate Text */                                          \
-    MENU_MOVE_TEXT_UP(text_Video, time_anim1);                  \
-    MENU_MOVE_TEXT_UP(text_Sound, time_anim1);                  \
-    MENU_MOVE_TEXT_UP(text_Background, time_anim1);             \
-    MENU_MOVE_TEXT_UP(text_Scores, time_anim1);                 \
-    /* Check For Finished Animation */                          \
-    if (time_anim1 >= 1) {                                      \
-        text_Video.rect.y = text_Video.endPos_y;                \
-        text_Sound.rect.y = text_Sound.endPos_y;                \
-        text_Background.rect.y = text_Background.endPos_y;      \
-        text_Scores.rect.y = text_Scores.endPos_y;              \
-        UPDATE_OPTIONS_MENU_CURSOR_POSITION_X();                \
-        UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options); \
-    }                                                           \
-    /* Draw Text */                                             \
-    RENDER_TEXT(text_Video);                                    \
-    RENDER_TEXT(text_Sound);                                    \
-    RENDER_TEXT(text_Background);
-    //RENDER_TEXT(text_Scores);
-
 #define TRANSITION_TO_STATE_WITH_TIMER(timer, time, state) \
     if (timer >= time) { \
         timer = 0; \
