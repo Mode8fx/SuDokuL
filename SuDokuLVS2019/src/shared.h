@@ -119,6 +119,11 @@ extern Uint16 gameHeight;
 #define DEFAULT_HEIGHT        272
 #define DEFAULT_RI            1
 #define DEFAULT_ARI           1
+#elif defined(ANDROID)
+#define DEFAULT_WIDTH         SYSTEM_WIDTH
+#define DEFAULT_HEIGHT        SYSTEM_HEIGHT
+#define DEFAULT_RI            0
+#define DEFAULT_ARI           0
 #else
 #define DEFAULT_WIDTH         640
 #define DEFAULT_HEIGHT        480
@@ -275,7 +280,7 @@ extern Uint16 gameHeight;
 	isIntegerScale = !isIntegerScale; \
 	SET_SCALING();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
 #else
@@ -283,6 +288,9 @@ extern Uint16 gameHeight;
 #define SCALING_HEIGHT SDL_GetWindowSurface(window)->h
 #endif
 
+#if defined(ANDROID)
+#define SET_SCALING()
+#else
 #define SET_SCALING()                                                                            \
 	if (isIntegerScale) {                                                                        \
 		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));       \
@@ -309,6 +317,7 @@ extern Uint16 gameHeight;
 	}                                                                                            \
 	UPDATE_BORDER_RECTS();
 	//SDL_RenderSetClipRect(renderer, &centerViewport);
+#endif
 
 #define UPDATE_BORDER_RECTS()                             \
 	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 50;    \

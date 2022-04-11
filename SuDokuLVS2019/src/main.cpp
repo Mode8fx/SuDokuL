@@ -204,9 +204,9 @@ Sint32 mouseInput_x;
 Sint32 mouseInput_x_last;
 Sint32 mouseInput_y;
 Sint32 mouseInput_y_last;
-double screenScale;
+double screenScale = 1;
 bool isRunning;
-bool isWindowed;
+bool isWindowed = true;
 bool isIntegerScale = true;
 bool wentPastTitleScreen = 0;
 
@@ -457,7 +457,7 @@ int main(int argv, char** args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), FONT_SIZE * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), FONT_SIZE * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(PSP) || defined(ANDROID)
+#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -555,11 +555,12 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
-	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 #if defined(ANDROID)
-	SET_TEXT_WITH_OUTLINE("N/A", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
-	SET_TEXT_WITH_OUTLINE("N/A", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Status Bar",       text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Hide",             text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #else
+	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #endif
@@ -593,7 +594,10 @@ int main(int argv, char** args) {
 	programState = 0;
 	time_anim_PressStart = 0;
 	isRunning = true;
-	isWindowed = true;
+
+#if defined(ANDROID)
+	SDL_TOGGLE_FULLSCREEN();
+#endif
 
 #if defined(PSP) || defined(VITA) || defined(WII_U)
 	UPDATE_PAUSE_TIMER();
@@ -880,7 +884,7 @@ int main(int argv, char** args) {
 						justClickedInMiniGrid = false;
 					}
 					break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP) && !defined(ANDROID)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_WINDOWEVENT:
 					if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 						if (SDL_GetWindowSurface(window)->w < gameWidth)
@@ -1385,7 +1389,7 @@ int main(int argv, char** args) {
 					case 1:
 						RENDER_CONTROLS_TEXT_PAGE_2();
 						break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP) && !defined(ANDROID)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 					case 2:
 						RENDER_CONTROLS_TEXT_PAGE_3();
 						break;
@@ -1562,7 +1566,7 @@ int main(int argv, char** args) {
 							break;
 #else
 						case 0:
-							//SDL_TOGGLE_INTEGER_SCALE();
+							SDL_TOGGLE_FULLSCREEN();
 							break;
 #endif
 						default:
@@ -1649,7 +1653,7 @@ int main(int argv, char** args) {
 							break;
 #else
 						case 0:
-							//SDL_TOGGLE_INTEGER_SCALE();
+							SDL_TOGGLE_FULLSCREEN();
 							break;
 #endif
 						default:
@@ -1702,7 +1706,11 @@ int main(int argv, char** args) {
 				RENDER_TEXT(text_Apply);
 #endif
 				RENDER_TEXT(text_Integer_Scale);
+#if defined(ANDROID)
+				if (isWindowed) {
+#else
 				if (isIntegerScale) {
+#endif
 					RENDER_TEXT(text_On);
 				} else {
 					RENDER_TEXT(text_Off);

@@ -298,7 +298,7 @@ struct TextObjectAnimated {
     textObj.rect.x = pos_x;                                                                    \
     textObj.rect.y = pos_y;
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else
@@ -679,7 +679,7 @@ struct TextObjectAnimated {
     if (gameWidth == 320 && gameHeight == 240) {                                                                                                                   \
         SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     } else {                                                                                                                                                       \
-        SET_TEXT_WITH_OUTLINE_HELPER("- (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+        SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     }
 #elif defined(ANDROID)
 #define SET_SELECT_BTN_TEXT()                                                                                                                                         \
@@ -688,7 +688,7 @@ struct TextObjectAnimated {
     if (gameWidth == 320 && gameHeight == 240) {                                                                                                                      \
         SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     } else {                                                                                                                                                          \
-        SET_TEXT_WITH_OUTLINE_HELPER("Back (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+        SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     }
 #elif defined(VITA) || defined(WII_U) || defined(PSP)
 #define SET_SELECT_BTN_TEXT()                                                                                                                                           \
@@ -697,7 +697,7 @@ struct TextObjectAnimated {
     if (gameWidth == 320 && gameHeight == 240) {                                                                                                                        \
         SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     } else {                                                                                                                                                            \
-        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     }
 #else
 #define SET_SELECT_BTN_TEXT()                                                                                                                                               \
@@ -706,11 +706,11 @@ struct TextObjectAnimated {
     if (gameWidth == 320 && gameHeight == 240) {                                                                                                                            \
         SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     } else {                                                                                                                                                                \
-        SET_TEXT_WITH_OUTLINE_HELPER("Select (while paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5))); \
+        SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));       \
     }
 #endif
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
 #define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)
 #else
 #define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)                             \
@@ -759,7 +759,7 @@ struct TextObjectAnimated {
 	RENDER_TEXT(text_Controls_12c);                                 \
 	RENDER_TEXT(text_Controls_P2);
 
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(PSP) && !defined(ANDROID)
+#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 #define RENDER_CONTROLS_TEXT_PAGE_3()                             \
 	RENDER_TEXT_LARGE(text_Controls_c_1);                         \
 	RENDER_TEXT(text_Controls_c_2a);                              \

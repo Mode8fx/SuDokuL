@@ -194,14 +194,16 @@
     mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x); \
     mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
 
-#if !defined(WII_U)
-#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                \
-    mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
-    mouseInput_y = (Sint32)(mouseInput_y * screenScale);
-#else
+#if defined(WII_U)
 #define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                                                           \
     mouseInput_x = (Sint32)((mouseInput_x * SCALING_WIDTH  / centerViewport.w) - centerViewport.x); \
     mouseInput_y = (Sint32)((mouseInput_y * SCALING_HEIGHT / centerViewport.h) - centerViewport.y);
+#elif defined(ANDROID)
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()
+#else
+#define UPDATE_MOUSE_POS_VIEWPORT_TOUCH()                \
+    mouseInput_x = (Sint32)(mouseInput_x * screenScale); \
+    mouseInput_y = (Sint32)(mouseInput_y * screenScale);
 #endif
 
 #endif
