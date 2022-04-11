@@ -604,7 +604,6 @@ int main(int argv, char** args) {
 #endif
 
 	while (isRunning) {
-		SDL_RenderClear(renderer);
 		/* Update Timers */
 		UPDATE_GLOBAL_TIMER();
 		deltaTime = timer_global.now - timer_global.last;
@@ -615,6 +614,7 @@ int main(int argv, char** args) {
 			timer_buttonHold = 0;
 			timer_buttonHold_repeater = 0;
 		}
+		SDL_RenderClear(renderer);
 
 		keyInputs = 0;
 		dirInputs = 0;
