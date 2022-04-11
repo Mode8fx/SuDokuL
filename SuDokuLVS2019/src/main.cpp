@@ -1117,10 +1117,7 @@ int main(int argv, char** args) {
 					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
-				UPDATE_MAIN_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
-				MENU_HANDLE_BACK_BUTTON(3);
+				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 5);
 #else
@@ -1135,6 +1132,8 @@ int main(int argv, char** args) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Quit, 4);
 #endif
 				}
+				UPDATE_MAIN_MENU_CURSOR_POSITION_X();
+				MENU_HANDLE_BACK_BUTTON(3);
 #if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Play.rect)
 					|| MOUSE_IS_IN_RECT(text_Controls.rect) || MOUSE_IS_IN_RECT(text_Options.rect)
@@ -1148,7 +1147,7 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_main) {
 						case 0:
 							programState = 7;
-							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_play);
+							changedProgramState = true;
 							break;
 						case 1:
 							programState = 12;
@@ -1156,7 +1155,7 @@ int main(int argv, char** args) {
 							break;
 						case 2:
 							programState = 13;
-							UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);
+							changedProgramState = true;
 							break;
 						case 3:
 							programState = 18;
@@ -1188,10 +1187,7 @@ int main(int argv, char** args) {
 				break;
 			/* 7 = Play Menu */
 			case 7:
-				/* Animate Cursor */
-				UPDATE_PLAY_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
-				MENU_HANDLE_BACK_BUTTON(2);
+				/* Key Presses + Animate Cursor */
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_play, 4);
 				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Easy, 0);
@@ -1199,6 +1195,8 @@ int main(int argv, char** args) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Hard, 2);
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Very_Hard, 3);
 				}
+				UPDATE_PLAY_MENU_CURSOR_POSITION_X();
+				MENU_HANDLE_BACK_BUTTON(2);
 				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Easy.rect)
 					|| MOUSE_IS_IN_RECT(text_Normal.rect) || MOUSE_IS_IN_RECT(text_Hard.rect) || MOUSE_IS_IN_RECT(text_Very_Hard.rect)))) {
 					programState = 8;
@@ -1405,10 +1403,7 @@ int main(int argv, char** args) {
 					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
-				UPDATE_OPTIONS_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
-				MENU_HANDLE_BACK_BUTTON(2);
+				/* Key Presses + Animate Cursor */
 				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 4);
 				if (MOUSE_MOVED()) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Controls_Menu, 0);
@@ -1417,6 +1412,8 @@ int main(int argv, char** args) {
 					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Background, 3);
 					// MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Scores, 3);
 				}
+				UPDATE_OPTIONS_MENU_CURSOR_POSITION_X();
+				MENU_HANDLE_BACK_BUTTON(2);
 				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Controls_Menu.rect)
 					|| MOUSE_IS_IN_RECT(text_Video.rect) || MOUSE_IS_IN_RECT(text_Sound.rect) || MOUSE_IS_IN_RECT(text_Background.rect)))) {
 					time_anim1 = 0;
@@ -1499,9 +1496,22 @@ int main(int argv, char** args) {
 					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
+				/* Key Presses + Animate Cursor */
+#if !defined(ANDROID)
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
+				if (MOUSE_MOVED()) {
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_video, text_Apply, 3);
+				}
+#else
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
+				if (MOUSE_MOVED()) {
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+				}
+#endif
 				UPDATE_VIDEO_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
@@ -1660,20 +1670,6 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if !defined(ANDROID)
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_video, text_Apply, 3);
-				}
-#else
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
-				}
-#endif
 				/* Set and Draw Numbers */
 #if !defined(ANDROID)
 				SET_AND_RENDER_NUM_RESOLUTION(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
@@ -1720,9 +1716,15 @@ int main(int argv, char** args) {
 					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
+				/* Key Presses + Animate Cursor */
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_sound, 4);
+				if (MOUSE_MOVED()) {
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Reset_to_Default, SOUND_MENU_ENDPOINT, 3);
+				}
 				UPDATE_SOUND_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_sound) {
@@ -1788,13 +1790,6 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_sound, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Reset_to_Default, SOUND_MENU_ENDPOINT, 3);
-				}
 				/* Set and Draw Numbers */
 				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(soundSettings.musicIndex, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_Y);
 				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(soundSettings.bgmVolume, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_VOLUME_Y);
@@ -1813,9 +1808,15 @@ int main(int argv, char** args) {
 					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
+				/* Key Presses + Animate Cursor */
+				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_background, 4);
+				if (MOUSE_MOVED()) {
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
+					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 3);
+				}
 				UPDATE_BACKGROUND_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_background) {
@@ -1871,13 +1872,6 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_background, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 3);
-				}
 				/* Set and Draw Numbers */
 				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(bgSettings.speedMult, BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_SPEED_Y);
 				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED((bgSettings.scrollDir * 5), BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
@@ -1900,9 +1894,17 @@ int main(int argv, char** args) {
 					UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
 					changedProgramState = false;
 				}
-				/* Animate Cursor */
+				/* Key Presses + Animate Cursor */
+#if !defined(ANDROID) && !defined(PSP)
+				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
+#endif
+				if (MOUSE_MOVED()) {
+					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
+#if !defined(ANDROID) && !defined(PSP)
+					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
+#endif
+				}
 				UPDATE_CONTROLS_MENU_CURSOR_POSITION_X();
-				/* Key Presses */
 				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_controls) {
@@ -1936,15 +1938,6 @@ int main(int argv, char** args) {
 						default:
 							break;
 					}
-				}
-#if !defined(ANDROID) && !defined(PSP)
-				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
-#endif
-				if (MOUSE_MOVED()) {
-					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
-#if !defined(ANDROID) && !defined(PSP)
-					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
-#endif
 				}
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
