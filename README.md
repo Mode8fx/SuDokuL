@@ -1,5 +1,5 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL2. It's currently available for Switch, Wii U, Vita, PC, and Android.
+This is a Sudoku game made in C++ and SDL2. It's currently available for PC, Android, Switch, Wii U, Vita, and PSP.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
@@ -32,14 +32,16 @@ This game was initially designed for 640x480 displays, but it is compatible with
 - [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
 2. Extract the above ZIP files into a folder called SDL2, which should be located in the SuDokuLVS2019 directory.
 3. From there, use the Visual Studio project file from the repo with Visual Studio 2019.
+#### Android
+Install Android Studio, then follow [this tutorial](https://discourse.libsdl.org/t/building-sdl2-0-10-in-android-studio-3-4-2-in-windows-10/26481).
+#### Switch
+Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
 #### Wii U
 Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed.
 #### Vita
 Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed.
-#### Switch
-Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
-#### Android
-Install Android Studio, then follow [this tutorial](https://discourse.libsdl.org/t/building-sdl2-0-10-in-android-studio-3-4-2-in-windows-10/26481).
+#### PSP
+Install [psptoolchain](https://github.com/pspdev/psptoolchain), along with the latest [PSP ports](https://github.com/pspdev/psp-ports) of SDL2, SDL2_image, SDL2_ttf, and SDL2_mixer (Linux or WSL is strongly recommended). Move everything from the `psp` folder into the `src` directory. Move `Makefile_psp` into the `src` directory and rename it to `Makefile`. Build with make.
 
 ## Credits
 Everything in this game is made by me except for the following assets:
@@ -66,6 +68,12 @@ Commodore Pixelized v1.2 by by Devin Cook
 - SDL2_ttf 2.0.15
 - SDL2_mixer 2.0.4
 - Visual Studio 2019
+##### Android
+- Android Studio
+##### Switch
+- devkitpro
+- SDL2 for Switch
+- Make
 ##### Wii U
 - devkitPro
 - Wii U Toolkit
@@ -74,9 +82,6 @@ Commodore Pixelized v1.2 by by Devin Cook
 ##### Vita
 - VitaSDK
 - CMake
-##### Switch
-- devkitpro
-- SDL2 for Switch
+##### PSP
+- psptoolchain
 - Make
-##### Android
-- Android Studio
