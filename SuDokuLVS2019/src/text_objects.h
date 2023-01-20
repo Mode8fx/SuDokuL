@@ -3,28 +3,198 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
+struct TextRect {
+    Sint16 x;
+    Sint16 y;
+    Sint16 w;
+    Sint16 h;
+};
+
+/* Single Characters */
+struct TextCharObject {
+    SDL_Surface* surface, * outline_surface;
+    SDL_Texture* texture, * outline_texture;
+    SDL_Rect rect, outline_rect;
+    Sint8 outlineOffset_x, outlineOffset_y;
+};
+
+/* Full Words/Phrases (can be animated) */
+struct TextObject {
+    string str;
+    TextRect rect;
+    Sint16 startPos_x, endPos_x;
+    Sint16 startPos_y, endPos_y;
+};
+
+/* Text Objects */
+extern TextObject text_Loading;
+extern TextObject text_Easy;
+extern TextObject text_Normal;
+extern TextObject text_Hard;
+extern TextObject text_Very_Hard;
+extern TextObject text_Time;
+extern TextObject text_Empty;
+extern TextObject text_Game_Easy;
+extern TextObject text_Game_Normal;
+extern TextObject text_Game_Hard;
+extern TextObject text_Game_VHard;
+extern TextObject text_Paused;
+extern TextObject text_Quit_to_Menu_1;
+extern TextObject text_Quit_to_Menu_2;
+extern TextObject text_You_Win;
+extern TextObject text_Controls_Menu;
+extern TextObject text_Video;
+extern TextObject text_Sound;
+extern TextObject text_Background;
+extern TextObject text_Controller_Input;
+extern TextObject text_Touch_Screen_Input;
+extern TextObject text_A_Confirm;
+extern TextObject text_B_Back;
+extern TextObject text_B_Confirm;
+extern TextObject text_A_Back;
+extern TextObject text_Enabled;
+extern TextObject text_Disabled;
+extern TextObject text_Video_Warning;
+extern TextObject text_Resolution;
+extern TextObject text_x;
+extern TextObject text_Aspect_Ratio;
+extern TextObject text_colon;
+extern TextObject text_Integer_Scale;
+extern TextObject text_On;
+extern TextObject text_Off;
+extern TextObject text_Apply;
+extern TextObject text_Music;
+extern TextObject text_Music_Volume;
+extern TextObject text_SFX_Volume;
+extern TextObject text_Scroll_Speed;
+extern TextObject text_Scroll_Direction;
+extern TextObject text_Background_Size;
+extern TextObject text_Reset_to_Default;
+extern TextObject text_Controls_1;
+extern TextObject text_Controls_2a;
+extern TextObject text_Controls_2b;
+extern TextObject text_Controls_2c;
+extern TextObject text_Controls_3a;
+extern TextObject text_Controls_3b;
+extern TextObject text_Controls_3c;
+extern TextObject text_Controls_4a;
+extern TextObject text_Controls_4b;
+extern TextObject text_Controls_4c;
+extern TextObject text_Controls_5a;
+extern TextObject text_Controls_5b;
+extern TextObject text_Controls_6a;
+extern TextObject text_Controls_6b;
+extern TextObject text_Controls_7a;
+extern TextObject text_Controls_7b;
+extern TextObject text_Controls_7c;
+extern TextObject text_Controls_P1;
+extern TextObject text_Controls_8;
+extern TextObject text_Controls_9a;
+extern TextObject text_Controls_9b;
+extern TextObject text_Controls_10a;
+extern TextObject text_Controls_10b;
+extern TextObject text_Controls_11a;
+extern TextObject text_Controls_11b;
+extern TextObject text_Controls_12a;
+extern TextObject text_Controls_12b;
+extern TextObject text_Controls_12c;
+extern TextObject text_Controls_P2;
+extern TextObject text_Controls_c_1;
+extern TextObject text_Controls_c_2a;
+extern TextObject text_Controls_c_3a;
+extern TextObject text_Controls_c_4a;
+extern TextObject text_Controls_c_5a;
+extern TextObject text_Controls_c_6a;
+extern TextObject text_Controls_c_P1;
+extern TextObject text_Controls_c_8;
+extern TextObject text_Controls_c_9a;
+extern TextObject text_Controls_c_12a;
+extern TextObject text_Controls_c_12b;
+extern TextObject text_Controls_c_12c;
+extern TextObject text_Controls_c_P2;
+extern TextObject text_Credits_1;
+extern TextObject text_Credits_2;
+extern TextObject text_Credits_3;
+extern TextObject text_Credits_P1;
+extern TextObject text_Credits_4;
+extern TextObject text_Credits_5b;
+extern TextObject text_Credits_5a;
+extern TextObject text_Credits_6b;
+extern TextObject text_Credits_6a;
+extern TextObject text_Credits_7b;
+extern TextObject text_Credits_7a;
+extern TextObject text_Credits_8b;
+extern TextObject text_Credits_8a;
+extern TextObject text_Credits_9b;
+extern TextObject text_Credits_9a;
+extern TextObject text_Credits_10b;
+extern TextObject text_Credits_10a;
+extern TextObject text_Credits_11b;
+extern TextObject text_Credits_11a;
+extern TextObject text_Credits_12;
+extern TextObject text_Credits_P2;
+extern TextObject text_Credits_13;
+extern TextObject text_Credits_14;
+extern TextObject text_Credits_15;
+extern TextObject text_Credits_16;
+extern TextObject text_Credits_17;
+extern TextObject text_Credits_P3;
+extern TextObject text_Credits_18;
+extern TextObject text_Credits_19;
+extern TextObject text_Credits_20;
+extern TextObject text_Credits_P4;
+extern TextObject text_Credits_21;
+extern TextObject text_Credits_22;
+extern TextObject text_Credits_23;
+extern TextObject text_Credits_P5;
+extern TextObject text_Credits_24;
+extern TextObject text_Credits_25;
+extern TextObject text_Credits_26;
+extern TextObject text_Credits_27;
+extern TextObject text_Credits_28;
+extern TextObject text_Credits_29;
+extern TextObject text_Credits_30;
+extern TextObject text_Credits_P6;
+extern TextObject text_Credits_31;
+extern TextObject text_Credits_32;
+extern TextObject text_Credits_33;
+extern TextObject text_Credits_34;
+extern TextObject text_Credits_35;
+extern TextObject text_Credits_36;
+extern TextObject text_Credits_37;
+extern TextObject text_Credits_38;
+extern TextObject text_Credits_39;
+extern TextObject text_Credits_P7;
+extern TextObject text_PressStart;
+extern TextObject text_Version_Number;
+extern TextObject text_Play;
+extern TextObject text_Controls;
+extern TextObject text_Options;
+extern TextObject text_Credits;
+extern TextObject text_Quit;
+
+/* Font-Related Variables */
+extern Uint16 fontSize;
+extern Uint16 gridNumSize;
+extern Uint16 text_pressStartAmplitude;
+extern Uint16 text_standardAmplitude;
+extern Uint16 text_menuChoice3;
+extern Uint16 text_menuChoice1;
+extern Uint16 text_menuChoice2;
+extern Uint16 text_menuChoice4;
+extern Uint16 text_menuChoice5;
+extern Uint16 text_videoWarning_Y;
+extern Uint16 text_midScreen_Y;
+extern Uint16 text_quitToMenu_Y;
+extern Uint16 deepMenuCursorPosition_X;
+extern Uint16 videoMenuNumPosition_X;
+extern Uint16 backgroundMenuNumPosition_X;
+
 #if defined(VITA)
 #define FONT_COMMODORE "ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf"
 #else
 #define FONT_COMMODORE "fonts/Commodore Pixelized v1.2.ttf"
 #endif
-
-#define INIT_STARTING_TEXT_VARIABLES()                                                                 \
-	const Uint16 fontSize = (max(gameHeight / 24, 8));                                                 \
-    const Uint16 gridNumSize = (GRID_SIZE_A * 3);                                                      \
-    const Uint16 text_pressStartAmplitude = (FONT_SIZE / 2);                                           \
-    const Uint16 text_standardAmplitude = (FONT_SIZE / 10);                                            \
-    const Uint16 text_menuChoice3 = (gameHeight * 5 / 8);                                              \
-    const Uint16 text_menuChoice1 = (TEXT_PRESS_START_Y - (FONT_SIZE * 4));                            \
-    const Uint16 text_menuChoice2 = (TEXT_PRESS_START_Y - (FONT_SIZE * 2));                            \
-    const Uint16 text_menuChoice4 = (TEXT_PRESS_START_Y + (FONT_SIZE * 2));                            \
-    const Uint16 text_menuChoice5 = (TEXT_PRESS_START_Y + (FONT_SIZE * 4));                            \
-    const Uint16 text_videoWarning_Y = (TEXT_PRESS_START_Y + (FONT_SIZE * 5));                         \
-    const Uint16 text_midScreen_Y = ((gameHeight - FONT_SIZE) / 2);                                    \
-    const Uint16 text_quitToMenu_Y = (TEXT_PAUSED_Y + (FONT_SIZE * 2.5));                              \
-    const Uint16 deepMenuCursorPosition_X = (gameWidth / 6);                                           \
-    const Uint16 videoMenuNumPosition_X = (gameWidth * 3 / 5);                                         \
-    const Uint16 backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
 
 #define FONT_SIZE                         (fontSize)
 #define GRID_NUM_SIZE                     (gridNumSize)
@@ -90,34 +260,7 @@
 #define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (FONT_SIZE * 2))
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (FONT_SIZE * 3))
 
-struct TextRect {
-    Sint16 x;
-    Sint16 y;
-    Sint16 w;
-    Sint16 h;
-};
-
-/* Single Characters */
-struct TextCharObject {
-    SDL_Surface *surface, *outline_surface;
-    SDL_Texture *texture, *outline_texture;
-    SDL_Rect rect, outline_rect;
-    Sint8 outlineOffset_x, outlineOffset_y;
-};
-
-/* Full Words/Phrases */
-struct TextObject {
-    string str;
-    TextRect rect;
-};
-
-/* Full Words/Phrases (Animated) */
-struct TextObjectAnimated {
-    string str;
-    TextRect rect;
-    Sint16 startPos_x, endPos_x;
-    Sint16 startPos_y, endPos_y;
-};
+extern void initStartingTextVariables();
 
 #define INIT_TEXT_OBJECT_VALS(textObj) \
     textObj.rect.x = 0;                \
@@ -189,17 +332,14 @@ struct TextObjectAnimated {
     TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    TextObject textObj;                                    \
     INIT_TEXT_OBJECT_VALS(textObj);                        \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    TextObject textObj;                                          \
     INIT_TEXT_OBJECT_VALS(textObj);                              \
     SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y) \
-    TextObjectAnimated textObj;                                     \
     INIT_TEXT_OBJECT_VALS(textObj);                                 \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);      \
     INIT_MENU_OPTION_POSITIONS(textObj);

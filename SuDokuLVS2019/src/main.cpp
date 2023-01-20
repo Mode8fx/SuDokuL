@@ -5,7 +5,6 @@
 #include "shared.h"
 #include "sound_logic.h"
 #include "sprite_objects.h"
-#include "text_objects.h"
 #include "transitions.h"
 #include "sudokuGen.h"
 #include "puzzleBank.h"
@@ -22,9 +21,6 @@ SDL_Rect leftRect;
 SDL_Rect rightRect;
 SDL_Rect divider;
 
-/* SDL Settings File */
-SDL_RWops *settingsFile;
-
 /* SDL Controller */
 #if defined(PSP)
 SDL_Joystick *controller = NULL;
@@ -32,90 +28,8 @@ SDL_Joystick *controller = NULL;
 SDL_GameController *controller = nullptr;
 #endif
 
-/* Window Width and Height */
-Uint16 gameWidth = 640;
-Uint16 gameHeight = 480;
-SDL_DisplayMode DM;
-#if defined(WII_U)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[7]    = {  320,  362,  640,  725,  768,  800,  960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[7]   = {  240,  272,  480,  544,  576,  600,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[6]   = {  426,  480,  853,  960, 1176, 1280 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[6]  = {  240,  272,  480,  544,  664,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[3]  = {  435,  720, 1152 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[3] = {  272,  480,  720 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[3]   = {  480,  960, 1280 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[3]  = {  205,  410,  548 };
-#elif defined(VITA)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[4]    = { 320, 362, 640, 725 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[4]   = { 240, 272, 480, 544 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[4]   = { 426, 480, 853, 960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[4]  = { 240, 272, 480, 544 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[2]  = { 435, 720 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[2] = { 272, 480 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[2]   = { 480, 960 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[2]  = { 205, 410 };
-#elif defined(SWITCH)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[11]   = {  320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[11]  = {  240,  272,  480,  544,  576,  600,  720,  768,  864,  960, 1080 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[9]   = {  426,  480,  853,  960, 1176, 1280, 1360, 1600, 1920 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[9]  = {  240,  272,  480,  544,  664,  720,  768,  900, 1080 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[7]  = {  435,  720, 1152, 1280, 1440, 1600, 1680 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[7] = {  272,  480,  720,  800,  900, 1024, 1050 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[3]   = {  480,  960, 1280 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[3]  = {  205,  410,  548 };
-#elif defined(PSP)
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[2]    = { 320, 362 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[2]   = { 240, 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[2]   = { 426, 480 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[2]  = { 240, 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[1]  = { 435 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[1] = { 272 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[1]   = { 480 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[1]  = { 205 };
-#else
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[14]    = {  320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[14]   = {  240,  272,  480,  544,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[12]   = {  426,  480,  853,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3620, 3840 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[12]  = {  240,  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2036, 2160 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[10]  = {  435,  720, 1152, 1280, 1440, 1600, 1680, 1920, 2560, 3840 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[10] = {  272,  480,  720,  800,  900, 1024, 1050, 1200, 1600, 2400 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[6]    = {  480,  960, 1280, 2560, 3440, 5120 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[6]   = {  205,  410,  548, 1080, 1440, 2160 };
-#endif
-VideoSettings videoSettings;
-SDL_Rect centerViewport;
-
-/* Sound */
-Mix_Music *bgm_1;
-Mix_Music *bgm_2;
-Mix_Music *bgm_3;
-Mix_Music *bgm_4;
-Mix_Music *bgm_5;
-Mix_Music *bgm_6;
-Mix_Music *bgm_7;
-Mix_Chunk *sfx;
-SoundSettings soundSettings;
-
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
-
-/* Textures */
-SpriteObject tile;
-SpriteObjectWithPos logo;
-SpriteObjectWithPos menuCursor;
-SpriteObject game_grid;
-//SpriteObjectWithPos gridCursor;
-SpriteObjectWithPos gridCursor_bottom_left;
-SpriteObjectWithPos gridCursor_bottom_right;
-SpriteObjectWithPos gridCursor_top_left;
-SpriteObjectWithPos gridCursor_top_right;
-SpriteObject game_sidebar_small;
-
-SpriteObjectWithPos miniGrid_bottom_left;
-SpriteObjectWithPos miniGrid_bottom_right;
-SpriteObjectWithPos miniGrid_top_left;
-SpriteObjectWithPos miniGrid_top_right;
-SpriteObjectWithPos *currMiniGrid;
 
 /* Fonts */
 SDL_Color color_black = {0, 0, 0};
@@ -140,38 +54,6 @@ char tempCharArray[64];
 Uint8 charCounter;
 Uint16 charWidthCounter;
 
-/* Time */
-double deltaTime;
-Timer timer_global;
-double time_anim1;
-double time_anim_PressStart;
-Timer timer_game;
-double timer_buttonHold;
-double timer_buttonHold_repeater;
-Timer timer_paused;
-
-/* Program State */
-Uint8 programState;
-bool changedProgramState;
-
-/* Background */
-BackgroundSettings bgSettings;
-BGScroll bgScroll;
-
-/* Controls */
-ControlSettings controlSettings;
-
-/* Menu Cursors */
-Sint8 menuCursorIndex_main;
-Sint8 menuCursorIndex_play;
-Sint8 menuIndex_controls;
-Sint8 menuCursorIndex_options;
-Sint8 menuCursorIndex_controls;
-Sint8 menuCursorIndex_video;
-Sint8 menuCursorIndex_sound;
-Sint8 menuCursorIndex_background;
-Sint8 menuIndex_credits;
-
 /* Game Variables */
 Sint8 gridCursorIndex_x;
 Sint8 gridCursorIndex_y;
@@ -182,20 +64,6 @@ Sint8 miniGridCursorIndex_y;
 Sint8 temp_mouseIndex_x;
 Sint8 temp_mouseIndex_y;
 bool justClickedInMiniGrid;
-
-/* General-use Variables */
-Sint8 i, j, k;
-Sint8 char_x1, char_y1, char_x2, char_y2;
-Sint32 int_i;
-Uint32 uint_i;
-double d;
-
-/* Other */
-double screenScale = 1;
-bool isRunning;
-bool isWindowed = true;
-bool isIntegerScale = true;
-bool wentPastTitleScreen = 0;
 
 int main(int argv, char** args) {
 	/* [Wii U] Set SD Card Mount Path */
@@ -236,7 +104,7 @@ int main(int argv, char** args) {
 	INIT_DEFAULT_BG_SCALE();
 
 	/* Get settings from settings.bin */
-	LOAD_SETTINGS_FILE();
+	loadSettingsFile();
 	/* Set Video Settings */
 	SDL_GetCurrentDisplayMode(0, &DM);
 #if !defined(ANDROID)
@@ -268,8 +136,8 @@ int main(int argv, char** args) {
 
 	INIT_STARTING_WIDTH_HEIGHT_MULTS();
 	INIT_STARTING_SHARED_VARIABLES();
-	INIT_STARTING_TEXT_VARIABLES();
-	SET_BG_SCROLL_SPEED();
+	initStartingTextVariables();
+	setBGScrollSpeed();
 
 	/* Set Window/Renderer */
 #if defined(PSP)
@@ -356,7 +224,7 @@ int main(int argv, char** args) {
 
 	/* Set Background Scrolling Variables */
 	//bgSettings.scrollDir = 22;
-	//SET_BG_SCROLL_SPEED();
+	//setBGScrollSpeed();
 	//bgSettings.speedMult = 15;
 	//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
 
@@ -739,13 +607,13 @@ int main(int argv, char** args) {
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
-					UPDATE_MOUSE_POS_VIEWPORT_MOUSE();
+					updateMousePosViewportMouse();
 					cheatCounter = 0;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
 						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
-						UPDATE_MOUSE_POS_VIEWPORT_MOUSE();
+						updateMousePosViewportMouse();
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 						break;
@@ -851,7 +719,7 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
-						UPDATE_MOUSE_POS_VIEWPORT_TOUCH();
+						updateMousePosViewportTouch();
 						keyInputs |= INPUT_CONFIRM_ALT;
 						cheatCounter = 0;
 					}
@@ -860,7 +728,7 @@ int main(int argv, char** args) {
 					if (controlSettings.enableTouchscreen) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
-						UPDATE_MOUSE_POS_VIEWPORT_TOUCH();
+						updateMousePosViewportTouch();
 						cheatCounter = 0;
 					}
 					break;
@@ -1095,40 +963,40 @@ int main(int argv, char** args) {
 				TRANSITION_GRAPHICS_FROM_TITLE_SCREEN();
 				TRANSITION_GRAPHICS_TO_MAIN_MENU(-1);
 				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 2);
-				UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
+				updateMenuCursorPositionY(menuCursorIndex_main);
 				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
 			/* 2 = Main Menu */
 			case 2:
 				if (changedProgramState) {
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
+					updateMenuCursorPositionY(menuCursorIndex_main);
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 5);
+				menuHandleVertCursorMovement(menuCursorIndex_main, 5);
 #else
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_main, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_main, 4);
 #endif
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Play, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Controls, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Options, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Credits, 3);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Play, 0);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Controls, 1);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Options, 2);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Credits, 3);
 #if !defined(ANDROID)
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_main, text_Quit, 4);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Quit, 4);
 #endif
 				}
-				UPDATE_MAIN_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON(3);
+				updateMainMenuCursorPositionX();
+				menuHandleBackButton(3);
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Play.rect)
-					|| MOUSE_IS_IN_RECT(text_Controls.rect) || MOUSE_IS_IN_RECT(text_Options.rect)
-					|| MOUSE_IS_IN_RECT(text_Credits.rect) || MOUSE_IS_IN_RECT(text_Quit.rect)))) {
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
+					|| mouseIsInRect(text_Controls.rect) || mouseIsInRect(text_Options.rect)
+					|| mouseIsInRect(text_Credits.rect) || mouseIsInRect(text_Quit.rect)))) {
 #else
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Play.rect)
-					|| MOUSE_IS_IN_RECT(text_Controls.rect) || MOUSE_IS_IN_RECT(text_Options.rect)
-					|| MOUSE_IS_IN_RECT(text_Credits.rect)))) {
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
+					|| mouseIsInRect(text_Controls.rect) || mouseIsInRect(text_Options.rect)
+					|| mouseIsInRect(text_Credits.rect)))) {
 #endif
 					time_anim1 = 0;
 					switch (menuCursorIndex_main) {
@@ -1175,17 +1043,17 @@ int main(int argv, char** args) {
 			/* 7 = Play Menu */
 			case 7:
 				/* Key Presses + Animate Cursor */
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_play, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Easy, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Normal, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Hard, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_play, text_Very_Hard, 3);
+				menuHandleVertCursorMovement(menuCursorIndex_play, 4);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Easy, 0);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Normal, 1);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Hard, 2);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Very_Hard, 3);
 				}
-				UPDATE_PLAY_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON(2);
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Easy.rect)
-					|| MOUSE_IS_IN_RECT(text_Normal.rect) || MOUSE_IS_IN_RECT(text_Hard.rect) || MOUSE_IS_IN_RECT(text_Very_Hard.rect)))) {
+				updatePlayMenuCursorPositionX();
+				menuHandleBackButton(2);
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Easy.rect)
+					|| mouseIsInRect(text_Normal.rect) || mouseIsInRect(text_Hard.rect) || mouseIsInRect(text_Very_Hard.rect)))) {
 					programState = 8;
 				}
 				/* Draw Logo and Text */
@@ -1266,7 +1134,7 @@ int main(int argv, char** args) {
 				if (KEY_PRESSED(INPUT_START)) {
 					programState = 10;
 				}
-				if (MOUSE_MOVED()) {
+				if (mouseMoved()) {
 					GAME_HANDLE_MOUSE_MOVEMENT_MAIN();
 					GAME_HANDLE_MOUSE_MOVEMENT_MINI();
 				}
@@ -1318,7 +1186,7 @@ int main(int argv, char** args) {
 #endif
 					programState = 9;
 				}
-				MENU_HANDLE_MENU_BUTTON();
+				menuHandleMenuButton();
 				DRAW_SIDEBAR();
 				RENDER_TEXT(text_Paused);
 				RENDER_TEXT(text_Quit_to_Menu_1);
@@ -1329,7 +1197,7 @@ int main(int argv, char** args) {
 				/* Key Presses */
 				if (KEY_PRESSED(INPUT_START)) {
 					programState = 2;
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);
+					updateMenuCursorPositionY(menuCursorIndex_main);
 				}
 				/* Draw Grid */
 				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
@@ -1352,7 +1220,7 @@ int main(int argv, char** args) {
 			/* 12 = Controls Screen */
 			case 12:
 				/* Key Presses */
-				MENU_HANDLE_BACK_BUTTON(2);
+				menuHandleBackButton(2);
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
 #elif defined(ANDROID)
@@ -1387,22 +1255,22 @@ int main(int argv, char** args) {
 			/* 13 = Options Menu */
 			case 13:
 				if (changedProgramState) {
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_options);
+					updateMenuCursorPositionY(menuCursorIndex_options);
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_options, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Controls_Menu, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Video, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Sound, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Background, 3);
-					// MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_options, text_Scores, 3);
+				menuHandleVertCursorMovement(menuCursorIndex_options, 4);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Controls_Menu, 0);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Video, 1);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Sound, 2);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Background, 3);
+					// menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Scores, 3);
 				}
-				UPDATE_OPTIONS_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON(2);
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (MOUSE_IS_IN_RECT(text_Controls_Menu.rect)
-					|| MOUSE_IS_IN_RECT(text_Video.rect) || MOUSE_IS_IN_RECT(text_Sound.rect) || MOUSE_IS_IN_RECT(text_Background.rect)))) {
+				updateOptionsMenuCursorPositionX();
+				menuHandleBackButton(2);
+				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Controls_Menu.rect)
+					|| mouseIsInRect(text_Video.rect) || mouseIsInRect(text_Sound.rect) || mouseIsInRect(text_Background.rect)))) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_options) {
 						case 0:
@@ -1440,7 +1308,7 @@ int main(int argv, char** args) {
 			/* 18 = Credits Screen */
 			case 18:
 				/* Key Presses */
-				MENU_HANDLE_BACK_BUTTON(2);
+				menuHandleBackButton(2);
 #if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_credits < 6) {
 #else
@@ -1480,26 +1348,26 @@ int main(int argv, char** args) {
 			/* 20 = Video Menu */
 			case 20:
 				if (changedProgramState) {
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_video);
+					updateMenuCursorPositionY(menuCursorIndex_video);
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(menuCursorIndex_video, text_Apply, 3);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 4);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
 				}
 #else
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_video, 1);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 1);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 				}
 #endif
-				UPDATE_VIDEO_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON(13);
+				updateVideoMenuCursorPositionX();
+				menuHandleBackButton(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
 #if !defined(ANDROID)
@@ -1572,10 +1440,10 @@ int main(int argv, char** args) {
 				}
 #if !defined(ANDROID)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
-					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
-					|| MOUSE_IS_IN_RECT(text_Apply.rect)))) {
+					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
+					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
+					|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
+					|| mouseIsInRect(text_Apply.rect)))) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT))) {
 #endif
@@ -1637,7 +1505,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 								} else {
 									SAVE_CURRENT_SETTINGS();
 								}
@@ -1700,19 +1568,19 @@ int main(int argv, char** args) {
 			/* 22 = Sound Menu */
 			case 22:
 				if (changedProgramState) {
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_sound);
+					updateMenuCursorPositionY(menuCursorIndex_sound);
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_sound, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_sound, text_Reset_to_Default, SOUND_MENU_ENDPOINT, 3);
+				menuHandleVertCursorMovement(menuCursorIndex_sound, 4);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Reset_to_Default, SOUND_MENU_ENDPOINT, 3);
 				}
-				UPDATE_SOUND_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
+				updateSoundMenuCursorPositionX();
+				menuHandleBackButtonWithSettings(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_sound) {
 						case 0:
@@ -1737,10 +1605,10 @@ int main(int argv, char** args) {
 					}
 				}
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
-					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Music.rect, SOUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Music_Volume.rect, SOUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_SFX_Volume.rect, SOUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Reset_to_Default.rect, SOUND_MENU_ENDPOINT)))) {
+					(mouseIsInRectWithSetting(text_Music.rect, SOUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Music_Volume.rect, SOUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_SFX_Volume.rect, SOUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, SOUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_sound) {
 						case 0:
 							if (++soundSettings.musicIndex > 7)
@@ -1792,19 +1660,19 @@ int main(int argv, char** args) {
 			/* 24 = Background Menu */
 			case 24:
 				if (changedProgramState) {
-					UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_background);
+					updateMenuCursorPositionY(menuCursorIndex_background);
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				MENU_HANDLE_VERT_CURSOR_MOVEMENT(menuCursorIndex_background, 4);
-				if (MOUSE_MOVED()) {
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
-					MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE_WITH_SETTING(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 3);
+				menuHandleVertCursorMovement(menuCursorIndex_background, 4);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 3);
 				}
-				UPDATE_BACKGROUND_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
+				updateBackgroundMenuCursorPositionX();
+				menuHandleBackButtonWithSettings(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_background) {
 						case 0:
@@ -1815,7 +1683,7 @@ int main(int argv, char** args) {
 						case 1:
 							if (--bgSettings.scrollDir < 0)
 								bgSettings.scrollDir = 71;
-							SET_BG_SCROLL_SPEED();
+							setBGScrollSpeed();
 							break;
 						case 2:
 							bgSettings.scale--;
@@ -1828,17 +1696,17 @@ int main(int argv, char** args) {
 					}
 				}
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
-					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Scroll_Direction.rect, BACKGROUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Background_Size.rect, BACKGROUND_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Reset_to_Default.rect, BACKGROUND_MENU_ENDPOINT)))) {
+					(mouseIsInRectWithSetting(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Scroll_Direction.rect, BACKGROUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Background_Size.rect, BACKGROUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, BACKGROUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_background) {
 						case 0:
 							bgSettings.speedMult = (bgSettings.speedMult + 5) % 105;
 							break;
 						case 1:
 							bgSettings.scrollDir = (bgSettings.scrollDir + 1) % 72;
-							SET_BG_SCROLL_SPEED();
+							setBGScrollSpeed();
 							break;
 						case 2:
 							bgSettings.scale++;
@@ -1849,7 +1717,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
 								bgSettings.scrollDir = 22;
-								SET_BG_SCROLL_SPEED();
+								setBGScrollSpeed();
 								bgSettings.speedMult = 15;
 								//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
 								bgSettings.scale = DEFAULT_BG_SCALE;
@@ -1873,26 +1741,26 @@ int main(int argv, char** args) {
 				break;
 			/* 26 = Scores Menu */
 			case 26:
-				MENU_HANDLE_BACK_BUTTON(13);
+				menuHandleBackButton(13);
 				break;
 			/* 28 = Controls Menu */
 			case 28:
 				if (changedProgramState) {
-					UPDATE_CONTROLS_MENU_CURSOR_POSITION_Y();
+					updateControlsMenuCursorPositionY();
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID) && !defined(PSP)
-				CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT();
+				controlsMenuHandleVertCursorMovement();
 #endif
-				if (MOUSE_MOVED()) {
-					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Controller_Input, 0);
+				if (mouseMoved()) {
+					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
 #if !defined(ANDROID) && !defined(PSP)
-					CONTROLS_MENU_HANDLE_VERT_CURSOR_MOVEMENT_MOUSE(text_Touch_Screen_Input, 1);
+					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
 #endif
 				}
-				UPDATE_CONTROLS_MENU_CURSOR_POSITION_X();
-				MENU_HANDLE_BACK_BUTTON_WITH_SETTINGS(13);
+				updateControlsMenuCursorPositionX();
+				menuHandleBackButtonWithSettings(13);
 				if (KEY_PRESSED(INPUT_LEFT)) {
 					switch (menuCursorIndex_controls) {
 						case 0:
@@ -1908,11 +1776,11 @@ int main(int argv, char** args) {
 				}
 #if !defined(ANDROID) && !defined(PSP)
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
-					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
-					|| MOUSE_IS_IN_RECT_WITH_SETTING(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
 #else
 				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
-					(MOUSE_IS_IN_RECT_WITH_SETTING(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
 #endif
 					switch (menuCursorIndex_controls) {
 						case 0:

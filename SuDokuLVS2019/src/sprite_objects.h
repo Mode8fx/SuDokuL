@@ -61,6 +61,24 @@ struct SpriteObjectWithPos {
     Sint16 startPos_y, endPos_y;
 };
 
+/* Textures */
+extern SpriteObject tile;
+extern SpriteObjectWithPos logo;
+extern SpriteObjectWithPos menuCursor;
+extern SpriteObject game_grid;
+//extern SpriteObjectWithPos gridCursor;
+extern SpriteObjectWithPos gridCursor_bottom_left;
+extern SpriteObjectWithPos gridCursor_bottom_right;
+extern SpriteObjectWithPos gridCursor_top_left;
+extern SpriteObjectWithPos gridCursor_top_right;
+extern SpriteObject game_sidebar_small;
+
+extern SpriteObjectWithPos miniGrid_bottom_left;
+extern SpriteObjectWithPos miniGrid_bottom_right;
+extern SpriteObjectWithPos miniGrid_top_left;
+extern SpriteObjectWithPos miniGrid_top_right;
+extern SpriteObjectWithPos *currMiniGrid;
+
 #define PREPARE_SPRITE(spriteObj, spriteImage, pos_x, pos_y, scale)                       \
     spriteObj.texture = IMG_LoadTexture(renderer, spriteImage);                           \
     SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height); \

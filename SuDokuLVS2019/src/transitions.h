@@ -9,8 +9,8 @@
     /* Check For Finished Animation */                                                                       \
     if (time_anim1 >= 1) {                                                                                   \
         logo.rect.y = logo.endPos_y;                                                                         \
-        UPDATE_MAIN_MENU_CURSOR_POSITION_X();                                                                \
-        UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main);                                                 \
+        updateMainMenuCursorPositionX();                                                                \
+        updateMenuCursorPositionY(menuCursorIndex_main);                                                 \
     }                                                                                                        \
     /* Draw Logo and Text */                                                                                 \
     SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);                                                \
@@ -80,8 +80,8 @@
         text_Options.rect.y = text_Options.endPos_y;         \
         text_Credits.rect.y = text_Credits.endPos_y;         \
         text_Quit.rect.y = text_Quit.endPos_y;               \
-        UPDATE_MAIN_MENU_CURSOR_POSITION_X();                \
-        UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main); \
+        updateMainMenuCursorPositionX();                \
+        updateMenuCursorPositionY(menuCursorIndex_main); \
     }                                                        \
     /* Draw Text */                                          \
     RENDER_TEXT(text_Play);                                  \
@@ -131,8 +131,8 @@
         text_Controls.rect.y = text_Controls.endPos_y;       \
         text_Options.rect.y = text_Options.endPos_y;         \
         text_Credits.rect.y = text_Credits.endPos_y;         \
-        UPDATE_MAIN_MENU_CURSOR_POSITION_X();                \
-        UPDATE_MENU_CURSOR_POSITION_Y(menuCursorIndex_main); \
+        updateMainMenuCursorPositionX();                \
+        updateMenuCursorPositionY(menuCursorIndex_main); \
     }                                                        \
     /* Draw Text */                                          \
     RENDER_TEXT(text_Play);                                  \

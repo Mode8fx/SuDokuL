@@ -40,54 +40,101 @@ struct Timer {
 	double last;
 };
 
+/* Window Width and Height */
 extern Uint16 gameWidth;
 extern Uint16 gameHeight;
+extern Uint16 defaultBGScale;
+extern double gameWidthMult;
+extern double gameHeightMult;
+
+/* Grid-Related Variables */
+extern double gridSizeA;
+extern double gridSizeB;
+extern double gridSizeC;
+extern double gridSizeD;
+extern double gridSize;
+extern double gridSizeA3;
+extern Uint16 gridPosX;
+extern Uint16 gridPosY;
+extern Uint16 sideBarSizeX;
+extern Uint16 sideBarSizeY;
+extern Uint16 sidebarSmallPosX;
+extern Uint16 sidebarSmall1PosY;
+extern Uint16 sidebarSmall2PosY;
+extern Uint16 sidebarSmall3PosY;
+extern Uint16 gridStartingPosX[9];
+extern Uint16 gridStartingPosY[9];
+
+/* Settings */
+extern SDL_RWops *settingsFile;
+extern BackgroundSettings bgSettings;
+extern BGScroll bgScroll;
+extern ControlSettings controlSettings;
+extern VideoSettings videoSettings;
+extern SoundSettings soundSettings;
+
+/* Window Width and Height */
+extern Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[14];
+extern Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[14];
+extern Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[12];
+extern Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[12];
+extern Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[10];
+extern Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[10];
+extern Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[6];
+extern Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[6];
+extern SDL_Rect centerViewport;
+
+/* Sound */
+extern Mix_Music *bgm_1;
+extern Mix_Music *bgm_2;
+extern Mix_Music *bgm_3;
+extern Mix_Music *bgm_4;
+extern Mix_Music *bgm_5;
+extern Mix_Music *bgm_6;
+extern Mix_Music *bgm_7;
+extern Mix_Chunk *sfx;
 
 #define INIT_DEFAULT_BG_SCALE()                                \
 	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480)); \
-	const Uint16 defaultBGScale = max((Uint16)(uint_i), (Uint16)1);
+	defaultBGScale = max((Uint16)(uint_i), (Uint16)1);
 
-#define INIT_STARTING_WIDTH_HEIGHT_MULTS()              \
-	const double gameWidthMult = (gameWidth / 640.0);   \
-	const double gameHeightMult = (gameHeight / 480.0); \
+#define INIT_STARTING_WIDTH_HEIGHT_MULTS()        \
+	gameWidthMult = (gameWidth / 640.0);   \
+	gameHeightMult = (gameHeight / 480.0); \
 
-#define INIT_STARTING_SHARED_VARIABLES()                                                                                         \
-	const double gridSizeA = (12 * GAME_HEIGHT_MULT);                                                                            \
-	const double gridSizeB = (4 * GAME_HEIGHT_MULT);                                                                             \
-	const double gridSizeC = (6 * GAME_HEIGHT_MULT);                                                                             \
-	const double gridSizeD = (12 * GAME_HEIGHT_MULT);                                                                            \
-	const double gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);                            \
-	const double gridSizeA3 = (3 * GRID_SIZE_A);                                                                                 \
-	const Uint16 gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));                                  \
-	const Uint16 gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);                                                              \
-	const Uint16 sideBarSizeX = (Uint16)(GRID_SIZE / 3);                                                                         \
-	const Uint16 sideBarSizeY = (Uint16)(GRID_SIZE / 4);                                                                         \
-	const Uint16 sidebarSmallPosX = (Uint16)(GRID_POS_X - SIDEBAR_SIZE_X - (GRID_SIZE / 12));                                    \
-	const Uint16 sidebarSmall1PosY = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));                                                    \
-	const Uint16 sidebarSmall2PosY = (Uint16)(GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));                              \
-	const Uint16 sidebarSmall3PosY = (Uint16)(GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));                   \
-	const Uint16 gridStartingPosX[9] = {                                                                                         \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_X + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-	};                                                                                                                           \
-	const Uint16 gridStartingPosY[9] = {                                                                                         \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-		(Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))), \
-	};                                                                                                                           \
+#define INIT_STARTING_SHARED_VARIABLES()                                                                            \
+	gridSizeA = (12 * GAME_HEIGHT_MULT);                                                                            \
+	gridSizeB = (4 * GAME_HEIGHT_MULT);                                                                             \
+	gridSizeC = (6 * GAME_HEIGHT_MULT);                                                                             \
+	gridSizeD = (12 * GAME_HEIGHT_MULT);                                                                            \
+	gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);                            \
+	gridSizeA3 = (3 * GRID_SIZE_A);                                                                                 \
+	gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));                                  \
+	gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);                                                              \
+	sideBarSizeX = (Uint16)(GRID_SIZE / 3);                                                                         \
+	sideBarSizeY = (Uint16)(GRID_SIZE / 4);                                                                         \
+	sidebarSmallPosX = (Uint16)(GRID_POS_X - SIDEBAR_SIZE_X - (GRID_SIZE / 12));                                    \
+	sidebarSmall1PosY = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));                                                    \
+	sidebarSmall2PosY = (Uint16)(GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));                              \
+	sidebarSmall3PosY = (Uint16)(GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));                   \
+	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[3] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[4] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[5] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[6] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[7] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosX[8] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[0] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[1] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[2] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[3] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[4] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[5] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[6] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[7] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
+	gridStartingPosY[8] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
 	INIT_NUM_OFFSETS();
 
 #if !defined(ANDROID)
@@ -216,50 +263,12 @@ extern Uint16 gameHeight;
 #define SETTINGS_FILE "settings.bin"
 #endif
 
-#define LOAD_SETTINGS_FILE()                                                                                                                             \
-	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");                                                                                                  \
-	if (settingsFile == NULL) {                                                                                                                          \
-		INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 15, 22, DEFAULT_BG_SCALE); \
-	} else {                                                                                                                                             \
-		SDL_RWread(settingsFile, &controlSettings, sizeof(ControlSettings), 1);                                                                          \
-		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);                                                                              \
-		SDL_RWread(settingsFile, &soundSettings, sizeof(SoundSettings), 1);                                                                              \
-		SDL_RWread(settingsFile, &bgSettings, sizeof(BackgroundSettings), 1);                                                                            \
-		SDL_RWclose(settingsFile);                                                                                                                       \
-	}
+extern void loadSettingsFile();
 
-#define INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(scab, et, ri, ari, gw, gh, mi, bgmv, sfxv, sm, sd, s) \
-    settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");                                             \
-    if (settingsFile != NULL) {                                                                      \
-		controlSettings.swapConfirmAndBack = scab;                                                   \
-		controlSettings.enableTouchscreen = et;                                                      \
-		videoSettings.resolutionIndex = ri;                                                          \
-		videoSettings.aspectRatioIndex = ari;                                                        \
-        videoSettings.widthSetting = gw;                                                             \
-        videoSettings.heightSetting = gh;                                                            \
-		soundSettings.musicIndex = mi;                                                               \
-		soundSettings.bgmVolume = bgmv;                                                              \
-		soundSettings.sfxVolume = sfxv;                                                              \
-		bgSettings.speedMult = sm;                                                                   \
-		bgSettings.scrollDir = sd;                                                                   \
-		bgSettings.scale = s;                                                                        \
-		SDL_RWwrite(settingsFile, &controlSettings.swapConfirmAndBack, sizeof(Uint8), 1);            \
-		SDL_RWwrite(settingsFile, &controlSettings.enableTouchscreen, sizeof(Uint8), 1);             \
-		SDL_RWwrite(settingsFile, &videoSettings.resolutionIndex, sizeof(Uint8), 1);                 \
-		SDL_RWwrite(settingsFile, &videoSettings.aspectRatioIndex, sizeof(Uint8), 1);                \
-        SDL_RWwrite(settingsFile, &videoSettings.widthSetting, sizeof(Uint16), 1);                   \
-        SDL_RWwrite(settingsFile, &videoSettings.heightSetting, sizeof(Uint16), 1);                  \
-		SDL_RWwrite(settingsFile, &soundSettings.musicIndex, sizeof(Sint8), 1);                      \
-		SDL_RWwrite(settingsFile, &soundSettings.bgmVolume, sizeof(Sint8), 1);                       \
-		SDL_RWwrite(settingsFile, &soundSettings.sfxVolume, sizeof(Sint8), 1);                       \
-		SDL_RWwrite(settingsFile, &bgSettings.speedMult, sizeof(Sint8), 1);                          \
-		SDL_RWwrite(settingsFile, &bgSettings.scrollDir, sizeof(Sint8), 1);                          \
-		SDL_RWwrite(settingsFile, &bgSettings.scale, sizeof(Sint8), 1);                              \
-        SDL_RWclose(settingsFile);                                                                   \
-    }
+extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 
 #define SAVE_CURRENT_SETTINGS()                                                                                                 \
-	INITIALIZE_SETTINGS_FILE_WITH_SETTINGS(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,               \
+	initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,               \
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting, \
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,                                             \
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);

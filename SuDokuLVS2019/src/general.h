@@ -1,5 +1,11 @@
+#include "include.h"
+
 #ifndef GENERAL_H
 #define GENERAL_H
+
+/* Program State */
+extern Uint8 programState;
+extern bool changedProgramState;
 
 #define PI 3.14159265
 
@@ -31,10 +37,18 @@
 #define MOVE_FAST_THEN_DECELERATE(dist, numSeconds, timeVal) \
     (0.5 * pow(((((numSeconds) - (timeVal)) / (numSeconds)) * sqrt(2 * (dist))), 2))
 
+/* General-use Variables */
 extern Sint8 i, j, k;
 extern Sint8 char_x1, char_y1, char_x2, char_y2;
 extern Sint32 int_i;
 extern Uint32 uint_i;
 extern double d;
+
+/* Other */
+extern double screenScale;
+extern bool isRunning;
+extern bool isWindowed;
+extern bool isIntegerScale;
+extern bool wentPastTitleScreen;
 
 #endif
