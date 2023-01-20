@@ -12,8 +12,8 @@ struct TextRect {
 
 /* Single Characters */
 struct TextCharObject {
-    SDL_Surface* surface, * outline_surface;
-    SDL_Texture* texture, * outline_texture;
+    SDL_Surface *surface, *outline_surface;
+    SDL_Texture *texture, *outline_texture;
     SDL_Rect rect, outline_rect;
     Sint8 outlineOffset_x, outlineOffset_y;
 };
@@ -190,11 +190,8 @@ extern Uint16 deepMenuCursorPosition_X;
 extern Uint16 videoMenuNumPosition_X;
 extern Uint16 backgroundMenuNumPosition_X;
 
-#if defined(VITA)
-#define FONT_COMMODORE "ux0:data/SuDokuL/fonts/Commodore Pixelized v1.2.ttf"
-#else
-#define FONT_COMMODORE "fonts/Commodore Pixelized v1.2.ttf"
-#endif
+
+#define FONT_COMMODORE (rootDir + "fonts/Commodore Pixelized v1.2.ttf").c_str()
 
 #define FONT_SIZE                         (fontSize)
 #define GRID_NUM_SIZE                     (gridNumSize)
@@ -248,7 +245,7 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_B_BACK_Y                     (text_menuChoice1 + CONTROLS_SPACER)
 #define TEXT_B_CONFIRM_Y                  (TEXT_A_CONFIRM_Y)
 #define TEXT_A_BACK_Y                     (TEXT_B_BACK_Y)
-#define BASE_FONT_SIZE                    20 // default font size (480 / 24)
+constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define TEXT_TIME_Y                       (game_sidebar_small.rect.y + (game_sidebar_small.rect.h / 4))
 #define TEXT_EMPTY_Y                      (game_sidebar_small.rect.y + (game_sidebar_small.rect.h / 4))
 #define TEXT_GAME_EASY_Y                  (game_sidebar_small.rect.y + (game_sidebar_small.rect.h - FONT_SIZE) / 2)

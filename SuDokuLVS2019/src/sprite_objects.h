@@ -3,28 +3,6 @@
 #ifndef SPRITE_OBJECTS_H
 #define SPRITE_OBJECTS_H
 
-#if defined(VITA)
-#define SPRITE_PATH_TILE                     "ux0:data/SuDokuL/graphics/tile.png"
-#define SPRITE_PATH_LOGO_240                 "ux0:data/SuDokuL/graphics/logo_240.png"
-#define SPRITE_PATH_LOGO_272                 "ux0:data/SuDokuL/graphics/logo_272.png"
-#define SPRITE_PATH_LOGO_480                 "ux0:data/SuDokuL/graphics/logo_480.png"
-#define SPRITE_PATH_LOGO_544                 "ux0:data/SuDokuL/graphics/logo_544.png"
-#define SPRITE_PATH_LOGO_720                 "ux0:data/SuDokuL/graphics/logo_720.png"
-#define SPRITE_PATH_LOGO_1080                "ux0:data/SuDokuL/graphics/logo_1080.png"
-#define SPRITE_PATH_LOGO_1440                "ux0:data/SuDokuL/graphics/logo_1440.png"
-#define SPRITE_PATH_LOGO_2160                "ux0:data/SuDokuL/graphics/logo_2160.png"
-#define SPRITE_PATH_MENU_CURSOR              "ux0:data/SuDokuL/graphics/menu_cursor.png"
-#define SPRITE_PATH_GRID_384                 "ux0:data/SuDokuL/graphics/grid_384.png"
-#define SPRITE_PATH_GRID_CURSOR_BOTTOM_LEFT  "ux0:data/SuDokuL/graphics/grid_cursor_bottom_left.png"
-#define SPRITE_PATH_GRID_CURSOR_BOTTOM_RIGHT "ux0:data/SuDokuL/graphics/grid_cursor_bottom_right.png"
-#define SPRITE_PATH_GRID_CURSOR_TOP_LEFT     "ux0:data/SuDokuL/graphics/grid_cursor_top_left.png"
-#define SPRITE_PATH_GRID_CURSOR_TOP_RIGHT    "ux0:data/SuDokuL/graphics/grid_cursor_top_right.png"
-#define SPRITE_PATH_SIDEBAR_SMALL            "ux0:data/SuDokuL/graphics/sidebar_small.png"
-#define SPRITE_PATH_GRID_MINI_BOTTOM_LEFT    "ux0:data/SuDokuL/graphics/grid_mini_bottom_left.png"
-#define SPRITE_PATH_GRID_MINI_BOTTOM_RIGHT   "ux0:data/SuDokuL/graphics/grid_mini_bottom_right.png"
-#define SPRITE_PATH_GRID_MINI_TOP_LEFT       "ux0:data/SuDokuL/graphics/grid_mini_top_left.png"
-#define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "ux0:data/SuDokuL/graphics/grid_mini_top_right.png"
-#else
 #define SPRITE_PATH_TILE                     "graphics/tile.png"
 #define SPRITE_PATH_LOGO_240                 "graphics/logo_240.png"
 #define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
@@ -45,7 +23,6 @@
 #define SPRITE_PATH_GRID_MINI_BOTTOM_RIGHT   "graphics/grid_mini_bottom_right.png"
 #define SPRITE_PATH_GRID_MINI_TOP_LEFT       "graphics/grid_mini_top_left.png"
 #define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "graphics/grid_mini_top_right.png"
-#endif
 
 struct SpriteObject {
     SDL_Texture *texture;
@@ -80,7 +57,7 @@ extern SpriteObjectWithPos miniGrid_top_right;
 extern SpriteObjectWithPos *currMiniGrid;
 
 #define PREPARE_SPRITE(spriteObj, spriteImage, pos_x, pos_y, scale)                       \
-    spriteObj.texture = IMG_LoadTexture(renderer, spriteImage);                           \
+    spriteObj.texture = IMG_LoadTexture(renderer, (rootDir + spriteImage).c_str());       \
     SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height); \
     SET_SPRITE_SCALE(spriteObj, scale);                                                   \
     spriteObj.rect.x = pos_x;                                                             \

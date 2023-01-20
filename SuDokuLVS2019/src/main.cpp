@@ -198,13 +198,13 @@ int main(int argv, char** args) {
 		SDL_Log(Mix_GetError());
 #endif
 	}
-	bgm_1 = Mix_LoadMUS(MUSIC_1);
-	bgm_2 = Mix_LoadMUS(MUSIC_2);
-	bgm_3 = Mix_LoadMUS(MUSIC_3);
-	bgm_4 = Mix_LoadMUS(MUSIC_4);
-	bgm_5 = Mix_LoadMUS(MUSIC_5);
-	bgm_6 = Mix_LoadMUS(MUSIC_6);
-	bgm_7 = Mix_LoadMUS(MUSIC_7);
+	bgm_1 = Mix_LoadMUS((rootDir + MUSIC_1).c_str());
+	bgm_2 = Mix_LoadMUS((rootDir + MUSIC_2).c_str());
+	bgm_3 = Mix_LoadMUS((rootDir + MUSIC_3).c_str());
+	bgm_4 = Mix_LoadMUS((rootDir + MUSIC_4).c_str());
+	bgm_5 = Mix_LoadMUS((rootDir + MUSIC_5).c_str());
+	bgm_6 = Mix_LoadMUS((rootDir + MUSIC_6).c_str());
+	bgm_7 = Mix_LoadMUS((rootDir + MUSIC_7).c_str());
 	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));

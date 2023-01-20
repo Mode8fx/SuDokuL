@@ -174,10 +174,11 @@ extern Timer timer_paused;
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 
 #if defined(VITA)
-#define SETTINGS_FILE "ux0:data/SuDokuL/settings.bin"
+const string rootDir = "ux0:data/SuDokuL/";
 #else
-#define SETTINGS_FILE "settings.bin"
+const string rootDir = "";
 #endif
+#define SETTINGS_FILE (rootDir + "settings.bin").c_str()
 
 extern void initDefaultBGScale();
 extern void initStartingWidthHeightMults();
