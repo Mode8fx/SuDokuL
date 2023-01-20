@@ -1,4 +1,5 @@
 #include "text_objects.h"
+#include "shared.h"
 
 void initStartingTextVariables() {
     fontSize = (max(gameHeight / 24, 8));

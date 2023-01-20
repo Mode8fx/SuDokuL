@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "include.h"
 
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
@@ -342,7 +342,7 @@ extern void initStartingTextVariables();
 #define SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y) \
     INIT_TEXT_OBJECT_VALS(textObj);                                 \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);      \
-    INIT_MENU_OPTION_POSITIONS(textObj);
+    initMenuOptionPositions(&textObj);
 
 #define SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y)                              \
     textObj.str = text;                                                                        \

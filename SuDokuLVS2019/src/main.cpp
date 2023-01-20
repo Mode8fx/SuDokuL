@@ -101,7 +101,7 @@ int main(int argv, char** args) {
 	}
 	TTF_Init();
 
-	INIT_DEFAULT_BG_SCALE();
+	initDefaultBGScale();
 
 	/* Get settings from settings.bin */
 	loadSettingsFile();
@@ -134,8 +134,8 @@ int main(int argv, char** args) {
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
 
-	INIT_STARTING_WIDTH_HEIGHT_MULTS();
-	INIT_STARTING_SHARED_VARIABLES();
+	initStartingWidthHeightMults();
+	initStartingSharedVariables();
 	initStartingTextVariables();
 	setBGScrollSpeed();
 
@@ -173,7 +173,7 @@ int main(int argv, char** args) {
 
 	/* Render loading screen */
 #if defined(PSP) || defined(VITA) || defined(WII_U)
-	UPDATE_GLOBAL_TIMER();
+	updateGlobalTimer();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
 	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile.rect.h;
@@ -189,7 +189,7 @@ int main(int argv, char** args) {
 	RENDER_TEXT(text_Loading);
 	RENDER_BORDER_RECTS();
 	SDL_RenderPresent(renderer);
-	PREPARE_PAUSE_TIMER();
+	preparePauseTimer();
 #endif
 
 	/* Initialize Sound */
@@ -453,12 +453,12 @@ int main(int argv, char** args) {
 #endif
 
 #if defined(PSP) || defined(VITA) || defined(WII_U)
-	UPDATE_PAUSE_TIMER();
+	updatePauseTimer();
 #endif
 
 	while (isRunning) {
 		/* Update Timers */
-		UPDATE_GLOBAL_TIMER();
+		updateGlobalTimer();
 		deltaTime = timer_global.now - timer_global.last;
 		time_anim1 += deltaTime;
 		if (heldButtons > 0) {
@@ -908,7 +908,7 @@ int main(int argv, char** args) {
 				soundSettings.musicIndex = 7;
 			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
 			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
-				SAVE_CURRENT_SETTINGS();
+				saveCurrentSettings();
 			}
 		}
 		if (KEY_PRESSED(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
@@ -916,7 +916,7 @@ int main(int argv, char** args) {
 				soundSettings.musicIndex = 1;
 			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
 			if (programState != 20) {
-				SAVE_CURRENT_SETTINGS();
+				saveCurrentSettings();
 			}
 		}
 
@@ -1071,7 +1071,7 @@ int main(int argv, char** args) {
 				RENDER_BORDER_RECTS();
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
-				PREPARE_PAUSE_TIMER();
+				preparePauseTimer();
 				switch (menuCursorIndex_play) {
 					case 0:
 						ZERO_OUT_ARRAY(grid);
@@ -1114,7 +1114,7 @@ int main(int argv, char** args) {
 					default:
 						break;
 				}
-				UPDATE_PAUSE_TIMER();
+				updatePauseTimer();
 				timer_game.now = 0.0;
 				gridCursorIndex_x = 0;
 				gridCursorIndex_y = 0;
@@ -1507,7 +1507,7 @@ int main(int argv, char** args) {
 								if (settingsFile == NULL) {
 									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 								} else {
-									SAVE_CURRENT_SETTINGS();
+									saveCurrentSettings();
 								}
 								// isRunning = false;
 								// End the program here; otherwise, text and sprites will be resized and look weird for one frame before closing

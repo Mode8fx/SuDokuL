@@ -1,4 +1,5 @@
 #include "include.h"
+#include "text_objects.h"
 
 #ifndef SHARED_H
 #define SHARED_H
@@ -64,6 +65,10 @@ extern Uint16 sidebarSmall2PosY;
 extern Uint16 sidebarSmall3PosY;
 extern Uint16 gridStartingPosX[9];
 extern Uint16 gridStartingPosY[9];
+extern Sint8 numOffset_large_x[9];
+extern Sint8 numOffset_large_y[9];
+extern Sint8 numOffset_small_x[9];
+extern Sint8 numOffset_small_y[9];
 
 /* Settings */
 extern SDL_RWops *settingsFile;
@@ -94,48 +99,15 @@ extern Mix_Music *bgm_6;
 extern Mix_Music *bgm_7;
 extern Mix_Chunk *sfx;
 
-#define INIT_DEFAULT_BG_SCALE()                                \
-	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480)); \
-	defaultBGScale = max((Uint16)(uint_i), (Uint16)1);
-
-#define INIT_STARTING_WIDTH_HEIGHT_MULTS()        \
-	gameWidthMult = (gameWidth / 640.0);   \
-	gameHeightMult = (gameHeight / 480.0); \
-
-#define INIT_STARTING_SHARED_VARIABLES()                                                                            \
-	gridSizeA = (12 * GAME_HEIGHT_MULT);                                                                            \
-	gridSizeB = (4 * GAME_HEIGHT_MULT);                                                                             \
-	gridSizeC = (6 * GAME_HEIGHT_MULT);                                                                             \
-	gridSizeD = (12 * GAME_HEIGHT_MULT);                                                                            \
-	gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);                            \
-	gridSizeA3 = (3 * GRID_SIZE_A);                                                                                 \
-	gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));                                  \
-	gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);                                                              \
-	sideBarSizeX = (Uint16)(GRID_SIZE / 3);                                                                         \
-	sideBarSizeY = (Uint16)(GRID_SIZE / 4);                                                                         \
-	sidebarSmallPosX = (Uint16)(GRID_POS_X - SIDEBAR_SIZE_X - (GRID_SIZE / 12));                                    \
-	sidebarSmall1PosY = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));                                                    \
-	sidebarSmall2PosY = (Uint16)(GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));                              \
-	sidebarSmall3PosY = (Uint16)(GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));                   \
-	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[3] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[4] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[5] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[6] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[7] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosX[8] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[0] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[1] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[2] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[3] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[4] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[5] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[6] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[7] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	gridStartingPosY[8] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B))); \
-	INIT_NUM_OFFSETS();
+/* Time */
+extern double deltaTime;
+extern Timer timer_global;
+extern double time_anim1;
+extern double time_anim_PressStart;
+extern Timer timer_game;
+extern double timer_buttonHold;
+extern double timer_buttonHold_repeater;
+extern Timer timer_paused;
 
 #if !defined(ANDROID)
 #define SYSTEM_WIDTH  DM.w
@@ -200,62 +172,6 @@ extern Mix_Chunk *sfx;
 #define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
-#if defined(VITA)
-//const Sint8 numOffset_large_x[9] = { 2,2,2,2,2,2,2,2,2 };
-//const Sint8 numOffset_large_y[9] = { 1,1,0,1,1,0,0,0,1 };
-//const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };
-//const Sint8 numOffset_small_y[9] = { -1,0,-1,0,-1,-1,-1,-1,-1 };
-#define INIT_NUM_OFFSETS()                                                                                                                                       \
-	d = (double)gameHeight / SCALING_HEIGHT;                                                                                                                     \
-	const Sint8 numOffset_large_x[9] = { (Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d),(Sint8)(2*d) }; \
-	const Sint8 numOffset_large_y[9] = { (Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0,0,0,(Sint8)(d) };                                                       \
-	const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 };                                                                                                    \
-	Sint8 numOffset_small_y[9] = { (Sint8)(-d),0,(Sint8)(-d),0,(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d),(Sint8)(-d) };                                    \
-	if (gameHeight <= 240) {                                                                                                                                     \
-		for (i = 0; i < 9; i++) numOffset_small_y[i] -= 1;                                                                                                       \
-	}
-#elif defined(PSP)
-//const Sint8 numOffset_large_x[9] = { 1,1,1,1,1,1,1,1,1 };
-//const Sint8 numOffset_large_y[9] = { 0,0,-1,0,0,-1,-1,0,-1 };
-//const Sint8 numOffset_small_x[9] = { 1,1,1,1,1,1,1,1,1 };
-//const Sint8 numOffset_small_y[9] = { 1,1,0,1,1,0,1,1,0 };
-#define INIT_NUM_OFFSETS()                                                                                                                     \
-	d = (double)gameHeight / SCALING_HEIGHT;                                                                                                   \
-	const Sint8 numOffset_large_x[9] = { (Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d) }; \
-	const Sint8 numOffset_large_y[9] = { 0,0,(Sint8)(-d),0,0,(Sint8)(-d),(Sint8)(-d),0,(Sint8)(-d) };                                          \
-	const Sint8 numOffset_small_x[9] = { (Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d),(Sint8)(d) }; \
-	const Sint8 numOffset_small_y[9] = { (Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0,(Sint8)(d),(Sint8)(d),0 };
-#else
-#define INIT_NUM_OFFSETS()                                    \
-	const Sint8 numOffset_large_x[9] = { 0,0,0,0,0,0,0,0,0 }; \
-	const Sint8 numOffset_large_y[9] = { 0,0,0,0,0,0,0,0,0 }; \
-	const Sint8 numOffset_small_x[9] = { 0,0,0,0,0,0,0,0,0 }; \
-	const Sint8 numOffset_small_y[9] = { 0,0,0,0,0,0,0,0,0 };
-#endif
-
-#define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))
-
-#define UPDATE_GLOBAL_TIMER()             \
-    timer_global.last = timer_global.now; \
-    timer_global.now = (SDL_GetTicks() - timer_paused.now) / 1000.0;
-
-#define PREPARE_PAUSE_TIMER() \
-	timer_paused.last = SDL_GetTicks();
-
-#define UPDATE_PAUSE_TIMER() \
-	timer_paused.now += (SDL_GetTicks() - timer_paused.last);
-
-#define KEY_PRESSED(key) \
-    (keyInputs & key)
-
-#define BUTTON_HELD(button) \
-	(heldButtons & button)
-
-#define INIT_MENU_OPTION_POSITIONS(textObj)                                \
-    textObj.startPos_x         = textObj.rect.x;                           \
-    textObj.startPos_y         = textObj.rect.y;                           \
-    textObj.endPos_x           = textObj.startPos_x + (gameWidth * 3 / 4); \
-    textObj.endPos_y           = textObj.startPos_y - (gameWidth * 3 / 4);
 
 #if defined(VITA)
 #define SETTINGS_FILE "ux0:data/SuDokuL/settings.bin"
@@ -263,15 +179,25 @@ extern Mix_Chunk *sfx;
 #define SETTINGS_FILE "settings.bin"
 #endif
 
+extern void initDefaultBGScale();
+extern void initStartingWidthHeightMults();
+extern void initStartingSharedVariables();
+extern void initNumOffsets();
+extern void updateGlobalTimer();
+extern void preparePauseTimer();
+extern void updatePauseTimer();
+extern void initMenuOptionPositions(TextObject *);
 extern void loadSettingsFile();
-
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
+extern void saveCurrentSettings();
 
-#define SAVE_CURRENT_SETTINGS()                                                                                                 \
-	initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,               \
-		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting, \
-		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,                                             \
-		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+#define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))
+
+#define KEY_PRESSED(key) \
+    (keyInputs & key)
+
+#define BUTTON_HELD(button) \
+	(heldButtons & button)
 
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 #define SDL_TOGGLE_FULLSCREEN()

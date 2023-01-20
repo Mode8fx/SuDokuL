@@ -93,7 +93,7 @@ void menuHandleBackButtonWithSettings(Uint8 state) {
         time_anim1 = 0;
         programState = state;
         menuResetCursorPositions(state);
-        SAVE_CURRENT_SETTINGS();
+        saveCurrentSettings();
         changedProgramState = true;
     }
 }

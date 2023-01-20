@@ -61,6 +61,10 @@ Uint16 sidebarSmall2PosY;
 Uint16 sidebarSmall3PosY;
 Uint16 gridStartingPosX[9];
 Uint16 gridStartingPosY[9];
+Sint8 numOffset_large_x[9];
+Sint8 numOffset_large_y[9];
+Sint8 numOffset_small_x[9];
+Sint8 numOffset_small_y[9];
 
 /* General Input */
 Sint16 controllerAxis_leftStickX;

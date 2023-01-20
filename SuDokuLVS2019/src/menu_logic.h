@@ -16,16 +16,6 @@ extern Sint8 menuCursorIndex_sound;
 extern Sint8 menuCursorIndex_background;
 extern Sint8 menuIndex_credits;
 
-/* Time */
-extern double deltaTime;
-extern Timer timer_global;
-extern double time_anim1;
-extern double time_anim_PressStart;
-extern Timer timer_game;
-extern double timer_buttonHold;
-extern double timer_buttonHold_repeater;
-extern Timer timer_paused;
-
 extern void updateMainMenuCursorPositionX();
 extern void updatePlayMenuCursorPositionX();
 extern void updateOptionsMenuCursorPositionX();
