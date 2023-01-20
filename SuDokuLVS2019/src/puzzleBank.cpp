@@ -16019,20 +16019,20 @@ const Sint8 puzzles_veryHard[1000][2][81] = {
 /* Generates puzzles of a given quantity and difficulty
  * range, and outputs them in an external file
  */
-int generatePuzzleBank() {
-    int i, j;
-    ofstream puzzleFile("puzzles.txt");
-    if (puzzleFile.is_open()) {
-        GENERATE_PUZZLES("puzzles_easy",     1000, RANDINT(30,35),  52);
-        GENERATE_PUZZLES("puzzles_normal",   1000, RANDINT(50,52),  75);
-        GENERATE_PUZZLES("puzzles_hard",     1000,             75, 300);
-        GENERATE_PUZZLES("puzzles_veryHard", 1000,            300, 500);
-        puzzleFile.close();
-    } else {
-        PRINT("Unable to open file.");
-    }
-    return 0;
-}
+//int generatePuzzleBank() {
+//    int i, j;
+//    ofstream puzzleFile("puzzles.txt");
+//    if (puzzleFile.is_open()) {
+//        GENERATE_PUZZLES("puzzles_easy",     1000, RANDINT(30,35),  52);
+//        GENERATE_PUZZLES("puzzles_normal",   1000, RANDINT(50,52),  75);
+//        GENERATE_PUZZLES("puzzles_hard",     1000,             75, 300);
+//        GENERATE_PUZZLES("puzzles_veryHard", 1000,            300, 500);
+//        puzzleFile.close();
+//    } else {
+//        PRINT("Unable to open file.");
+//    }
+//    return 0;
+//}
 
 void setPremadePuzzle(Uint8 diff, Uint16 index) {
     switch (diff) {
