@@ -1,5 +1,4 @@
-#include "include.h"
-#include "config.h"
+#include "main.h"
 #include "game_logic.h"
 #include "general.h"
 #include "menu_logic.h"
@@ -148,7 +147,6 @@ double time_anim1;
 double time_anim_PressStart;
 Timer timer_game;
 double timer_buttonHold;
-Uint8 heldButtons;
 double timer_buttonHold_repeater;
 Timer timer_paused;
 
@@ -183,7 +181,6 @@ Sint8 miniGridCursorIndex_x;
 Sint8 miniGridCursorIndex_y;
 Sint8 temp_mouseIndex_x;
 Sint8 temp_mouseIndex_y;
-Sint8 cheatCounter;
 bool justClickedInMiniGrid;
 
 /* General-use Variables */
@@ -194,16 +191,6 @@ Uint32 uint_i;
 double d;
 
 /* Other */
-Sint16 controllerAxis_leftStickX;
-Sint16 controllerAxis_leftStickX_last;
-Sint16 controllerAxis_leftStickY;
-Sint16 controllerAxis_leftStickY_last;
-Uint32 keyInputs;
-Uint8  dirInputs;
-Sint32 mouseInput_x;
-Sint32 mouseInput_x_last;
-Sint32 mouseInput_y;
-Sint32 mouseInput_y_last;
 double screenScale = 1;
 bool isRunning;
 bool isWindowed = true;
@@ -1021,10 +1008,10 @@ int main(int argv, char** args) {
 		} else if (!(controllerAxis_leftStickY > 0) && (controllerAxis_leftStickY_last > 0)) {
 			dirInputs |= DOWN_DEPRESSED;
 		}
-		DIR_HANDLER(UP_PRESSED, UP_DEPRESSED, INPUT_UP);
-		DIR_HANDLER(DOWN_PRESSED, DOWN_DEPRESSED, INPUT_DOWN);
-		DIR_HANDLER(LEFT_PRESSED, LEFT_DEPRESSED, INPUT_LEFT);
-		DIR_HANDLER(RIGHT_PRESSED, RIGHT_DEPRESSED, INPUT_RIGHT);
+		dirHandler(UP_PRESSED, UP_DEPRESSED, INPUT_UP);
+		dirHandler(DOWN_PRESSED, DOWN_DEPRESSED, INPUT_DOWN);
+		dirHandler(LEFT_PRESSED, LEFT_DEPRESSED, INPUT_LEFT);
+		dirHandler(RIGHT_PRESSED, RIGHT_DEPRESSED, INPUT_RIGHT);
 		if (timer_buttonHold > 0.5) {
 			timer_buttonHold_repeater += deltaTime;
 			if (timer_buttonHold_repeater >= 0.033) {

@@ -1,5 +1,21 @@
+#include "include.h"
+
 #ifndef CONFIG_H
 #define CONFIG_H
+
+/* General Input */
+extern Sint16 controllerAxis_leftStickX;
+extern Sint16 controllerAxis_leftStickX_last;
+extern Sint16 controllerAxis_leftStickY;
+extern Sint16 controllerAxis_leftStickY_last;
+extern Uint32 keyInputs;
+extern Uint8  dirInputs;
+extern Sint32 mouseInput_x;
+extern Sint32 mouseInput_x_last;
+extern Sint32 mouseInput_y;
+extern Sint32 mouseInput_y_last;
+extern Uint8 heldButtons;
+extern Sint8 cheatCounter;
 
 #define INPUT_UP          (1 << 0)
 #define INPUT_DOWN        (1 << 1)
@@ -36,13 +52,6 @@
 #define DOWN_PRESSED    (1 << 6)
 #define DOWN_DEPRESSED  (1 << 7)
 
-#define DIR_HANDLER(pressedVal, depressedVal, inputVal)  \
-	if (dirInputs & pressedVal) {                        \
-		keyInputs |= inputVal;                           \
-		heldButtons |= inputVal;                         \
-		cheatCounter = 0;                                \
-	} else if (dirInputs & depressedVal) {               \
-		heldButtons &= ~inputVal;                        \
-	}
+void dirHandler(Uint8, Uint8, Uint8);
 
 #endif
