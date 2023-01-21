@@ -7,16 +7,6 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 
-/* SDL Window */
-SDL_Window *window;
-SDL_Renderer *renderer;
-SDL_Event event;
-
-/* SDL Rectangles */
-SDL_Rect topRect;
-SDL_Rect bottomRect;
-SDL_Rect leftRect;
-SDL_Rect rightRect;
 SDL_Rect divider;
 
 /* SDL Controller */
@@ -28,29 +18,6 @@ SDL_GameController *controller = nullptr;
 
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
-
-/* Fonts */
-SDL_Color color_black = {0, 0, 0};
-SDL_Color color_white = {255, 255, 255};
-SDL_Color color_blue = {0, 0, 192};
-SDL_Color color_gray_240 = {240, 240, 240};
-SDL_Color color_light_blue = {240, 240, 255};
-TTF_Font *pixelFont;
-TTF_Font *pixelFont_large;
-TTF_Font *pixelFont_grid;
-TTF_Font *pixelFont_grid_mini;
-
-/* Text Objects */
-/* General - Numbers */
-TextCharObject gridNums_black[10];
-TextCharObject gridNums_blue[10];
-TextCharObject gridNums_blue_mini[10];
-/* General - Everything */
-TextCharObject textChars[127];
-TextCharObject textChars_large[91];
-char tempCharArray[64];
-Uint8 charCounter;
-Uint16 charWidthCounter;
 
 /* Game Variables */
 Sint8 gridCursorIndex_x;
@@ -958,9 +925,9 @@ int main(int argv, char** args) {
 				break;
 			/* 1 = Title Screen -> Main Menu */
 			case 1:
-				TRANSITION_GRAPHICS_FROM_TITLE_SCREEN();
-				TRANSITION_GRAPHICS_TO_MAIN_MENU(-1);
-				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 2);
+				transitionGraphicsFromTitleScreen();
+				transitionGraphicsToMainMenu(-1);
+				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
 				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
@@ -1033,9 +1000,9 @@ int main(int argv, char** args) {
 			/* 3 = Main Menu -> Title Screen */
 			case 3:
 				time_anim_PressStart = 0;
-				TRANSITION_GRAPHICS_FROM_MAIN_MENU();
-				TRANSITION_GRAPHICS_TO_TITLE_SCREEN();
-				TRANSITION_TO_STATE_WITH_TIMER(time_anim1, 1, 0);
+				transitionGraphicsFromMainMenu();
+				transitionGraphicsToTitleScreen();
+				transitionToStateWithTimer(time_anim1, 1, 0);
 				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
 			/* 7 = Play Menu */

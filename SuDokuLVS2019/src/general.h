@@ -45,10 +45,7 @@ extern Uint32 uint_i;
 extern double d;
 
 /* Other */
-extern double screenScale;
 extern bool isRunning;
-extern bool isWindowed;
-extern bool isIntegerScale;
 extern bool wentPastTitleScreen;
 
 #endif

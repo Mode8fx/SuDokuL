@@ -7,6 +7,17 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+/* SDL Window */
+SDL_Window *window;
+SDL_Renderer *renderer;
+SDL_Event event;
+
+/* SDL Rectangles */
+SDL_Rect topRect;
+SDL_Rect bottomRect;
+SDL_Rect leftRect;
+SDL_Rect rightRect;
+
 /* Window Width and Height */
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
@@ -109,7 +120,29 @@ SpriteObjectWithPos miniGrid_top_left;
 SpriteObjectWithPos miniGrid_top_right;
 SpriteObjectWithPos *currMiniGrid;
 
+/* Fonts */
+SDL_Color color_black = {0, 0, 0};
+SDL_Color color_white = {255, 255, 255};
+SDL_Color color_blue = {0, 0, 192};
+SDL_Color color_gray_240 = {240, 240, 240};
+SDL_Color color_light_blue = {240, 240, 255};
+TTF_Font *pixelFont;
+TTF_Font *pixelFont_large;
+TTF_Font *pixelFont_grid;
+TTF_Font *pixelFont_grid_mini;
+
 /* Text Objects */
+/* General - Numbers */
+TextCharObject gridNums_black[10];
+TextCharObject gridNums_blue[10];
+TextCharObject gridNums_blue_mini[10];
+/* General - Everything */
+TextCharObject textChars[127];
+TextCharObject textChars_large[91];
+char tempCharArray[64];
+Uint8 charCounter;
+Uint16 charWidthCounter;
+/* Specific */
 TextObject text_Loading;
 TextObject text_Easy;
 TextObject text_Normal;
@@ -295,10 +328,12 @@ Uint32 uint_i;
 double d;
 
 /* Other */
-double screenScale = 1;
 bool isRunning;
+bool wentPastTitleScreen = 0;
+
+/* Window */
+double screenScale = 1;
 bool isWindowed = true;
 bool isIntegerScale = true;
-bool wentPastTitleScreen = 0;
 
 #endif

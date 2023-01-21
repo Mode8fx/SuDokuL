@@ -109,6 +109,7 @@
     <ClInclude Include="src\sudokuGen.h" />
     <ClInclude Include="src\text_objects.h" />
     <ClInclude Include="src\transitions.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\config.cpp" />
@@ -119,6 +120,7 @@
     <ClCompile Include="src\sound_logic.cpp" />
     <ClCompile Include="src\sudokuGen.cpp" />
     <ClCompile Include="src\text_objects.cpp" />
+    <ClCompile Include="src\transitions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SuDokuLVS2019.rc" />

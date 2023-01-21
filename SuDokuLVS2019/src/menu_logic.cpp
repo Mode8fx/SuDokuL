@@ -2,6 +2,7 @@
 #include "menu_logic.h"
 #include "config.h"
 #include "sprite_objects.h"
+#include "window.h"
 
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {

@@ -27,6 +27,17 @@ struct TextObject {
 };
 
 /* Text Objects */
+/* General - Numbers */
+extern TextCharObject gridNums_black[10];
+extern TextCharObject gridNums_blue[10];
+extern TextCharObject gridNums_blue_mini[10];
+/* General - Everything */
+extern TextCharObject textChars[127];
+extern TextCharObject textChars_large[91];
+extern char tempCharArray[64];
+extern Uint8 charCounter;
+extern Uint16 charWidthCounter;
+/* Specific */
 extern TextObject text_Loading;
 extern TextObject text_Easy;
 extern TextObject text_Normal;
