@@ -251,8 +251,8 @@
 
 #define SET_GRID_NUM(index, num)  \
     grid[index] = num;            \
-    UPDATE_NUM_EMPTY();           \
-    CHECK_FOR_VICTORY();          \
+    updateNumEmpty();           \
+    checkForVictory();          \
     miniGridState = 0;            \
     SET_GRID_CURSOR_BY_LARGE_X(); \
     SET_GRID_CURSOR_BY_LARGE_Y();

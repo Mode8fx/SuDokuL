@@ -134,41 +134,41 @@ Uint32 startTime;
 
 Uint32 beginning;
 
-void test_main() {
-    // srand(0);
-    // shuffleBoard();
-    seed = 102;
-    generateGrid_Backtracking();
-    COPY_GRID(solutionGrid, grid);
-    cout << endl << "ORIGINAL:" << endl;
-    printBoard();
-    digHoles(250, 300);
-    cout << endl << "DUG:" << endl;
-    printBoard();
-    cout << endl << "SOLVED:" << endl;
-    printSolutionGrid();
-    cout << "Difficulty: " << int(difficulty) << endl;
-    cout << "finalDifficulty variable: " << int(finalDifficulty) << endl;
-    cout << "numHoles variable: " << int(numHoles) << endl;
-}
+//void test_main() {
+//    // srand(0);
+//    // shuffleBoard();
+//    seed = 102;
+//    generateGrid_Backtracking();
+//    COPY_GRID(solutionGrid, grid);
+//    cout << endl << "ORIGINAL:" << endl;
+//    printBoard();
+//    digHoles(250, 300);
+//    cout << endl << "DUG:" << endl;
+//    printBoard();
+//    cout << endl << "SOLVED:" << endl;
+//    printSolutionGrid();
+//    cout << "Difficulty: " << int(difficulty) << endl;
+//    cout << "finalDifficulty variable: " << int(finalDifficulty) << endl;
+//    cout << "numHoles variable: " << int(numHoles) << endl;
+//}
 
-void test_PuzzleDifficulty() {
-    Uint8 myGrid[81] =
-        {5, 3, 4, 0, 0, 8, 0, 1, 0,
-         0, 0, 0, 0, 0, 2, 0, 9, 0,
-         0, 0, 0, 0, 0, 7, 6, 0, 4,
-         0, 0, 0, 5, 0, 0, 1, 0, 0,
-         1, 0, 0, 0, 0, 0, 0, 0, 3,
-         0, 0, 9, 0, 0, 1, 0, 0, 0,
-         3, 0, 5, 4, 0, 0, 0, 0, 0,
-         0, 8, 0, 2, 0, 0, 0, 0, 0,
-         0, 6, 0, 7, 0, 0, 3, 8, 2};
-    COPY_GRID(tempGrid, myGrid);
-    solvePuzzle(0);
-    numHoles = std::count(tempGrid, tempGrid + 81, 0);
-    difficulty = finalDifficulty * BACKTRACKING_VAL + numHoles;
-    PRINT("Difficulty: " << (int) difficulty);
-}
+//void test_PuzzleDifficulty() {
+//    Uint8 myGrid[81] =
+//        {5, 3, 4, 0, 0, 8, 0, 1, 0,
+//         0, 0, 0, 0, 0, 2, 0, 9, 0,
+//         0, 0, 0, 0, 0, 7, 6, 0, 4,
+//         0, 0, 0, 5, 0, 0, 1, 0, 0,
+//         1, 0, 0, 0, 0, 0, 0, 0, 3,
+//         0, 0, 9, 0, 0, 1, 0, 0, 0,
+//         3, 0, 5, 4, 0, 0, 0, 0, 0,
+//         0, 8, 0, 2, 0, 0, 0, 0, 0,
+//         0, 6, 0, 7, 0, 0, 3, 8, 2};
+//    COPY_GRID(tempGrid, myGrid);
+//    solvePuzzle(0);
+//    numHoles = std::count(tempGrid, tempGrid + 81, 0);
+//    difficulty = finalDifficulty * BACKTRACKING_VAL + numHoles;
+//    PRINT("Difficulty: " << (int) difficulty);
+//}
 
 /* Generates player grid in grid and solution grid in solutionGrid, and stores
  * difficulty in difficulty.
@@ -196,7 +196,7 @@ Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
         break;
     }
 
-    UPDATE_NUM_EMPTY();
+    updateNumEmpty();
 
 
     /* At this point:
@@ -226,7 +226,7 @@ Uint8 generateGrid_Backtracking() {
     // std::random_shuffle(cellIndices, cellIndices + 81);
 
     i = 0;
-    INIT_POSSIBLE_VALS_ARR_BY_INDEX(i);
+    initPossibleValsArrByIndex(i);
     j = 0;
     while (i < 81) {
         char_x1 = true; /* flag */
@@ -237,7 +237,7 @@ Uint8 generateGrid_Backtracking() {
                     // PRINT("SET " << (int) cellIndices[i] << " TO 0");
                     grid[i] = 0;
                     i--;
-                    INIT_POSSIBLE_VALS_ARR_BY_INDEX(i);
+                    initPossibleValsArrByIndex(i);
                     for (char_x2 = 0; char_x2 < 9; char_x2++) {
                         if (possibleValsArr[char_x2] == grid[i]) {
                             j = char_x2 + 1;
@@ -254,7 +254,7 @@ Uint8 generateGrid_Backtracking() {
             // PRINT("SET " << (int)cellIndices[i] << " TO " << (int) possibleValsArr[j]);
             grid[i] = possibleValsArr[j];
             i++;
-            INIT_POSSIBLE_VALS_ARR_BY_INDEX(i);
+            initPossibleValsArrByIndex(i);
             j = 0;
         }
     }
@@ -620,3 +620,37 @@ void printTempGrid() {
 void printSolutionGrid() {
 }
 #endif
+
+void initPossibleValsArrByIndex(Sint8 index) {
+    possibleValsArr[0] = 1;
+    possibleValsArr[1] = 2;
+    possibleValsArr[2] = 3;
+    possibleValsArr[3] = 4;
+    possibleValsArr[4] = 5;
+    possibleValsArr[5] = 6;
+    possibleValsArr[6] = 7;
+    possibleValsArr[7] = 8;
+    possibleValsArr[8] = 9;
+    srand(seed);
+    srand(rand() + index);
+    std::random_shuffle(possibleValsArr, possibleValsArr + 9);
+}
+
+void updateNumEmpty() {
+    numEmpty = std::count(grid, grid + 81, 0);
+}
+
+void checkForVictory() {
+    k = 1;
+    if (numEmpty == 0) {
+        for (j = 0; j < 81; j++) {
+            if (grid[j] != solutionGrid[j]) {
+                k = 0;
+                break;
+            }
+        }
+        if (k) {
+            programState = 11;
+        }
+    }
+}

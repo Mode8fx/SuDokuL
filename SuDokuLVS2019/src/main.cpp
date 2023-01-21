@@ -1086,7 +1086,7 @@ int main(int argv, char** args) {
 				SET_GRID_CURSOR_BY_LARGE_X();
 				SET_GRID_CURSOR_BY_LARGE_Y();
 				miniGridState = 0;
-				UPDATE_NUM_EMPTY();
+				updateNumEmpty();
 				break;
 			/* 9 = Game */
 			case 9:
