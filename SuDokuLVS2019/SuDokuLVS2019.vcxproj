@@ -116,6 +116,7 @@
     <ClCompile Include="src\menu_logic.cpp" />
     <ClCompile Include="src\puzzleBank.cpp" />
     <ClCompile Include="src\shared.cpp" />
+    <ClCompile Include="src\sound_logic.cpp" />
     <ClCompile Include="src\sudokuGen.cpp" />
     <ClCompile Include="src\text_objects.cpp" />
   </ItemGroup>

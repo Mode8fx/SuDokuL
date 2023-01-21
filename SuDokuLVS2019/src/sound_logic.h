@@ -12,48 +12,11 @@
 #define MUSIC_7 "music/addicti.mod"
 #define SFX_1   "sfx/coin1.wav"
 
-#define MUSIC_CHANNEL 0
-#define SFX_CHANNEL 1
+constexpr auto MUSIC_CHANNEL = 0;
+constexpr auto SFX_CHANNEL = 1;
 
-#define PLAY_MUSIC_AT_INDEX(index)      \
-	soundSettings.musicIndex = index;   \
-	Mix_HaltMusic();                    \
-	switch (soundSettings.musicIndex) { \
-		case 1:                         \
-			PLAY_MUSIC(bgm_1);          \
-			break;                      \
-		case 2:                         \
-			PLAY_MUSIC(bgm_2);          \
-			break;                      \
-		case 3:                         \
-			PLAY_MUSIC(bgm_3);          \
-			break;                      \
-		case 4:                         \
-			PLAY_MUSIC(bgm_4);          \
-			break;                      \
-		case 5:                         \
-			PLAY_MUSIC(bgm_5);          \
-			break;                      \
-		case 6:                         \
-			PLAY_MUSIC(bgm_6);          \
-			break;                      \
-		case 7:                         \
-			PLAY_MUSIC(bgm_7);          \
-			break;                      \
-		default:                        \
-			break;                      \
-	}
-
-#define STOP_MUSIC(bgm) \
-	Mix_HaltMusic();    \
-	Mix_FreeMusic(bgm);
-
-#if !defined(PSP)
-#define PLAY_MUSIC(bgm) \
-	Mix_PlayMusic(bgm, -1);
-#else
-#define PLAY_MUSIC(bgm) \
-	Mix_PlayMusic(bgm, 0);
-#endif
+extern void playMusicAtIndex(Sint8);
+extern void stopMusic(Mix_Music *);
+extern void playMusic(Mix_Music *);
 
 #endif

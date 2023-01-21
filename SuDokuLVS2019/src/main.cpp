@@ -2,9 +2,7 @@
 #include "game_logic.h"
 #include "general.h"
 #include "menu_logic.h"
-#include "shared.h"
 #include "sound_logic.h"
-#include "sprite_objects.h"
 #include "transitions.h"
 #include "sudokuGen.h"
 #include "puzzleBank.h"
@@ -906,7 +904,7 @@ int main(int argv, char** args) {
 		if (KEY_PRESSED(INPUT_PREV_TRACK) && wentPastTitleScreen) {
 			if (--soundSettings.musicIndex < 1)
 				soundSettings.musicIndex = 7;
-			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+			playMusicAtIndex(soundSettings.musicIndex);
 			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
 				saveCurrentSettings();
 			}
@@ -914,7 +912,7 @@ int main(int argv, char** args) {
 		if (KEY_PRESSED(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
 			if (++soundSettings.musicIndex > 7)
 				soundSettings.musicIndex = 1;
-			PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+			playMusicAtIndex(soundSettings.musicIndex);
 			if (programState != 20) {
 				saveCurrentSettings();
 			}
@@ -946,7 +944,7 @@ int main(int argv, char** args) {
 					Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
 					if (!wentPastTitleScreen) {
 						wentPastTitleScreen = true;
-						PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+						playMusicAtIndex(soundSettings.musicIndex);
 					}
 					time_anim1 = 0;
 					programState = 1;
@@ -1586,7 +1584,7 @@ int main(int argv, char** args) {
 						case 0:
 							if (--soundSettings.musicIndex < 1)
 								soundSettings.musicIndex = 7;
-							PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+							playMusicAtIndex(soundSettings.musicIndex);
 							break;
 						case 1:
 							Mix_VolumeMusic((int)(--soundSettings.bgmVolume * 128.0 / 100));
@@ -1613,7 +1611,7 @@ int main(int argv, char** args) {
 						case 0:
 							if (++soundSettings.musicIndex > 7)
                                 soundSettings.musicIndex = 1;
-							PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+							playMusicAtIndex(soundSettings.musicIndex);
 							break;
 						case 1:
 							Mix_VolumeMusic((int)(++soundSettings.bgmVolume * 128.0 / 100));
@@ -1632,7 +1630,7 @@ int main(int argv, char** args) {
 								if (soundSettings.musicIndex != 1) {
 									soundSettings.musicIndex = 1;
 									soundSettings.bgmVolume = 90;
-									PLAY_MUSIC_AT_INDEX(soundSettings.musicIndex);
+									playMusicAtIndex(soundSettings.musicIndex);
 								} else {
 									soundSettings.bgmVolume = 90;
 								}
