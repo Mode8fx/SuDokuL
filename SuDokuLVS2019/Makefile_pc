@@ -1,0 +1,59 @@
+ARCH ?= x64
+
+CXX=g++
+CXXFLAGS=-std=c++11 -Wall -Wextra -O2
+
+CPPFLAGS=-I./src \
+		 -I./SDL2/SDL2/include \
+		 -I./SDL2/SDL2_image/include \
+		 -I./SDL2/SDL2_ttf/include \
+		 -I./SDL2/SDL2_mixer/include
+LDLIBS=-lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+
+ifeq ($(ARCH),x64)
+	CXXFLAGS += -m64
+	LDFLAGS=-L./SDL2/SDL2/lib/x64 \
+			-L./SDL2/SDL2_image/lib/x64 \
+			-L./SDL2/SDL2_ttf/lib/x64 \
+			-L./SDL2/SDL2_mixer/lib/x64
+else ifeq ($(ARCH),x86)
+	CXXFLAGS += -m32
+	LDFLAGS=-L./SDL2/SDL2/lib/x86 \
+			-L./SDL2/SDL2_image/lib/x86 \
+			-L./SDL2/SDL2_ttf/lib/x86 \
+			-L./SDL2/SDL2_mixer/lib/x86
+else
+	$(error Unsupported architecture $(ARCH))
+endif
+
+LDFLAGS+=-mwindows
+
+RESOURCES=logo_icon_pc.png \
+          resource.rc
+
+RESOURCE_OBJECT=resource.o
+
+SRC_DIR=src
+EXCLUDED=
+SRCS=$(filter-out $(EXCLUDED), $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/*.c))
+
+OBJS=$(patsubst %.cpp, %.o, $(patsubst %.c, %.o, $(SRCS)))
+
+myprogram: $(OBJS) $(RESOURCE_OBJECT)
+	$(CXX) $(LDFLAGS) $(OBJS) $(RESOURCE_OBJECT) $(LDLIBS) -o SuDokuL_$(ARCH).exe
+
+$(RESOURCE_OBJECT): resource.rc
+	windres -J rc -i $< -o $@
+
+release-resources/resource.rc: logo_icon_pc.png
+	echo "ICON \"logo_icon_pc.png\"" > $@
+
+clean:
+	rm -f $(OBJS) $(RESOURCE_OBJECT) SuDokuL_x64_SDL2.exe
+	rm -f $(OBJS) $(RESOURCE_OBJECT) SuDokuL_x86_SDL2.exe
+
+all:
+	make ARCH=x64
+	make clean
+	make ARCH=x86
+	make clean

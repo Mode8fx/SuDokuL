@@ -1,7 +1,11 @@
 PSP_LARGE_MEMORY=1
 
-TARGET = sudokul
-OBJS = main.o puzzleBank.o sudokuGen.o
+TARGET		=	sudokul
+BUILD		=	build_psp
+SRC_DIR		=	src
+EXCLUDED	=	
+SRCS		=	$(filter-out $(EXCLUDED), $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/*.c))
+OBJS		=	$(patsubst %.cpp, %.o, $(patsubst %.c, %.o, $(SRCS)))
 
 INCDIR =
 CFLAGS = -G0 -O2 -DPSP
@@ -18,8 +22,8 @@ LIBS = -lSDL2main -lSDL2_image -lpng -ljpeg -lSDL2_mixer -lstdc++ -lSDL2_ttf -lS
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = sudokul
-PSP_EBOOT_ICON=icon.png
-PSP_EBOOT_PIC1=pic.png
+PSP_EBOOT_ICON = psp/icon.png
+PSP_EBOOT_PIC1 = psp/pic.png
 # psp sound file: PSP_EBOOT_SND0=SND0.at3
 
 PSPSDK=$(shell psp-config --pspsdk-path)
