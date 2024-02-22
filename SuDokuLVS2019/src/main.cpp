@@ -6,6 +6,7 @@
 #include "transitions.h"
 #include "sudokuGen.h"
 #include "puzzleBank.h"
+#include "include_fonts.h"
 
 SDL_Rect divider;
 
@@ -124,7 +125,7 @@ int main(int argv, char** args) {
 	/* Set Rectangles */
 	UPDATE_BORDER_RECTS();
 	/* General - Fonts */
-	pixelFont = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE);
+	pixelFont = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE);
 	char tempCharArr[2];
 	tempCharArr[1] = '\0';
 	/* General */
@@ -240,9 +241,9 @@ int main(int argv, char** args) {
 
 	/* Set Text */
 	/* General - Fonts */
-	pixelFont_large = TTF_OpenFont(FONT_COMMODORE, FONT_SIZE * 1.5);
-	pixelFont_grid = TTF_OpenFont(FONT_COMMODORE, GRID_NUM_SIZE);
-	pixelFont_grid_mini = TTF_OpenFont(FONT_COMMODORE, (int)GRID_SIZE_A);
+	pixelFont_large = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE * 1.5);
+	pixelFont_grid = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, GRID_NUM_SIZE);
+	pixelFont_grid_mini = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)GRID_SIZE_A);
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;

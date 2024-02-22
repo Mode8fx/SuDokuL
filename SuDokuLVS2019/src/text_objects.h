@@ -202,8 +202,6 @@ extern Uint16 videoMenuNumPosition_X;
 extern Uint16 backgroundMenuNumPosition_X;
 
 
-#define FONT_COMMODORE (rootDir + "fonts/Commodore_Pixelized_v1_2.ttf").c_str()
-
 #define FONT_SIZE                         (fontSize)
 #define GRID_NUM_SIZE                     (gridNumSize)
 #define TEXT_PRESS_START_AMPLITUDE        (text_pressStartAmplitude)
