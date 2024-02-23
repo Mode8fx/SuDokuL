@@ -577,19 +577,19 @@ int main(int argv, char** args) {
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					updateMousePosViewportMouse();
-					cheatCounter = 0;
+					//cheatCounter = 0;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
 						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 						updateMousePosViewportMouse();
 						keyInputs |= INPUT_CONFIRM_ALT;
-						cheatCounter = 0;
+						//cheatCounter = 0;
 						break;
 					}
 					if (event.button.button == SDL_BUTTON_RIGHT) {
 						keyInputs |= INPUT_BACK;
-						cheatCounter = 0;
+						//cheatCounter = 0;
 						break;
 					}
 					break;
@@ -690,7 +690,7 @@ int main(int argv, char** args) {
 						mouseInput_y = event.tfinger.y * gameHeight;
 						updateMousePosViewportTouch();
 						keyInputs |= INPUT_CONFIRM_ALT;
-						cheatCounter = 0;
+						//cheatCounter = 0;
 					}
 					break;
 				case SDL_FINGERMOTION:
@@ -698,7 +698,7 @@ int main(int argv, char** args) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
 						updateMousePosViewportTouch();
-						cheatCounter = 0;
+						//cheatCounter = 0;
 					}
 					break;
 				case SDL_FINGERUP:

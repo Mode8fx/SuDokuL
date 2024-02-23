@@ -52,6 +52,6 @@ constexpr auto UP_DEPRESSED      = (1 << 5);
 constexpr auto DOWN_PRESSED      = (1 << 6);
 constexpr auto DOWN_DEPRESSED    = (1 << 7);
 
-void dirHandler(Uint8, Uint8, Uint8);
+extern void dirHandler(Uint8, Uint8, Uint8);
 
 #endif

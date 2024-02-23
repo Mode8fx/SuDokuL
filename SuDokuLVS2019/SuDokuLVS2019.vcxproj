@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\fonts_include\Commodore_Pixelized_v1_2.cpp" />
+    <ClCompile Include="src\game_logic.cpp" />
     <ClCompile Include="src\graphics_include\grid_384.cpp" />
     <ClCompile Include="src\graphics_include\grid_cursor_bottom_left.cpp" />
     <ClCompile Include="src\graphics_include\grid_cursor_bottom_right.cpp" />
