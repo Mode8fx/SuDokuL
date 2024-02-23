@@ -858,8 +858,8 @@ extern void initStartingTextVariables();
 
 #define SET_CREDITS_TEXT()                                                                                                                                                   \
     SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, AND ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),              (FONT_SIZE * (CREDITS_STEP *    1))          ); \
-    SET_TEXT_WITH_OUTLINE("Mips96",                     text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (FONT_SIZE * (CREDITS_STEP *    5))          ); \
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mips96",  text_Credits_3, OBJ_TO_MID_SCREEN_X(text_Credits_3),                 (FONT_SIZE * (CREDITS_STEP * 6.25))          ); \
+    SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (FONT_SIZE * (CREDITS_STEP *    5))          ); \
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3, OBJ_TO_MID_SCREEN_X(text_Credits_3),                 (FONT_SIZE * (CREDITS_STEP * 6.25))          ); \
 	SET_TEXT_WITH_OUTLINE("(1/7)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5))); \
     SET_LARGE_TEXT_WITH_OUTLINE("MUSIC",                text_Credits_4,   OBJ_TO_MID_SCREEN_X(text_Credits_4),               (FONT_SIZE * (CREDITS_STEP *     1))         ); \
     SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5b, 0.25),  (FONT_SIZE * (CREDITS_STEP *   3.5))         ); \
@@ -898,7 +898,7 @@ extern void initStartingTextVariables();
     SET_TEXT_WITH_OUTLINE(CHEAT_TEXT,                   text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (FONT_SIZE * (CREDITS_STEP *    6))          ); \
     SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28),          (FONT_SIZE * (CREDITS_STEP * 7.25))          ); \
     SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (FONT_SIZE * (CREDITS_STEP *  8.5))          ); \
-    SET_TEXT_WITH_OUTLINE("- Mips96",                   text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP *   11))          ); \
+    SET_TEXT_WITH_OUTLINE("- Mode8fx",                   text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP *   11))          ); \
 	SET_TEXT_WITH_OUTLINE("(6/7)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5))); \
     SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",           text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),              (FONT_SIZE * (CREDITS_STEP *     1))          ); \
     SET_TEXT_WITH_OUTLINE("SuDokuL is available on:",   text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),              (FONT_SIZE * (CREDITS_STEP *   3.5))          ); \
@@ -908,7 +908,7 @@ extern void initStartingTextVariables();
     SET_TEXT_WITH_OUTLINE("Wii U",                      text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *   8.5))          ); \
     SET_TEXT_WITH_OUTLINE("Vita",                       text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *  9.75))          ); \
     SET_TEXT_WITH_OUTLINE("PSP",                        text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *    11))          ); \
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mips96/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),        (FONT_SIZE * (CREDITS_STEP * 12.75))          ); \
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),        (FONT_SIZE * (CREDITS_STEP * 12.75))          ); \
 	SET_TEXT_WITH_OUTLINE("(7/7)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
 
 #if defined(WII_U) || defined(SWITCH) || defined(ANDROID)
