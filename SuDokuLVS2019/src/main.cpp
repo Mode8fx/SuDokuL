@@ -24,9 +24,6 @@ SDL_GameController *controller = nullptr;
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 
 /* Game Variables */
-Sint8 gridCursorIndex_x;
-Sint8 gridCursorIndex_y;
-Sint8 miniGridState;
 Sint8 lastMiniGridState;
 Sint8 miniGridCursorIndex_x;
 Sint8 miniGridCursorIndex_y;
@@ -229,7 +226,7 @@ int main(int argv, char** args) {
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
 	PREPARE_SPRITE(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
-	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
+	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
 	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
 	PREPARE_SPRITE(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, 1);
@@ -1087,8 +1084,8 @@ int main(int argv, char** args) {
 				timer_game.now = 0.0;
 				gridCursorIndex_x = 0;
 				gridCursorIndex_y = 0;
-				SET_GRID_CURSOR_BY_LARGE_X();
-				SET_GRID_CURSOR_BY_LARGE_Y();
+				setGridCursorByLargeX();
+				setGridCursorByLargeY();
 				miniGridState = 0;
 				updateNumEmpty();
 				break;
@@ -1110,7 +1107,7 @@ int main(int argv, char** args) {
 				GAME_HANDLE_MAIN_GRID_NAVIGATION();
 				GAME_HANDLE_MINI_GRID_NAVIGATION();
 				GAME_HANDLE_NUM_KEY_PRESSES();
-				GAME_HANDLE_CHEAT_REVEAL_CELL();
+				gameHandleCheatRevealCell();
 				lastMiniGridState = miniGridState;
 				/* Draw Grid */
 				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);

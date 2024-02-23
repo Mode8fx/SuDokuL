@@ -4,28 +4,60 @@
 #ifndef GAME_LOGIC_H
 #define GAME_LOGIC_H
 
+extern Sint8 gridCursorIndex_x;
+extern Sint8 gridCursorIndex_y;
+extern Sint8 miniGridState;
+extern Uint16 gridCursorCornerStep;
+
+//extern void GAME_HANDLE_MAIN_GRID_NAVIGATION();
+//extern void GAME_HANDLE_MOUSE_MOVEMENT_MAIN();
+extern bool mouseBoundsX(Sint8, Sint8);
+extern bool mouseBoundsY(Sint8, Sint8);
+extern bool clickedWithinGrid();
+extern bool mouseIsInsideGridSquare();
+//extern void GAME_HANDLE_MINI_GRID_NAVIGATION();
+//extern void GAME_HANDLE_MOUSE_MOVEMENT_MINI();
+extern bool mouseBoundsMiniX(Sint8, Sint8);
+extern bool mouseBoundsMiniY(Sint8, Sint8);
+extern bool clickedWithinMiniGrid();
+extern bool mouseIsInsideGridSquareMini();
+extern bool clickedOutsideMiniGrid();
+extern void setGridNum(Sint8, Sint8);
+// extern void GAME_HANDLE_NUM_KEY_PRESSES();
+// extern void CHECK_NUM_KEY_PRESS();
+// extern void SWAP_MINI_GRID_STATE();
+// extern void SET_GRID_MINI_NUM();
+extern void setGridCursorByLargeX();
+extern void setGridCursorByLargeY();
+//extern void SET_GRID_CURSOR_BY_SMALL_X();
+//extern void SET_GRID_CURSOR_BY_SMALL_Y();
+extern Sint16 xAtMiniGridIndex(Sint8);
+extern Sint16 yAtMiniGridIndex(Sint8);
+extern void gameHandleCheatRevealCell();
+//extern void DRAW_SIDEBAR();
+
 #define GAME_HANDLE_MAIN_GRID_NAVIGATION()                                                                                \
     if (miniGridState == 0) {                                                                                             \
         if (KEY_PRESSED(INPUT_LEFT)) {                                                                                    \
             if (--gridCursorIndex_x < 0)                                                                                  \
                 gridCursorIndex_x = 8;                                                                                    \
-            SET_GRID_CURSOR_BY_LARGE_X();                                                                                 \
+            setGridCursorByLargeX();                                                                                 \
         }                                                                                                                 \
         if (KEY_PRESSED(INPUT_RIGHT)) {                                                                                   \
             gridCursorIndex_x = (gridCursorIndex_x + 1) % 9;                                                              \
-            SET_GRID_CURSOR_BY_LARGE_X();                                                                                 \
+            setGridCursorByLargeX();                                                                                 \
         }                                                                                                                 \
         if (KEY_PRESSED(INPUT_UP)) {                                                                                      \
             if (--gridCursorIndex_y < 0)                                                                                  \
                 gridCursorIndex_y = 8;                                                                                    \
-            SET_GRID_CURSOR_BY_LARGE_Y();                                                                                 \
+            setGridCursorByLargeY();                                                                                 \
         }                                                                                                                 \
         if (KEY_PRESSED(INPUT_DOWN)) {                                                                                    \
             gridCursorIndex_y = (gridCursorIndex_y + 1) % 9;                                                              \
-            SET_GRID_CURSOR_BY_LARGE_Y();                                                                                 \
+            setGridCursorByLargeY();                                                                                 \
         }                                                                                                                 \
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;                                                                  \
-        if ((KEY_PRESSED(INPUT_CONFIRM) || CLICKED_WITHIN_GRID()) && originalGrid[i] == 0) {                              \
+        if ((KEY_PRESSED(INPUT_CONFIRM) || clickedWithinGrid()) && originalGrid[i] == 0) {                              \
             if (gridCursorIndex_x < 4) {                                                                                  \
                  if (gridCursorIndex_y < 4) {                                                                             \
                     currMiniGrid = &miniGrid_top_left;                                                                    \
@@ -59,56 +91,56 @@
     if (miniGridState == 0 && !justClickedInMiniGrid) {         \
         temp_mouseIndex_x = -1;                                 \
         temp_mouseIndex_y = -1;                                 \
-        if (MOUSE_BOUNDS_X(0, 8)) {                             \
-            if (MOUSE_BOUNDS_X(0, 2)) {                         \
-                if (MOUSE_BOUNDS_X(0, 0)) {                     \
+        if (mouseBoundsX(0, 8)) {                             \
+            if (mouseBoundsX(0, 2)) {                         \
+                if (mouseBoundsX(0, 0)) {                     \
                     temp_mouseIndex_x = 0;                      \
-                } else if (MOUSE_BOUNDS_X(1, 1)) {              \
+                } else if (mouseBoundsX(1, 1)) {              \
                     temp_mouseIndex_x = 1;                      \
-                } else if (MOUSE_BOUNDS_X(2, 2)) {              \
+                } else if (mouseBoundsX(2, 2)) {              \
                     temp_mouseIndex_x = 2;                      \
                 }                                               \
-            } else if (MOUSE_BOUNDS_X(3, 5)) {                  \
-                if (MOUSE_BOUNDS_X(3, 3)) {                     \
+            } else if (mouseBoundsX(3, 5)) {                  \
+                if (mouseBoundsX(3, 3)) {                     \
                     temp_mouseIndex_x = 3;                      \
-                } else if (MOUSE_BOUNDS_X(4, 4)) {              \
+                } else if (mouseBoundsX(4, 4)) {              \
                     temp_mouseIndex_x = 4;                      \
-                } else if (MOUSE_BOUNDS_X(5, 5)) {              \
+                } else if (mouseBoundsX(5, 5)) {              \
                     temp_mouseIndex_x = 5;                      \
                 }                                               \
-            } else if (MOUSE_BOUNDS_X(6, 8)) {                  \
-                if (MOUSE_BOUNDS_X(6, 6)) {                     \
+            } else if (mouseBoundsX(6, 8)) {                  \
+                if (mouseBoundsX(6, 6)) {                     \
                     temp_mouseIndex_x = 6;                      \
-                } else if (MOUSE_BOUNDS_X(7, 7)) {              \
+                } else if (mouseBoundsX(7, 7)) {              \
                     temp_mouseIndex_x = 7;                      \
-                } else if (MOUSE_BOUNDS_X(8, 8)) {              \
+                } else if (mouseBoundsX(8, 8)) {              \
                     temp_mouseIndex_x = 8;                      \
                 }                                               \
             }                                                   \
         }                                                       \
-        if (MOUSE_BOUNDS_Y(0, 8)) {                             \
-            if (MOUSE_BOUNDS_Y(0, 2)) {                         \
-                if (MOUSE_BOUNDS_Y(0, 0)) {                     \
+        if (mouseBoundsY(0, 8)) {                             \
+            if (mouseBoundsY(0, 2)) {                         \
+                if (mouseBoundsY(0, 0)) {                     \
                     temp_mouseIndex_y = 0;                      \
-                } else if (MOUSE_BOUNDS_Y(1, 1)) {              \
+                } else if (mouseBoundsY(1, 1)) {              \
                     temp_mouseIndex_y = 1;                      \
-                } else if (MOUSE_BOUNDS_Y(2, 2)) {              \
+                } else if (mouseBoundsY(2, 2)) {              \
                     temp_mouseIndex_y = 2;                      \
                 }                                               \
-            } else if (MOUSE_BOUNDS_Y(3, 5)) {                  \
-                if (MOUSE_BOUNDS_Y(3, 3)) {                     \
+            } else if (mouseBoundsY(3, 5)) {                  \
+                if (mouseBoundsY(3, 3)) {                     \
                     temp_mouseIndex_y = 3;                      \
-                } else if (MOUSE_BOUNDS_Y(4, 4)) {              \
+                } else if (mouseBoundsY(4, 4)) {              \
                     temp_mouseIndex_y = 4;                      \
-                } else if (MOUSE_BOUNDS_Y(5, 5)) {              \
+                } else if (mouseBoundsY(5, 5)) {              \
                     temp_mouseIndex_y = 5;                      \
                 }                                               \
-            } else if (MOUSE_BOUNDS_Y(6, 8)) {                  \
-                if (MOUSE_BOUNDS_Y(6, 6)) {                     \
+            } else if (mouseBoundsY(6, 8)) {                  \
+                if (mouseBoundsY(6, 6)) {                     \
                     temp_mouseIndex_y = 6;                      \
-                } else if (MOUSE_BOUNDS_Y(7, 7)) {              \
+                } else if (mouseBoundsY(7, 7)) {              \
                     temp_mouseIndex_y = 7;                      \
-                } else if (MOUSE_BOUNDS_Y(8, 8)) {              \
+                } else if (mouseBoundsY(8, 8)) {              \
                     temp_mouseIndex_y = 8;                      \
                 }                                               \
             }                                                   \
@@ -116,26 +148,10 @@
         if (temp_mouseIndex_x > -1 && temp_mouseIndex_y > -1) { \
             gridCursorIndex_x = temp_mouseIndex_x;              \
             gridCursorIndex_y = temp_mouseIndex_y;              \
-            SET_GRID_CURSOR_BY_LARGE_X();                       \
-            SET_GRID_CURSOR_BY_LARGE_Y();                       \
+            setGridCursorByLargeX();                       \
+            setGridCursorByLargeY();                       \
         }                                                       \
     }
-
-#define MOUSE_BOUNDS_X(start, end) \
-    ((mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (GRID_SIZE_A3))))
-
-#define MOUSE_BOUNDS_Y(start, end) \
-    ((mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (GRID_SIZE_A3))))
-
-#define CLICKED_WITHIN_GRID() \
-    (KEY_PRESSED(INPUT_CONFIRM_ALT) && MOUSE_IS_INSIDE_GRID_SQUARE())
-
-// easier to code/check than GAME_HANDLE_MOUSE_MOVEMENT_MAIN()... but also less efficient
-#define MOUSE_IS_INSIDE_GRID_SQUARE() \
-    ((MOUSE_BOUNDS_X(0,0) || MOUSE_BOUNDS_X(1,1) || MOUSE_BOUNDS_X(2,2) || MOUSE_BOUNDS_X(3,3) || MOUSE_BOUNDS_X(4,4) \
-    || MOUSE_BOUNDS_X(5,5) || MOUSE_BOUNDS_X(6,6) || MOUSE_BOUNDS_X(7,7) || MOUSE_BOUNDS_X(8,8)) &&                   \
-    (MOUSE_BOUNDS_Y(0,0) || MOUSE_BOUNDS_Y(1,1) || MOUSE_BOUNDS_Y(2,2) || MOUSE_BOUNDS_Y(3,3) || MOUSE_BOUNDS_Y(4,4)  \
-    || MOUSE_BOUNDS_Y(5,5) || MOUSE_BOUNDS_Y(6,6) || MOUSE_BOUNDS_Y(7,7) || MOUSE_BOUNDS_Y(8,8)))
 
 #define GAME_HANDLE_MINI_GRID_NAVIGATION()                                                                  \
     if (miniGridState > 0) {                                                                                \
@@ -166,23 +182,23 @@
             SET_GRID_CURSOR_BY_SMALL_Y();                                                                   \
         }                                                                                                   \
         if (lastMiniGridState > 0) {                                                                        \
-            if ((KEY_PRESSED(INPUT_BACK) || CLICKED_OUTSIDE_MINI_GRID())) {                                 \
+            if ((KEY_PRESSED(INPUT_BACK) || clickedOutsideMiniGrid())) {                                 \
                 miniGridState = 0;                                                                          \
-                SET_GRID_CURSOR_BY_LARGE_X();                                                               \
-                SET_GRID_CURSOR_BY_LARGE_Y();                                                               \
+                setGridCursorByLargeX();                                                               \
+                setGridCursorByLargeY();                                                               \
             }                                                                                               \
-            if ((KEY_PRESSED(INPUT_CONFIRM) || CLICKED_WITHIN_MINI_GRID())) {                               \
+            if ((KEY_PRESSED(INPUT_CONFIRM) || clickedWithinMiniGrid())) {                               \
                 i = (gridCursorIndex_y * 9) + gridCursorIndex_x;                                            \
                 if (miniGridCursorIndex_x > -1) {                                                           \
                     if (miniGridState == 1) {                                                               \
-                        SET_GRID_NUM(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));         \
+                        setGridNum(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));         \
                     } else if (grid[i] == 0) {                                                              \
                         SET_GRID_MINI_NUM(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));    \
                     }                                                                                       \
                 } else if (miniGridCursorIndex_y == 1) {                                                    \
                     SWAP_MINI_GRID_STATE();                                                                 \
                 } else {                                                                                    \
-                    SET_GRID_NUM(i, 0);                                                                     \
+                    setGridNum(i, 0);                                                                     \
                 }                                                                                           \
                 if (KEY_PRESSED(INPUT_CONFIRM_ALT)) {                                                       \
                     justClickedInMiniGrid = true;                                                           \
@@ -198,27 +214,27 @@
     if (miniGridState > 0) {                                               \
         temp_mouseIndex_x = -2;                                            \
         temp_mouseIndex_y = -2;                                            \
-        if (MOUSE_BOUNDS_MINI_X(-1, 2)) {                                  \
-            if (MOUSE_BOUNDS_MINI_X(-1, 0)) {                              \
-                if (MOUSE_BOUNDS_MINI_X(-1, -1)) {                         \
+        if (mouseBoundsMiniX(-1, 2)) {                                  \
+            if (mouseBoundsMiniX(-1, 0)) {                              \
+                if (mouseBoundsMiniX(-1, -1)) {                         \
                     temp_mouseIndex_x = -1;                                \
-                } else if (MOUSE_BOUNDS_MINI_X(0, 0)) {                    \
+                } else if (mouseBoundsMiniX(0, 0)) {                    \
                     temp_mouseIndex_x = 0;                                 \
                 }                                                          \
-            } else if (MOUSE_BOUNDS_MINI_X(1, 2)) {                        \
-                if (MOUSE_BOUNDS_MINI_X(1, 1)) {                           \
+            } else if (mouseBoundsMiniX(1, 2)) {                        \
+                if (mouseBoundsMiniX(1, 1)) {                           \
                     temp_mouseIndex_x = 1;                                 \
-                } else if (MOUSE_BOUNDS_MINI_X(2, 2)) {                    \
+                } else if (mouseBoundsMiniX(2, 2)) {                    \
                     temp_mouseIndex_x = 2;                                 \
                 }                                                          \
             }                                                              \
         }                                                                  \
-        if (MOUSE_BOUNDS_MINI_Y(0, 2)) {                                   \
-            if (MOUSE_BOUNDS_MINI_Y(0, 0)) {                               \
+        if (mouseBoundsMiniY(0, 2)) {                                   \
+            if (mouseBoundsMiniY(0, 0)) {                               \
                 temp_mouseIndex_y = 0;                                     \
-            } else if (MOUSE_BOUNDS_MINI_Y(1, 1)) {                        \
+            } else if (mouseBoundsMiniY(1, 1)) {                        \
                 temp_mouseIndex_y = 1;                                     \
-            } else if (MOUSE_BOUNDS_MINI_Y(2, 2)) {                        \
+            } else if (mouseBoundsMiniY(2, 2)) {                        \
                 temp_mouseIndex_y = 2;                                     \
             }                                                              \
         }                                                                  \
@@ -230,32 +246,6 @@
             SET_GRID_CURSOR_BY_SMALL_Y();                                  \
         }                                                                  \
     }
-
-#define MOUSE_BOUNDS_MINI_X(start, end) \
-    (mouseInput_x >= X_AT_MINI_GRID_INDEX(start) && (mouseInput_x < (X_AT_MINI_GRID_INDEX(end) + (GRID_SIZE_A3))))
-
-#define MOUSE_BOUNDS_MINI_Y(start, end) \
-    (mouseInput_y >= Y_AT_MINI_GRID_INDEX(start) && (mouseInput_y < (Y_AT_MINI_GRID_INDEX(end) + (GRID_SIZE_A3))))
-
-#define CLICKED_WITHIN_MINI_GRID() \
-    (KEY_PRESSED(INPUT_CONFIRM_ALT) && MOUSE_IS_INSIDE_GRID_SQUARE_MINI())
-
-// easier to code/check than GAME_HANDLE_MOUSE_MOVEMENT_MINI()... but also less efficient
-#define MOUSE_IS_INSIDE_GRID_SQUARE_MINI() \
-    ((MOUSE_BOUNDS_MINI_X(-1,-1) || MOUSE_BOUNDS_MINI_X(0,0) || MOUSE_BOUNDS_MINI_X(1,1) || MOUSE_BOUNDS_MINI_X(2,2)) && \
-    (MOUSE_BOUNDS_MINI_Y(0,0) || MOUSE_BOUNDS_MINI_Y(1,1) || MOUSE_BOUNDS_MINI_Y(2,2)) && \
-    !(MOUSE_BOUNDS_MINI_X(-1,-1) && MOUSE_BOUNDS_MINI_Y(0,0)))
-
-#define CLICKED_OUTSIDE_MINI_GRID() \
-    (KEY_PRESSED(INPUT_CONFIRM_ALT) && !(MOUSE_BOUNDS_MINI_X(-1,2) && MOUSE_BOUNDS_MINI_Y(0,2)))
-
-#define SET_GRID_NUM(index, num)  \
-    grid[index] = num;            \
-    updateNumEmpty();           \
-    checkForVictory();          \
-    miniGridState = 0;            \
-    SET_GRID_CURSOR_BY_LARGE_X(); \
-    SET_GRID_CURSOR_BY_LARGE_Y();
 
 #define GAME_HANDLE_NUM_KEY_PRESSES()    \
     CHECK_NUM_KEY_PRESS(INPUT_NUM_0, 0); \
@@ -273,7 +263,7 @@
     if (KEY_PRESSED(key)) {                              \
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x; \
         if (miniGridState == 1) {                        \
-            SET_GRID_NUM(i, num);                        \
+            setGridNum(i, num);                        \
         } else if (grid[i] == 0) {                       \
             SET_GRID_MINI_NUM(i, num);                   \
         }                                                \
@@ -289,47 +279,17 @@
 #define SET_GRID_MINI_NUM(index, num) \
     miniGrid[index] ^= (1 << num);
 
-#define SET_GRID_CURSOR_BY_LARGE_X()                                                                               \
-    gridCursor_bottom_left.rect.x = GRID_X_AT_COL(gridCursorIndex_x) - gridCursorCornerStep;                       \
-    gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;                                                    \
-    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3); \
-    gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
-
-#define SET_GRID_CURSOR_BY_LARGE_Y()                                                                               \
-    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);  \
-    gridCursor_top_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) - gridCursorCornerStep;                          \
-    gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;                                                \
-    gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
-
 #define SET_GRID_CURSOR_BY_SMALL_X() \
-    gridCursor_bottom_left.rect.x = X_AT_MINI_GRID_INDEX(miniGridCursorIndex_x) - gridCursorCornerStep;                       \
+    gridCursor_bottom_left.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) - gridCursorCornerStep;                       \
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;                                                               \
-    gridCursor_bottom_right.rect.x = X_AT_MINI_GRID_INDEX(miniGridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3); \
+    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3); \
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 
 #define SET_GRID_CURSOR_BY_SMALL_Y()                                                                                          \
-    gridCursor_bottom_left.rect.y = Y_AT_MINI_GRID_INDEX(miniGridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);  \
-    gridCursor_top_left.rect.y = Y_AT_MINI_GRID_INDEX(miniGridCursorIndex_y) - gridCursorCornerStep;                          \
+    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);  \
+    gridCursor_top_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) - gridCursorCornerStep;                          \
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;                                                           \
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
-
-#define X_AT_MINI_GRID_INDEX(index) \
-    (currMiniGrid->rect.x + (GRID_SIZE_D * 3) + ((index + 1) * GRID_SIZE_A3) + ((index + 1) * GRID_SIZE_B))
-
-#define Y_AT_MINI_GRID_INDEX(index) \
-    (currMiniGrid->rect.y + (GRID_SIZE_D * 3) + (index * GRID_SIZE_A3) + (index * GRID_SIZE_B))
-
-#define GAME_HANDLE_CHEAT_REVEAL_CELL()                  \
-    if (KEY_PRESSED(INPUT_SWAP) && miniGridState == 0) { \
-        i = (gridCursorIndex_y * 9) + gridCursorIndex_x; \
-        if (originalGrid[i] == 0) {                      \
-            if (++cheatCounter >= 8) {                   \
-                Mix_PlayChannel(SFX_CHANNEL, sfx, 0);    \
-                SET_GRID_NUM(i, solutionGrid[i]);        \
-                cheatCounter = 0;                        \
-            }                                            \
-        }                                                \
-    }
 
 #define DRAW_SIDEBAR()                                                                                                                                                \
     game_sidebar_small.rect.y = SIDEBAR_SMALL_1_POS_Y;                                                                                                                \

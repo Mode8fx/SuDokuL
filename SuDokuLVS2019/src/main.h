@@ -289,6 +289,12 @@ TextObject text_Options;
 TextObject text_Credits;
 TextObject text_Quit;
 
+/* Game Logic Variables */
+Sint8 gridCursorIndex_x;
+Sint8 gridCursorIndex_y;
+Sint8 miniGridState;
+Uint16 gridCursorCornerStep;
+
 /* Font-Related Variables */
 Uint16 fontSize;
 Uint16 gridNumSize;
