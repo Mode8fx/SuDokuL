@@ -7,6 +7,7 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 #include "include_fonts.h"
+#include "include_music.h"
 
 SDL_Rect divider;
 
@@ -164,13 +165,13 @@ int main(int argv, char** args) {
 		SDL_Log(Mix_GetError());
 #endif
 	}
-	bgm_1 = Mix_LoadMUS((rootDir + MUSIC_1).c_str());
-	bgm_2 = Mix_LoadMUS((rootDir + MUSIC_2).c_str());
-	bgm_3 = Mix_LoadMUS((rootDir + MUSIC_3).c_str());
-	bgm_4 = Mix_LoadMUS((rootDir + MUSIC_4).c_str());
-	bgm_5 = Mix_LoadMUS((rootDir + MUSIC_5).c_str());
-	bgm_6 = Mix_LoadMUS((rootDir + MUSIC_6).c_str());
-	bgm_7 = Mix_LoadMUS((rootDir + MUSIC_7).c_str());
+	bgm_1 = Mix_LoadMUS_RW(SDL_RWFromConstMem(dgtlnnv2_mod, dgtlnnv2_mod_len), 1);
+	bgm_2 = Mix_LoadMUS_RW(SDL_RWFromConstMem(sudoku_padawan_mod, sudoku_padawan_mod_len), 1);
+	bgm_3 = Mix_LoadMUS_RW(SDL_RWFromConstMem(electroq_mod, electroq_mod_len), 1);
+	bgm_4 = Mix_LoadMUS_RW(SDL_RWFromConstMem(mainmenu_mod, mainmenu_mod_len), 1);
+	bgm_5 = Mix_LoadMUS_RW(SDL_RWFromConstMem(insomnia_mod, insomnia_mod_len), 1);
+	bgm_6 = Mix_LoadMUS_RW(SDL_RWFromConstMem(ontario_mod, ontario_mod_len), 1);
+	bgm_7 = Mix_LoadMUS_RW(SDL_RWFromConstMem(addicti_mod, addicti_mod_len), 1);
 	sfx = Mix_LoadWAV(SFX_1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
