@@ -159,6 +159,7 @@
     <ClCompile Include="src\music_include\ontario.cpp" />
     <ClCompile Include="src\music_include\sudoku_padawan.cpp" />
     <ClCompile Include="src\puzzleBank.cpp" />
+    <ClCompile Include="src\sfx_include\coin1.cpp" />
     <ClCompile Include="src\shared.cpp" />
     <ClCompile Include="src\sound_logic.cpp" />
     <ClCompile Include="src\sudokuGen.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\include.h" />
     <ClInclude Include="src\include_fonts.h" />
     <ClInclude Include="src\include_music.h" />
+    <ClInclude Include="src\include_sfx.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\menu_logic.h" />
     <ClInclude Include="src\music_include\addicti.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="src\music_include\ontario.h" />
     <ClInclude Include="src\music_include\sudoku_padawan.h" />
     <ClInclude Include="src\puzzleBank.h" />
+    <ClInclude Include="src\sfx_include\coin1.h" />
     <ClInclude Include="src\shared.h" />
     <ClInclude Include="src\sound_logic.h" />
     <ClInclude Include="src\sprite_objects.h" />

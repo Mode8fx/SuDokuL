@@ -8,6 +8,7 @@
 #include "puzzleBank.h"
 #include "include_fonts.h"
 #include "include_music.h"
+#include "include_sfx.h"
 
 SDL_Rect divider;
 
@@ -172,7 +173,7 @@ int main(int argv, char** args) {
 	bgm_5 = Mix_LoadMUS_RW(SDL_RWFromConstMem(insomnia_mod, insomnia_mod_len), 1);
 	bgm_6 = Mix_LoadMUS_RW(SDL_RWFromConstMem(ontario_mod, ontario_mod_len), 1);
 	bgm_7 = Mix_LoadMUS_RW(SDL_RWFromConstMem(addicti_mod, addicti_mod_len), 1);
-	sfx = Mix_LoadWAV(SFX_1);
+	sfx = Mix_LoadWAV_RW(SDL_RWFromConstMem(coin1_wav, coin1_wav_len), 1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 

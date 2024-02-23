@@ -66,6 +66,9 @@
     <ClCompile Include="src\music_include\sudoku_padawan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sfx_include\coin1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
@@ -141,6 +144,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\music_include\sudoku_padawan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include_sfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sfx_include\coin1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
