@@ -3,27 +3,6 @@
 #ifndef SPRITE_OBJECTS_H
 #define SPRITE_OBJECTS_H
 
-#define SPRITE_PATH_TILE                     "graphics/tile.png"
-#define SPRITE_PATH_LOGO_240                 "graphics/logo_240.png"
-#define SPRITE_PATH_LOGO_272                 "graphics/logo_272.png"
-#define SPRITE_PATH_LOGO_480                 "graphics/logo_480.png"
-#define SPRITE_PATH_LOGO_544                 "graphics/logo_544.png"
-#define SPRITE_PATH_LOGO_720                 "graphics/logo_720.png"
-#define SPRITE_PATH_LOGO_1080                "graphics/logo_1080.png"
-#define SPRITE_PATH_LOGO_1440                "graphics/logo_1440.png"
-#define SPRITE_PATH_LOGO_2160                "graphics/logo_2160.png"
-#define SPRITE_PATH_MENU_CURSOR              "graphics/menu_cursor.png"
-#define SPRITE_PATH_GRID_384                 "graphics/grid_384.png"
-#define SPRITE_PATH_GRID_CURSOR_BOTTOM_LEFT  "graphics/grid_cursor_bottom_left.png"
-#define SPRITE_PATH_GRID_CURSOR_BOTTOM_RIGHT "graphics/grid_cursor_bottom_right.png"
-#define SPRITE_PATH_GRID_CURSOR_TOP_LEFT     "graphics/grid_cursor_top_left.png"
-#define SPRITE_PATH_GRID_CURSOR_TOP_RIGHT    "graphics/grid_cursor_top_right.png"
-#define SPRITE_PATH_SIDEBAR_SMALL            "graphics/sidebar_small.png"
-#define SPRITE_PATH_GRID_MINI_BOTTOM_LEFT    "graphics/grid_mini_bottom_left.png"
-#define SPRITE_PATH_GRID_MINI_BOTTOM_RIGHT   "graphics/grid_mini_bottom_right.png"
-#define SPRITE_PATH_GRID_MINI_TOP_LEFT       "graphics/grid_mini_top_left.png"
-#define SPRITE_PATH_GRID_MINI_TOP_RIGHT      "graphics/grid_mini_top_right.png"
-
 struct SpriteObject {
     SDL_Texture *texture;
     SDL_Rect rect;
@@ -56,11 +35,11 @@ extern SpriteObjectWithPos miniGrid_top_left;
 extern SpriteObjectWithPos miniGrid_top_right;
 extern SpriteObjectWithPos *currMiniGrid;
 
-#define PREPARE_SPRITE(spriteObj, spriteImage, pos_x, pos_y, scale)                       \
-    spriteObj.texture = IMG_LoadTexture(renderer, (rootDir + spriteImage).c_str());       \
-    SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height); \
-    SET_SPRITE_SCALE(spriteObj, scale);                                                   \
-    spriteObj.rect.x = pos_x;                                                             \
+#define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale)                  \
+    spriteObj.texture = IMG_LoadTexture_RW(renderer, SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height);                  \
+    SET_SPRITE_SCALE(spriteObj, scale);                                                                    \
+    spriteObj.rect.x = pos_x;                                                                              \
     spriteObj.rect.y = pos_y;
 
 #define SET_SPRITE_SCALE(spriteObj, scale)                                                      \

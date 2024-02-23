@@ -7,6 +7,7 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 #include "include_fonts.h"
+#include "include_graphics.h"
 #include "include_music.h"
 #include "include_sfx.h"
 
@@ -122,7 +123,7 @@ int main(int argv, char** args) {
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
-	PREPARE_SPRITE(tile, SPRITE_PATH_TILE, 0, 0, 1);
+	PREPARE_SPRITE(tile, tile_png, tile_png_len, 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
 	/* Set Rectangles */
 	UPDATE_BORDER_RECTS();
@@ -198,42 +199,42 @@ int main(int argv, char** args) {
 
 	/* Set Textures */
 	if (gameHeight < 272) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_240, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 240);
+		PREPARE_SPRITE(logo, logo_240_png, logo_240_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 240);
 	} else if (gameHeight < 480) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_272, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 272);
+		PREPARE_SPRITE(logo, logo_272_png, logo_272_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 272);
 	} else if (gameHeight < 544) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_480, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
+		PREPARE_SPRITE(logo, logo_480_png, logo_480_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 1);
 	} else if (gameHeight < 720) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_544, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 544);
+		PREPARE_SPRITE(logo, logo_544_png, logo_544_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 544);
 	} else if (gameHeight < 1080) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_720, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
+		PREPARE_SPRITE(logo, logo_720_png, logo_720_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 720);
 	} else if (gameHeight < 1440) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_1080, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
+		PREPARE_SPRITE(logo, logo_1080_png, logo_1080_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1080);
 	} else if (gameHeight < 2160) {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_1440, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
+		PREPARE_SPRITE(logo, logo_1440_png, logo_1440_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 1440);
 	} else {
-		PREPARE_SPRITE(logo, SPRITE_PATH_LOGO_2160, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
+		PREPARE_SPRITE(logo, logo_2160_png, logo_2160_png_len, (gameWidth / 2) - (logo.rect.w / 2), gameHeight * 3 / 8 - (logo.rect.h / 2), 480.0 / 2160);
 	}
 	logo.startPos_y = logo.rect.y;
 	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	PREPARE_SPRITE(menuCursor, SPRITE_PATH_MENU_CURSOR, 0, 0, 1);
-	PREPARE_SPRITE(game_grid, SPRITE_PATH_GRID_384, GRID_POS_X, GRID_POS_Y, 1);
-	PREPARE_SPRITE(gridCursor_bottom_left, SPRITE_PATH_GRID_CURSOR_BOTTOM_LEFT, 0, 0, 1);
+	PREPARE_SPRITE(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 1);
+	PREPARE_SPRITE(game_grid, grid_384_png, grid_384_png_len, GRID_POS_X, GRID_POS_Y, 1);
+	PREPARE_SPRITE(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
-	PREPARE_SPRITE(gridCursor_bottom_right, SPRITE_PATH_GRID_CURSOR_BOTTOM_RIGHT, 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
-	PREPARE_SPRITE(gridCursor_top_left, SPRITE_PATH_GRID_CURSOR_TOP_LEFT, 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
-	PREPARE_SPRITE(gridCursor_top_right, SPRITE_PATH_GRID_CURSOR_TOP_RIGHT, 0, 0, 1);
+	PREPARE_SPRITE(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
 	const Uint16 gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	PREPARE_SPRITE(game_sidebar_small, SPRITE_PATH_SIDEBAR_SMALL, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
-	PREPARE_SPRITE(miniGrid_bottom_left, SPRITE_PATH_GRID_MINI_BOTTOM_LEFT, 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_bottom_right, SPRITE_PATH_GRID_MINI_BOTTOM_RIGHT, 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_left, SPRITE_PATH_GRID_MINI_TOP_LEFT, 0, 0, 1);
-	PREPARE_SPRITE(miniGrid_top_right, SPRITE_PATH_GRID_MINI_TOP_RIGHT, 0, 0, 1);
+	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
+	PREPARE_SPRITE(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, 1);
+	PREPARE_SPRITE(miniGrid_top_right, grid_mini_top_right_png, grid_mini_top_right_png_len, 0, 0, 1);
 
 	/* Set Rectangles */
 	divider.w = gameWidth * 17 / 20;
