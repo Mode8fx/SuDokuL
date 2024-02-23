@@ -292,6 +292,8 @@ TextObject text_Quit;
 /* Game Logic Variables */
 Sint8 gridCursorIndex_x;
 Sint8 gridCursorIndex_y;
+Sint8 miniGridCursorIndex_x;
+Sint8 miniGridCursorIndex_y;
 Sint8 miniGridState;
 Uint16 gridCursorCornerStep;
 

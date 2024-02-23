@@ -6,6 +6,8 @@
 
 extern Sint8 gridCursorIndex_x;
 extern Sint8 gridCursorIndex_y;
+extern Sint8 miniGridCursorIndex_x;
+extern Sint8 miniGridCursorIndex_y;
 extern Sint8 miniGridState;
 extern Uint16 gridCursorCornerStep;
 
@@ -23,14 +25,14 @@ extern bool clickedWithinMiniGrid();
 extern bool mouseIsInsideGridSquareMini();
 extern bool clickedOutsideMiniGrid();
 extern void setGridNum(Sint8, Sint8);
-// extern void GAME_HANDLE_NUM_KEY_PRESSES();
-// extern void CHECK_NUM_KEY_PRESS();
-// extern void SWAP_MINI_GRID_STATE();
-// extern void SET_GRID_MINI_NUM();
+extern void gameHandleNumKeyPresses();
+extern void checkNumKeyPress(Uint32, Sint8);
+extern void swapMiniGridState();
+extern void setGridMiniNum(Sint8, Sint8);
 extern void setGridCursorByLargeX();
 extern void setGridCursorByLargeY();
-//extern void SET_GRID_CURSOR_BY_SMALL_X();
-//extern void SET_GRID_CURSOR_BY_SMALL_Y();
+extern void setGridCursorBySmallX();
+extern void setGridCursorBySmallY();
 extern Sint16 xAtMiniGridIndex(Sint8);
 extern Sint16 yAtMiniGridIndex(Sint8);
 extern void gameHandleCheatRevealCell();
@@ -82,8 +84,8 @@ extern void gameHandleCheatRevealCell();
             miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);                                                            \
             miniGridCursorIndex_y = (grid[i] - 1) / 3;                                                                    \
             miniGridState = 1;                                                                                            \
-            SET_GRID_CURSOR_BY_SMALL_X();                                                                                 \
-            SET_GRID_CURSOR_BY_SMALL_Y();                                                                                 \
+            setGridCursorBySmallX();                                                                                 \
+            setGridCursorBySmallY();                                                                                 \
         }                                                                                                                 \
     }
 
@@ -162,24 +164,24 @@ extern void gameHandleCheatRevealCell();
                 } else if (miniGridCursorIndex_x == -2) {                                                   \
                     miniGridCursorIndex_x = 2;                                                              \
                 }                                                                                           \
-            SET_GRID_CURSOR_BY_SMALL_X();                                                                   \
+            setGridCursorBySmallX();                                                                   \
         }                                                                                                   \
         if (KEY_PRESSED(INPUT_RIGHT)) {                                                                     \
             if (++miniGridCursorIndex_x > 2) {                                                              \
                 miniGridCursorIndex_x = -(miniGridCursorIndex_y != 0);                                      \
             }                                                                                               \
-            SET_GRID_CURSOR_BY_SMALL_X();                                                                   \
+            setGridCursorBySmallX();                                                                   \
         }                                                                                                   \
         if (KEY_PRESSED(INPUT_UP)) {                                                                        \
             if (--miniGridCursorIndex_y < 0 || (miniGridCursorIndex_y == 0 && miniGridCursorIndex_x == -1)) \
                 miniGridCursorIndex_y = 2;                                                                  \
-            SET_GRID_CURSOR_BY_SMALL_Y();                                                                   \
+            setGridCursorBySmallY();                                                                   \
         }                                                                                                   \
         if (KEY_PRESSED(INPUT_DOWN)) {                                                                      \
             miniGridCursorIndex_y = (miniGridCursorIndex_y + 1) % 3;                                        \
             if (miniGridCursorIndex_y == 0 && miniGridCursorIndex_x == -1)                                  \
                 miniGridCursorIndex_y = 1;                                                                  \
-            SET_GRID_CURSOR_BY_SMALL_Y();                                                                   \
+            setGridCursorBySmallY();                                                                   \
         }                                                                                                   \
         if (lastMiniGridState > 0) {                                                                        \
             if ((KEY_PRESSED(INPUT_BACK) || clickedOutsideMiniGrid())) {                                 \
@@ -193,10 +195,10 @@ extern void gameHandleCheatRevealCell();
                     if (miniGridState == 1) {                                                               \
                         setGridNum(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));         \
                     } else if (grid[i] == 0) {                                                              \
-                        SET_GRID_MINI_NUM(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));    \
+                        setGridMiniNum(i, ((miniGridCursorIndex_y * 3) + miniGridCursorIndex_x + 1));    \
                     }                                                                                       \
                 } else if (miniGridCursorIndex_y == 1) {                                                    \
-                    SWAP_MINI_GRID_STATE();                                                                 \
+                    swapMiniGridState();                                                                 \
                 } else {                                                                                    \
                     setGridNum(i, 0);                                                                     \
                 }                                                                                           \
@@ -206,7 +208,7 @@ extern void gameHandleCheatRevealCell();
             }                                                                                               \
         }                                                                                                   \
         if (KEY_PRESSED(INPUT_SWAP)) {                                                                      \
-            SWAP_MINI_GRID_STATE();                                                                         \
+            swapMiniGridState();                                                                         \
         }                                                                                                   \
     }
 
@@ -242,54 +244,10 @@ extern void gameHandleCheatRevealCell();
                 && !(temp_mouseIndex_x == -1 && temp_mouseIndex_y == 0)) { \
             miniGridCursorIndex_x = temp_mouseIndex_x;                     \
             miniGridCursorIndex_y = temp_mouseIndex_y;                     \
-            SET_GRID_CURSOR_BY_SMALL_X();                                  \
-            SET_GRID_CURSOR_BY_SMALL_Y();                                  \
+            setGridCursorBySmallX();                                  \
+            setGridCursorBySmallY();                                  \
         }                                                                  \
     }
-
-#define GAME_HANDLE_NUM_KEY_PRESSES()    \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_0, 0); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_1, 1); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_2, 2); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_3, 3); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_4, 4); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_5, 5); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_6, 6); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_7, 7); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_8, 8); \
-    CHECK_NUM_KEY_PRESS(INPUT_NUM_9, 9); \
-
-#define CHECK_NUM_KEY_PRESS(key, num)                    \
-    if (KEY_PRESSED(key)) {                              \
-        i = (gridCursorIndex_y * 9) + gridCursorIndex_x; \
-        if (miniGridState == 1) {                        \
-            setGridNum(i, num);                        \
-        } else if (grid[i] == 0) {                       \
-            SET_GRID_MINI_NUM(i, num);                   \
-        }                                                \
-    }
-
-#define SWAP_MINI_GRID_STATE() \
-    if (miniGridState == 1) {  \
-        miniGridState = 2;     \
-    } else {                   \
-        miniGridState = 1;     \
-    }
-
-#define SET_GRID_MINI_NUM(index, num) \
-    miniGrid[index] ^= (1 << num);
-
-#define SET_GRID_CURSOR_BY_SMALL_X() \
-    gridCursor_bottom_left.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) - gridCursorCornerStep;                       \
-    gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;                                                               \
-    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3); \
-    gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
-
-#define SET_GRID_CURSOR_BY_SMALL_Y()                                                                                          \
-    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);  \
-    gridCursor_top_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) - gridCursorCornerStep;                          \
-    gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;                                                           \
-    gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
 
 #define DRAW_SIDEBAR()                                                                                                                                                \
     game_sidebar_small.rect.y = SIDEBAR_SMALL_1_POS_Y;                                                                                                                \

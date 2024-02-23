@@ -25,8 +25,6 @@ const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 
 /* Game Variables */
 Sint8 lastMiniGridState;
-Sint8 miniGridCursorIndex_x;
-Sint8 miniGridCursorIndex_y;
 Sint8 temp_mouseIndex_x;
 Sint8 temp_mouseIndex_y;
 bool justClickedInMiniGrid;
@@ -1106,7 +1104,7 @@ int main(int argv, char** args) {
 				}
 				GAME_HANDLE_MAIN_GRID_NAVIGATION();
 				GAME_HANDLE_MINI_GRID_NAVIGATION();
-				GAME_HANDLE_NUM_KEY_PRESSES();
+				gameHandleNumKeyPresses();
 				gameHandleCheatRevealCell();
 				lastMiniGridState = miniGridState;
 				/* Draw Grid */
