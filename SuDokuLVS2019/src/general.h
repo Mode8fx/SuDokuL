@@ -7,7 +7,7 @@
 extern Uint8 programState;
 extern bool changedProgramState;
 
-#define PI 3.14159265
+constexpr auto PI = 3.14159265;
 
 #define COPY_GRID(dest, source) \
     (memcpy(dest, source, 81 * sizeof(char)))
