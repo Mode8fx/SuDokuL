@@ -7,21 +7,21 @@
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {
     case 0:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Play) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Play) - menuCursorXOffset());
         break;
     case 1:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls) - menuCursorXOffset());
         break;
     case 2:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Options) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Options) - menuCursorXOffset());
         break;
 #if !defined(ANDROID)
     case 4:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Quit) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Quit) - menuCursorXOffset());
         break;
 #endif
     default:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Credits) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Credits) - menuCursorXOffset());
         break;
     }
 }
@@ -29,16 +29,16 @@ void updateMainMenuCursorPositionX() {
 void updatePlayMenuCursorPositionX() {
     switch (menuCursorIndex_play) {
     case 0:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Easy) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Easy) - menuCursorXOffset());
         break;
     case 1:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Normal) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Normal) - menuCursorXOffset());
         break;
     case 2:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Hard) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Hard) - menuCursorXOffset());
         break;
     default:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Very_Hard) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Very_Hard) - menuCursorXOffset());
         break;
     }
 }
@@ -46,16 +46,16 @@ void updatePlayMenuCursorPositionX() {
 void updateOptionsMenuCursorPositionX() {
     switch (menuCursorIndex_options) {
     case 0:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls_Menu) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls_Menu) - menuCursorXOffset());
         break;
     case 1:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Video) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Video) - menuCursorXOffset());
         break;
     case 2:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Sound) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Sound) - menuCursorXOffset());
         break;
     case 3:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Background) - MENU_CURSOR_X_OFFSET);
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Background) - menuCursorXOffset());
         break;
     default:
         break;
@@ -63,24 +63,24 @@ void updateOptionsMenuCursorPositionX() {
 }
 
 void updateControlsMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(CONTROLS_MENU_CURSOR_POSITION_X - MENU_CURSOR_X_OFFSET);
+    menuCursor.rect.x = (int)(CONTROLS_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
 void updateVideoMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(VIDEO_MENU_CURSOR_POSITION_X - MENU_CURSOR_X_OFFSET);
+    menuCursor.rect.x = (int)(VIDEO_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
 void updateSoundMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(SOUND_MENU_CURSOR_POSITION_X - MENU_CURSOR_X_OFFSET);
+    menuCursor.rect.x = (int)(SOUND_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
 void updateBackgroundMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(BACKGROUND_MENU_CURSOR_POSITION_X - MENU_CURSOR_X_OFFSET);
+    menuCursor.rect.x = (int)(BACKGROUND_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
 // Settings are re-loaded so that any unsaved changes from the video menu are undone
 void menuHandleBackButton(Uint8 state) {
-    if (KEY_PRESSED(INPUT_BACK)) {
+    if (keyPressed(INPUT_BACK)) {
         time_anim1 = 0;
         programState = state;
         menuResetCursorPositions(state);
@@ -90,7 +90,7 @@ void menuHandleBackButton(Uint8 state) {
 }
 
 void menuHandleBackButtonWithSettings(Uint8 state) {
-    if (KEY_PRESSED(INPUT_BACK)) {
+    if (keyPressed(INPUT_BACK)) {
         time_anim1 = 0;
         programState = state;
         menuResetCursorPositions(state);
@@ -121,7 +121,7 @@ void updateMenuCursorPositionY(Sint8 cursor) {
 }
 
 void menuHandleMenuButton() {
-    if (KEY_PRESSED(INPUT_SELECT)) {
+    if (keyPressed(INPUT_SELECT)) {
         time_anim1 = 0;
         programState = 2;
         updateMenuCursorPositionY(menuCursorIndex_main);
@@ -129,11 +129,11 @@ void menuHandleMenuButton() {
 }
 
 void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions) {
-    if (KEY_PRESSED(INPUT_DOWN)) {
+    if (keyPressed(INPUT_DOWN)) {
         cursor = (cursor + 1) % numOptions;
         updateMenuCursorPositionY(cursor);
     }
-    if (KEY_PRESSED(INPUT_UP)) {
+    if (keyPressed(INPUT_UP)) {
         if (--cursor < 0)
             cursor = numOptions - 1;
         updateMenuCursorPositionY(cursor);
@@ -141,11 +141,11 @@ void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions) {
 }
 
 void controlsMenuHandleVertCursorMovement() {
-    if (KEY_PRESSED(INPUT_DOWN)) {
+    if (keyPressed(INPUT_DOWN)) {
         menuCursorIndex_controls = (menuCursorIndex_controls + 1) % 2;
         updateControlsMenuCursorPositionY();
     }
-    if (KEY_PRESSED(INPUT_UP)) {
+    if (keyPressed(INPUT_UP)) {
         if (--menuCursorIndex_controls < 0)
             menuCursorIndex_controls = 1;
         updateControlsMenuCursorPositionY();
@@ -198,7 +198,7 @@ void setBGScrollSpeed() {
 
 // Used for both menu and game
 bool mouseMoved() {
-    return (mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last) || KEY_PRESSED(INPUT_CONFIRM_ALT);
+    return (mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last) || keyPressed(INPUT_CONFIRM_ALT);
 }
 
 void updateMousePosViewportMouse() {

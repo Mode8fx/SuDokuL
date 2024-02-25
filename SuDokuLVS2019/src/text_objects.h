@@ -26,6 +26,17 @@ struct TextObject {
     Sint16 startPos_y, endPos_y;
 };
 
+/* Fonts */
+const SDL_Color color_black = {0, 0, 0};
+const SDL_Color color_white = {255, 255, 255};
+const SDL_Color color_blue = {0, 0, 192};
+const SDL_Color color_gray_240 = {240, 240, 240};
+const SDL_Color color_light_blue = {240, 240, 255};
+extern TTF_Font *pixelFont;
+extern TTF_Font *pixelFont_large;
+extern TTF_Font *pixelFont_grid;
+extern TTF_Font *pixelFont_grid_mini;
+
 /* Text Objects */
 /* General - Numbers */
 extern TextCharObject gridNums_black[10];

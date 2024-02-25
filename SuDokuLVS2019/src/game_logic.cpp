@@ -9,26 +9,26 @@
 
 void gameHandleMainGridNavigation() {
     if (miniGridState == 0) {
-        if (KEY_PRESSED(INPUT_LEFT)) {
+        if (keyPressed(INPUT_LEFT)) {
             if (--gridCursorIndex_x < 0)
                 gridCursorIndex_x = 8;
             setGridCursorByLargeX();
         }
-        if (KEY_PRESSED(INPUT_RIGHT)) {
+        if (keyPressed(INPUT_RIGHT)) {
             gridCursorIndex_x = (gridCursorIndex_x + 1) % 9;
             setGridCursorByLargeX();
         }
-        if (KEY_PRESSED(INPUT_UP)) {
+        if (keyPressed(INPUT_UP)) {
             if (--gridCursorIndex_y < 0)
                 gridCursorIndex_y = 8;
             setGridCursorByLargeY();
         }
-        if (KEY_PRESSED(INPUT_DOWN)) {
+        if (keyPressed(INPUT_DOWN)) {
             gridCursorIndex_y = (gridCursorIndex_y + 1) % 9;
             setGridCursorByLargeY();
         }
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
-        if ((KEY_PRESSED(INPUT_CONFIRM) || clickedWithinGrid()) && originalGrid[i] == 0) {
+        if ((keyPressed(INPUT_CONFIRM) || clickedWithinGrid()) && originalGrid[i] == 0) {
             if (gridCursorIndex_x < 4) {
                  if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_left;
@@ -135,7 +135,7 @@ bool mouseBoundsY(Sint8 start, Sint8 end) {
 }
 
 bool clickedWithinGrid() {
-    return (KEY_PRESSED(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquare());
+    return (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquare());
 }
 
 // easier to code/check than gameHandleMouseMovementMain()... but also less efficient
@@ -148,7 +148,7 @@ bool mouseIsInsideGridSquare() {
 
 void gameHandleMiniGridNavigation() {
     if (miniGridState > 0) {
-        if (KEY_PRESSED(INPUT_LEFT)) {
+        if (keyPressed(INPUT_LEFT)) {
             if (--miniGridCursorIndex_x < 0)
                 if (miniGridCursorIndex_y == 0) {
                     miniGridCursorIndex_x = 2;
@@ -157,30 +157,30 @@ void gameHandleMiniGridNavigation() {
                 }
             setGridCursorBySmallX();
         }
-        if (KEY_PRESSED(INPUT_RIGHT)) {
+        if (keyPressed(INPUT_RIGHT)) {
             if (++miniGridCursorIndex_x > 2) {
                 miniGridCursorIndex_x = -(miniGridCursorIndex_y != 0);
             }
             setGridCursorBySmallX();
         }
-        if (KEY_PRESSED(INPUT_UP)) {
+        if (keyPressed(INPUT_UP)) {
             if (--miniGridCursorIndex_y < 0 || (miniGridCursorIndex_y == 0 && miniGridCursorIndex_x == -1))
                 miniGridCursorIndex_y = 2;
             setGridCursorBySmallY();
         }
-        if (KEY_PRESSED(INPUT_DOWN)) {
+        if (keyPressed(INPUT_DOWN)) {
             miniGridCursorIndex_y = (miniGridCursorIndex_y + 1) % 3;
             if (miniGridCursorIndex_y == 0 && miniGridCursorIndex_x == -1)
                 miniGridCursorIndex_y = 1;
             setGridCursorBySmallY();
         }
         if (lastMiniGridState > 0) {
-            if ((KEY_PRESSED(INPUT_BACK) || clickedOutsideMiniGrid())) {
+            if ((keyPressed(INPUT_BACK) || clickedOutsideMiniGrid())) {
                 miniGridState = 0;
                 setGridCursorByLargeX();
                 setGridCursorByLargeY();
             }
-            if ((KEY_PRESSED(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
+            if ((keyPressed(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
                 i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
                 if (miniGridCursorIndex_x > -1) {
                     if (miniGridState == 1) {
@@ -193,12 +193,12 @@ void gameHandleMiniGridNavigation() {
                 } else {
                     setGridNum(i, 0);
                 }
-                if (KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+                if (keyPressed(INPUT_CONFIRM_ALT)) {
                     justClickedInMiniGrid = true;
                 }
             }
         }
-        if (KEY_PRESSED(INPUT_SWAP)) {
+        if (keyPressed(INPUT_SWAP)) {
             swapMiniGridState();
         }
     }
@@ -251,7 +251,7 @@ bool mouseBoundsMiniY(Sint8 start, Sint8 end) {
 }
 
 bool clickedWithinMiniGrid() {
-    return (KEY_PRESSED(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquareMini());
+    return (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquareMini());
 }
 
 // easier to code/check than gameHandleMouseMovementMini()... but also less efficient
@@ -262,7 +262,7 @@ bool mouseIsInsideGridSquareMini() {
 }
 
 bool clickedOutsideMiniGrid() {
-    return (KEY_PRESSED(INPUT_CONFIRM_ALT) && !(mouseBoundsMiniX(-1, 2) && mouseBoundsMiniY(0, 2)));
+    return (keyPressed(INPUT_CONFIRM_ALT) && !(mouseBoundsMiniX(-1, 2) && mouseBoundsMiniY(0, 2)));
 }
 
 void setGridNum(Sint8 index, Sint8 num) {
@@ -288,7 +288,7 @@ void gameHandleNumKeyPresses() {
 }
 
 void checkNumKeyPress(Uint32 key, Sint8 num) {
-    if (KEY_PRESSED(key)) {
+    if (keyPressed(key)) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (miniGridState == 1) {
             setGridNum(i, num);
@@ -327,7 +327,7 @@ void setGridCursorByLargeY() {
 }
 
 void gameHandleCheatRevealCell() {
-    if (KEY_PRESSED(INPUT_SWAP) && miniGridState == 0) {
+    if (keyPressed(INPUT_SWAP) && miniGridState == 0) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (originalGrid[i] == 0) {
             if (++cheatCounter >= 8) {

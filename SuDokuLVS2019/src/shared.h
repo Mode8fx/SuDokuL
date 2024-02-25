@@ -166,8 +166,6 @@ extern Timer timer_paused;
 #define SIDEBAR_SMALL_1_POS_Y (sidebarSmall1PosY)
 #define SIDEBAR_SMALL_2_POS_Y (sidebarSmall2PosY)
 #define SIDEBAR_SMALL_3_POS_Y (sidebarSmall3PosY)
-// #define TIMER_POSITION_X   (SIDEBAR_SMALL_POS_X + (SIDEBAR_SIZE_X / 8))
-// #define TIMER_POSITION_Y   (SIDEBAR_SMALL_1_POS_Y + (SIDEBAR_SIZE_Y * 3 / 16))
 #define GRID_STARTING_POS_X   (gridStartingPosX[0])
 #define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
@@ -191,30 +189,15 @@ extern void initMenuOptionPositions(TextObject *);
 extern void loadSettingsFile();
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void saveCurrentSettings();
-
-#define MENU_CURSOR_X_OFFSET ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE))
-
-#define KEY_PRESSED(key) \
-    (keyInputs & key)
-
-#define BUTTON_HELD(button) \
-	(heldButtons & button)
-
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
-#define SDL_TOGGLE_FULLSCREEN()
-#else
-#define SDL_TOGGLE_FULLSCREEN()                                 \
-	isWindowed = !isWindowed;                                   \
-	if (isWindowed)                                             \
-		SDL_SetWindowFullscreen(window, 0);                     \
-	else                                                        \
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); \
-	SET_SCALING();
-#endif
-
-#define SDL_TOGGLE_INTEGER_SCALE()    \
-	isIntegerScale = !isIntegerScale; \
-	SET_SCALING();
+extern Uint16 menuCursorXOffset();
+extern void sdlToggleFullscreen();
+extern void sdlToggleIntegerScale();
+extern void setScaling();
+extern void updateBorderRects();
+extern void renderBorderRects();
+extern void sdlDestroyAll();
+extern void closeController();
+extern void systemSpecificClose();
 
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
 #define SCALING_WIDTH DEFAULT_WIDTH
@@ -222,128 +205,6 @@ extern void saveCurrentSettings();
 #else
 #define SCALING_WIDTH SDL_GetWindowSurface(window)->w
 #define SCALING_HEIGHT SDL_GetWindowSurface(window)->h
-#endif
-
-#if defined(ANDROID)
-#define SET_SCALING()
-#else
-#define SET_SCALING()                                                                            \
-	if (isIntegerScale) {                                                                        \
-		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));       \
-		if (int_i < 1) int_i = 1;                                                                \
-		centerViewport.w = gameWidth * int_i;                                                    \
-		centerViewport.h = gameHeight * int_i;                                                   \
-		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);        \
-		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);       \
-		SDL_RenderSetScale(renderer, int_i, int_i);                                              \
-		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
-		screenScale = (double)int_i;                                                             \
-	} else {                                                                                     \
-		screenScale = (double)SCALING_WIDTH / gameWidth;                                         \
-		if ((double)SCALING_HEIGHT / gameHeight < screenScale) {                                 \
-			screenScale = (double)SCALING_HEIGHT / gameHeight;                                   \
-		}                                                                                        \
-		if (screenScale < 1) screenScale = 1;                                                    \
-		centerViewport.w = (int)(gameWidth * screenScale);                                       \
-		centerViewport.h = (int)(gameHeight * screenScale);                                      \
-		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / screenScale), 0);  \
-		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / screenScale), 0); \
-		SDL_RenderSetScale(renderer, screenScale, screenScale);                                  \
-		SDL_RenderSetViewport(renderer, &centerViewport);                                        \
-	}                                                                                            \
-	UPDATE_BORDER_RECTS();
-	//SDL_RenderSetClipRect(renderer, &centerViewport);
-#endif
-
-#define UPDATE_BORDER_RECTS()                             \
-	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 50;    \
-	topRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 100; \
-	topRect.w = SCALING_WIDTH + 100;                      \
-	topRect.h = (SCALING_HEIGHT - gameHeight) / 2 + 100;  \
-	bottomRect.x = topRect.x;                             \
-	bottomRect.y = gameHeight;                            \
-	bottomRect.w = topRect.w;                             \
-	bottomRect.h = topRect.h;                             \
-	leftRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 100;  \
-	leftRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 50; \
-	leftRect.w = (SCALING_WIDTH - gameWidth) / 2 + 100;   \
-	leftRect.h = SCALING_HEIGHT + 100;                    \
-	rightRect.x = gameWidth;                              \
-	rightRect.y = leftRect.y;                             \
-	rightRect.w = leftRect.w;                             \
-	rightRect.h = leftRect.h;
-
-#define RENDER_BORDER_RECTS()                  \
-	SDL_RenderFillRect(renderer, &topRect);    \
-	SDL_RenderFillRect(renderer, &bottomRect); \
-	SDL_RenderFillRect(renderer, &leftRect);   \
-	SDL_RenderFillRect(renderer, &rightRect);
-
-#define SDL_DESTROY_ALL()                                \
-	/* Destroy Everything */                             \
-	/* Textures */                                       \
-	SDL_DestroyTexture(tile.texture);                    \
-	SDL_DestroyTexture(logo.texture);                    \
-	SDL_DestroyTexture(menuCursor.texture);              \
-	SDL_DestroyTexture(game_grid.texture);               \
-	SDL_DestroyTexture(gridCursor_bottom_left.texture);  \
-	SDL_DestroyTexture(gridCursor_bottom_right.texture); \
-	SDL_DestroyTexture(gridCursor_top_left.texture);     \
-	SDL_DestroyTexture(gridCursor_top_right.texture);    \
-	SDL_DestroyTexture(game_sidebar_small.texture);      \
-	SDL_DestroyTexture(miniGrid_bottom_left.texture);    \
-	SDL_DestroyTexture(miniGrid_bottom_right.texture);   \
-	SDL_DestroyTexture(miniGrid_top_left.texture);       \
-	SDL_DestroyTexture(miniGrid_top_right.texture);      \
-	/* Text Objects */                                   \
-	for (i = 32; i < LEN(textChars); i++) {              \
-		DESTROY_TEXT_OBJECT_TEXTURE(textChars[i]);       \
-	}                                                    \
-	for (i = 0; i < 10; i++) {                           \
-		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_black[i]);  \
-		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_blue[i]);   \
-	}                                                    \
-	/* Fonts */                                          \
-	TTF_CloseFont(pixelFont);                            \
-	TTF_CloseFont(pixelFont_grid);                       \
-	TTF_CloseFont(pixelFont_grid_mini);                  \
-	TTF_Quit();                                          \
-	/* Sound */                                          \
-	Mix_HaltMusic();                                     \
-	Mix_FreeMusic(bgm_1);                                \
-	Mix_FreeMusic(bgm_2);                                \
-	Mix_FreeMusic(bgm_3);                                \
-	Mix_FreeMusic(bgm_4);                                \
-	Mix_FreeMusic(bgm_5);                                \
-	Mix_FreeMusic(bgm_6);                                \
-	Mix_FreeMusic(bgm_7);                                \
-	Mix_FreeChunk(sfx);                                  \
-	Mix_CloseAudio();                                    \
-	Mix_Quit();                                          \
-	/* Controller */                                     \
-	CLOSE_CONTROLLER();                                  \
-	/* Renderer and Window */                            \
-	SDL_DestroyRenderer(renderer);                       \
-	SDL_DestroyWindow(window);                           \
-	SDL_Quit();
-
-#if defined(PSP)
-#define CLOSE_CONTROLLER() SDL_JoystickClose(controller);
-#else
-#define CLOSE_CONTROLLER()                   \
-	if (controller != NULL) {                \
-		SDL_GameControllerClose(controller); \
-	}
-#endif
-
-#if defined(WII_U)
-#define SYSTEM_SPECIFIC_CLOSE() WHBUnmountSdCard();
-#elif defined(VITA)
-#define SYSTEM_SPECIFIC_CLOSE() sceKernelExitProcess(0);
-#elif defined(PSP)
-#define SYSTEM_SPECIFIC_CLOSE() sceKernelExitGame();
-#else
-#define SYSTEM_SPECIFIC_CLOSE()
 #endif
 
 #endif

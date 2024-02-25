@@ -18,6 +18,13 @@ SDL_Rect bottomRect;
 SDL_Rect leftRect;
 SDL_Rect rightRect;
 
+/* SDL Controller */
+#if defined(PSP)
+SDL_Joystick *controller = NULL;
+#else
+SDL_GameController *controller = nullptr;
+#endif
+
 /* Window Width and Height */
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
@@ -121,11 +128,6 @@ SpriteObjectWithPos miniGrid_top_right;
 SpriteObjectWithPos *currMiniGrid;
 
 /* Fonts */
-SDL_Color color_black = {0, 0, 0};
-SDL_Color color_white = {255, 255, 255};
-SDL_Color color_blue = {0, 0, 192};
-SDL_Color color_gray_240 = {240, 240, 240};
-SDL_Color color_light_blue = {240, 240, 255};
 TTF_Font *pixelFont;
 TTF_Font *pixelFont_large;
 TTF_Font *pixelFont_grid;

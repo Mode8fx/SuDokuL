@@ -13,13 +13,6 @@
 
 SDL_Rect divider;
 
-/* SDL Controller */
-#if defined(PSP)
-SDL_Joystick *controller = NULL;
-#else
-SDL_GameController *controller = nullptr;
-#endif
-
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 
@@ -108,14 +101,14 @@ int main(int argv, char** args) {
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, SDL_WINDOW_RESIZABLE);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #endif
-	SET_SCALING();
+	setScaling();
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
 	PREPARE_SPRITE(tile, tile_png, tile_png_len, 0, 0, 1);
 	SET_SPRITE_SCALE_TILE();
 	/* Set Rectangles */
-	UPDATE_BORDER_RECTS();
+	updateBorderRects();
 	/* General - Fonts */
 	pixelFont = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE);
 	char tempCharArr[2];
@@ -145,7 +138,7 @@ int main(int argv, char** args) {
 		}
 	}
 	RENDER_TEXT(text_Loading);
-	RENDER_BORDER_RECTS();
+	renderBorderRects();
 	SDL_RenderPresent(renderer);
 	preparePauseTimer();
 #endif
@@ -407,7 +400,7 @@ int main(int argv, char** args) {
 	isRunning = true;
 
 #if defined(ANDROID)
-	SDL_TOGGLE_FULLSCREEN();
+	sdlToggleFullscreen();
 #endif
 
 #if defined(PSP) || defined(VITA) || defined(WII_U)
@@ -702,7 +695,7 @@ int main(int argv, char** args) {
 							SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
 						if (SDL_GetWindowSurface(window)->h < gameHeight)
 							SDL_SetWindowSize(window, SDL_GetWindowSurface(window)->w, gameHeight);
-						SET_SCALING();
+						setScaling();
 					}
 					break;
 #endif
@@ -841,16 +834,16 @@ int main(int argv, char** args) {
 		if (timer_buttonHold > 0.5) {
 			timer_buttonHold_repeater += deltaTime;
 			if (timer_buttonHold_repeater >= 0.033) {
-				if (BUTTON_HELD(INPUT_UP)) {
+				if (buttonHeld(INPUT_UP)) {
 					keyInputs |= INPUT_UP;
 				}
-				if (BUTTON_HELD(INPUT_DOWN)) {
+				if (buttonHeld(INPUT_DOWN)) {
 					keyInputs |= INPUT_DOWN;
 				}
-				if (BUTTON_HELD(INPUT_LEFT)) {
+				if (buttonHeld(INPUT_LEFT)) {
 					keyInputs |= INPUT_LEFT;
 				}
-				if (BUTTON_HELD(INPUT_RIGHT)) {
+				if (buttonHeld(INPUT_RIGHT)) {
 					keyInputs |= INPUT_RIGHT;
 				}
 				timer_buttonHold_repeater -= 0.033;
@@ -858,10 +851,10 @@ int main(int argv, char** args) {
 		}
 
 		/* Key Presses (Always Active) */
-		if (KEY_PRESSED(INPUT_FULLSCREEN)) {
-			SDL_TOGGLE_FULLSCREEN();
+		if (keyPressed(INPUT_FULLSCREEN)) {
+			sdlToggleFullscreen();
 		}
-		if (KEY_PRESSED(INPUT_PREV_TRACK) && wentPastTitleScreen) {
+		if (keyPressed(INPUT_PREV_TRACK) && wentPastTitleScreen) {
 			if (--soundSettings.musicIndex < 1)
 				soundSettings.musicIndex = 7;
 			playMusicAtIndex(soundSettings.musicIndex);
@@ -869,7 +862,7 @@ int main(int argv, char** args) {
 				saveCurrentSettings();
 			}
 		}
-		if (KEY_PRESSED(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
+		if (keyPressed(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
 			if (++soundSettings.musicIndex > 7)
 				soundSettings.musicIndex = 1;
 			playMusicAtIndex(soundSettings.musicIndex);
@@ -900,7 +893,7 @@ int main(int argv, char** args) {
 			case 0:
 				time_anim_PressStart += deltaTime;
 				/* Key Presses */
-				if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT) || KEY_PRESSED(INPUT_START)) {
+				if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT) || keyPressed(INPUT_START)) {
 					Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
 					if (!wentPastTitleScreen) {
 						wentPastTitleScreen = true;
@@ -948,11 +941,11 @@ int main(int argv, char** args) {
 				updateMainMenuCursorPositionX();
 				menuHandleBackButton(3);
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
+				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
 					|| mouseIsInRect(text_Controls.rect) || mouseIsInRect(text_Options.rect)
 					|| mouseIsInRect(text_Credits.rect) || mouseIsInRect(text_Quit.rect)))) {
 #else
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
+				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
 					|| mouseIsInRect(text_Controls.rect) || mouseIsInRect(text_Options.rect)
 					|| mouseIsInRect(text_Credits.rect)))) {
 #endif
@@ -1010,7 +1003,7 @@ int main(int argv, char** args) {
 				}
 				updatePlayMenuCursorPositionX();
 				menuHandleBackButton(2);
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Easy.rect)
+				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Easy.rect)
 					|| mouseIsInRect(text_Normal.rect) || mouseIsInRect(text_Hard.rect) || mouseIsInRect(text_Very_Hard.rect)))) {
 					programState = 8;
 				}
@@ -1026,7 +1019,7 @@ int main(int argv, char** args) {
 			case 8:
 				/* Draw Text */
 				RENDER_TEXT(text_Loading);
-				RENDER_BORDER_RECTS();
+				renderBorderRects();
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
 				preparePauseTimer();
@@ -1089,7 +1082,7 @@ int main(int argv, char** args) {
 					timer_game.now = 5999;
 				}
 				/* Key Presses */
-				if (KEY_PRESSED(INPUT_START)) {
+				if (keyPressed(INPUT_START)) {
 					programState = 10;
 				}
 				if (mouseMoved()) {
@@ -1138,9 +1131,9 @@ int main(int argv, char** args) {
 			case 10:
 				/* Key Presses */
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_START)) {
+				if (keyPressed(INPUT_START)) {
 #else
-				if (KEY_PRESSED(INPUT_START) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+				if (keyPressed(INPUT_START) || keyPressed(INPUT_CONFIRM_ALT)) {
 #endif
 					programState = 9;
 				}
@@ -1153,7 +1146,7 @@ int main(int argv, char** args) {
 			/* 11 = Victory Screen */
 			case 11:
 				/* Key Presses */
-				if (KEY_PRESSED(INPUT_START)) {
+				if (keyPressed(INPUT_START)) {
 					programState = 2;
 					updateMenuCursorPositionY(menuCursorIndex_main);
 				}
@@ -1180,14 +1173,14 @@ int main(int argv, char** args) {
 				/* Key Presses */
 				menuHandleBackButton(2);
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
-				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 1) {
+				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
 #elif defined(ANDROID)
-				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
 #else
-				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_controls < 3) {
+				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 3) {
 #endif
 					menuIndex_controls++;
-				} else if (KEY_PRESSED(INPUT_LEFT) && menuIndex_controls > 0) {
+				} else if (keyPressed(INPUT_LEFT) && menuIndex_controls > 0) {
 					menuIndex_controls--;
 				}
 				//RENDER_TEST_TEXT();
@@ -1227,7 +1220,7 @@ int main(int argv, char** args) {
 				}
 				updateOptionsMenuCursorPositionX();
 				menuHandleBackButton(2);
-				if (KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Controls_Menu.rect)
+				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Controls_Menu.rect)
 					|| mouseIsInRect(text_Video.rect) || mouseIsInRect(text_Sound.rect) || mouseIsInRect(text_Background.rect)))) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_options) {
@@ -1268,13 +1261,13 @@ int main(int argv, char** args) {
 				/* Key Presses */
 				menuHandleBackButton(2);
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_RIGHT) && menuIndex_credits < 6) {
+				if (keyPressed(INPUT_RIGHT) && menuIndex_credits < 6) {
 #else
-				if ((KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM_ALT)) && menuIndex_credits < 6) {
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 6) {
 #endif
 					menuIndex_credits++;
 				}
-				else if (KEY_PRESSED(INPUT_LEFT) && menuIndex_credits > 0) {
+				else if (keyPressed(INPUT_LEFT) && menuIndex_credits > 0) {
 					menuIndex_credits--;
 				}
 				switch (menuIndex_credits) {
@@ -1326,7 +1319,7 @@ int main(int argv, char** args) {
 #endif
 				updateVideoMenuCursorPositionX();
 				menuHandleBackButton(13);
-				if (KEY_PRESSED(INPUT_LEFT)) {
+				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
 #if !defined(ANDROID)
 						case 0:
@@ -1385,11 +1378,11 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-							SDL_TOGGLE_INTEGER_SCALE();
+							sdlToggleIntegerScale();
 							break;
 #else
 						case 0:
-							SDL_TOGGLE_FULLSCREEN();
+							sdlToggleFullscreen();
 							break;
 #endif
 						default:
@@ -1397,13 +1390,13 @@ int main(int argv, char** args) {
 					}
 				}
 #if !defined(ANDROID)
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
 					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
 					|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| mouseIsInRect(text_Apply.rect)))) {
 #else
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT))) {
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT))) {
 #endif
 					switch (menuCursorIndex_video) {
 #if !defined(ANDROID)
@@ -1458,10 +1451,10 @@ int main(int argv, char** args) {
 							}
 							break;
 						case 2:
-							SDL_TOGGLE_INTEGER_SCALE();
+							sdlToggleIntegerScale();
 							break;
 						case 3:
-							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
 									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 								} else {
@@ -1469,14 +1462,14 @@ int main(int argv, char** args) {
 								}
 								// isRunning = false;
 								// End the program here; otherwise, text and sprites will be resized and look weird for one frame before closing
-								SDL_DESTROY_ALL();
-								SYSTEM_SPECIFIC_CLOSE();
+								sdlDestroyAll();
+								systemSpecificClose();
 								return 0;
 							}
 							break;
 #else
 						case 0:
-							SDL_TOGGLE_FULLSCREEN();
+							sdlToggleFullscreen();
 							break;
 #endif
 						default:
@@ -1539,7 +1532,7 @@ int main(int argv, char** args) {
 				}
 				updateSoundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
-				if (KEY_PRESSED(INPUT_LEFT)) {
+				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_sound) {
 						case 0:
 							if (--soundSettings.musicIndex < 1)
@@ -1562,7 +1555,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Music.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Music_Volume.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_SFX_Volume.rect, SOUND_MENU_ENDPOINT)
@@ -1586,7 +1579,7 @@ int main(int argv, char** args) {
 								Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
 							break;
 						case 3:
-							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (soundSettings.musicIndex != 1) {
 									soundSettings.musicIndex = 1;
 									soundSettings.bgmVolume = 90;
@@ -1631,7 +1624,7 @@ int main(int argv, char** args) {
 				}
 				updateBackgroundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
-				if (KEY_PRESSED(INPUT_LEFT)) {
+				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_background) {
 						case 0:
 							bgSettings.speedMult -= 5;
@@ -1653,7 +1646,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Scroll_Direction.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Background_Size.rect, BACKGROUND_MENU_ENDPOINT)
@@ -1673,7 +1666,7 @@ int main(int argv, char** args) {
 							SET_SPRITE_SCALE_TILE();
 							break;
 						case 3:
-							if (KEY_PRESSED(INPUT_CONFIRM) || KEY_PRESSED(INPUT_CONFIRM_ALT)) {
+							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								bgSettings.scrollDir = 22;
 								setBGScrollSpeed();
 								bgSettings.speedMult = 15;
@@ -1719,7 +1712,7 @@ int main(int argv, char** args) {
 				}
 				updateControlsMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
-				if (KEY_PRESSED(INPUT_LEFT)) {
+				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
@@ -1733,11 +1726,11 @@ int main(int argv, char** args) {
 					}
 				}
 #if !defined(ANDROID) && !defined(PSP)
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
 #else
-				if (KEY_PRESSED(INPUT_RIGHT) || KEY_PRESSED(INPUT_CONFIRM) || (KEY_PRESSED(INPUT_CONFIRM_ALT) &&
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
 #endif
 					switch (menuCursorIndex_controls) {
@@ -1781,7 +1774,7 @@ int main(int argv, char** args) {
 		/* Miscellaneous */
 		controllerAxis_leftStickX_last = controllerAxis_leftStickX;
 		controllerAxis_leftStickY_last = controllerAxis_leftStickY;
-		//if (KEY_PRESSED(INPUT_CONFIRM_ALT)) { // fix the cursor resetting back to the last-tapped position
+		//if (keyPressed(INPUT_CONFIRM_ALT)) { // fix the cursor resetting back to the last-tapped position
 		//	mouseInput_x = 0;
 		//	mouseInput_y = 0;
 		//}
@@ -1789,14 +1782,14 @@ int main(int argv, char** args) {
 		mouseInput_y_last = mouseInput_y;
 
 		/* Draw Black Rectangles (to fix background scrolling bug for some aspect ratios in fullscreen) */
-		RENDER_BORDER_RECTS();
+		renderBorderRects();
 
 		/* Update Screen */
         SDL_RenderPresent(renderer);
 	}
 
-	SDL_DESTROY_ALL();
-	SYSTEM_SPECIFIC_CLOSE();
+	sdlDestroyAll();
+	systemSpecificClose();
 
 	return 0;
 }

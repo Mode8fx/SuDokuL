@@ -1,5 +1,8 @@
 #include "shared.h"
 #include "general.h"
+#include "sprite_objects.h"
+#include "config.h"
+#include "window.h"
 
 void loadSettingsFile() {
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
@@ -159,4 +162,149 @@ void saveCurrentSettings() {
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting,
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+}
+
+Uint16 menuCursorXOffset() {
+	return ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE));
+}
+
+void sdlToggleFullscreen() {
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP))
+	isWindowed = !isWindowed;
+	if (isWindowed)
+		SDL_SetWindowFullscreen(window, 0);
+	else
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	setScaling();
+#endif
+}
+
+void sdlToggleIntegerScale() {
+	isIntegerScale = !isIntegerScale;
+	setScaling();
+}
+
+void setScaling() {
+#if !defined(ANDROID)
+	if (isIntegerScale) {
+		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));
+		if (int_i < 1) int_i = 1;
+		centerViewport.w = gameWidth * int_i;
+		centerViewport.h = gameHeight * int_i;
+		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);
+		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);
+		SDL_RenderSetScale(renderer, int_i, int_i);
+		SDL_RenderSetViewport(renderer, &centerViewport);
+		screenScale = (double)int_i;
+	} else {
+		screenScale = (double)SCALING_WIDTH / gameWidth;
+		if ((double)SCALING_HEIGHT / gameHeight < screenScale) {
+			screenScale = (double)SCALING_HEIGHT / gameHeight;
+		}
+		if (screenScale < 1) screenScale = 1;
+		centerViewport.w = (int)(gameWidth * screenScale);
+		centerViewport.h = (int)(gameHeight * screenScale);
+		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / screenScale), 0);
+		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / screenScale), 0);
+		SDL_RenderSetScale(renderer, screenScale, screenScale);
+		SDL_RenderSetViewport(renderer, &centerViewport);
+	}
+	updateBorderRects();
+	//SDL_RenderSetClipRect(renderer, &centerViewport);
+#endif
+}
+
+void updateBorderRects() {
+	topRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 50;
+	topRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 100;
+	topRect.w = SCALING_WIDTH + 100;
+	topRect.h = (SCALING_HEIGHT - gameHeight) / 2 + 100;
+	bottomRect.x = topRect.x;
+	bottomRect.y = gameHeight;
+	bottomRect.w = topRect.w;
+	bottomRect.h = topRect.h;
+	leftRect.x = -(SCALING_WIDTH - gameWidth) / 2 - 100;
+	leftRect.y = -(SCALING_HEIGHT - gameHeight) / 2 - 50;
+	leftRect.w = (SCALING_WIDTH - gameWidth) / 2 + 100;
+	leftRect.h = SCALING_HEIGHT + 100;
+	rightRect.x = gameWidth;
+	rightRect.y = leftRect.y;
+	rightRect.w = leftRect.w;
+	rightRect.h = leftRect.h;
+}
+
+void renderBorderRects() {
+	SDL_RenderFillRect(renderer, &topRect);
+	SDL_RenderFillRect(renderer, &bottomRect);
+	SDL_RenderFillRect(renderer, &leftRect);
+	SDL_RenderFillRect(renderer, &rightRect);
+}
+
+void sdlDestroyAll() {
+	/* Destroy Everything */
+	/* Textures */
+	SDL_DestroyTexture(tile.texture);
+	SDL_DestroyTexture(logo.texture);
+	SDL_DestroyTexture(menuCursor.texture);
+	SDL_DestroyTexture(game_grid.texture);
+	SDL_DestroyTexture(gridCursor_bottom_left.texture);
+	SDL_DestroyTexture(gridCursor_bottom_right.texture);
+	SDL_DestroyTexture(gridCursor_top_left.texture);
+	SDL_DestroyTexture(gridCursor_top_right.texture);
+	SDL_DestroyTexture(game_sidebar_small.texture);
+	SDL_DestroyTexture(miniGrid_bottom_left.texture);
+	SDL_DestroyTexture(miniGrid_bottom_right.texture);
+	SDL_DestroyTexture(miniGrid_top_left.texture);
+	SDL_DestroyTexture(miniGrid_top_right.texture);
+	/* Text Objects */
+	for (i = 32; i < LEN(textChars); i++) {
+		DESTROY_TEXT_OBJECT_TEXTURE(textChars[i]);
+	}
+	for (i = 0; i < 10; i++) {
+		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_black[i]);
+		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_blue[i]);
+	}
+	/* Fonts */
+	TTF_CloseFont(pixelFont);
+	TTF_CloseFont(pixelFont_grid);
+	TTF_CloseFont(pixelFont_grid_mini);
+	TTF_Quit();
+	/* Sound */
+	Mix_HaltMusic();
+	Mix_FreeMusic(bgm_1);
+	Mix_FreeMusic(bgm_2);
+	Mix_FreeMusic(bgm_3);
+	Mix_FreeMusic(bgm_4);
+	Mix_FreeMusic(bgm_5);
+	Mix_FreeMusic(bgm_6);
+	Mix_FreeMusic(bgm_7);
+	Mix_FreeChunk(sfx);
+	Mix_CloseAudio();
+	Mix_Quit();
+	/* Controller */
+	closeController();
+	/* Renderer and Window */
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+void closeController() {
+#if defined(PSP)
+	SDL_JoystickClose(controller);
+#else
+	if (controller != NULL) {
+		SDL_GameControllerClose(controller);
+	}
+#endif
+}
+
+void systemSpecificClose() {
+#if defined(WII_U)
+	WHBUnmountSdCard();
+#elif defined(VITA)
+	sceKernelExitProcess(0);
+#elif defined(PSP)
+	sceKernelExitGame();
+#endif
 }

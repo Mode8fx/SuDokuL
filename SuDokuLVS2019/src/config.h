@@ -3,6 +3,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+/* SDL Controller */
+#if defined(PSP)
+extern SDL_Joystick *controller;
+#else
+extern SDL_GameController *controller;
+#endif
+
 /* General Input */
 extern Sint16 controllerAxis_leftStickX;
 extern Sint16 controllerAxis_leftStickX_last;
@@ -52,6 +59,8 @@ constexpr auto UP_DEPRESSED      = (1 << 5);
 constexpr auto DOWN_PRESSED      = (1 << 6);
 constexpr auto DOWN_DEPRESSED    = (1 << 7);
 
+extern bool keyPressed(Uint32);
+extern bool buttonHeld(Uint32);
 extern void dirHandler(Uint8, Uint8, Uint8);
 
 #endif
