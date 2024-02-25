@@ -23,12 +23,6 @@ SDL_GameController *controller = nullptr;
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 
-/* Game Variables */
-Sint8 lastMiniGridState;
-Sint8 temp_mouseIndex_x;
-Sint8 temp_mouseIndex_y;
-bool justClickedInMiniGrid;
-
 int main(int argv, char** args) {
 	/* [Wii U] Set SD Card Mount Path */
 #if defined(WII_U)
@@ -1099,11 +1093,11 @@ int main(int argv, char** args) {
 					programState = 10;
 				}
 				if (mouseMoved()) {
-					GAME_HANDLE_MOUSE_MOVEMENT_MAIN();
-					GAME_HANDLE_MOUSE_MOVEMENT_MINI();
+					gameHandleMouseMovementMain();
+					gameHandleMouseMovementMini();
 				}
-				GAME_HANDLE_MAIN_GRID_NAVIGATION();
-				GAME_HANDLE_MINI_GRID_NAVIGATION();
+				gameHandleMainGridNavigation();
+				gameHandleMiniGridNavigation();
 				gameHandleNumKeyPresses();
 				gameHandleCheatRevealCell();
 				lastMiniGridState = miniGridState;
@@ -1138,7 +1132,7 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, gridCursor_bottom_right.texture, NULL, &gridCursor_bottom_right.rect);
 				SDL_RenderCopy(renderer, gridCursor_top_left.texture, NULL, &gridCursor_top_left.rect);
 				SDL_RenderCopy(renderer, gridCursor_top_right.texture, NULL, &gridCursor_top_right.rect);
-				DRAW_SIDEBAR();
+				drawSidebar();
 				break;
 			/* 10 = Pause Screen */
 			case 10:
@@ -1151,7 +1145,7 @@ int main(int argv, char** args) {
 					programState = 9;
 				}
 				menuHandleMenuButton();
-				DRAW_SIDEBAR();
+				drawSidebar();
 				RENDER_TEXT(text_Paused);
 				RENDER_TEXT(text_Quit_to_Menu_1);
 				RENDER_TEXT(text_Quit_to_Menu_2);
@@ -1178,7 +1172,7 @@ int main(int argv, char** args) {
 						}
 					}
 				}
-				DRAW_SIDEBAR();
+				drawSidebar();
 				RENDER_TEXT(text_You_Win);
 				break;
 			/* 12 = Controls Screen */

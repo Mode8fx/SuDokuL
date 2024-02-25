@@ -295,7 +295,11 @@ Sint8 gridCursorIndex_y;
 Sint8 miniGridCursorIndex_x;
 Sint8 miniGridCursorIndex_y;
 Sint8 miniGridState;
+Sint8 lastMiniGridState;
+Sint8 temp_mouseIndex_x;
+Sint8 temp_mouseIndex_y;
 Uint16 gridCursorCornerStep;
+bool justClickedInMiniGrid;
 
 /* Font-Related Variables */
 Uint16 fontSize;
