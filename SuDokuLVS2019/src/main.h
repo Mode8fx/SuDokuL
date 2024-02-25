@@ -218,6 +218,7 @@ TextObject text_Controls_c_6a;
 TextObject text_Controls_c_P1;
 TextObject text_Controls_c_8;
 TextObject text_Controls_c_9a;
+TextObject text_Controls_c_10a;
 TextObject text_Controls_c_12a;
 TextObject text_Controls_c_12b;
 TextObject text_Controls_c_12c;
@@ -282,6 +283,7 @@ TextObject text_Controls;
 TextObject text_Options;
 TextObject text_Credits;
 TextObject text_Quit;
+SDL_Rect divider;
 
 /* Game Logic Variables */
 Sint8 gridCursorIndex_x;

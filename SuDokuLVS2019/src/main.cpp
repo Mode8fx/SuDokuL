@@ -11,8 +11,6 @@
 #include "include_music.h"
 #include "include_sfx.h"
 
-SDL_Rect divider;
-
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 
@@ -305,8 +303,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
 	SET_TEXT_WITH_OUTLINE("You Win!",         text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),    TEXT_YOU_WIN_Y);
 	/* Controls */
-	SET_CONTROLS_TEXT();
-	CONTROLS_SET_CONFIRM_BACK_POS();
+	setControlsText();
+	controlsSetConfirmBackPos();
 	/* Options Menu */
 	SET_TEXT_WITH_OUTLINE("Controls",         text_Controls_Menu,    OBJ_TO_MID_SCREEN_X(text_Controls_Menu), TEXT_CONTROLS_MENU_Y);
 	SET_TEXT_WITH_OUTLINE("Video",            text_Video,            OBJ_TO_MID_SCREEN_X(text_Video),      TEXT_VIDEO_Y);
@@ -381,7 +379,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Background Size",  text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_RESET_TO_DEFAULT_Y);
 	/* Credits */
-	SET_CREDITS_TEXT();
+	setCreditsText();
 
 	/* Set Initial Time Values */
 	//timer_global.now = (SDL_GetTicks() - timer_paused.now) / 1000.0;
@@ -1183,20 +1181,20 @@ int main(int argv, char** args) {
 				} else if (keyPressed(INPUT_LEFT) && menuIndex_controls > 0) {
 					menuIndex_controls--;
 				}
-				//RENDER_TEST_TEXT();
+				//renderTestText();
 				switch (menuIndex_controls) {
 					case 0:
-						RENDER_CONTROLS_TEXT_PAGE_1();
+						renderControlsTextPage1();
 						break;
 					case 1:
-						RENDER_CONTROLS_TEXT_PAGE_2();
+						renderControlsTextPage2();
 						break;
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 					case 2:
-						RENDER_CONTROLS_TEXT_PAGE_3();
+						renderControlsTextPage3();
 						break;
 					case 3:
-						RENDER_CONTROLS_TEXT_PAGE_4();
+						renderControlsTextPage4();
 						break;
 #endif
 					default:
@@ -1272,25 +1270,25 @@ int main(int argv, char** args) {
 				}
 				switch (menuIndex_credits) {
 					case 0:
-						RENDER_CREDITS_TEXT_PAGE_1();
+						renderCreditsTextPage1();
 						break;
 					case 1:
-						RENDER_CREDITS_TEXT_PAGE_2();
+						renderCreditsTextPage2();
 						break;
 					case 2:
-						RENDER_CREDITS_TEXT_PAGE_3();
+						renderCreditsTextPage3();
 						break;
 					case 3:
-						RENDER_CREDITS_TEXT_PAGE_4();
+						renderCreditsTextPage4();
 						break;
 					case 4:
-						RENDER_CREDITS_TEXT_PAGE_5();
+						renderCreditsTextPage5();
 						break;
 					case 5:
-						RENDER_CREDITS_TEXT_PAGE_6();
+						renderCreditsTextPage6();
 						break;
 					case 6:
-						RENDER_CREDITS_TEXT_PAGE_7();
+						renderCreditsTextPage7();
 						break;
 					default:
 						break;
@@ -1716,7 +1714,7 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
-							CONTROLS_SET_CONFIRM_BACK_POS();
+							controlsSetConfirmBackPos();
 							break;
 						case 1:
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
@@ -1736,7 +1734,7 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_controls) {
 						case 0:
 							controlSettings.swapConfirmAndBack = !controlSettings.swapConfirmAndBack;
-							CONTROLS_SET_CONFIRM_BACK_POS();
+							controlsSetConfirmBackPos();
 							break;
 						case 1:
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
