@@ -114,7 +114,7 @@ int main(int argv, char** args) {
 	/* General */
 	for (k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont, color_white, color_black, textChars[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
 	}
 	/* Loading Screen */
@@ -135,7 +135,7 @@ int main(int argv, char** args) {
 			SDL_RenderCopy(renderer, tile.texture, NULL, &tile.rect);
 		}
 	}
-	RENDER_TEXT(text_Loading);
+	renderText(&text_Loading);
 	renderBorderRects();
 	SDL_RenderPresent(renderer);
 	preparePauseTimer();
@@ -230,23 +230,23 @@ int main(int argv, char** args) {
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_large, color_light_blue, color_blue, textChars_large[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid, color_gray_240, color_black, gridNums_black[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_black, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid, color_light_blue, color_blue, gridNums_blue[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		SET_TEXT_CHAR_WITH_OUTLINE(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, gridNums_blue_mini[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k]);
 		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Test Strings */
@@ -904,8 +904,8 @@ int main(int argv, char** args) {
 				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
-				RENDER_TEXT(text_PressStart);
-				RENDER_TEXT(text_Version_Number);
+				renderText(&text_PressStart);
+				renderText(&text_Version_Number);
 				break;
 			/* 1 = Title Screen -> Main Menu */
 			case 1:
@@ -973,12 +973,12 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Play);
-				RENDER_TEXT(text_Controls);
-				RENDER_TEXT(text_Options);
-				RENDER_TEXT(text_Credits);
+				renderText(&text_Play);
+				renderText(&text_Controls);
+				renderText(&text_Options);
+				renderText(&text_Credits);
 #if !defined(ANDROID)
-				RENDER_TEXT(text_Quit);
+				renderText(&text_Quit);
 #endif
 				break;
 			/* 3 = Main Menu -> Title Screen */
@@ -1008,15 +1008,15 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Easy);
-				RENDER_TEXT(text_Normal);
-				RENDER_TEXT(text_Hard);
-				RENDER_TEXT(text_Very_Hard);
+				renderText(&text_Easy);
+				renderText(&text_Normal);
+				renderText(&text_Hard);
+				renderText(&text_Very_Hard);
 				break;
 			/* 8 = Generating Puzzle Screen */
 			case 8:
 				/* Draw Text */
-				RENDER_TEXT(text_Loading);
+				renderText(&text_Loading);
 				renderBorderRects();
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
@@ -1137,9 +1137,9 @@ int main(int argv, char** args) {
 				}
 				menuHandleMenuButton();
 				drawSidebar();
-				RENDER_TEXT(text_Paused);
-				RENDER_TEXT(text_Quit_to_Menu_1);
-				RENDER_TEXT(text_Quit_to_Menu_2);
+				renderText(&text_Paused);
+				renderText(&text_Quit_to_Menu_1);
+				renderText(&text_Quit_to_Menu_2);
 				break;
 			/* 11 = Victory Screen */
 			case 11:
@@ -1164,7 +1164,7 @@ int main(int argv, char** args) {
 					}
 				}
 				drawSidebar();
-				RENDER_TEXT(text_You_Win);
+				renderText(&text_You_Win);
 				break;
 			/* 12 = Controls Screen */
 			case 12:
@@ -1248,11 +1248,11 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Controls_Menu);
-				RENDER_TEXT(text_Video);
-				RENDER_TEXT(text_Sound);
-				RENDER_TEXT(text_Background);
-				// RENDER_TEXT(text_Scores);
+				renderText(&text_Controls_Menu);
+				renderText(&text_Video);
+				renderText(&text_Sound);
+				renderText(&text_Background);
+				// renderText(&text_Scores);
 				break;
 			/* 18 = Credits Screen */
 			case 18:
@@ -1498,20 +1498,20 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 #if !defined(ANDROID)
-				RENDER_TEXT(text_Video_Warning);
-				RENDER_TEXT(text_Resolution);
-				RENDER_TEXT(text_Aspect_Ratio);
-				RENDER_TEXT(text_Apply);
+				renderText(&text_Video_Warning);
+				renderText(&text_Resolution);
+				renderText(&text_Aspect_Ratio);
+				renderText(&text_Apply);
 #endif
-				RENDER_TEXT(text_Integer_Scale);
+				renderText(&text_Integer_Scale);
 #if defined(ANDROID)
 				if (isWindowed) {
 #else
 				if (isIntegerScale) {
 #endif
-					RENDER_TEXT(text_On);
+					renderText(&text_On);
 				} else {
-					RENDER_TEXT(text_Off);
+					renderText(&text_Off);
 				}
 				break;
 			/* 22 = Sound Menu */
@@ -1601,10 +1601,10 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Music);
-				RENDER_TEXT(text_Music_Volume);
-				RENDER_TEXT(text_SFX_Volume);
-				RENDER_TEXT(text_Reset_to_Default);
+				renderText(&text_Music);
+				renderText(&text_Music_Volume);
+				renderText(&text_SFX_Volume);
+				renderText(&text_Reset_to_Default);
 				break;
 			/* 24 = Background Menu */
 			case 24:
@@ -1683,10 +1683,10 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Scroll_Speed);
-				RENDER_TEXT(text_Scroll_Direction);
-				RENDER_TEXT(text_Background_Size);
-				RENDER_TEXT(text_Reset_to_Default);
+				renderText(&text_Scroll_Speed);
+				renderText(&text_Scroll_Direction);
+				renderText(&text_Background_Size);
+				renderText(&text_Reset_to_Default);
 				break;
 			/* 26 = Scores Menu */
 			case 26:
@@ -1746,22 +1746,22 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
-				RENDER_TEXT(text_Controller_Input);
+				renderText(&text_Controller_Input);
 #if !defined(ANDROID) && !defined(PSP)
-				RENDER_TEXT(text_Touch_Screen_Input);
+				renderText(&text_Touch_Screen_Input);
 #endif
 				if (controlSettings.swapConfirmAndBack) {
-					RENDER_TEXT(text_A_Confirm);
-					RENDER_TEXT(text_B_Back);
+					renderText(&text_A_Confirm);
+					renderText(&text_B_Back);
 				} else {
-					RENDER_TEXT(text_B_Confirm);
-					RENDER_TEXT(text_A_Back);
+					renderText(&text_B_Confirm);
+					renderText(&text_A_Back);
 				}
 #if !defined(ANDROID) && !defined(PSP)
 				if (controlSettings.enableTouchscreen) {
-					RENDER_TEXT(text_Enabled);
+					renderText(&text_Enabled);
 				} else {
-					RENDER_TEXT(text_Disabled);
+					renderText(&text_Disabled);
 				}
 #endif
 				break;

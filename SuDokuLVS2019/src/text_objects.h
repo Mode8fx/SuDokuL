@@ -294,17 +294,17 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (FONT_SIZE * 3))
 
 extern void initStartingTextVariables();
-//extern void INIT_TEXT_OBJECT_VALS(textObj);
+extern void initTextObjectVals(TextObject *);
 //extern void CHAR_AT_INDEX(index);
 //extern void CHAR_AT_INDEX_LARGE(index);
 //extern void ADJUST_CHAR_OUTLINE_OFFSET(arr, c, x, y);
-//extern void RENDER_TEXT_CHAR(textObj);
-//extern void RENDER_TEXT(textObj);
-//extern void RENDER_TEXT_LARGE(textObj);
-//extern void SET_TEXT_POS_X(textObj, pos_x, offset);
-//extern void SET_TEXT_POS_Y(textObj, pos_y, offset);
-//extern void SET_TEXT_CHAR_WITH_OUTLINE(text, font, text_color, outline_color, textObj);
-//extern void SET_FONT_OUTLINE(font, textObj);
+extern void renderTextChar(TextCharObject *);
+extern void renderText(TextObject *);
+extern void renderTextLarge(TextObject *);
+extern void setTextPosX(TextCharObject *, Sint16, Sint8);
+extern void setTextPosY(TextCharObject *, Sint16, Sint8);
+extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *);
+extern void setFontOutline(TTF_Font *, TextCharObject *);
 //extern void SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y);
 //extern void SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y);
 //extern void SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y);
@@ -319,15 +319,15 @@ extern void initStartingTextVariables();
 //extern void SET_AND_RENDER_NUM_ASPECT_RATIO_21_9(pos_x_left, pos_y);
 //extern void SET_AND_RENDER_TIMER(pos_x_left, pos_y);
 //extern void RENDER_NUM_EMPTY(pos_x_left, pos_y);
-//extern void SET_AND_RENDER_COLON(pos_x_left, pos_y);
+extern void setAndRenderColon(Sint16, Sint16);
 //extern void SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index);
 //extern void SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index);
 //extern void SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num);
 //extern void SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num);
-//extern void MENU_MOVE_TEXT_RIGHT(textObj, timer);
-//extern void MENU_MOVE_TEXT_LEFT(textObj, timer);
-//extern void MENU_MOVE_TEXT_UP(textObj, timer);
-//extern void MENU_MOVE_TEXT_DOWN(textObj, timer);
+extern void menuMoveTextRight(TextObject *, double);
+extern void menuMoveTextLeft(TextObject *, double);
+extern void menuMoveTextUp(TextObject *, double);
+extern void menuMoveTextDown(TextObject *, double);
 //extern void DESTROY_TEXT_OBJECT_TEXTURE(textObj);
 extern void renderTestText();
 //extern void CONTROLS_SPACER;
@@ -348,12 +348,6 @@ extern void renderCreditsTextPage6();
 extern void renderCreditsTextPage7();
 extern void controlsSetConfirmBackPos();
 
-#define INIT_TEXT_OBJECT_VALS(textObj) \
-    textObj.rect.x = 0;                \
-    textObj.rect.y = 0;                \
-    textObj.rect.w = 0;                \
-    textObj.rect.h = 0;
-
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]
 
 #define CHAR_AT_INDEX_LARGE(index) textChars_large[tempCharArray[index]]
@@ -370,63 +364,16 @@ extern void controlsSetConfirmBackPos();
         arr[c].outlineOffset_y += min((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1); \
     }
 
-#define RENDER_TEXT_CHAR(textObj)                                                   \
-    SDL_RenderCopy(renderer, textObj.outline_texture, NULL, &textObj.outline_rect); \
-    SDL_RenderCopy(renderer, textObj.texture, NULL, &textObj.rect);
-
-#define RENDER_TEXT(textObj)                                                                                                         \
-    STRCPY(tempCharArray, textObj.str.c_str());                                                                                      \
-    charWidthCounter = 0;                                                                                                            \
-    for (charCounter = 0; charCounter < textObj.str.length(); charCounter++) {                                                       \
-        SET_TEXT_POS_X(CHAR_AT_INDEX(charCounter), (textObj.rect.x + charWidthCounter), CHAR_AT_INDEX(charCounter).outlineOffset_x); \
-        SET_TEXT_POS_Y(CHAR_AT_INDEX(charCounter), textObj.rect.y, CHAR_AT_INDEX(charCounter).outlineOffset_y);                      \
-        RENDER_TEXT_CHAR(textChars[tempCharArray[charCounter]]);                                                                     \
-        charWidthCounter += CHAR_AT_INDEX(charCounter).rect.w;                                                                       \
-    }
-
-#define RENDER_TEXT_LARGE(textObj)                                                                                                               \
-    STRCPY(tempCharArray, textObj.str.c_str());                                                                                                  \
-    charWidthCounter = 0;                                                                                                                        \
-    for (charCounter = 0; charCounter < textObj.str.length(); charCounter++) {                                                                   \
-        SET_TEXT_POS_X(CHAR_AT_INDEX_LARGE(charCounter), (textObj.rect.x + charWidthCounter), CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_x); \
-        SET_TEXT_POS_Y(CHAR_AT_INDEX_LARGE(charCounter), textObj.rect.y, CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_y);                      \
-        RENDER_TEXT_CHAR(textChars_large[tempCharArray[charCounter]]);                                                                           \
-        charWidthCounter += CHAR_AT_INDEX_LARGE(charCounter).rect.w;                                                                             \
-    }
-
-#define SET_TEXT_POS_X(textObj, pos_x, offset) \
-    textObj.rect.x = (pos_x);                  \
-    textObj.outline_rect.x = (pos_x) + (offset);
-
-#define SET_TEXT_POS_Y(textObj, pos_y, offset) \
-    textObj.rect.y = (pos_y);                  \
-    textObj.outline_rect.y = (pos_y) + (offset);
-
-#define SET_TEXT_CHAR_WITH_OUTLINE(text, font, text_color, outline_color, textObj)             \
-    textObj.surface = TTF_RenderText_Solid(font, text, text_color);                            \
-    textObj.texture = SDL_CreateTextureFromSurface(renderer, textObj.surface);                 \
-    TTF_SizeText(font, text, &textObj.rect.w, &textObj.rect.h);                                \
-    SET_FONT_OUTLINE(font, textObj);                                                           \
-    textObj.outline_surface = TTF_RenderText_Solid(font, text, outline_color);                 \
-    textObj.outline_texture = SDL_CreateTextureFromSurface(renderer, textObj.outline_surface); \
-    TTF_SizeText(font, text, &textObj.outline_rect.w, &textObj.outline_rect.h);                \
-    TTF_SetFontOutline(font, 0);                                                               \
-    SDL_FreeSurface(textObj.surface);                                                          \
-    SDL_FreeSurface(textObj.outline_surface);
-
-#define SET_FONT_OUTLINE(font, textObj) \
-    TTF_SetFontOutline(font, max((textObj.rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
-
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    INIT_TEXT_OBJECT_VALS(textObj);                        \
+    initTextObjectVals(&textObj);                        \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    INIT_TEXT_OBJECT_VALS(textObj);                              \
+    initTextObjectVals(&textObj);                              \
     SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y) \
-    INIT_TEXT_OBJECT_VALS(textObj);                                 \
+    initTextObjectVals(&textObj);                                 \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);      \
     initMenuOptionPositions(&textObj);
 
@@ -451,10 +398,10 @@ extern void controlsSetConfirmBackPos();
     textObj.rect.y = pos_y;
 
 #define SET_AND_RENDER_NUM_HELPER(digit, pos_x_left, pos_y, i_offset)                                                            \
-    SET_TEXT_POS_X(textChars[(digit + 48)], (pos_x_left + ((i + i_offset) * FONT_SIZE)), textChars[digit + 48].outlineOffset_x); \
+    setTextPosX(&textChars[(digit + 48)], (pos_x_left + ((i + i_offset) * FONT_SIZE)), textChars[digit + 48].outlineOffset_x); \
     i++;                                                                                                                         \
-    SET_TEXT_POS_Y(textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);                                       \
-    RENDER_TEXT_CHAR(textChars[(digit + 48)]);
+    setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);                                       \
+    renderTextChar(&textChars[(digit + 48)]);
 
 #define SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(num, pos_x_centered, pos_y) \
     i = 0;                                                                  \
@@ -485,7 +432,7 @@ extern void controlsSetConfirmBackPos();
     text_x.rect.x = pos_x_left + (i * FONT_SIZE);                         \
     i++;                                                                  \
     text_x.rect.y = pos_y;                                                \
-    RENDER_TEXT(text_x);                                                  \
+    renderText(&text_x);                                                  \
     if (height > 999) {                                                   \
         SET_AND_RENDER_NUM_HELPER(height / 1000, pos_x_left, pos_y, 0);   \
     }                                                                     \
@@ -496,21 +443,21 @@ extern void controlsSetConfirmBackPos();
 #define SET_AND_RENDER_NUM_ASPECT_RATIO_4_3(pos_x_left, pos_y) \
     i = 0;                                                     \
     SET_AND_RENDER_NUM_HELPER(4, pos_x_left, pos_y, 0);        \
-    SET_AND_RENDER_COLON(pos_x_left, pos_y);                   \
+    setAndRenderColon(pos_x_left, pos_y);                   \
     SET_AND_RENDER_NUM_HELPER(3, pos_x_left, pos_y, 0);
 
 #define SET_AND_RENDER_NUM_ASPECT_RATIO_16_9(pos_x_left, pos_y) \
     i = 0;                                                      \
     SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);         \
     SET_AND_RENDER_NUM_HELPER(6, pos_x_left, pos_y, 0);         \
-    SET_AND_RENDER_COLON(pos_x_left, pos_y);                    \
+    setAndRenderColon(pos_x_left, pos_y);                    \
     SET_AND_RENDER_NUM_HELPER(9, pos_x_left, pos_y, 0);
 
 #define SET_AND_RENDER_NUM_ASPECT_RATIO_16_10(pos_x_left, pos_y) \
     i = 0;                                                       \
     SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);          \
     SET_AND_RENDER_NUM_HELPER(6, pos_x_left, pos_y, 0);          \
-    SET_AND_RENDER_COLON(pos_x_left, pos_y);                     \
+    setAndRenderColon(pos_x_left, pos_y);                     \
     SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);          \
     SET_AND_RENDER_NUM_HELPER(0, pos_x_left, pos_y, 0);
 
@@ -518,7 +465,7 @@ extern void controlsSetConfirmBackPos();
     i = 0;                                                      \
     SET_AND_RENDER_NUM_HELPER(2, pos_x_left, pos_y, 0);         \
     SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);         \
-    SET_AND_RENDER_COLON(pos_x_left, pos_y);                    \
+    setAndRenderColon(pos_x_left, pos_y);                    \
     SET_AND_RENDER_NUM_HELPER(9, pos_x_left, pos_y, 0);
 
 #define SET_AND_RENDER_TIMER(pos_x_left, pos_y)         \
@@ -527,7 +474,7 @@ extern void controlsSetConfirmBackPos();
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
     j = ((int(timer_game.now) / 60) % 10);              \
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
-    SET_AND_RENDER_COLON(pos_x_left, pos_y);            \
+    setAndRenderColon(pos_x_left, pos_y);            \
     j = ((int(timer_game.now) % 60) / 10);              \
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
     j = (int(timer_game.now) % 10);                     \
@@ -540,46 +487,28 @@ extern void controlsSetConfirmBackPos();
     j = int(numEmpty) % 10;                             \
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0);
 
-#define SET_AND_RENDER_COLON(pos_x_left, pos_y)       \
-    text_colon.rect.x = pos_x_left + (i * FONT_SIZE); \
-    i++;                                              \
-    text_colon.rect.y = pos_y;                        \
-    RENDER_TEXT(text_colon);
-
 #define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                                              \
     k = index / 9;                                                                                                                                                                \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);         \
-    RENDER_TEXT_CHAR(textNumsObj[num]);
+    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
+    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);         \
+    renderTextChar(&textNumsObj[num]);
 
 #define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                                             \
     k = index / 9;                                                                                                                                             \
-    SET_TEXT_POS_X(textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);             \
-    RENDER_TEXT_CHAR(textNumsObj[num]);
+    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x); \
+    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);             \
+    renderTextChar(&textNumsObj[num]);
 
 #define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                                                 \
     k = (num - 1) / 3;                                                                                                                                                                                                                                       \
-    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);                     \
-    RENDER_TEXT_CHAR(textNumsObj[num]);
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);                     \
+    renderTextChar(&textNumsObj[num]);
 
 #define SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num)                                                                                                                                 \
-    SET_TEXT_POS_X(textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_x); \
-    SET_TEXT_POS_Y(textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_y);       \
-    RENDER_TEXT_CHAR(textNumsObj[num]);
-
-#define MENU_MOVE_TEXT_RIGHT(textObj, timer) \
-    textObj.rect.x = (Uint16)(textObj.endPos_x - MOVE_FAST_THEN_DECELERATE(textObj.endPos_x - textObj.startPos_x, 1, timer));
-
-#define MENU_MOVE_TEXT_LEFT(textObj, timer) \
-    textObj.rect.x = (Uint16)(textObj.startPos_x + MOVE_FAST_THEN_DECELERATE(textObj.endPos_x - textObj.startPos_x, 1, timer));
-
-#define MENU_MOVE_TEXT_UP(textObj, timer) \
-    textObj.rect.y = (Uint16)(textObj.endPos_y + MOVE_FAST_THEN_DECELERATE(textObj.startPos_y - textObj.endPos_y, 1, timer));
-
-#define MENU_MOVE_TEXT_DOWN(textObj, timer) \
-    textObj.rect.y = (Uint16)(textObj.startPos_y - MOVE_FAST_THEN_DECELERATE(textObj.startPos_y - textObj.endPos_y, 1, timer));
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_x); \
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_y);       \
+    renderTextChar(&textNumsObj[num]);
 
 #define DESTROY_TEXT_OBJECT_TEXTURE(textObj) \
     SDL_DestroyTexture(textObj.texture);     \

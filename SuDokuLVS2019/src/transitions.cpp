@@ -8,8 +8,8 @@
 void transitionGraphicsFromTitleScreen() {
     /* Animate Logo and Text */
     logo.rect.y = logo.endPos_y + MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
-    MENU_MOVE_TEXT_RIGHT(text_PressStart, time_anim1);
-    MENU_MOVE_TEXT_RIGHT(text_Version_Number, time_anim1);
+    menuMoveTextRight(&text_PressStart, time_anim1);
+    menuMoveTextRight(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */
     if (time_anim1 >= 1) {
         logo.rect.y = logo.endPos_y;
@@ -18,15 +18,15 @@ void transitionGraphicsFromTitleScreen() {
     }
     /* Draw Logo and Text */
     SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
-    RENDER_TEXT(text_PressStart);
-    RENDER_TEXT(text_Version_Number);
+    renderText(&text_PressStart);
+    renderText(&text_Version_Number);
 }
 
 void transitionGraphicsToTitleScreen() {
     /* Animate Logo and Text */
     logo.rect.y = logo.startPos_y - MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
-    MENU_MOVE_TEXT_LEFT(text_PressStart, time_anim1);
-    MENU_MOVE_TEXT_LEFT(text_Version_Number, time_anim1);
+    menuMoveTextLeft(&text_PressStart, time_anim1);
+    menuMoveTextLeft(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */
     if (time_anim1 >= 1) {
         logo.rect.y = logo.startPos_y;
@@ -34,23 +34,23 @@ void transitionGraphicsToTitleScreen() {
     }
     /* Draw Logo and Text */
     SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
-    RENDER_TEXT(text_PressStart);
-    RENDER_TEXT(text_Version_Number);
+    renderText(&text_PressStart);
+    renderText(&text_Version_Number);
 }
 
 void transitionGraphicsFromMainMenu() {
     /* Animate and Draw Text */
-    MENU_MOVE_TEXT_DOWN(text_Play, time_anim1);
-    MENU_MOVE_TEXT_DOWN(text_Controls, time_anim1);
-    MENU_MOVE_TEXT_DOWN(text_Options, time_anim1);
-    MENU_MOVE_TEXT_DOWN(text_Credits, time_anim1);
-    RENDER_TEXT(text_Play);
-    RENDER_TEXT(text_Controls);
-    RENDER_TEXT(text_Options);
-    RENDER_TEXT(text_Credits);
+    menuMoveTextDown(&text_Play, time_anim1);
+    menuMoveTextDown(&text_Controls, time_anim1);
+    menuMoveTextDown(&text_Options, time_anim1);
+    menuMoveTextDown(&text_Credits, time_anim1);
+    renderText(&text_Play);
+    renderText(&text_Controls);
+    renderText(&text_Options);
+    renderText(&text_Credits);
 #if !defined(ANDROID)
-    MENU_MOVE_TEXT_DOWN(text_Quit, time_anim1);
-    RENDER_TEXT(text_Quit);
+    menuMoveTextDown(&text_Quit, time_anim1);
+    renderText(&text_Quit);
 #endif
 }
 
@@ -58,29 +58,29 @@ void transitionGraphicsToMainMenu(Sint8 choice) {
     /* Animate Text */
     switch (choice) {
         case 0:
-            MENU_MOVE_TEXT_LEFT(text_Play, time_anim1);
+            menuMoveTextLeft(&text_Play, time_anim1);
             break;
         case 1:
-            MENU_MOVE_TEXT_LEFT(text_Controls, time_anim1);
+            menuMoveTextLeft(&text_Controls, time_anim1);
             break;
         case 2:
-            MENU_MOVE_TEXT_LEFT(text_Options, time_anim1);
+            menuMoveTextLeft(&text_Options, time_anim1);
             break;
         case 3:
-            MENU_MOVE_TEXT_LEFT(text_Credits, time_anim1);
+            menuMoveTextLeft(&text_Credits, time_anim1);
             break;
 #if !defined(ANDROID)
         case 4:
-            MENU_MOVE_TEXT_LEFT(text_Quit, time_anim1);
+            menuMoveTextLeft(&text_Quit, time_anim1);
             break;
 #endif
         default:
-            MENU_MOVE_TEXT_UP(text_Play, time_anim1);
-            MENU_MOVE_TEXT_UP(text_Controls, time_anim1);
-            MENU_MOVE_TEXT_UP(text_Options, time_anim1);
-            MENU_MOVE_TEXT_UP(text_Credits, time_anim1);
+            menuMoveTextUp(&text_Play, time_anim1);
+            menuMoveTextUp(&text_Controls, time_anim1);
+            menuMoveTextUp(&text_Options, time_anim1);
+            menuMoveTextUp(&text_Credits, time_anim1);
 #if !defined(ANDROID)
-            MENU_MOVE_TEXT_UP(text_Quit, time_anim1);
+            menuMoveTextUp(&text_Quit, time_anim1);
 #endif
             break;
     }
@@ -97,12 +97,12 @@ void transitionGraphicsToMainMenu(Sint8 choice) {
         updateMenuCursorPositionY(menuCursorIndex_main);
     }
     /* Draw Text */
-    RENDER_TEXT(text_Play);
-    RENDER_TEXT(text_Controls);
-    RENDER_TEXT(text_Options);
-    RENDER_TEXT(text_Credits);
+    renderText(&text_Play);
+    renderText(&text_Controls);
+    renderText(&text_Options);
+    renderText(&text_Credits);
 #if !defined(ANDROID)
-    RENDER_TEXT(text_Quit);
+    renderText(&text_Quit);
 #endif
 }
 

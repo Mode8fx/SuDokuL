@@ -22,16 +22,100 @@ void initStartingTextVariables() {
     backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
 }
 
+void initTextObjectVals(TextObject *textObj) {
+	textObj->rect.x = 0;
+	textObj->rect.y = 0;
+	textObj->rect.w = 0;
+	textObj->rect.h = 0;
+}
+
+void renderTextChar(TextCharObject *textObj) {
+	SDL_RenderCopy(renderer, textObj->outline_texture, NULL, &textObj->outline_rect);
+	SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
+}
+
+void renderText(TextObject *textObj) {
+	STRCPY(tempCharArray, textObj->str.c_str());
+	charWidthCounter = 0;
+	for (charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
+		setTextPosX(&CHAR_AT_INDEX(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX(charCounter).outlineOffset_x);
+		setTextPosY(&CHAR_AT_INDEX(charCounter), textObj->rect.y, CHAR_AT_INDEX(charCounter).outlineOffset_y);
+		renderTextChar(&textChars[tempCharArray[charCounter]]);
+		charWidthCounter += CHAR_AT_INDEX(charCounter).rect.w;
+	}
+}
+
+void renderTextLarge(TextObject *textObj) {
+	STRCPY(tempCharArray, textObj->str.c_str());
+	charWidthCounter = 0;
+	for (charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
+		setTextPosX(&CHAR_AT_INDEX_LARGE(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_x);
+		setTextPosY(&CHAR_AT_INDEX_LARGE(charCounter), textObj->rect.y, CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_y);
+		renderTextChar(&textChars_large[tempCharArray[charCounter]]);
+		charWidthCounter += CHAR_AT_INDEX_LARGE(charCounter).rect.w;
+	}
+}
+
+void setTextPosX(TextCharObject *textObj, Sint16 pos_x, Sint8 offset) {
+    textObj->rect.x = (pos_x);
+    textObj->outline_rect.x = (pos_x) + (offset);
+}
+
+void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
+    textObj->rect.y = (pos_y);
+    textObj->outline_rect.y = (pos_y) + (offset);
+}
+
+void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj) {
+	textObj->surface = TTF_RenderText_Solid(font, text, text_color);
+	textObj->texture = SDL_CreateTextureFromSurface(renderer, textObj->surface);
+	TTF_SizeText(font, text, &textObj->rect.w, &textObj->rect.h);
+	setFontOutline(font, textObj);
+	textObj->outline_surface = TTF_RenderText_Solid(font, text, outline_color);
+	textObj->outline_texture = SDL_CreateTextureFromSurface(renderer, textObj->outline_surface);
+	TTF_SizeText(font, text, &textObj->outline_rect.w, &textObj->outline_rect.h);
+	TTF_SetFontOutline(font, 0);
+	SDL_FreeSurface(textObj->surface);
+	SDL_FreeSurface(textObj->outline_surface);
+}
+
+void setFontOutline(TTF_Font *font, TextCharObject *textObj) {
+	TTF_SetFontOutline(font, max((textObj->rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
+}
+
+void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
+	text_colon.rect.x = pos_x_left + (i * FONT_SIZE);
+	i++;
+	text_colon.rect.y = pos_y;
+	renderText(&text_colon);
+}
+
+void menuMoveTextRight(TextObject *textObj, double timer) {
+	textObj->rect.x = (Uint16)(textObj->endPos_x - MOVE_FAST_THEN_DECELERATE(textObj->endPos_x - textObj->startPos_x, 1, timer));
+}
+
+void menuMoveTextLeft(TextObject *textObj, double timer) {
+	textObj->rect.x = (Uint16)(textObj->startPos_x + MOVE_FAST_THEN_DECELERATE(textObj->endPos_x - textObj->startPos_x, 1, timer));
+}
+
+void menuMoveTextUp(TextObject *textObj, double timer) {
+	textObj->rect.y = (Uint16)(textObj->endPos_y + MOVE_FAST_THEN_DECELERATE(textObj->startPos_y - textObj->endPos_y, 1, timer));
+}
+
+void menuMoveTextDown(TextObject *textObj, double timer) {
+	textObj->rect.y = (Uint16)(textObj->startPos_y - MOVE_FAST_THEN_DECELERATE(textObj->startPos_y - textObj->endPos_y, 1, timer));
+}
+
 void renderTestText() {
     //bgSettings.speedMult = 0;
-    //RENDER_TEXT(text_test_1);
-    //RENDER_TEXT(text_test_2);
-    //RENDER_TEXT(text_test_3);
-    //RENDER_TEXT(text_test_4);
-    //RENDER_TEXT(text_test_5);
-    //RENDER_TEXT(text_test_6);
-    //RENDER_TEXT(text_test_7);
-    //RENDER_TEXT(text_test_8);
+    //renderText(&text_test_1);
+    //renderText(&text_test_2);
+    //renderText(&text_test_3);
+    //renderText(&text_test_4);
+    //renderText(&text_test_5);
+    //renderText(&text_test_6);
+    //renderText(&text_test_7);
+    //renderText(&text_test_8);
 }
 
 void setControlsText() {
@@ -235,28 +319,28 @@ void setControlsText() {
 
 void setSelectBtnText() {
 #if defined (SWITCH)
-    INIT_TEXT_OBJECT_VALS(text_Controls_10a);
+    initTextObjectVals(&text_Controls_10a);
     if (gameWidth == 320 && gameHeight == 240) {
         SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     } else {
         SET_TEXT_WITH_OUTLINE_HELPER("- (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     }
 #elif defined(ANDROID)
-    INIT_TEXT_OBJECT_VALS(text_Controls_10a);
+    initTextObjectVals(&text_Controls_10a);
     if (gameWidth == 320 && gameHeight == 240) {
         SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     } else {
         SET_TEXT_WITH_OUTLINE_HELPER("Back (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     }
 #elif defined(VITA) || defined(WII_U) || defined(PSP)
-    INIT_TEXT_OBJECT_VALS(text_Controls_10a);
+    initTextObjectVals(&text_Controls_10a);
     if (gameWidth == 320 && gameHeight == 240) {
         SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     } else {
         SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     }
 #else
-    INIT_TEXT_OBJECT_VALS(text_Controls_c_10a);
+    initTextObjectVals(&text_Controls_c_10a);
     if (gameWidth == 320 && gameHeight == 240) {
         SET_TEXT_WITH_OUTLINE_HELPER("Select (paused)", text_Controls_c_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_c_10a, 0.3), (FONT_SIZE * (CONTROLS_STEP * 5)));
     } else {
@@ -266,80 +350,80 @@ void setSelectBtnText() {
 }
 
 void renderControlsTextPage1() {
-	RENDER_TEXT_LARGE(text_Controls_1);
-	RENDER_TEXT(text_Controls_2a);
-	RENDER_TEXT(text_Controls_2b);
-	RENDER_TEXT(text_Controls_2c);
+	renderTextLarge(&text_Controls_1);
+	renderText(&text_Controls_2a);
+	renderText(&text_Controls_2b);
+	renderText(&text_Controls_2c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_2c, text_Controls_3c);
-	RENDER_TEXT(text_Controls_3a);
-	RENDER_TEXT(text_Controls_3b);
-	RENDER_TEXT(text_Controls_3c);
+	renderText(&text_Controls_3a);
+	renderText(&text_Controls_3b);
+	renderText(&text_Controls_3c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_3c, text_Controls_4c);
-	RENDER_TEXT(text_Controls_4a);
-	RENDER_TEXT(text_Controls_4b);
-	RENDER_TEXT(text_Controls_4c);
+	renderText(&text_Controls_4a);
+	renderText(&text_Controls_4b);
+	renderText(&text_Controls_4c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_4c, text_Controls_5b);
-	RENDER_TEXT(text_Controls_5a);
-	RENDER_TEXT(text_Controls_5b);
+	renderText(&text_Controls_5a);
+	renderText(&text_Controls_5b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_5b, text_Controls_6b);
-	RENDER_TEXT(text_Controls_6a);
-	RENDER_TEXT(text_Controls_6b);
+	renderText(&text_Controls_6a);
+	renderText(&text_Controls_6b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_6b, text_Controls_7a);
-	RENDER_TEXT(text_Controls_7a);
-	RENDER_TEXT(text_Controls_7b);
-	RENDER_TEXT(text_Controls_7c);
-	RENDER_TEXT(text_Controls_P1);
+	renderText(&text_Controls_7a);
+	renderText(&text_Controls_7b);
+	renderText(&text_Controls_7c);
+	renderText(&text_Controls_P1);
 }
 
 void renderControlsTextPage2() {
-	RENDER_TEXT_LARGE(text_Controls_8);
-	RENDER_TEXT(text_Controls_9a);
-	RENDER_TEXT(text_Controls_9b);
+	renderTextLarge(&text_Controls_8);
+	renderText(&text_Controls_9a);
+	renderText(&text_Controls_9b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_9a, text_Controls_10a);
-	RENDER_TEXT(text_Controls_10a);
-	RENDER_TEXT(text_Controls_10b);
+	renderText(&text_Controls_10a);
+	renderText(&text_Controls_10b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_10a, text_Controls_11a);
-	RENDER_TEXT(text_Controls_11a);
-	RENDER_TEXT(text_Controls_11b);
+	renderText(&text_Controls_11a);
+	renderText(&text_Controls_11b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_11a, text_Controls_12a);
-	RENDER_TEXT(text_Controls_12a);
-	RENDER_TEXT(text_Controls_12b);
-	RENDER_TEXT(text_Controls_12c);
-	RENDER_TEXT(text_Controls_P2);
+	renderText(&text_Controls_12a);
+	renderText(&text_Controls_12b);
+	renderText(&text_Controls_12c);
+	renderText(&text_Controls_P2);
 }
 
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 void renderControlsTextPage3() {
-	RENDER_TEXT_LARGE(text_Controls_c_1);
-	RENDER_TEXT(text_Controls_c_2a);
-	RENDER_TEXT(text_Controls_2c);
+	renderTextLarge(&text_Controls_c_1);
+	renderText(&text_Controls_c_2a);
+	renderText(&text_Controls_2c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_2c, text_Controls_3c);
-	RENDER_TEXT(text_Controls_c_3a);
-	RENDER_TEXT(text_Controls_3c);
+	renderText(&text_Controls_c_3a);
+	renderText(&text_Controls_3c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_3c, text_Controls_4c);
-	RENDER_TEXT(text_Controls_c_4a);
-	RENDER_TEXT(text_Controls_4c);
+	renderText(&text_Controls_c_4a);
+	renderText(&text_Controls_4c);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_4c, text_Controls_5b);
-	RENDER_TEXT(text_Controls_c_5a);
-	RENDER_TEXT(text_Controls_5b);
+	renderText(&text_Controls_c_5a);
+	renderText(&text_Controls_5b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_5b, text_Controls_6b);
-	RENDER_TEXT(text_Controls_c_6a);
-	RENDER_TEXT(text_Controls_6b);
-	RENDER_TEXT(text_Controls_c_P1);
+	renderText(&text_Controls_c_6a);
+	renderText(&text_Controls_6b);
+	renderText(&text_Controls_c_P1);
 }
 
 void renderControlsTextPage4() {
-	RENDER_TEXT_LARGE(text_Controls_c_8);
-	RENDER_TEXT(text_Controls_c_9a);
-	RENDER_TEXT(text_Controls_9b);
+	renderTextLarge(&text_Controls_c_8);
+	renderText(&text_Controls_c_9a);
+	renderText(&text_Controls_9b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_c_9a, text_Controls_c_10a);
-    RENDER_TEXT(text_Controls_c_10a);
-	RENDER_TEXT(text_Controls_10b);
+    renderText(&text_Controls_c_10a);
+	renderText(&text_Controls_10b);
     RENDER_DIVIDER_BETWEEN_Y(text_Controls_10a, text_Controls_c_12a);
-	RENDER_TEXT(text_Controls_c_12a);
-	RENDER_TEXT(text_Controls_c_12b);
-	RENDER_TEXT(text_Controls_c_12c);
-	RENDER_TEXT(text_Controls_c_P2);
+	renderText(&text_Controls_c_12a);
+	renderText(&text_Controls_c_12b);
+	renderText(&text_Controls_c_12c);
+	renderText(&text_Controls_c_P2);
 }
 #endif
 
@@ -400,83 +484,83 @@ void setCreditsText() {
 }
 
 void renderCreditsTextPage1() {
-    RENDER_TEXT_LARGE(text_Credits_1);
-    RENDER_TEXT(text_Credits_2);
-    RENDER_TEXT(text_Credits_3);
-    RENDER_TEXT(text_Credits_P1);
+    renderTextLarge(&text_Credits_1);
+    renderText(&text_Credits_2);
+    renderText(&text_Credits_3);
+    renderText(&text_Credits_P1);
 }
 
 void renderCreditsTextPage2() {
-    RENDER_TEXT_LARGE(text_Credits_4);
-    RENDER_TEXT(text_Credits_5a);
-    RENDER_TEXT(text_Credits_5b);
+    renderTextLarge(&text_Credits_4);
+    renderText(&text_Credits_5a);
+    renderText(&text_Credits_5b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_5a, text_Credits_6a);
-    RENDER_TEXT(text_Credits_6a);
-    RENDER_TEXT(text_Credits_6b);
+    renderText(&text_Credits_6a);
+    renderText(&text_Credits_6b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_6a, text_Credits_7a);
-    RENDER_TEXT(text_Credits_7a);
-    RENDER_TEXT(text_Credits_7b);
+    renderText(&text_Credits_7a);
+    renderText(&text_Credits_7b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_7a, text_Credits_8a);
-    RENDER_TEXT(text_Credits_8a);
-    RENDER_TEXT(text_Credits_8b);
+    renderText(&text_Credits_8a);
+    renderText(&text_Credits_8b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_8a, text_Credits_9a);
-    RENDER_TEXT(text_Credits_9a);
-    RENDER_TEXT(text_Credits_9b);
+    renderText(&text_Credits_9a);
+    renderText(&text_Credits_9b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_9a, text_Credits_10a);
-    RENDER_TEXT(text_Credits_10a);
-    RENDER_TEXT(text_Credits_10b);
+    renderText(&text_Credits_10a);
+    renderText(&text_Credits_10b);
     // RENDER_DIVIDER_BETWEEN_Y(text_Credits_10a, text_Credits_11a);
-    RENDER_TEXT(text_Credits_11a);
-    RENDER_TEXT(text_Credits_11b);
-    RENDER_TEXT(text_Credits_12);
-    RENDER_TEXT(text_Credits_P2);
+    renderText(&text_Credits_11a);
+    renderText(&text_Credits_11b);
+    renderText(&text_Credits_12);
+    renderText(&text_Credits_P2);
 }
 
 void renderCreditsTextPage3() {
-    RENDER_TEXT_LARGE(text_Credits_18);
-    RENDER_TEXT(text_Credits_19);
-    RENDER_TEXT(text_Credits_20);
-    RENDER_TEXT(text_Credits_P3);
+    renderTextLarge(&text_Credits_18);
+    renderText(&text_Credits_19);
+    renderText(&text_Credits_20);
+    renderText(&text_Credits_P3);
 }
 
 void renderCreditsTextPage4() {
-    RENDER_TEXT_LARGE(text_Credits_21);
-    RENDER_TEXT(text_Credits_22);
-    RENDER_TEXT(text_Credits_23);
-    RENDER_TEXT(text_Credits_P4);
+    renderTextLarge(&text_Credits_21);
+    renderText(&text_Credits_22);
+    renderText(&text_Credits_23);
+    renderText(&text_Credits_P4);
 }
 
 void renderCreditsTextPage5() {
-    RENDER_TEXT_LARGE(text_Credits_13);
-    RENDER_TEXT(text_Credits_14);
-    RENDER_TEXT(text_Credits_15);
-    RENDER_TEXT(text_Credits_16);
-    RENDER_TEXT(text_Credits_17);
-    RENDER_TEXT(text_Credits_P5);
+    renderTextLarge(&text_Credits_13);
+    renderText(&text_Credits_14);
+    renderText(&text_Credits_15);
+    renderText(&text_Credits_16);
+    renderText(&text_Credits_17);
+    renderText(&text_Credits_P5);
 }
 
 void renderCreditsTextPage6() {
-    RENDER_TEXT_LARGE(text_Credits_24);
-    RENDER_TEXT(text_Credits_25);
-    RENDER_TEXT(text_Credits_26);
-    RENDER_TEXT(text_Credits_27);
-    RENDER_TEXT(text_Credits_28);
-    RENDER_TEXT(text_Credits_29);
-    RENDER_TEXT(text_Credits_30);
-    RENDER_TEXT(text_Credits_P6);
+    renderTextLarge(&text_Credits_24);
+    renderText(&text_Credits_25);
+    renderText(&text_Credits_26);
+    renderText(&text_Credits_27);
+    renderText(&text_Credits_28);
+    renderText(&text_Credits_29);
+    renderText(&text_Credits_30);
+    renderText(&text_Credits_P6);
 }
 
 void renderCreditsTextPage7() {
-    RENDER_TEXT_LARGE(text_Credits_31);
-    RENDER_TEXT(text_Credits_32);
-    RENDER_TEXT(text_Credits_33);
-    RENDER_TEXT(text_Credits_34);
-    RENDER_TEXT(text_Credits_35);
-    RENDER_TEXT(text_Credits_36);
-    RENDER_TEXT(text_Credits_37);
-    RENDER_TEXT(text_Credits_38);
-    RENDER_TEXT(text_Credits_39);
-    RENDER_TEXT(text_Credits_P7);
+    renderTextLarge(&text_Credits_31);
+    renderText(&text_Credits_32);
+    renderText(&text_Credits_33);
+    renderText(&text_Credits_34);
+    renderText(&text_Credits_35);
+    renderText(&text_Credits_36);
+    renderText(&text_Credits_37);
+    renderText(&text_Credits_38);
+    renderText(&text_Credits_39);
+    renderText(&text_Credits_P7);
 }
 
 void controlsSetConfirmBackPos() {

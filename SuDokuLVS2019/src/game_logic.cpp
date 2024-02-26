@@ -364,26 +364,26 @@ void setGridCursorBySmallY() {
 void drawSidebar() {
     game_sidebar_small.rect.y = SIDEBAR_SMALL_1_POS_Y;
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
-    RENDER_TEXT(text_Time);
+    renderText(&text_Time);
     SET_AND_RENDER_TIMER(game_sidebar_small.rect.x + (game_sidebar_small.rect.w / 8), game_sidebar_small.rect.y + (game_sidebar_small.rect.h * 3 / 4) - FONT_SIZE);
     game_sidebar_small.rect.y = SIDEBAR_SMALL_2_POS_Y;
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
-    RENDER_TEXT(text_Empty);
+    renderText(&text_Empty);
     RENDER_NUM_EMPTY(game_sidebar_small.rect.x + (game_sidebar_small.rect.w * 23 / 64), game_sidebar_small.rect.y + (game_sidebar_small.rect.h * 3 / 4) - FONT_SIZE);
     game_sidebar_small.rect.y = SIDEBAR_SMALL_3_POS_Y;
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
     switch (menuCursorIndex_play) {
     case 0:
-        RENDER_TEXT(text_Game_Easy);
+        renderText(&text_Game_Easy);
         break;
     case 1:
-        RENDER_TEXT(text_Game_Normal);
+        renderText(&text_Game_Normal);
         break;
     case 2:
-        RENDER_TEXT(text_Game_Hard);
+        renderText(&text_Game_Hard);
         break;
     case 3:
-        RENDER_TEXT(text_Game_VHard);
+        renderText(&text_Game_VHard);
         break;
     default:
         break;
