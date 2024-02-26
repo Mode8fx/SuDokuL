@@ -1476,19 +1476,19 @@ int main(int argv, char** args) {
 				}
 				/* Set and Draw Numbers */
 #if !defined(ANDROID)
-				SET_AND_RENDER_NUM_RESOLUTION(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
+				setAndRenderNumResolution(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				switch (videoSettings.aspectRatioIndex) {
 					case 0:
-						SET_AND_RENDER_NUM_ASPECT_RATIO_4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 1:
-						SET_AND_RENDER_NUM_ASPECT_RATIO_16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 2:
-						SET_AND_RENDER_NUM_ASPECT_RATIO_16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 3:
-						SET_AND_RENDER_NUM_ASPECT_RATIO_21_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio21_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					default:
 						break;
@@ -1595,9 +1595,9 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Set and Draw Numbers */
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(soundSettings.musicIndex, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_Y);
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(soundSettings.bgmVolume, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_VOLUME_Y);
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(soundSettings.sfxVolume, SOUND_MENU_NUM_POSITION_X, TEXT_SFX_VOLUME_Y);
+				setAndRenderNumThreeDigitCentered(soundSettings.musicIndex, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_Y);
+				setAndRenderNumThreeDigitCentered(soundSettings.bgmVolume, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_VOLUME_Y);
+				setAndRenderNumThreeDigitCentered(soundSettings.sfxVolume, SOUND_MENU_NUM_POSITION_X, TEXT_SFX_VOLUME_Y);
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
@@ -1677,9 +1677,9 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Set and Draw Numbers */
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(bgSettings.speedMult, BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_SPEED_Y);
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED((bgSettings.scrollDir * 5), BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
-				SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(bgSettings.scale, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_SIZE_Y);
+				setAndRenderNumThreeDigitCentered(bgSettings.speedMult, BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_SPEED_Y);
+				setAndRenderNumThreeDigitCentered((bgSettings.scrollDir * 5), BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
+				setAndRenderNumThreeDigitCentered(bgSettings.scale, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_SIZE_Y);
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);

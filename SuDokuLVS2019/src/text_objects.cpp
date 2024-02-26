@@ -96,6 +96,84 @@ void setFontOutline(TTF_Font *font, TextCharObject *textObj) {
 	TTF_SetFontOutline(font, max((textObj->rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
 }
 
+void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
+	setTextPosX(&textChars[(digit + 48)], (pos_x_left + ((i + i_offset) * FONT_SIZE)), textChars[digit + 48].outlineOffset_x);
+	i++;
+	setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);
+	renderTextChar(&textChars[(digit + 48)]);
+}
+
+void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16 pos_y) {
+    i = 0;
+    if (num > 99) {
+        j = num / 100;
+        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
+        j = (num / 10) % 10;
+        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
+        j = num % 10;
+        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
+    } else if (num > 9) {
+        j = num / 10;
+        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0.5);
+        j = num % 10;
+        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0.5);
+    } else {
+        setAndRenderNumHelper(num, pos_x_centered, pos_y, 1);
+    }
+}
+
+void setAndRenderNumResolution(Sint16 width, Sint16 height, Sint16 pos_x_left, Sint16 pos_y) {
+    i = 0;
+    if (width > 999) {
+        setAndRenderNumHelper(width / 1000, pos_x_left, pos_y, 0);
+    }
+    setAndRenderNumHelper((width / 100) % 10, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper((width / 10) % 10, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(width % 10, pos_x_left, pos_y, 0);
+    text_x.rect.x = pos_x_left + (i * FONT_SIZE);
+    i++;
+    text_x.rect.y = pos_y;
+    renderText(&text_x);
+    if (height > 999) {
+        setAndRenderNumHelper(height / 1000, pos_x_left, pos_y, 0);
+    }
+    setAndRenderNumHelper((height / 100) % 10, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper((height / 10) % 10, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(height % 10, pos_x_left, pos_y, 0);
+}
+
+void setAndRenderNumAspectRatio4_3(Sint16 pos_x_left, Sint16 pos_y) {
+    i = 0;
+    setAndRenderNumHelper(4, pos_x_left, pos_y, 0);
+    setAndRenderColon(pos_x_left, pos_y);
+    setAndRenderNumHelper(3, pos_x_left, pos_y, 0);
+}
+
+void setAndRenderNumAspectRatio16_9(Sint16 pos_x_left, Sint16 pos_y) {
+    i = 0;
+    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
+    setAndRenderColon(pos_x_left, pos_y);
+    setAndRenderNumHelper(9, pos_x_left, pos_y, 0);
+}
+
+void setAndRenderNumAspectRatio16_10(Sint16 pos_x_left, Sint16 pos_y) {
+    i = 0;
+    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
+    setAndRenderColon(pos_x_left, pos_y);
+    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(0, pos_x_left, pos_y, 0);
+}
+
+void setAndRenderNumAspectRatio21_9(Sint16 pos_x_left, Sint16 pos_y) {
+    i = 0;
+    setAndRenderNumHelper(2, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+    setAndRenderColon(pos_x_left, pos_y);
+    setAndRenderNumHelper(9, pos_x_left, pos_y, 0);
+}
+
 void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
 	text_colon.rect.x = pos_x_left + (i * FONT_SIZE);
 	i++;

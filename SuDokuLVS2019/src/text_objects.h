@@ -310,13 +310,13 @@ extern void setFontOutline(TTF_Font *, TextCharObject *);
 //extern void SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y);
 //extern void SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 //extern void SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
-//extern void SET_AND_RENDER_NUM_HELPER(digit, pos_x_left, pos_y, i_offset);
-//extern void SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(num, pos_x_centered, pos_y);
-//extern void SET_AND_RENDER_NUM_RESOLUTION(width, height, pos_x_left, pos_y);
-//extern void SET_AND_RENDER_NUM_ASPECT_RATIO_4_3(pos_x_left, pos_y);
-//extern void SET_AND_RENDER_NUM_ASPECT_RATIO_16_9(pos_x_left, pos_y);
-//extern void SET_AND_RENDER_NUM_ASPECT_RATIO_16_10(pos_x_left, pos_y);
-//extern void SET_AND_RENDER_NUM_ASPECT_RATIO_21_9(pos_x_left, pos_y);
+extern void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
+extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
+extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
+extern void setAndRenderNumAspectRatio4_3(Sint16, Sint16);
+extern void setAndRenderNumAspectRatio16_9(Sint16, Sint16);
+extern void setAndRenderNumAspectRatio16_10(Sint16, Sint16);
+extern void setAndRenderNumAspectRatio21_9(Sint16, Sint16);
 //extern void SET_AND_RENDER_TIMER(pos_x_left, pos_y);
 //extern void RENDER_NUM_EMPTY(pos_x_left, pos_y);
 extern void setAndRenderColon(Sint16, Sint16);
@@ -352,15 +352,15 @@ extern void controlsSetConfirmBackPos();
 #define CHAR_AT_INDEX_LARGE(index) textChars_large[tempCharArray[index]]
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    initTextObjectVals(&textObj);                        \
+    initTextObjectVals(&textObj);                          \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
-    initTextObjectVals(&textObj);                              \
+    initTextObjectVals(&textObj);                                \
     SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
 
 #define SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y) \
-    initTextObjectVals(&textObj);                                 \
+    initTextObjectVals(&textObj);                                   \
     SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);      \
     initMenuOptionPositions(&textObj);
 
@@ -384,95 +384,24 @@ extern void controlsSetConfirmBackPos();
     textObj.rect.x = pos_x;                                                                          \
     textObj.rect.y = pos_y;
 
-#define SET_AND_RENDER_NUM_HELPER(digit, pos_x_left, pos_y, i_offset)                                                            \
-    setTextPosX(&textChars[(digit + 48)], (pos_x_left + ((i + i_offset) * FONT_SIZE)), textChars[digit + 48].outlineOffset_x); \
-    i++;                                                                                                                         \
-    setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);                                       \
-    renderTextChar(&textChars[(digit + 48)]);
+#define SET_AND_RENDER_TIMER(pos_x_left, pos_y)     \
+    i = 0;                                          \
+    j = (int(timer_game.now) / 600);                \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
+    j = ((int(timer_game.now) / 60) % 10);          \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
+    setAndRenderColon(pos_x_left, pos_y);           \
+    j = ((int(timer_game.now) % 60) / 10);          \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
+    j = (int(timer_game.now) % 10);                 \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0);
 
-#define SET_AND_RENDER_NUM_THREE_DIGIT_CENTERED(num, pos_x_centered, pos_y) \
-    i = 0;                                                                  \
-    if (num > 99) {                                                         \
-        j = num / 100;                                                      \
-        SET_AND_RENDER_NUM_HELPER(j, pos_x_centered, pos_y, 0);             \
-        j = (num / 10) % 10;                                                \
-        SET_AND_RENDER_NUM_HELPER(j, pos_x_centered, pos_y, 0);             \
-        j = num % 10;                                                       \
-        SET_AND_RENDER_NUM_HELPER(j, pos_x_centered, pos_y, 0);             \
-    } else if (num > 9) {                                                   \
-        j = num / 10;                                                       \
-        SET_AND_RENDER_NUM_HELPER(j, pos_x_centered, pos_y, 0.5);           \
-        j = num % 10;                                                       \
-        SET_AND_RENDER_NUM_HELPER(j, pos_x_centered, pos_y, 0.5);           \
-    } else {                                                                \
-        SET_AND_RENDER_NUM_HELPER(num, pos_x_centered, pos_y, 1);           \
-    }
-
-#define SET_AND_RENDER_NUM_RESOLUTION(width, height, pos_x_left, pos_y)   \
-    i = 0;                                                                \
-    if (width > 999) {                                                    \
-        SET_AND_RENDER_NUM_HELPER(width / 1000, pos_x_left, pos_y, 0);    \
-    }                                                                     \
-    SET_AND_RENDER_NUM_HELPER((width / 100) % 10, pos_x_left, pos_y, 0);  \
-    SET_AND_RENDER_NUM_HELPER((width / 10) % 10, pos_x_left, pos_y, 0);   \
-    SET_AND_RENDER_NUM_HELPER(width % 10, pos_x_left, pos_y, 0);          \
-    text_x.rect.x = pos_x_left + (i * FONT_SIZE);                         \
-    i++;                                                                  \
-    text_x.rect.y = pos_y;                                                \
-    renderText(&text_x);                                                  \
-    if (height > 999) {                                                   \
-        SET_AND_RENDER_NUM_HELPER(height / 1000, pos_x_left, pos_y, 0);   \
-    }                                                                     \
-    SET_AND_RENDER_NUM_HELPER((height / 100) % 10, pos_x_left, pos_y, 0); \
-    SET_AND_RENDER_NUM_HELPER((height / 10) % 10, pos_x_left, pos_y, 0);  \
-    SET_AND_RENDER_NUM_HELPER(height % 10, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_NUM_ASPECT_RATIO_4_3(pos_x_left, pos_y) \
-    i = 0;                                                     \
-    SET_AND_RENDER_NUM_HELPER(4, pos_x_left, pos_y, 0);        \
-    setAndRenderColon(pos_x_left, pos_y);                   \
-    SET_AND_RENDER_NUM_HELPER(3, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_NUM_ASPECT_RATIO_16_9(pos_x_left, pos_y) \
-    i = 0;                                                      \
-    SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);         \
-    SET_AND_RENDER_NUM_HELPER(6, pos_x_left, pos_y, 0);         \
-    setAndRenderColon(pos_x_left, pos_y);                    \
-    SET_AND_RENDER_NUM_HELPER(9, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_NUM_ASPECT_RATIO_16_10(pos_x_left, pos_y) \
-    i = 0;                                                       \
-    SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);          \
-    SET_AND_RENDER_NUM_HELPER(6, pos_x_left, pos_y, 0);          \
-    setAndRenderColon(pos_x_left, pos_y);                     \
-    SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);          \
-    SET_AND_RENDER_NUM_HELPER(0, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_NUM_ASPECT_RATIO_21_9(pos_x_left, pos_y) \
-    i = 0;                                                      \
-    SET_AND_RENDER_NUM_HELPER(2, pos_x_left, pos_y, 0);         \
-    SET_AND_RENDER_NUM_HELPER(1, pos_x_left, pos_y, 0);         \
-    setAndRenderColon(pos_x_left, pos_y);                    \
-    SET_AND_RENDER_NUM_HELPER(9, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_TIMER(pos_x_left, pos_y)         \
-    i = 0;                                              \
-    j = (int(timer_game.now) / 600);                    \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
-    j = ((int(timer_game.now) / 60) % 10);              \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
-    setAndRenderColon(pos_x_left, pos_y);            \
-    j = ((int(timer_game.now) % 60) / 10);              \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
-    j = (int(timer_game.now) % 10);                     \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0);
-
-#define RENDER_NUM_EMPTY(pos_x_left, pos_y)             \
-    i = 0;                                              \
-    j = int(numEmpty) / 10;                             \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
-    j = int(numEmpty) % 10;                             \
-    SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0);
+#define RENDER_NUM_EMPTY(pos_x_left, pos_y)         \
+    i = 0;                                          \
+    j = int(numEmpty) / 10;                         \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
+    j = int(numEmpty) % 10;                         \
+    setAndRenderNumHelper(j, pos_x_left, pos_y, 0);
 
 constexpr auto CREDITS_STEP = 1.6;
 
