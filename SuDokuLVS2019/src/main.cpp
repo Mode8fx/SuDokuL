@@ -115,7 +115,7 @@ int main(int argv, char** args) {
 	for (k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(textChars, k, -1, -1.5);
+		adjustCharOutlineOffset(textChars, k, -1, -1.5);
 	}
 	/* Loading Screen */
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
@@ -231,23 +231,23 @@ int main(int argv, char** args) {
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(textChars_large, k, -1, -1.5);
+		adjustCharOutlineOffset(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_black, k, -1, -1.5);
+		adjustCharOutlineOffset(gridNums_black, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue, k, -1, -1.5);
+		adjustCharOutlineOffset(gridNums_blue, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k]);
-		ADJUST_CHAR_OUTLINE_OFFSET(gridNums_blue_mini, k, -1, -1.5);
+		adjustCharOutlineOffset(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Test Strings */
 	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), FONT_SIZE * 1);
@@ -1096,13 +1096,13 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
-						SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(gridNums_black, int(originalGrid[i]), i);
+						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
 					} else if (grid[i]) {
-						SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(gridNums_blue, int(grid[i]), i);
+						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
 						for (j = 1; j < 10; j++) {
 							if (miniGrid[i] & (1<<j)) {
-								SET_AND_RENDER_NUM_GRID_MAIN_MINI(gridNums_blue_mini, int(j), i);
+								setAndRenderNumGridMainMini(gridNums_blue_mini, int(j), i);
 							}
 						}
 					}
@@ -1110,12 +1110,12 @@ int main(int argv, char** args) {
 				if (miniGridState == 1) {
 					SDL_RenderCopy(renderer, currMiniGrid->texture, NULL, &currMiniGrid->rect);
 					for (i = 1; i < 10; i++) {
-						SET_AND_RENDER_NUM_GRID_SUB_NORMAL(gridNums_blue, int(i));
+						setAndRenderNumGridSubNormal(gridNums_blue, int(i));
 					}
 				} else if (miniGridState == 2) {
 					SDL_RenderCopy(renderer, currMiniGrid->texture, NULL, &currMiniGrid->rect);
 					for (i = 1; i < 10; i++) {
-						SET_AND_RENDER_NUM_GRID_SUB_MINI(gridNums_blue_mini, int(i));
+						setAndRenderNumGridSubMini(gridNums_blue_mini, int(i));
 					}
 				}
 				/* Draw Cursor */
@@ -1152,13 +1152,13 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
-						SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(gridNums_black, int(originalGrid[i]), i);
+						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
 					} else if (grid[i]) {
-						SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(gridNums_blue, int(grid[i]), i);
+						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
 						for (j = 1; j < 10; j++) {
 							if (miniGrid[i] & (1<<j)) {
-								SET_AND_RENDER_NUM_GRID_MAIN_MINI(gridNums_blue_mini, int(j), i);
+								setAndRenderNumGridMainMini(gridNums_blue_mini, int(j), i);
 							}
 						}
 					}

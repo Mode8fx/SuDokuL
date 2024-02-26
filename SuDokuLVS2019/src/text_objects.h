@@ -17,6 +17,8 @@
 #define CONTROLS_STEP 1.6
 #endif
 
+#define CONTROLS_SPACER (FONT_SIZE * 0.75)
+
 struct TextRect {
     Sint16 x;
     Sint16 y;
@@ -257,9 +259,9 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
 #if !defined(ANDROID)
-#define TEXT_INTEGER_SCALE_Y                 (text_menuChoice3)
+#define TEXT_INTEGER_SCALE_Y              (text_menuChoice3)
 #else
-#define TEXT_INTEGER_SCALE_Y                 (text_menuChoice1)
+#define TEXT_INTEGER_SCALE_Y              (text_menuChoice1)
 #endif
 #define TEXT_APPLY_Y                      (text_menuChoice4)
 #define TEXT_SCORES_Y                     (text_menuChoice5)
@@ -295,9 +297,7 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 
 extern void initStartingTextVariables();
 extern void initTextObjectVals(TextObject *);
-//extern void CHAR_AT_INDEX(index);
-//extern void CHAR_AT_INDEX_LARGE(index);
-//extern void ADJUST_CHAR_OUTLINE_OFFSET(arr, c, x, y);
+extern void adjustCharOutlineOffset(TextCharObject *, Uint8, float, float);
 extern void renderTextChar(TextCharObject *);
 extern void renderText(TextObject *);
 extern void renderTextLarge(TextObject *);
@@ -320,20 +320,19 @@ extern void setFontOutline(TTF_Font *, TextCharObject *);
 //extern void SET_AND_RENDER_TIMER(pos_x_left, pos_y);
 //extern void RENDER_NUM_EMPTY(pos_x_left, pos_y);
 extern void setAndRenderColon(Sint16, Sint16);
-//extern void SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index);
-//extern void SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index);
-//extern void SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num);
-//extern void SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num);
+extern void setAndRenderNumGridMainNormal(TextCharObject *, Uint8, Sint8);
+extern void setAndRenderNumGridMainMini(TextCharObject *, Uint8, Sint8);
+extern void setAndRenderNumGridSubNormal(TextCharObject *, Uint8);
+extern void setAndRenderNumGridSubMini(TextCharObject *, Uint8);
 extern void menuMoveTextRight(TextObject *, double);
 extern void menuMoveTextLeft(TextObject *, double);
 extern void menuMoveTextUp(TextObject *, double);
 extern void menuMoveTextDown(TextObject *, double);
-//extern void DESTROY_TEXT_OBJECT_TEXTURE(textObj);
+extern void destroyTextObjectTexture(TextCharObject *);
 extern void renderTestText();
-//extern void CONTROLS_SPACER;
 extern void setControlsText();
 extern void setSelectBtnText();
-//extern void RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2);
+extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
 extern void renderControlsTextPage3();
@@ -351,18 +350,6 @@ extern void controlsSetConfirmBackPos();
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]
 
 #define CHAR_AT_INDEX_LARGE(index) textChars_large[tempCharArray[index]]
-
-#define ADJUST_CHAR_OUTLINE_OFFSET(arr, c, x, y)                                                    \
-    if (x > 0) {                                                                                    \
-        arr[c].outlineOffset_x += max((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);  \
-    } else if (x < 0) {                                                                             \
-        arr[c].outlineOffset_x += min((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1); \
-    }                                                                                               \
-    if (y > 0) {                                                                                    \
-        arr[c].outlineOffset_y += max((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);  \
-    } else if (y < 0) {                                                                             \
-        arr[c].outlineOffset_y += min((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1); \
-    }
 
 #define SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y) \
     initTextObjectVals(&textObj);                        \
@@ -486,43 +473,6 @@ extern void controlsSetConfirmBackPos();
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0); \
     j = int(numEmpty) % 10;                             \
     SET_AND_RENDER_NUM_HELPER(j, pos_x_left, pos_y, 0);
-
-#define SET_AND_RENDER_NUM_GRID_MAIN_NORMAL(textNumsObj, num, index)                                                                                                              \
-    k = index / 9;                                                                                                                                                                \
-    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
-    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);         \
-    renderTextChar(&textNumsObj[num]);
-
-#define SET_AND_RENDER_NUM_GRID_MAIN_MINI(textNumsObj, num, index)                                                                                             \
-    k = index / 9;                                                                                                                                             \
-    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x); \
-    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);             \
-    renderTextChar(&textNumsObj[num]);
-
-#define SET_AND_RENDER_NUM_GRID_SUB_NORMAL(textNumsObj, num)                                                                                                                                                                                                 \
-    k = (num - 1) / 3;                                                                                                                                                                                                                                       \
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x); \
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);                     \
-    renderTextChar(&textNumsObj[num]);
-
-#define SET_AND_RENDER_NUM_GRID_SUB_MINI(textNumsObj, num)                                                                                                                                 \
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_x); \
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_y);       \
-    renderTextChar(&textNumsObj[num]);
-
-#define DESTROY_TEXT_OBJECT_TEXTURE(textObj) \
-    SDL_DestroyTexture(textObj.texture);     \
-    SDL_DestroyTexture(textObj.outline_texture);
-
-#define CONTROLS_SPACER (FONT_SIZE * 0.75)
-
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
-#define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)
-#else
-#define RENDER_DIVIDER_BETWEEN_Y(textObj1, textObj2)                             \
-    divider.y = (textObj1.rect.y + textObj2.rect.y + FONT_SIZE - divider.h) / 2; \
-    SDL_RenderFillRect(renderer, &divider);
-#endif
 
 constexpr auto CREDITS_STEP = 1.6;
 

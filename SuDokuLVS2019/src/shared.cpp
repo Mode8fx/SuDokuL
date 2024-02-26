@@ -258,11 +258,11 @@ void sdlDestroyAll() {
 	SDL_DestroyTexture(miniGrid_top_right.texture);
 	/* Text Objects */
 	for (i = 32; i < LEN(textChars); i++) {
-		DESTROY_TEXT_OBJECT_TEXTURE(textChars[i]);
+		destroyTextObjectTexture(&textChars[i]);
 	}
 	for (i = 0; i < 10; i++) {
-		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_black[i]);
-		DESTROY_TEXT_OBJECT_TEXTURE(gridNums_blue[i]);
+		destroyTextObjectTexture(&gridNums_black[i]);
+		destroyTextObjectTexture(&gridNums_blue[i]);
 	}
 	/* Fonts */
 	TTF_CloseFont(pixelFont);

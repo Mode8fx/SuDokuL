@@ -29,6 +29,19 @@ void initTextObjectVals(TextObject *textObj) {
 	textObj->rect.h = 0;
 }
 
+void adjustCharOutlineOffset(TextCharObject *arr, Uint8 c, float x, float y) {
+    if (x > 0) {
+        arr[c].outlineOffset_x += max((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);
+    } else if (x < 0) {
+        arr[c].outlineOffset_x += min((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1);
+    }
+    if (y > 0) {
+        arr[c].outlineOffset_y += max((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);
+    } else if (y < 0) {
+        arr[c].outlineOffset_y += min((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1);
+    }
+}
+
 void renderTextChar(TextCharObject *textObj) {
 	SDL_RenderCopy(renderer, textObj->outline_texture, NULL, &textObj->outline_rect);
 	SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
@@ -90,6 +103,33 @@ void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
 	renderText(&text_colon);
 }
 
+void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
+	k = index / 9;
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
+	renderTextChar(&textNumsObj[num]);
+}
+
+void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
+    k = index / 9;
+    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
+    renderTextChar(&textNumsObj[num]);
+}
+
+void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
+    k = (num - 1) / 3;
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
+    renderTextChar(&textNumsObj[num]);
+}
+
+void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_y);
+    renderTextChar(&textNumsObj[num]);
+}
+
 void menuMoveTextRight(TextObject *textObj, double timer) {
 	textObj->rect.x = (Uint16)(textObj->endPos_x - MOVE_FAST_THEN_DECELERATE(textObj->endPos_x - textObj->startPos_x, 1, timer));
 }
@@ -104,6 +144,11 @@ void menuMoveTextUp(TextObject *textObj, double timer) {
 
 void menuMoveTextDown(TextObject *textObj, double timer) {
 	textObj->rect.y = (Uint16)(textObj->startPos_y - MOVE_FAST_THEN_DECELERATE(textObj->startPos_y - textObj->endPos_y, 1, timer));
+}
+
+void destroyTextObjectTexture(TextCharObject *textObj) {
+	SDL_DestroyTexture(textObj->texture);
+	SDL_DestroyTexture(textObj->outline_texture);
 }
 
 void renderTestText() {
@@ -349,26 +394,33 @@ void setSelectBtnText() {
 #endif
 }
 
+void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2) {
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP))
+    divider.y = (textObj1->rect.y + textObj2->rect.y + FONT_SIZE - divider.h) / 2;
+    SDL_RenderFillRect(renderer, &divider);
+#endif
+}
+
 void renderControlsTextPage1() {
 	renderTextLarge(&text_Controls_1);
 	renderText(&text_Controls_2a);
 	renderText(&text_Controls_2b);
 	renderText(&text_Controls_2c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_2c, text_Controls_3c);
+    renderDividerBetweenY(&text_Controls_2c, &text_Controls_3c);
 	renderText(&text_Controls_3a);
 	renderText(&text_Controls_3b);
 	renderText(&text_Controls_3c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_3c, text_Controls_4c);
+    renderDividerBetweenY(&text_Controls_3c, &text_Controls_4c);
 	renderText(&text_Controls_4a);
 	renderText(&text_Controls_4b);
 	renderText(&text_Controls_4c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_4c, text_Controls_5b);
+    renderDividerBetweenY(&text_Controls_4c, &text_Controls_5b);
 	renderText(&text_Controls_5a);
 	renderText(&text_Controls_5b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_5b, text_Controls_6b);
+    renderDividerBetweenY(&text_Controls_5b, &text_Controls_6b);
 	renderText(&text_Controls_6a);
 	renderText(&text_Controls_6b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_6b, text_Controls_7a);
+    renderDividerBetweenY(&text_Controls_6b, &text_Controls_7a);
 	renderText(&text_Controls_7a);
 	renderText(&text_Controls_7b);
 	renderText(&text_Controls_7c);
@@ -379,13 +431,13 @@ void renderControlsTextPage2() {
 	renderTextLarge(&text_Controls_8);
 	renderText(&text_Controls_9a);
 	renderText(&text_Controls_9b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_9a, text_Controls_10a);
+    renderDividerBetweenY(&text_Controls_9a, &text_Controls_10a);
 	renderText(&text_Controls_10a);
 	renderText(&text_Controls_10b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_10a, text_Controls_11a);
+    renderDividerBetweenY(&text_Controls_10a, &text_Controls_11a);
 	renderText(&text_Controls_11a);
 	renderText(&text_Controls_11b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_11a, text_Controls_12a);
+    renderDividerBetweenY(&text_Controls_11a, &text_Controls_12a);
 	renderText(&text_Controls_12a);
 	renderText(&text_Controls_12b);
 	renderText(&text_Controls_12c);
@@ -397,16 +449,16 @@ void renderControlsTextPage3() {
 	renderTextLarge(&text_Controls_c_1);
 	renderText(&text_Controls_c_2a);
 	renderText(&text_Controls_2c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_2c, text_Controls_3c);
+    renderDividerBetweenY(&text_Controls_2c, &text_Controls_3c);
 	renderText(&text_Controls_c_3a);
 	renderText(&text_Controls_3c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_3c, text_Controls_4c);
+    renderDividerBetweenY(&text_Controls_3c, &text_Controls_4c);
 	renderText(&text_Controls_c_4a);
 	renderText(&text_Controls_4c);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_4c, text_Controls_5b);
+    renderDividerBetweenY(&text_Controls_4c, &text_Controls_5b);
 	renderText(&text_Controls_c_5a);
 	renderText(&text_Controls_5b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_5b, text_Controls_6b);
+    renderDividerBetweenY(&text_Controls_5b, &text_Controls_6b);
 	renderText(&text_Controls_c_6a);
 	renderText(&text_Controls_6b);
 	renderText(&text_Controls_c_P1);
@@ -416,10 +468,10 @@ void renderControlsTextPage4() {
 	renderTextLarge(&text_Controls_c_8);
 	renderText(&text_Controls_c_9a);
 	renderText(&text_Controls_9b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_c_9a, text_Controls_c_10a);
+    renderDividerBetweenY(&text_Controls_c_9a, &text_Controls_c_10a);
     renderText(&text_Controls_c_10a);
 	renderText(&text_Controls_10b);
-    RENDER_DIVIDER_BETWEEN_Y(text_Controls_10a, text_Controls_c_12a);
+    renderDividerBetweenY(&text_Controls_10a, &text_Controls_c_12a);
 	renderText(&text_Controls_c_12a);
 	renderText(&text_Controls_c_12b);
 	renderText(&text_Controls_c_12c);
@@ -494,22 +546,22 @@ void renderCreditsTextPage2() {
     renderTextLarge(&text_Credits_4);
     renderText(&text_Credits_5a);
     renderText(&text_Credits_5b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_5a, text_Credits_6a);
+    // renderDividerBetweenY(text_Credits_5a, text_Credits_6a);
     renderText(&text_Credits_6a);
     renderText(&text_Credits_6b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_6a, text_Credits_7a);
+    // renderDividerBetweenY(text_Credits_6a, text_Credits_7a);
     renderText(&text_Credits_7a);
     renderText(&text_Credits_7b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_7a, text_Credits_8a);
+    // renderDividerBetweenY(text_Credits_7a, text_Credits_8a);
     renderText(&text_Credits_8a);
     renderText(&text_Credits_8b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_8a, text_Credits_9a);
+    // renderDividerBetweenY(text_Credits_8a, text_Credits_9a);
     renderText(&text_Credits_9a);
     renderText(&text_Credits_9b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_9a, text_Credits_10a);
+    // renderDividerBetweenY(text_Credits_9a, text_Credits_10a);
     renderText(&text_Credits_10a);
     renderText(&text_Credits_10b);
-    // RENDER_DIVIDER_BETWEEN_Y(text_Credits_10a, text_Credits_11a);
+    // renderDividerBetweenY(text_Credits_10a, text_Credits_11a);
     renderText(&text_Credits_11a);
     renderText(&text_Credits_11b);
     renderText(&text_Credits_12);
