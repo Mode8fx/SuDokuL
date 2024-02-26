@@ -191,6 +191,8 @@ extern TextObject text_Credits_25;
 extern TextObject text_Credits_26;
 extern TextObject text_Credits_27;
 extern TextObject text_Credits_28;
+extern TextObject text_Credits_28_1;
+extern TextObject text_Credits_28_2;
 extern TextObject text_Credits_29;
 extern TextObject text_Credits_30;
 extern TextObject text_Credits_P6;
@@ -406,11 +408,14 @@ extern void controlsSetConfirmBackPos();
 constexpr auto CREDITS_STEP = 1.6;
 
 #if defined(WII_U) || defined(SWITCH) || defined(ANDROID)
-#define CHEAT_TEXT "press X or Y 8 times"
+#define CHEAT1_TEXT "press X or Y 8 times"
+#define CHEAT2_TEXT "Or press (B then Select) 4 times"
 #elif defined(VITA) || defined(PSP)
-#define CHEAT_TEXT "press Square or Triangle 8 times"
+#define CHEAT1_TEXT "press Square or Triangle 8 times"
+#define CHEAT2_TEXT "Or press (Circle then Select) 4 times"
 #else
-#define CHEAT_TEXT "press the Period key 8 times"
+#define CHEAT1_TEXT "press the Period key 8 times"
+#define CHEAT2_TEXT "Or press (Backspace then Period) x4"
 #endif
 
 #endif

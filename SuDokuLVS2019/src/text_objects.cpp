@@ -594,22 +594,24 @@ void setCreditsText() {
     SET_TEXT_WITH_OUTLINE("opengameart.org",            text_Credits_23,  OBJ_TO_MID_SCREEN_X(text_Credits_23),              (FONT_SIZE * (CREDITS_STEP * 6.25))          );
 	SET_TEXT_WITH_OUTLINE("(5/7)",                      text_Credits_P5,  (gameWidth - (text_Credits_P5.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("THANKS FOR PLAYING!",  text_Credits_24,  OBJ_TO_MID_SCREEN_X(text_Credits_24),              (FONT_SIZE * (CREDITS_STEP *    1))          );
-    SET_TEXT_WITH_OUTLINE("Here's a cheat...",          text_Credits_25,  OBJ_TO_MID_SCREEN_X(text_Credits_25),              (FONT_SIZE * (CREDITS_STEP *  3.5))          );
-    SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (FONT_SIZE * (CREDITS_STEP * 4.75))          );
-    SET_TEXT_WITH_OUTLINE(CHEAT_TEXT,                   text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (FONT_SIZE * (CREDITS_STEP *    6))          );
-    SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28),          (FONT_SIZE * (CREDITS_STEP * 7.25))          );
-    SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (FONT_SIZE * (CREDITS_STEP *  8.5))          );
-    SET_TEXT_WITH_OUTLINE("- Mode8fx",                  text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP *   11))          );
+    SET_TEXT_WITH_OUTLINE("Here are a couple cheats...", text_Credits_25, OBJ_TO_MID_SCREEN_X(text_Credits_25),              (FONT_SIZE * (CREDITS_STEP *  3.3))          );
+    SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (FONT_SIZE * (CREDITS_STEP * 4.45))          );
+    SET_TEXT_WITH_OUTLINE(CHEAT1_TEXT,                  text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (FONT_SIZE * (CREDITS_STEP *  5.6))          );
+    SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28),          (FONT_SIZE * (CREDITS_STEP * 6.75))          );
+	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                  text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),           (FONT_SIZE * (CREDITS_STEP * 7.9))           );
+	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),        (FONT_SIZE * (CREDITS_STEP * 9.05))          );
+    SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (FONT_SIZE * (CREDITS_STEP * 10.2))          );
+    SET_TEXT_WITH_OUTLINE("- Mode8fx",                  text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP * 12.5))          );
 	SET_TEXT_WITH_OUTLINE("(6/7)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",           text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),              (FONT_SIZE * (CREDITS_STEP *     1))         );
-    SET_TEXT_WITH_OUTLINE("SuDokuL is available on:",   text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),              (FONT_SIZE * (CREDITS_STEP *   3.5))         );
-    SET_TEXT_WITH_OUTLINE("PC",                         text_Credits_33,  OBJ_TO_MID_SCREEN_X(text_Credits_33),              (FONT_SIZE * (CREDITS_STEP *  4.75))         );
-    SET_TEXT_WITH_OUTLINE("Android",                    text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),              (FONT_SIZE * (CREDITS_STEP *     6))         );
-    SET_TEXT_WITH_OUTLINE("Switch",                     text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),              (FONT_SIZE * (CREDITS_STEP *  7.25))         );
-    SET_TEXT_WITH_OUTLINE("Wii U",                      text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *   8.5))         );
-    SET_TEXT_WITH_OUTLINE("Vita",                       text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *  9.75))         );
-    SET_TEXT_WITH_OUTLINE("PSP",                        text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *    11))         );
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),        (FONT_SIZE * (CREDITS_STEP * 12.75))        );
+    SET_TEXT_WITH_OUTLINE("SuDokuL is available on:",   text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),              (FONT_SIZE * (CREDITS_STEP *   3.3))         );
+    SET_TEXT_WITH_OUTLINE("PC",                         text_Credits_33,  OBJ_TO_MID_SCREEN_X(text_Credits_33),              (FONT_SIZE * (CREDITS_STEP *  4.45))         );
+    SET_TEXT_WITH_OUTLINE("Android",                    text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),              (FONT_SIZE * (CREDITS_STEP *   5.6))         );
+    SET_TEXT_WITH_OUTLINE("Switch",                     text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),              (FONT_SIZE * (CREDITS_STEP *  6.75))         );
+    SET_TEXT_WITH_OUTLINE("Wii U",                      text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *   7.9))         );
+    SET_TEXT_WITH_OUTLINE("Vita",                       text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *  9.05))         );
+    SET_TEXT_WITH_OUTLINE("PSP",                        text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *  10.2))         );
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),        (FONT_SIZE * (CREDITS_STEP * 12.5))        );
 	SET_TEXT_WITH_OUTLINE("(7/7)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
 }
 
@@ -675,6 +677,8 @@ void renderCreditsTextPage6() {
     renderText(&text_Credits_26);
     renderText(&text_Credits_27);
     renderText(&text_Credits_28);
+	renderText(&text_Credits_28_1);
+	renderText(&text_Credits_28_2);
     renderText(&text_Credits_29);
     renderText(&text_Credits_30);
     renderText(&text_Credits_P6);

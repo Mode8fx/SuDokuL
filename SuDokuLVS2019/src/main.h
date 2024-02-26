@@ -88,7 +88,9 @@ Sint32 mouseInput_x_last;
 Sint32 mouseInput_y;
 Sint32 mouseInput_y_last;
 Uint8 heldButtons;
-Sint8 cheatCounter;
+Sint8 cheat1Counter;
+Sint8 cheat2Counter;
+Sint8 songChangeCounter;
 
 /* Menu Cursors */
 Sint8 menuCursorIndex_main;
@@ -263,6 +265,8 @@ TextObject text_Credits_25;
 TextObject text_Credits_26;
 TextObject text_Credits_27;
 TextObject text_Credits_28;
+TextObject text_Credits_28_1;
+TextObject text_Credits_28_2;
 TextObject text_Credits_29;
 TextObject text_Credits_30;
 TextObject text_Credits_P6;

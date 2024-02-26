@@ -330,11 +330,28 @@ void gameHandleCheatRevealCell() {
     if (keyPressed(INPUT_SWAP) && miniGridState == 0) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (originalGrid[i] == 0) {
-            if (++cheatCounter >= 8) {
+            if (++cheat1Counter >= 8) {
                 Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
                 setGridNum(i, solutionGrid[i]);
-                cheatCounter = 0;
+                cheat1Counter = 0;
             }
+        }
+    }
+}
+
+void gameHandleCheatClearIncorrectCells() {
+    if ((keyPressed(INPUT_BACK) || keyPressed(INPUT_SWAP)) && miniGridState == 0) {
+        if (keyPressed(INPUT_BACK) == (cheat2Counter % 2 == 0)) {
+            if (++cheat2Counter >= 8) {
+                for (i = 0; i < 81; i++) {
+                    if (originalGrid[i] == 0 && grid[i] != solutionGrid[i]) {
+                        grid[i] = 0;
+                    }
+                }
+                Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
+            }
+        } else {
+            cheat2Counter = 0;
         }
     }
 }

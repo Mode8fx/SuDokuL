@@ -41,5 +41,6 @@ extern void setGridCursorBySmallY();
 extern Sint16 xAtMiniGridIndex(Sint8);
 extern Sint16 yAtMiniGridIndex(Sint8);
 extern void gameHandleCheatRevealCell();
+extern void gameHandleCheatClearIncorrectCells();
 extern void drawSidebar();
 #endif

@@ -439,42 +439,42 @@ int main(int argv, char** args) {
 				case SDL_KEYDOWN: // keycodes
 					if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
 						keyInputs |= INPUT_UP;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
 						keyInputs |= INPUT_DOWN;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a) {
 						keyInputs |= INPUT_LEFT;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 						keyInputs |= INPUT_RIGHT;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_RETURN2 || event.key.keysym.sym == SDLK_KP_ENTER) {
 						keyInputs |= INPUT_CONFIRM;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_BACKSPACE) {
 						keyInputs |= INPUT_BACK;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
 						keyInputs |= INPUT_START;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_q) {
 						keyInputs |= INPUT_SELECT;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_PERIOD || event.key.keysym.sym == SDLK_KP_PERIOD) {
@@ -483,62 +483,62 @@ int main(int argv, char** args) {
 					}
 					if (event.key.keysym.sym == SDLK_MINUS) {
 						keyInputs |= INPUT_PREV_TRACK;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_EQUALS) {
 						keyInputs |= INPUT_NEXT_TRACK;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
 						keyInputs |= INPUT_NUM_0;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
 						keyInputs |= INPUT_NUM_1;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_2 || event.key.keysym.sym == SDLK_KP_2) {
 						keyInputs |= INPUT_NUM_2;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_3 || event.key.keysym.sym == SDLK_KP_3) {
 						keyInputs |= INPUT_NUM_3;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_4 || event.key.keysym.sym == SDLK_KP_4) {
 						keyInputs |= INPUT_NUM_4;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_5 || event.key.keysym.sym == SDLK_KP_5) {
 						keyInputs |= INPUT_NUM_5;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_6 || event.key.keysym.sym == SDLK_KP_6) {
 						keyInputs |= INPUT_NUM_6;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_7 || event.key.keysym.sym == SDLK_KP_7) {
 						keyInputs |= INPUT_NUM_7;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_8 || event.key.keysym.sym == SDLK_KP_8) {
 						keyInputs |= INPUT_NUM_8;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_9 || event.key.keysym.sym == SDLK_KP_9) {
 						keyInputs |= INPUT_NUM_9;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.key.keysym.sym == SDLK_f) {
@@ -557,19 +557,19 @@ int main(int argv, char** args) {
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					updateMousePosViewportMouse();
-					//cheatCounter = 0;
+					//cheat1Counter = 0;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
 						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 						updateMousePosViewportMouse();
 						keyInputs |= INPUT_CONFIRM_ALT;
-						//cheatCounter = 0;
+						//cheat1Counter = 0;
 						break;
 					}
 					if (event.button.button == SDL_BUTTON_RIGHT) {
 						keyInputs |= INPUT_BACK;
-						//cheatCounter = 0;
+						//cheat1Counter = 0;
 						break;
 					}
 					break;
@@ -604,7 +604,7 @@ int main(int argv, char** args) {
 						} else {
 							keyInputs |= INPUT_BACK;
 						}
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 #if defined(WII_U) || defined(SWITCH)
@@ -618,17 +618,17 @@ int main(int argv, char** args) {
 						else {
 							keyInputs |= INPUT_CONFIRM;
 						}
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START) {
 						keyInputs |= INPUT_START;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
 						keyInputs |= INPUT_SELECT;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_X || event.cbutton.button == SDL_CONTROLLER_BUTTON_Y) {
@@ -637,12 +637,12 @@ int main(int argv, char** args) {
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER) {
 						keyInputs |= INPUT_PREV_TRACK;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
 						keyInputs |= INPUT_NEXT_TRACK;
-						cheatCounter = 0;
+						cheat1Counter = 0;
 						break;
 					}
 					break;
@@ -670,7 +670,7 @@ int main(int argv, char** args) {
 						mouseInput_y = event.tfinger.y * gameHeight;
 						updateMousePosViewportTouch();
 						keyInputs |= INPUT_CONFIRM_ALT;
-						//cheatCounter = 0;
+						//cheat1Counter = 0;
 					}
 					break;
 				case SDL_FINGERMOTION:
@@ -678,7 +678,7 @@ int main(int argv, char** args) {
 						mouseInput_x = event.tfinger.x * gameWidth;
 						mouseInput_y = event.tfinger.y * gameHeight;
 						updateMousePosViewportTouch();
-						//cheatCounter = 0;
+						//cheat1Counter = 0;
 					}
 					break;
 				case SDL_FINGERUP:
@@ -744,7 +744,7 @@ int main(int argv, char** args) {
 							} else {
 								keyInputs |= INPUT_BACK;
 							}
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 						if (event.jbutton.button == 2) { // X
@@ -753,17 +753,17 @@ int main(int argv, char** args) {
 							} else {
 								keyInputs |= INPUT_CONFIRM;
 							}
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 						if (event.jbutton.button == 11) { // Start
 							keyInputs |= INPUT_START;
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 						if (event.jbutton.button == 10) { // Select
 							keyInputs |= INPUT_SELECT;
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 						if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
@@ -772,12 +772,12 @@ int main(int argv, char** args) {
 						}
 						if (event.jbutton.button == 4) { // L
 							keyInputs |= INPUT_PREV_TRACK;
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 						if (event.jbutton.button == 5) { // R
 							keyInputs |= INPUT_NEXT_TRACK;
-							cheatCounter = 0;
+							cheat1Counter = 0;
 							break;
 						}
 					}
@@ -1091,6 +1091,7 @@ int main(int argv, char** args) {
 				gameHandleMiniGridNavigation();
 				gameHandleNumKeyPresses();
 				gameHandleCheatRevealCell();
+				gameHandleCheatClearIncorrectCells();
 				lastMiniGridState = miniGridState;
 				/* Draw Grid */
 				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);

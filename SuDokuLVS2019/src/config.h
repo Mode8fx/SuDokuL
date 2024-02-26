@@ -22,7 +22,9 @@ extern Sint32 mouseInput_x_last;
 extern Sint32 mouseInput_y;
 extern Sint32 mouseInput_y_last;
 extern Uint8 heldButtons;
-extern Sint8 cheatCounter;
+extern Sint8 cheat1Counter;
+extern Sint8 cheat2Counter;
+extern Sint8 songChangeCounter;
 
 constexpr auto INPUT_UP          = (1 << 0);
 constexpr auto INPUT_DOWN        = (1 << 1);
