@@ -237,6 +237,12 @@
     <ClInclude Include="src\transitions.h" />
     <ClInclude Include="src\window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SuDokuLVS2019.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="logo_icon_pc.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
