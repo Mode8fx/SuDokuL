@@ -261,7 +261,7 @@ Uint8 generateGrid_Backtracking() {
     return 0;
 }
 
-Uint8 digHoles(short minDifficulty, short maxDifficulty) {
+static Uint8 digHoles(short minDifficulty, short maxDifficulty) {
     /* Set Initial Time Values */
     startTime = SDL_GetTicks();
 
