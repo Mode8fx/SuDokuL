@@ -1175,7 +1175,7 @@ int main(int argv, char** args) {
 #elif defined(ANDROID)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
 #else
-				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 3) {
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 3) {
 #endif
 					menuIndex_controls++;
 				} else if (keyPressed(INPUT_LEFT) && menuIndex_controls > 0) {
@@ -1258,11 +1258,7 @@ int main(int argv, char** args) {
 			case 18:
 				/* Key Presses */
 				menuHandleBackButton(2);
-#if !defined(ANDROID)
-				if (keyPressed(INPUT_RIGHT) && menuIndex_credits < 6) {
-#else
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 6) {
-#endif
 					menuIndex_credits++;
 				}
 				else if (keyPressed(INPUT_LEFT) && menuIndex_credits > 0) {
