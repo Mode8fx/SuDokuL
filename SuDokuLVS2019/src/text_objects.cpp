@@ -129,7 +129,23 @@ void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16
 
 void setAndRenderNumResolution(Sint16 width, Sint16 height, Sint16 pos_x_left, Sint16 pos_y) {
 	if (width == 0) {
-		renderText(&text_Native);
+		switch (videoSettings.aspectRatioIndex) {
+			case 1:
+				renderText(&text_Native_4_3);
+				break;
+			case 2:
+				renderText(&text_Native_16_9);
+				break;
+			case 3:
+				renderText(&text_Native_16_10);
+				break;
+			case 4:
+				renderText(&text_Native_1_1);
+				break;
+			default:
+				renderText(&text_Native_Res);
+				break;
+		}
 		return;
 	}
     i = 0;

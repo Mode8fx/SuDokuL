@@ -59,21 +59,24 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_4_3)];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
+			break;
+		case 2:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_16_9)];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_16_9)];
 			break;
-		case 2:
+		case 3:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_16_10)];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_16_10)];
 			break;
-		case 3:
+		case 4:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_1_1[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_1_1)];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_1_1[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_1_1)];
 			break;
 		default:
-			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_4_3)];
-			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_4_3)];
-			break;
+			videoSettings.widthSetting = 0;
+			videoSettings.heightSetting = 0;
 	}
 #else
 	videoSettings.widthSetting = SYSTEM_WIDTH;
@@ -82,11 +85,8 @@ int main(int argv, char** args) {
 #endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
-	if (gameWidth == 0) {
-		gameWidth = SYSTEM_WIDTH;
-	}
-	if (gameHeight == 0) {
-		gameHeight = SYSTEM_HEIGHT;
+	if (gameWidth == 0 || gameHeight == 0) {
+		setNativeResolution();
 	}
 	if (gameWidth < 240) {
 		gameWidth = 240;
@@ -362,7 +362,12 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
-	SET_TEXT_WITH_OUTLINE("Native",           text_Native,           VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native",           text_Native_Res,       VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native 4:3",       text_Native_4_3,       VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native 16:9",      text_Native_16_9,      VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native 16:10",     text_Native_16_10,     VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native 1:1",       text_Native_1_1,       VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
+	SET_TEXT_WITH_OUTLINE("Native",           text_Native_Aspect,    VIDEO_MENU_NUM_POSITION_X,            TEXT_ASPECT_RATIO_Y);
 #if defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Status Bar",       text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
@@ -1328,16 +1333,16 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
-								case 0:
+								case 1:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), -1);
 									break;
-								case 1:
+								case 2:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), -1);
 									break;
-								case 2:
+								case 3:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), -1);
 									break;
-								case 3:
+								case 4:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), -1);
 									break;
 								default:
@@ -1372,16 +1377,16 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
-								case 0:
+								case 1:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), 1);
 									break;
-								case 1:
+								case 2:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), 1);
 									break;
-								case 2:
+								case 3:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), 1);
 									break;
-								case 3:
+								case 4:
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), 1);
 									break;
 								default:
@@ -1422,15 +1427,18 @@ int main(int argv, char** args) {
 				setAndRenderNumResolution(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				switch (videoSettings.aspectRatioIndex) {
 					case 0:
-						setAndRenderNumAspectRatio4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						renderText(&text_Native_Aspect);
 						break;
 					case 1:
-						setAndRenderNumAspectRatio16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 2:
-						setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 3:
+						setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						break;
+					case 4:
 						setAndRenderNumAspectRatio1_1(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					default:

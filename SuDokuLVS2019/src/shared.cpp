@@ -168,6 +168,55 @@ void saveCurrentSettings() {
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 }
 
+void setNativeResolution() {
+	switch (videoSettings.aspectRatioIndex) {
+		case 1:
+			int_i = SYSTEM_HEIGHT * 4 / 3;
+			if (int_i <= SYSTEM_WIDTH) {
+				gameWidth = int_i;
+				gameHeight = SYSTEM_HEIGHT;
+			} else {
+				gameWidth = SYSTEM_WIDTH;
+				gameHeight = SYSTEM_WIDTH * 3 / 4;
+			}
+			break;
+		case 2:
+			int_i = SYSTEM_HEIGHT * 16 / 9;
+			if (int_i <= SYSTEM_WIDTH) {
+				gameWidth = int_i;
+				gameHeight = SYSTEM_HEIGHT;
+			} else {
+				gameWidth = SYSTEM_WIDTH;
+				gameHeight = SYSTEM_WIDTH * 9 / 16;
+			}
+			break;
+		case 3:
+			int_i = SYSTEM_HEIGHT * 16 / 10;
+			if (int_i <= SYSTEM_WIDTH) {
+				gameWidth = int_i;
+				gameHeight = SYSTEM_HEIGHT;
+			} else {
+				gameWidth = SYSTEM_WIDTH;
+				gameHeight = SYSTEM_WIDTH * 10 / 16;
+			}
+			break;
+		case 4:
+			if (SYSTEM_HEIGHT <= SYSTEM_WIDTH) {
+				gameWidth = SYSTEM_HEIGHT;
+				gameHeight = SYSTEM_HEIGHT;
+			}
+			else {
+				gameWidth = SYSTEM_WIDTH;
+				gameHeight = SYSTEM_WIDTH;
+			}
+			break;
+		default:
+			gameWidth = SYSTEM_WIDTH;
+			gameHeight = SYSTEM_HEIGHT;
+			break;
+	}
+}
+
 void setResolutionByOptions(const Uint16 *resolutionOptions_width, const Uint16 *resolutionOptions_height, Uint8 numOptions, Sint8 increment) {
 	videoSettings.resolutionIndex += increment;
 	if (videoSettings.resolutionIndex < 0) {
@@ -183,29 +232,31 @@ void setResolutionByOptions(const Uint16 *resolutionOptions_width, const Uint16 
 void setAspectRatioByOptions(Sint8 increment) {
 	videoSettings.aspectRatioIndex += increment;
 	if (videoSettings.aspectRatioIndex < 0) {
-		videoSettings.aspectRatioIndex = 3;
-	} else if (videoSettings.aspectRatioIndex > 3) {
+		videoSettings.aspectRatioIndex = 4;
+	} else if (videoSettings.aspectRatioIndex > 4) {
 		videoSettings.aspectRatioIndex = 0;
 	}
 	videoSettings.resolutionIndex = 0;
 	switch (videoSettings.aspectRatioIndex) {
-		case 0:
+		case 1:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
 			break;
-		case 1:
+		case 2:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
 			break;
-		case 2:
+		case 3:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
 			break;
-		case 3:
+		case 4:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_1_1[videoSettings.resolutionIndex];
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_1_1[videoSettings.resolutionIndex];
 			break;
 		default:
+			videoSettings.widthSetting = 0;
+			videoSettings.heightSetting = 0;
 			break;
 	}
 }

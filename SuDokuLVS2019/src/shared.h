@@ -5,8 +5,8 @@
 #define SHARED_H
 
 struct ControlSettings {
-	Sint8 swapConfirmAndBack;
-	Sint8 enableTouchscreen;
+	bool swapConfirmAndBack;
+	bool enableTouchscreen;
 };
 
 struct VideoSettings {
@@ -46,6 +46,7 @@ extern Uint16 gameWidth;
 extern Uint16 gameHeight;
 extern bool compactDisplay;
 extern Uint16 defaultBGScale;
+extern SDL_DisplayMode DM;
 extern double gameWidthMult;
 extern double gameHeightMult;
 
@@ -123,33 +124,33 @@ extern Timer timer_paused;
 #if defined(WII_U)
 #define DEFAULT_WIDTH         1280
 #define DEFAULT_HEIGHT        720
-#define DEFAULT_RI            6
-#define DEFAULT_ARI           1
+#define DEFAULT_RI            0
+#define DEFAULT_ARI           0
 #elif defined(VITA)
 #define DEFAULT_WIDTH         960
 #define DEFAULT_HEIGHT        544
-#define DEFAULT_RI            4
-#define DEFAULT_ARI           1
+#define DEFAULT_RI            0
+#define DEFAULT_ARI           0
 #elif defined(SWITCH)
 #define DEFAULT_WIDTH         1920
 #define DEFAULT_HEIGHT        1080
-#define DEFAULT_RI            9
-#define DEFAULT_ARI           1
+#define DEFAULT_RI            0
+#define DEFAULT_ARI           0
 #elif defined(PSP)
 #define DEFAULT_WIDTH         480
 #define DEFAULT_HEIGHT        272
-#define DEFAULT_RI            2
-#define DEFAULT_ARI           1
+#define DEFAULT_RI            0
+#define DEFAULT_ARI           0
 #elif defined(ANDROID)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
-#define DEFAULT_RI            1
+#define DEFAULT_RI            0
 #define DEFAULT_ARI           0
 #else
 #define DEFAULT_WIDTH         640
 #define DEFAULT_HEIGHT        480
 #define DEFAULT_RI            3
-#define DEFAULT_ARI           0
+#define DEFAULT_ARI           1
 #endif
 #define DEFAULT_BG_SCALE      (defaultBGScale)
 
@@ -191,6 +192,7 @@ extern void initMenuOptionPositions(TextObject *);
 extern void loadSettingsFile();
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void saveCurrentSettings();
+extern void setNativeResolution();
 extern void setResolutionByOptions(const Uint16 *, const Uint16 *, Uint8, Sint8);
 extern void setAspectRatioByOptions(Sint8);
 extern Uint16 menuCursorXOffset();
