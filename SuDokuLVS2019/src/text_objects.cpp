@@ -14,7 +14,6 @@ void initStartingTextVariables() {
     text_menuChoice2 = (TEXT_PRESS_START_Y - (FONT_SIZE * 2));
     text_menuChoice4 = (TEXT_PRESS_START_Y + (FONT_SIZE * 2));
     text_menuChoice5 = (TEXT_PRESS_START_Y + (FONT_SIZE * 4));
-    text_videoWarning_Y = (TEXT_PRESS_START_Y + (FONT_SIZE * 5));
     text_midScreen_Y = ((gameHeight - FONT_SIZE) / 2);
     text_quitToMenu_Y = (TEXT_PAUSED_Y + (FONT_SIZE * 2.5));
 	if (!compactDisplay) {

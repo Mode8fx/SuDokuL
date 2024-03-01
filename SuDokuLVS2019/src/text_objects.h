@@ -92,7 +92,6 @@ extern TextObject text_B_Confirm;
 extern TextObject text_A_Back;
 extern TextObject text_Enabled;
 extern TextObject text_Disabled;
-extern TextObject text_Video_Warning;
 extern TextObject text_Resolution;
 extern TextObject text_x;
 extern TextObject text_Aspect_Ratio;
@@ -231,7 +230,6 @@ extern Uint16 text_menuChoice1;
 extern Uint16 text_menuChoice2;
 extern Uint16 text_menuChoice4;
 extern Uint16 text_menuChoice5;
-extern Uint16 text_videoWarning_Y;
 extern Uint16 text_midScreen_Y;
 extern Uint16 text_quitToMenu_Y;
 extern Uint16 controlsMenuCursorPosition_X;
@@ -264,7 +262,6 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_BACKGROUND_Y                 (text_menuChoice4)
 #define TEXT_CONTROLLER_INPUT_Y           (text_menuChoice1)
 #define TEXT_TOUCH_SCREEN_INPUT_Y         (text_menuChoice3)
-#define TEXT_VIDEO_WARNING_Y              (text_videoWarning_Y)
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
 #if !defined(ANDROID)

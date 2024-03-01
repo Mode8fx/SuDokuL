@@ -356,25 +356,6 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 	/* Video Menu */
-#if defined(WII_U)
-	string warningString;
-	warningString = "( Recommended: 1280x720 )";
-	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#elif defined(VITA)
-	string warningString;
-	warningString = "( Recommended: 960x544 )";
-	SET_TEXT_WITH_OUTLINE(warningString,      text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#elif defined(SWITCH)
-	string warningString;
-	warningString = "( Recommended: 1920x1080 )";
-	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#elif defined(PSP)
-	string warningString;
-	warningString = "( Recommended: 480x272 )";
-	SET_TEXT_WITH_OUTLINE(warningString, text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#else
-	SET_TEXT_WITH_OUTLINE(" ",                text_Video_Warning, OBJ_TO_MID_SCREEN_X(text_Video_Warning), TEXT_VIDEO_WARNING_Y);
-#endif
 #if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("x",                text_x,                0,                                    TEXT_RESOLUTION_Y);
@@ -1460,7 +1441,6 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 #if !defined(ANDROID)
-				renderText(&text_Video_Warning);
 				renderText(&text_Resolution);
 				renderText(&text_Aspect_Ratio);
 				renderText(&text_Apply);
