@@ -123,6 +123,10 @@ void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16
 }
 
 void setAndRenderNumResolution(Sint16 width, Sint16 height, Sint16 pos_x_left, Sint16 pos_y) {
+	if (width == 0) {
+		renderText(&text_Native);
+		return;
+	}
     i = 0;
     if (width > 999) {
         setAndRenderNumHelper(width / 1000, pos_x_left, pos_y, 0);

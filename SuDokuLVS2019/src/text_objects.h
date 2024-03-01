@@ -97,6 +97,7 @@ extern TextObject text_Resolution;
 extern TextObject text_x;
 extern TextObject text_Aspect_Ratio;
 extern TextObject text_colon;
+extern TextObject text_Native;
 extern TextObject text_Integer_Scale;
 extern TextObject text_On;
 extern TextObject text_Off;

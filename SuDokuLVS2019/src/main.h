@@ -171,6 +171,7 @@ TextObject text_Resolution;
 TextObject text_x;
 TextObject text_Aspect_Ratio;
 TextObject text_colon;
+TextObject text_Native;
 TextObject text_Integer_Scale;
 TextObject text_On;
 TextObject text_Off;

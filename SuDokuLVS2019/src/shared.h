@@ -79,14 +79,14 @@ extern VideoSettings videoSettings;
 extern SoundSettings soundSettings;
 
 /* Window Width and Height */
-const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[14] = { 320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[14] = { 240,  272,  480,  544,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[12] = { 426,  480,  853,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3620, 3840 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[12] = { 240,  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2036, 2160 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[10] = { 435,  720, 1152, 1280, 1440, 1600, 1680, 1920, 2560, 3840 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[10] = { 272,  480,  720,  800,  900, 1024, 1050, 1200, 1600, 2400 };
-const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[6] = { 480,  960, 1280, 2560, 3440, 5120 };
-const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[6] = { 205,  410,  548, 1080, 1440, 2160 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[15] = { 0, 320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_4_3[15] = { 0, 240,  272,  480,  544,  576,  600,  720,  768,  864,  960, 1080, 1200, 1440, 2160 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_9[13] = { 0, 426,  480,  853,  960, 1176, 1280, 1360, 1600, 1920, 2560, 3620, 3840 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_9[13] = { 0, 240,  272,  480,  544,  664,  720,  768,  900, 1080, 1440, 2036, 2160 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_16_10[11] = { 0, 435,  720, 1152, 1280, 1440, 1600, 1680, 1920, 2560, 3840 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_16_10[11] = { 0, 272,  480,  720,  800,  900, 1024, 1050, 1200, 1600, 2400 };
+const Uint16 RESOLUTION_OPTIONS_WIDTH_21_9[7] = { 0, 480,  960, 1280, 2560, 3440, 5120 };
+const Uint16 RESOLUTION_OPTIONS_HEIGHT_21_9[7] = { 0, 205,  410,  548, 1080, 1440, 2160 };
 extern SDL_Rect centerViewport;
 
 /* Sound */
@@ -121,32 +121,32 @@ extern Timer timer_paused;
 #if defined(WII_U)
 #define DEFAULT_WIDTH         1280
 #define DEFAULT_HEIGHT        720
-#define DEFAULT_RI            5
+#define DEFAULT_RI            6
 #define DEFAULT_ARI           1
 #elif defined(VITA)
 #define DEFAULT_WIDTH         960
 #define DEFAULT_HEIGHT        544
-#define DEFAULT_RI            3
+#define DEFAULT_RI            4
 #define DEFAULT_ARI           1
 #elif defined(SWITCH)
 #define DEFAULT_WIDTH         1920
 #define DEFAULT_HEIGHT        1080
-#define DEFAULT_RI            8
+#define DEFAULT_RI            9
 #define DEFAULT_ARI           1
 #elif defined(PSP)
 #define DEFAULT_WIDTH         480
 #define DEFAULT_HEIGHT        272
-#define DEFAULT_RI            1
+#define DEFAULT_RI            2
 #define DEFAULT_ARI           1
 #elif defined(ANDROID)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
-#define DEFAULT_RI            0
+#define DEFAULT_RI            1
 #define DEFAULT_ARI           0
 #else
 #define DEFAULT_WIDTH         640
 #define DEFAULT_HEIGHT        480
-#define DEFAULT_RI            2
+#define DEFAULT_RI            3
 #define DEFAULT_ARI           0
 #endif
 #define DEFAULT_BG_SCALE      (defaultBGScale)

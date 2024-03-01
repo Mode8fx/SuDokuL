@@ -82,6 +82,12 @@ int main(int argv, char** args) {
 #endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
+	if (gameWidth == 0) {
+		gameWidth = SYSTEM_WIDTH;
+	}
+	if (gameHeight == 0) {
+		gameHeight = SYSTEM_HEIGHT;
+	}
 
 	initStartingWidthHeightMults();
 	initStartingSharedVariables();
@@ -357,6 +363,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE(":",                text_colon,            0,                                    TEXT_ASPECT_RATIO_Y);
+	SET_TEXT_WITH_OUTLINE("Native",           text_Native,           VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
 #if defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Status Bar",       text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
