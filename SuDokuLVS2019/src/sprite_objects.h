@@ -42,13 +42,13 @@ extern SpriteObjectWithPos *currMiniGrid;
     spriteObj.rect.x = pos_x;                                                                              \
     spriteObj.rect.y = pos_y;
 
-#define SET_SPRITE_SCALE(spriteObj, scale)                                                      \
-    spriteObj.rect.w = (int)(spriteObj.width * min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT) * scale); \
-    spriteObj.rect.h = (int)(spriteObj.height * min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT) * scale);
+#define SET_SPRITE_SCALE(spriteObj, scale)                                \
+    spriteObj.rect.w = (int)(spriteObj.width * GAME_HEIGHT_MULT * scale); \
+    spriteObj.rect.h = (int)(spriteObj.height * GAME_HEIGHT_MULT * scale);
 
-#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                                            \
-    spriteObj.rect.w = (int)(spriteObj.width * ((int)ceil(min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT))) * scale); \
-    spriteObj.rect.h = (int)(spriteObj.height * ((int)ceil(min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT))) * scale);
+#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                      \
+    spriteObj.rect.w = (int)(spriteObj.width * ((int)ceil(GAME_HEIGHT_MULT)) * scale); \
+    spriteObj.rect.h = (int)(spriteObj.height * ((int)ceil(GAME_HEIGHT_MULT)) * scale);
 
 #define SET_SPRITE_SCALE_TILE()                  \
     tile.rect.w = tile.width * bgSettings.scale; \

@@ -28,6 +28,7 @@ SDL_GameController *controller = nullptr;
 /* Window Width and Height */
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
+bool compactDisplay = false;
 Uint16 defaultBGScale;
 double gameWidthMult;
 double gameHeightMult;

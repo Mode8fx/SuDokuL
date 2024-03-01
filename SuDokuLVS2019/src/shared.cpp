@@ -63,9 +63,13 @@ void initStartingSharedVariables() {
 	gridSizeB = (4 * GAME_HEIGHT_MULT);
 	gridSizeC = (6 * GAME_HEIGHT_MULT);
 	gridSizeD = (12 * GAME_HEIGHT_MULT);
-	gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);
 	gridSizeA3 = (3 * GRID_SIZE_A);
-	gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));
+	gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);
+	if (!compactDisplay) {
+		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));
+	} else {
+		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2));
+	}
 	gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);
 	sideBarSizeX = (Uint16)(GRID_SIZE / 3);
 	sideBarSizeY = (Uint16)(GRID_SIZE / 4);
@@ -73,24 +77,24 @@ void initStartingSharedVariables() {
 	sidebarSmall1PosY = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));
 	sidebarSmall2PosY = (Uint16)(GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));
 	sidebarSmall3PosY = (Uint16)(GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));
-	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[3] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[4] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[5] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[6] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[7] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosX[8] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[0] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((0 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[1] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((1 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[2] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((2 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[3] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((3 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[4] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((4 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[5] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((5 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[6] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((6 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[7] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((7 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
-	gridStartingPosY[8] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((8 / 3) * (GRID_SIZE_C - GRID_SIZE_B)));
+	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 0 / 3));
+	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 1 / 3));
+	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 2 / 3));
+	gridStartingPosX[3] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 3 / 3));
+	gridStartingPosX[4] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 4 / 3));
+	gridStartingPosX[5] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 5 / 3));
+	gridStartingPosX[6] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 6 / 3));
+	gridStartingPosX[7] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 7 / 3));
+	gridStartingPosX[8] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 8 / 3));
+	gridStartingPosY[0] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 0 / 3));
+	gridStartingPosY[1] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 1 / 3));
+	gridStartingPosY[2] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 2 / 3));
+	gridStartingPosY[3] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (3 * GRID_SIZE_A3) + (3 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 3 / 3));
+	gridStartingPosY[4] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (4 * GRID_SIZE_A3) + (4 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 4 / 3));
+	gridStartingPosY[5] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (5 * GRID_SIZE_A3) + (5 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 5 / 3));
+	gridStartingPosY[6] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (6 * GRID_SIZE_A3) + (6 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 6 / 3));
+	gridStartingPosY[7] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (7 * GRID_SIZE_A3) + (7 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 7 / 3));
+	gridStartingPosY[8] = (Uint16)((GRID_POS_Y + GRID_SIZE_D) + (8 * GRID_SIZE_A3) + (8 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 8 / 3));
 	initNumOffsets();
 }
 

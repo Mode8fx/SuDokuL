@@ -44,6 +44,7 @@ struct Timer {
 /* Window Width and Height */
 extern Uint16 gameWidth;
 extern Uint16 gameHeight;
+extern bool compactDisplay;
 extern Uint16 defaultBGScale;
 extern double gameWidthMult;
 extern double gameHeightMult;

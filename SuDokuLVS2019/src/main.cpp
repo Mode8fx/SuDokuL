@@ -88,6 +88,19 @@ int main(int argv, char** args) {
 	if (gameHeight == 0) {
 		gameHeight = SYSTEM_HEIGHT;
 	}
+	if (gameWidth < 240) {
+		gameWidth = 240;
+	}
+	if (gameHeight < 240) {
+		gameHeight = 240;
+	}
+	if (gameWidth > SYSTEM_WIDTH) {
+		gameWidth = SYSTEM_WIDTH;
+	}
+	if (gameHeight > SYSTEM_HEIGHT) {
+		gameHeight = SYSTEM_HEIGHT;
+	}
+	compactDisplay = (gameHeight * 4 / 3) - 2 > gameWidth;
 
 	initStartingWidthHeightMults();
 	initStartingSharedVariables();
