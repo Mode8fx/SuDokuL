@@ -98,6 +98,7 @@ extern Mix_Music *bgm_4;
 extern Mix_Music *bgm_5;
 extern Mix_Music *bgm_6;
 extern Mix_Music *bgm_7;
+extern Mix_Music *bgm_8;
 extern Mix_Chunk *sfx;
 
 /* Time */

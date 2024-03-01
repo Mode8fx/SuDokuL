@@ -324,6 +324,7 @@ void sdlDestroyAll() {
 	Mix_FreeMusic(bgm_5);
 	Mix_FreeMusic(bgm_6);
 	Mix_FreeMusic(bgm_7);
+	Mix_FreeMusic(bgm_8);
 	Mix_FreeChunk(sfx);
 	Mix_CloseAudio();
 	Mix_Quit();

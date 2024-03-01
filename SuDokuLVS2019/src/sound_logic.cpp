@@ -25,6 +25,9 @@ void playMusicAtIndex(Sint8 index) {
 		case 7:
 			playMusic(bgm_7);
 			break;
+		case 8:
+			playMusic(bgm_8);
+			break;
 		default:
 			break;
 	}

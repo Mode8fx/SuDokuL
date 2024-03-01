@@ -53,6 +53,7 @@ Mix_Music *bgm_4;
 Mix_Music *bgm_5;
 Mix_Music *bgm_6;
 Mix_Music *bgm_7;
+Mix_Music *bgm_8;
 Mix_Chunk *sfx;
 
 /* Grid-Related Variables */
@@ -246,7 +247,11 @@ TextObject text_Credits_10b;
 TextObject text_Credits_10a;
 TextObject text_Credits_11b;
 TextObject text_Credits_11a;
-TextObject text_Credits_12;
+TextObject text_Credits_12a;
+TextObject text_Credits_12b;
+TextObject text_Credits_music2_1;
+TextObject text_Credits_music2_2;
+TextObject text_Credits_music2_3;
 TextObject text_Credits_P2;
 TextObject text_Credits_13;
 TextObject text_Credits_14;
@@ -282,6 +287,7 @@ TextObject text_Credits_37;
 TextObject text_Credits_38;
 TextObject text_Credits_39;
 TextObject text_Credits_P7;
+TextObject text_Credits_P8;
 TextObject text_PressStart;
 TextObject text_Version_Number;
 TextObject text_Play;

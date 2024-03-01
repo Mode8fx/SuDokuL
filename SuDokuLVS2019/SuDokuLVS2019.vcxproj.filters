@@ -132,6 +132,9 @@
     <ClCompile Include="src\game_logic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_include\ancient_days_.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
@@ -276,6 +279,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include_graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_include\ancient_days_.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

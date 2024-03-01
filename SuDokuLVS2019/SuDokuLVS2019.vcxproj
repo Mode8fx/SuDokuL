@@ -173,6 +173,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\menu_logic.cpp" />
     <ClCompile Include="src\music_include\addicti.cpp" />
+    <ClCompile Include="src\music_include\ancient_days_.cpp" />
     <ClCompile Include="src\music_include\dgtlnnv2.cpp" />
     <ClCompile Include="src\music_include\electroq.cpp" />
     <ClCompile Include="src\music_include\insomnia.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\menu_logic.h" />
     <ClInclude Include="src\music_include\addicti.h" />
+    <ClInclude Include="src\music_include\ancient_days_.h" />
     <ClInclude Include="src\music_include\dgtlnnv2.h" />
     <ClInclude Include="src\music_include\electroq.h" />
     <ClInclude Include="src\music_include\insomnia.h" />

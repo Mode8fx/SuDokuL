@@ -173,6 +173,7 @@ int main(int argv, char** args) {
 	bgm_5 = Mix_LoadMUS_RW(SDL_RWFromConstMem(insomnia_mod, insomnia_mod_len), 1);
 	bgm_6 = Mix_LoadMUS_RW(SDL_RWFromConstMem(ontario_mod, ontario_mod_len), 1);
 	bgm_7 = Mix_LoadMUS_RW(SDL_RWFromConstMem(addicti_mod, addicti_mod_len), 1);
+	bgm_8 = Mix_LoadMUS_RW(SDL_RWFromConstMem(ancient_days__mod, ancient_days__mod_len), 1);
 	sfx = Mix_LoadWAV_RW(SDL_RWFromConstMem(coin1_wav, coin1_wav_len), 1);
 	Mix_VolumeMusic((int)(soundSettings.bgmVolume * 128.0 / 100));
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
@@ -874,14 +875,14 @@ int main(int argv, char** args) {
 		}
 		if (keyPressed(INPUT_PREV_TRACK) && wentPastTitleScreen) {
 			if (--soundSettings.musicIndex < 1)
-				soundSettings.musicIndex = 7;
+				soundSettings.musicIndex = 8;
 			playMusicAtIndex(soundSettings.musicIndex);
 			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
 				saveCurrentSettings();
 			}
 		}
 		if (keyPressed(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
-			if (++soundSettings.musicIndex > 7)
+			if (++soundSettings.musicIndex > 8)
 				soundSettings.musicIndex = 1;
 			playMusicAtIndex(soundSettings.musicIndex);
 			if (programState != 20) {
@@ -1279,7 +1280,7 @@ int main(int argv, char** args) {
 			case 18:
 				/* Key Presses */
 				menuHandleBackButton(2);
-				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 6) {
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 7) {
 					menuIndex_credits++;
 				}
 				else if (keyPressed(INPUT_LEFT) && menuIndex_credits > 0) {
@@ -1306,6 +1307,9 @@ int main(int argv, char** args) {
 						break;
 					case 6:
 						renderCreditsTextPage7();
+						break;
+					case 7:
+						renderCreditsTextPage8();
 						break;
 					default:
 						break;

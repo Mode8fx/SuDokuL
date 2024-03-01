@@ -171,7 +171,11 @@ extern TextObject text_Credits_10b;
 extern TextObject text_Credits_10a;
 extern TextObject text_Credits_11b;
 extern TextObject text_Credits_11a;
-extern TextObject text_Credits_12;
+extern TextObject text_Credits_12a;
+extern TextObject text_Credits_12b;
+extern TextObject text_Credits_music2_1;
+extern TextObject text_Credits_music2_2;
+extern TextObject text_Credits_music2_3;
 extern TextObject text_Credits_P2;
 extern TextObject text_Credits_13;
 extern TextObject text_Credits_14;
@@ -207,6 +211,7 @@ extern TextObject text_Credits_37;
 extern TextObject text_Credits_38;
 extern TextObject text_Credits_39;
 extern TextObject text_Credits_P7;
+extern TextObject text_Credits_P8;
 extern TextObject text_PressStart;
 extern TextObject text_Version_Number;
 extern TextObject text_Play;
@@ -348,6 +353,7 @@ extern void renderCreditsTextPage4();
 extern void renderCreditsTextPage5();
 extern void renderCreditsTextPage6();
 extern void renderCreditsTextPage7();
+extern void renderCreditsTextPage8();
 extern void controlsSetConfirmBackPos();
 
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]

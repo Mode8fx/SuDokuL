@@ -565,7 +565,7 @@ void setCreditsText() {
     SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, AND ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),              (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (FONT_SIZE * (CREDITS_STEP *    5))          );
     SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3,   OBJ_TO_MID_SCREEN_X(text_Credits_3),               (FONT_SIZE * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("(1/7)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("(1/8)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("MUSIC",                text_Credits_4,   OBJ_TO_MID_SCREEN_X(text_Credits_4),               (FONT_SIZE * (CREDITS_STEP *     1))         );
     SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5b, 0.25),  (FONT_SIZE * (CREDITS_STEP *   3.5))         );
     SET_TEXT_WITH_OUTLINE("\"Wonder Flow\"",            text_Credits_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5a, 0.75),  (FONT_SIZE * (CREDITS_STEP *   3.5))         );
@@ -581,22 +581,27 @@ void setCreditsText() {
     SET_TEXT_WITH_OUTLINE("\"Ontario\"",                text_Credits_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_10a, 0.75), (FONT_SIZE * (CREDITS_STEP *  9.75))         );
     SET_TEXT_WITH_OUTLINE("Noiseless",                  text_Credits_11b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11b, 0.25), (FONT_SIZE * (CREDITS_STEP *    11))         );
     SET_TEXT_WITH_OUTLINE("\"Addiction\"",              text_Credits_11a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11a, 0.75), (FONT_SIZE * (CREDITS_STEP *    11))         );
-    SET_TEXT_WITH_OUTLINE("All music obtained from modarchive.org", text_Credits_12, OBJ_TO_MID_SCREEN_X(text_Credits_12),   (FONT_SIZE * (CREDITS_STEP * 12.75))         );
-	SET_TEXT_WITH_OUTLINE("(2/7)",                      text_Credits_P2,  (gameWidth - (text_Credits_P2.rect.w * 1.25)),     (gameHeight - (text_Credits_P2.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("Magnar Harestad",            text_Credits_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12b, 0.25), (FONT_SIZE * (CREDITS_STEP * 12.25))         );
+	SET_TEXT_WITH_OUTLINE("\"Ancient Days\"",           text_Credits_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12a, 0.75), (FONT_SIZE * (CREDITS_STEP * 12.25))         );
+	SET_TEXT_WITH_OUTLINE("(2/8)",                      text_Credits_P2,  (gameWidth - (text_Credits_P2.rect.w * 1.25)),     (gameHeight - (text_Credits_P2.rect.h * 1.5)));
+    SET_TEXT_WITH_OUTLINE("All music obtained from modarchive.org", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (FONT_SIZE * (CREDITS_STEP * 5))   );
+	SET_TEXT_WITH_OUTLINE("\"Ancient Days\" edited by Mode8fx", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (FONT_SIZE * (CREDITS_STEP * 7))       );
+	SET_TEXT_WITH_OUTLINE("for looping purposes",       text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3),   (FONT_SIZE * (CREDITS_STEP * 8.25))          );
+	SET_TEXT_WITH_OUTLINE("(3/8)",                      text_Credits_P3,  (gameWidth - (text_Credits_P3.rect.w * 1.25)),     (gameHeight - (text_Credits_P3.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("LIBRARIES",            text_Credits_13,  OBJ_TO_MID_SCREEN_X(text_Credits_13),              (FONT_SIZE * (CREDITS_STEP *  1))            );
     SET_TEXT_WITH_OUTLINE("SDL2",                       text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (FONT_SIZE * (CREDITS_STEP *  5))            );
     SET_TEXT_WITH_OUTLINE("SDL2_image",                 text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (FONT_SIZE * (CREDITS_STEP *  7))            );
     SET_TEXT_WITH_OUTLINE("SDL2_ttf",                   text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (FONT_SIZE * (CREDITS_STEP *  9))            );
     SET_TEXT_WITH_OUTLINE("SDL2_mixer",                 text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (FONT_SIZE * (CREDITS_STEP * 11))            );
-	SET_TEXT_WITH_OUTLINE("(3/7)",                      text_Credits_P3,  (gameWidth - (text_Credits_P3.rect.w * 1.25)),     (gameHeight - (text_Credits_P3.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("(4/8)",                      text_Credits_P4,  (gameWidth - (text_Credits_P4.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("FONT",                 text_Credits_18,  OBJ_TO_MID_SCREEN_X(text_Credits_18),              (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Commodore Pixelized v1.2",   text_Credits_19,  OBJ_TO_MID_SCREEN_X(text_Credits_19),              (FONT_SIZE * (CREDITS_STEP *    5))          );
     SET_TEXT_WITH_OUTLINE("by Devin Cook",              text_Credits_20,  OBJ_TO_MID_SCREEN_X(text_Credits_20),              (FONT_SIZE * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("(4/7)",                      text_Credits_P4,  (gameWidth - (text_Credits_P4.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("(5/8)",                      text_Credits_P5,  (gameWidth - (text_Credits_P5.rect.w * 1.25)),     (gameHeight - (text_Credits_P5.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("SOUND EFFECTS",        text_Credits_21,  OBJ_TO_MID_SCREEN_X(text_Credits_21),              (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Luke.RUSTLTD",               text_Credits_22,  OBJ_TO_MID_SCREEN_X(text_Credits_22),              (FONT_SIZE * (CREDITS_STEP *    5))          );
     SET_TEXT_WITH_OUTLINE("opengameart.org",            text_Credits_23,  OBJ_TO_MID_SCREEN_X(text_Credits_23),              (FONT_SIZE * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("(5/7)",                      text_Credits_P5,  (gameWidth - (text_Credits_P5.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("(6/8)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P6.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("THANKS FOR PLAYING!",  text_Credits_24,  OBJ_TO_MID_SCREEN_X(text_Credits_24),              (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Here are a couple cheats...", text_Credits_25, OBJ_TO_MID_SCREEN_X(text_Credits_25),              (FONT_SIZE * (CREDITS_STEP *  3.3))          );
     SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (FONT_SIZE * (CREDITS_STEP * 4.45))          );
@@ -606,7 +611,7 @@ void setCreditsText() {
 	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),        (FONT_SIZE * (CREDITS_STEP * 9.05))          );
     SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (FONT_SIZE * (CREDITS_STEP * 10.2))          );
     SET_TEXT_WITH_OUTLINE("- Mode8fx",                  text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP * 12.5))          );
-	SET_TEXT_WITH_OUTLINE("(6/7)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE("(7/8)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P7.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",           text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),              (FONT_SIZE * (CREDITS_STEP *     1))         );
     SET_TEXT_WITH_OUTLINE("SuDokuL is available on:",   text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),              (FONT_SIZE * (CREDITS_STEP *   3.3))         );
     SET_TEXT_WITH_OUTLINE("PC",                         text_Credits_33,  OBJ_TO_MID_SCREEN_X(text_Credits_33),              (FONT_SIZE * (CREDITS_STEP *  4.45))         );
@@ -615,8 +620,8 @@ void setCreditsText() {
     SET_TEXT_WITH_OUTLINE("Wii U",                      text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *   7.9))         );
     SET_TEXT_WITH_OUTLINE("Vita",                       text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *  9.05))         );
     SET_TEXT_WITH_OUTLINE("PSP",                        text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *  10.2))         );
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),        (FONT_SIZE * (CREDITS_STEP * 12.5))        );
-	SET_TEXT_WITH_OUTLINE("(7/7)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),       (FONT_SIZE * (CREDITS_STEP * 12.5))          );
+	SET_TEXT_WITH_OUTLINE("(8/8)",                      text_Credits_P8,  (gameWidth - (text_Credits_P8.rect.w * 1.25)),     (gameHeight - (text_Credits_P8.rect.h * 1.5)));
 }
 
 void renderCreditsTextPage1() {
@@ -648,34 +653,43 @@ void renderCreditsTextPage2() {
     // renderDividerBetweenY(text_Credits_10a, text_Credits_11a);
     renderText(&text_Credits_11a);
     renderText(&text_Credits_11b);
-    renderText(&text_Credits_12);
+    renderText(&text_Credits_12a);
+	renderText(&text_Credits_12b);
     renderText(&text_Credits_P2);
 }
 
 void renderCreditsTextPage3() {
-    renderTextLarge(&text_Credits_18);
-    renderText(&text_Credits_19);
-    renderText(&text_Credits_20);
-    renderText(&text_Credits_P3);
+	renderTextLarge(&text_Credits_4);
+	renderText(&text_Credits_music2_1);
+	renderText(&text_Credits_music2_2);
+	renderText(&text_Credits_music2_3);
+	renderText(&text_Credits_P3);
 }
 
 void renderCreditsTextPage4() {
-    renderTextLarge(&text_Credits_21);
-    renderText(&text_Credits_22);
-    renderText(&text_Credits_23);
+    renderTextLarge(&text_Credits_18);
+    renderText(&text_Credits_19);
+    renderText(&text_Credits_20);
     renderText(&text_Credits_P4);
 }
 
 void renderCreditsTextPage5() {
+    renderTextLarge(&text_Credits_21);
+    renderText(&text_Credits_22);
+    renderText(&text_Credits_23);
+    renderText(&text_Credits_P5);
+}
+
+void renderCreditsTextPage6() {
     renderTextLarge(&text_Credits_13);
     renderText(&text_Credits_14);
     renderText(&text_Credits_15);
     renderText(&text_Credits_16);
     renderText(&text_Credits_17);
-    renderText(&text_Credits_P5);
+    renderText(&text_Credits_P6);
 }
 
-void renderCreditsTextPage6() {
+void renderCreditsTextPage7() {
     renderTextLarge(&text_Credits_24);
     renderText(&text_Credits_25);
     renderText(&text_Credits_26);
@@ -685,10 +699,10 @@ void renderCreditsTextPage6() {
 	renderText(&text_Credits_28_2);
     renderText(&text_Credits_29);
     renderText(&text_Credits_30);
-    renderText(&text_Credits_P6);
+    renderText(&text_Credits_P7);
 }
 
-void renderCreditsTextPage7() {
+void renderCreditsTextPage8() {
     renderTextLarge(&text_Credits_31);
     renderText(&text_Credits_32);
     renderText(&text_Credits_33);
@@ -698,7 +712,7 @@ void renderCreditsTextPage7() {
     renderText(&text_Credits_37);
     renderText(&text_Credits_38);
     renderText(&text_Credits_39);
-    renderText(&text_Credits_P7);
+    renderText(&text_Credits_P8);
 }
 
 void controlsSetConfirmBackPos() {
