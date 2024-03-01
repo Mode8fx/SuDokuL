@@ -189,6 +189,8 @@ extern void initMenuOptionPositions(TextObject *);
 extern void loadSettingsFile();
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void saveCurrentSettings();
+extern void setResolutionByOptions(const Uint16 *, const Uint16 *, Uint8, Sint8);
+extern void setAspectRatioByOptions(Sint8);
 extern Uint16 menuCursorXOffset();
 extern void sdlToggleFullscreen();
 extern void sdlToggleIntegerScale();

@@ -164,6 +164,48 @@ void saveCurrentSettings() {
 		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 }
 
+void setResolutionByOptions(const Uint16 *resolutionOptions_width, const Uint16 *resolutionOptions_height, Uint8 numOptions, Sint8 increment) {
+	videoSettings.resolutionIndex += increment;
+	if (videoSettings.resolutionIndex < 0) {
+		videoSettings.resolutionIndex = numOptions - 1;
+	}
+	else if (videoSettings.resolutionIndex > numOptions - 1) {
+		videoSettings.resolutionIndex = 0;
+	}
+	videoSettings.widthSetting = resolutionOptions_width[videoSettings.resolutionIndex];
+	videoSettings.heightSetting = resolutionOptions_height[videoSettings.resolutionIndex];
+}
+
+void setAspectRatioByOptions(Sint8 increment) {
+	videoSettings.aspectRatioIndex += increment;
+	if (videoSettings.aspectRatioIndex < 0) {
+		videoSettings.aspectRatioIndex = 3;
+	} else if (videoSettings.aspectRatioIndex > 3) {
+		videoSettings.aspectRatioIndex = 0;
+	}
+	videoSettings.resolutionIndex = 0;
+	switch (videoSettings.aspectRatioIndex) {
+		case 0:
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
+			break;
+		case 1:
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
+			break;
+		case 2:
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
+			break;
+		case 3:
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex];
+			break;
+		default:
+			break;
+	}
+}
+
 Uint16 menuCursorXOffset() {
 	return ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE));
 }

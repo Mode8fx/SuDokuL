@@ -1320,57 +1320,23 @@ int main(int argv, char** args) {
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
-									if (--videoSettings.resolutionIndex < 0)
-										videoSettings.resolutionIndex = LEN(RESOLUTION_OPTIONS_WIDTH_4_3) - 1;
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), -1);
 									break;
 								case 1:
-									if (--videoSettings.resolutionIndex < 0)
-										videoSettings.resolutionIndex = LEN(RESOLUTION_OPTIONS_WIDTH_16_9) - 1;
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), -1);
 									break;
 								case 2:
-									if (--videoSettings.resolutionIndex < 0)
-										videoSettings.resolutionIndex = LEN(RESOLUTION_OPTIONS_WIDTH_16_10) - 1;
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), -1);
 									break;
 								case 3:
-									if (--videoSettings.resolutionIndex < 0)
-										videoSettings.resolutionIndex = LEN(RESOLUTION_OPTIONS_WIDTH_21_9) - 1;
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_21_9, RESOLUTION_OPTIONS_HEIGHT_21_9, LEN(RESOLUTION_OPTIONS_WIDTH_21_9), -1);
 									break;
 								default:
 									break;
 							}
 							break;
 						case 1:
-							if (--videoSettings.aspectRatioIndex < 0)
-								videoSettings.aspectRatioIndex = 3;
-							videoSettings.resolutionIndex = 0;
-							switch (videoSettings.aspectRatioIndex) {
-								case 0:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
-									break;
-								case 1:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
-									break;
-								case 2:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
-									break;
-								case 3:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex];
-									break;
-								default:
-									break;
-							}
+							setAspectRatioByOptions(-1);
 							break;
 						case 2:
 							sdlToggleIntegerScale();
@@ -1398,52 +1364,23 @@ int main(int argv, char** args) {
 						case 0:
 							switch (videoSettings.aspectRatioIndex) {
 								case 0:
-									videoSettings.resolutionIndex = (videoSettings.resolutionIndex + 1) % LEN(RESOLUTION_OPTIONS_WIDTH_4_3);
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), 1);
 									break;
 								case 1:
-									videoSettings.resolutionIndex = (videoSettings.resolutionIndex + 1) % LEN(RESOLUTION_OPTIONS_WIDTH_16_9);
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), 1);
 									break;
 								case 2:
-									videoSettings.resolutionIndex = (videoSettings.resolutionIndex + 1) % LEN(RESOLUTION_OPTIONS_WIDTH_16_10);
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), 1);
 									break;
 								case 3:
-									videoSettings.resolutionIndex = (videoSettings.resolutionIndex + 1) % LEN(RESOLUTION_OPTIONS_WIDTH_21_9);
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex];
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_21_9, RESOLUTION_OPTIONS_HEIGHT_21_9, LEN(RESOLUTION_OPTIONS_WIDTH_21_9), 1);
 									break;
 								default:
 									break;
 							}
 							break;
 						case 1:
-							videoSettings.aspectRatioIndex = (videoSettings.aspectRatioIndex + 1) % 4;
-							videoSettings.resolutionIndex = 0;
-							switch (videoSettings.aspectRatioIndex) {
-								case 0:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_4_3[videoSettings.resolutionIndex];
-									break;
-								case 1:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_9[videoSettings.resolutionIndex];
-									break;
-								case 2:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_16_10[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex];
-									break;
-								case 3:
-									videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex];
-									videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex];
-									break;
-								default:
-									break;
-							}
+							setAspectRatioByOptions(1);
 							break;
 						case 2:
 							sdlToggleIntegerScale();
