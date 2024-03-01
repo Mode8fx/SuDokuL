@@ -322,6 +322,7 @@ Uint16 text_menuChoice5;
 Uint16 text_videoWarning_Y;
 Uint16 text_midScreen_Y;
 Uint16 text_quitToMenu_Y;
+Uint16 controlsMenuCursorPosition_X;
 Uint16 deepMenuCursorPosition_X;
 Uint16 videoMenuNumPosition_X;
 Uint16 backgroundMenuNumPosition_X;

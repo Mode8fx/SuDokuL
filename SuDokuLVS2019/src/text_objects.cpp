@@ -17,9 +17,15 @@ void initStartingTextVariables() {
     text_videoWarning_Y = (TEXT_PRESS_START_Y + (FONT_SIZE * 5));
     text_midScreen_Y = ((gameHeight - FONT_SIZE) / 2);
     text_quitToMenu_Y = (TEXT_PAUSED_Y + (FONT_SIZE * 2.5));
-    deepMenuCursorPosition_X = (gameWidth / 6);
-    videoMenuNumPosition_X = (gameWidth * 3 / 5);
-    backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
+	if (!compactDisplay) {
+		deepMenuCursorPosition_X = (gameWidth / 6);
+		controlsMenuCursorPosition_X = (gameWidth / 8);
+	} else {
+		deepMenuCursorPosition_X = (gameWidth / 12);
+		controlsMenuCursorPosition_X = (gameWidth / 12);
+	}
+	videoMenuNumPosition_X = (gameWidth * 3 / 5);
+	backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
 }
 
 void initTextObjectVals(TextObject *textObj) {
@@ -170,12 +176,11 @@ void setAndRenderNumAspectRatio16_10(Sint16 pos_x_left, Sint16 pos_y) {
     setAndRenderNumHelper(0, pos_x_left, pos_y, 0);
 }
 
-void setAndRenderNumAspectRatio21_9(Sint16 pos_x_left, Sint16 pos_y) {
+void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
     i = 0;
-    setAndRenderNumHelper(2, pos_x_left, pos_y, 0);
     setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
     setAndRenderColon(pos_x_left, pos_y);
-    setAndRenderNumHelper(9, pos_x_left, pos_y, 0);
+    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
 }
 
 void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {

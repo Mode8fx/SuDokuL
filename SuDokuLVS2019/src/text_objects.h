@@ -234,6 +234,7 @@ extern Uint16 text_menuChoice5;
 extern Uint16 text_videoWarning_Y;
 extern Uint16 text_midScreen_Y;
 extern Uint16 text_quitToMenu_Y;
+extern Uint16 controlsMenuCursorPosition_X;
 extern Uint16 deepMenuCursorPosition_X;
 extern Uint16 videoMenuNumPosition_X;
 extern Uint16 backgroundMenuNumPosition_X;
@@ -280,7 +281,7 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_MUSIC_Y                      (text_menuChoice1)
 #define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
 #define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
-#define CONTROLS_MENU_CURSOR_POSITION_X   (gameWidth / 8)
+#define CONTROLS_MENU_CURSOR_POSITION_X   (controlsMenuCursorPosition_X)
 #define VIDEO_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define VIDEO_MENU_NUM_POSITION_X         (videoMenuNumPosition_X)
 #define BACKGROUND_MENU_CURSOR_POSITION_X (deepMenuCursorPosition_X)
@@ -324,7 +325,7 @@ extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
 extern void setAndRenderNumAspectRatio4_3(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_9(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_10(Sint16, Sint16);
-extern void setAndRenderNumAspectRatio21_9(Sint16, Sint16);
+extern void setAndRenderNumAspectRatio1_1(Sint16, Sint16);
 //extern void SET_AND_RENDER_TIMER(pos_x_left, pos_y);
 //extern void RENDER_NUM_EMPTY(pos_x_left, pos_y);
 extern void setAndRenderColon(Sint16, Sint16);

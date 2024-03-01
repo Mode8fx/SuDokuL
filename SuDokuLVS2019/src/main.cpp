@@ -67,8 +67,8 @@ int main(int argv, char** args) {
 			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_16_10[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_16_10)];
 			break;
 		case 3:
-			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_21_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_21_9)];
-			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_21_9[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_21_9)];
+			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_1_1[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_1_1)];
+			videoSettings.heightSetting = RESOLUTION_OPTIONS_HEIGHT_1_1[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_HEIGHT_1_1)];
 			break;
 		default:
 			videoSettings.widthSetting = RESOLUTION_OPTIONS_WIDTH_4_3[videoSettings.resolutionIndex % LEN(RESOLUTION_OPTIONS_WIDTH_4_3)];
@@ -332,7 +332,11 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Background",       text_Background,       OBJ_TO_MID_SCREEN_X(text_Background), TEXT_BACKGROUND_Y);
 	//SET_TEXT_WITH_OUTLINE("Scores",           text_Scores,           OBJ_TO_MID_SCREEN_X(text_Scores),     TEXT_SCORES_Y);
 	/* Controls Menu */
-	SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X,                 TEXT_CONTROLLER_INPUT_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Controller Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_CONTROLLER_INPUT_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Button Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_CONTROLLER_INPUT_Y);
+	}
 #if !defined(ANDROID) && !defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -1353,7 +1357,7 @@ int main(int argv, char** args) {
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), -1);
 									break;
 								case 3:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_21_9, RESOLUTION_OPTIONS_HEIGHT_21_9, LEN(RESOLUTION_OPTIONS_WIDTH_21_9), -1);
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), -1);
 									break;
 								default:
 									break;
@@ -1397,7 +1401,7 @@ int main(int argv, char** args) {
 									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), 1);
 									break;
 								case 3:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_21_9, RESOLUTION_OPTIONS_HEIGHT_21_9, LEN(RESOLUTION_OPTIONS_WIDTH_21_9), 1);
+									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), 1);
 									break;
 								default:
 									break;
@@ -1446,7 +1450,7 @@ int main(int argv, char** args) {
 						setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					case 3:
-						setAndRenderNumAspectRatio21_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+						setAndRenderNumAspectRatio1_1(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
 						break;
 					default:
 						break;
