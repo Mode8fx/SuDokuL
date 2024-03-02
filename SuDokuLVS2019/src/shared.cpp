@@ -63,6 +63,7 @@ void loadSavedPuzzle() {
 		SDL_RWread(saveFile, &solutionGrid, sizeof(solutionGrid), 1);
 		SDL_RWread(saveFile, &miniGrid, sizeof(miniGrid), 1);
 		SDL_RWread(saveFile, &timer_game.now, sizeof(timer_game.now), 1);
+		SDL_RWread(saveFile, &menuCursorIndex_play, sizeof(menuCursorIndex_play), 1);
 		SDL_RWclose(saveFile);
 		programState = 9;
 	}
@@ -77,6 +78,7 @@ void savePuzzle() {
 		SDL_RWwrite(saveFile, &solutionGrid, sizeof(solutionGrid), 1);
 		SDL_RWwrite(saveFile, &miniGrid, sizeof(miniGrid), 1);
 		SDL_RWwrite(saveFile, &timer_game.now, sizeof(timer_game.now), 1);
+		SDL_RWwrite(saveFile, &menuCursorIndex_play, sizeof(menuCursorIndex_play), 1);
 		SDL_RWclose(saveFile);
 	}
 }

@@ -403,7 +403,7 @@ int main(int argv, char** args) {
 
 	/* Set Other Initial Variable Values */
 	menuCursorIndex_main = 0;
-	menuCursorIndex_continue = 0;
+	menuCursorIndex_continue = 1;
 	menuCursorIndex_play = 0;
 	menuCursorIndex_options = 0;
 	menuCursorIndex_controls = 0;
@@ -950,9 +950,9 @@ int main(int argv, char** args) {
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_main, 5);
+				menuHandleVertCursorMovement(menuCursorIndex_main, 5, 0);
 #else
-				menuHandleVertCursorMovement(menuCursorIndex_main, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_main, 4, 0);
 #endif
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Play, 0);
@@ -1035,16 +1035,16 @@ int main(int argv, char** args) {
 					updateMenuCursorPositionY(menuCursorIndex_continue);
 					changedProgramState = false;
 				}
-				menuHandleVertCursorMovement(menuCursorIndex_continue, 2);
+				menuHandleVertCursorMovement(menuCursorIndex_continue, 3, 1);
 				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_Continue, 0);
-					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_New_Game, 1);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_Continue, 1);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_New_Game, 2);
 				}
 				updateContinueMenuCursorPositionX();
 				menuHandleBackButton(2);
 				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Continue.rect)
 					|| mouseIsInRect(text_New_Game.rect)))) {
-					if (menuCursorIndex_continue == 0) {
+					if (menuCursorIndex_continue == 1) {
 						isContinue = true;
 						programState = 8;
 					} else {
@@ -1065,7 +1065,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_play, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_play, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Easy, 0);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Normal, 1);
@@ -1300,7 +1300,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_options, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_options, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Controls_Menu, 0);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Video, 1);
@@ -1393,7 +1393,7 @@ int main(int argv, char** args) {
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
@@ -1551,7 +1551,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_sound, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_sound, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
@@ -1643,7 +1643,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_background, 4);
+				menuHandleVertCursorMovement(menuCursorIndex_background, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);

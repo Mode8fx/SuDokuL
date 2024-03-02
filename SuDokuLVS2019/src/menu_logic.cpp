@@ -141,13 +141,14 @@ void menuHandleMenuButton() {
     }
 }
 
-void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions) {
+void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions, Uint8 numSkip) {
     if (keyPressed(INPUT_DOWN)) {
-        cursor = (cursor + 1) % numOptions;
+        if (++cursor >= numOptions)
+			cursor = numSkip;
         updateMenuCursorPositionY(cursor);
     }
     if (keyPressed(INPUT_UP)) {
-        if (--cursor < 0)
+        if (--cursor < numSkip)
             cursor = numOptions - 1;
         updateMenuCursorPositionY(cursor);
     }

@@ -30,7 +30,7 @@ extern void menuHandleBackButtonWithSettings(Uint8);
 extern void menuResetCursorPositions(Uint8);
 extern void updateMenuCursorPositionY(Sint8);
 extern void menuHandleMenuButton();
-extern void menuHandleVertCursorMovement(Sint8 &, Uint8);
+extern void menuHandleVertCursorMovement(Sint8 &, Uint8, Uint8);
 extern void controlsMenuHandleVertCursorMovement();
 extern void updateControlsMenuCursorPositionY();
 extern void menuHandleVertCursorMovementMouse(Sint8 &, TextObject, Sint8);
