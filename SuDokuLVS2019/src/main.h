@@ -33,6 +33,7 @@ Uint16 defaultBGScale;
 double gameWidthMult;
 double gameHeightMult;
 SDL_DisplayMode DM;
+Uint32 frameTime;
 
 /* Settings */
 SDL_RWops *settingsFile;

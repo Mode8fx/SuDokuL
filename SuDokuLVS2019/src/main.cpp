@@ -1734,6 +1734,12 @@ int main(int argv, char** args) {
 
 		/* Update Screen */
         SDL_RenderPresent(renderer);
+
+		/* Cap Framerate */
+		frameTime = SDL_GetTicks() - (Uint32)timer_global.now;
+		if (frameTime < 8) { // 1000 / 120 FPS = 8.333; after rounding down, 1000 / 8 = 125 FPS
+			SDL_Delay(8 - frameTime);
+		}
 	}
 
 	sdlDestroyAll();
