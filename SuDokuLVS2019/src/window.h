@@ -18,5 +18,9 @@ extern SDL_Rect rightRect;
 extern double screenScale;
 extern bool isWindowed;
 extern bool isIntegerScale;
+extern bool windowSizeChanged;
+
+void snapWindow_x(double, Uint16);
+void snapWindow_y(double, Uint16);
 
 #endif

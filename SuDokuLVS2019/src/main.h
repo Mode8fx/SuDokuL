@@ -360,5 +360,6 @@ bool wentPastTitleScreen = 0;
 double screenScale = 1;
 bool isWindowed = true;
 bool isIntegerScale = true;
+bool windowSizeChanged = false;
 
 #endif

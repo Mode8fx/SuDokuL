@@ -187,6 +187,7 @@
     <ClCompile Include="src\sudokuGen.cpp" />
     <ClCompile Include="src\text_objects.cpp" />
     <ClCompile Include="src\transitions.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

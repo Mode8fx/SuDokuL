@@ -6,6 +6,7 @@
 #include "transitions.h"
 #include "sudokuGen.h"
 #include "puzzleBank.h"
+#include "window.h"
 #include "include_fonts.h"
 #include "include_graphics.h"
 #include "include_music.h"
@@ -700,11 +701,7 @@ int main(int argv, char** args) {
 #if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
 				case SDL_WINDOWEVENT:
 					if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-						if (SDL_GetWindowSurface(window)->w < gameWidth)
-							SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
-						if (SDL_GetWindowSurface(window)->h < gameHeight)
-							SDL_SetWindowSize(window, SDL_GetWindowSurface(window)->w, gameHeight);
-						setScaling();
+						windowSizeChanged = true;
 					}
 					break;
 #endif
@@ -878,6 +875,20 @@ int main(int argv, char** args) {
 			if (programState != 20) {
 				saveCurrentSettings();
 			}
+		}
+
+		if (windowSizeChanged && isIntegerScale) {
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)) && !defined(SDL1)
+			if (SDL_GetWindowSurface(window)->w < gameWidth)
+				SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
+			if (SDL_GetWindowSurface(window)->h < gameHeight)
+				SDL_SetWindowSize(window, SDL_GetWindowSurface(window)->w, gameHeight);
+			// If you resize the window to within 6% of an integer ratio, snap to that ratio
+			snapWindow_x(0.06, gameWidth);
+			snapWindow_y(0.06, gameHeight);
+			setScaling();
+#endif
+			windowSizeChanged = false;
 		}
 
 		/* Clear Screen */
