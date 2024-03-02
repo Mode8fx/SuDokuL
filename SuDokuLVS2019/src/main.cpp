@@ -14,6 +14,7 @@
 
 /* Keyboard State */
 const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
+bool isContinue = false;
 
 int main(int argv, char** args) {
 	/* [Wii U] Set SD Card Mount Path */
@@ -297,6 +298,9 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Quit",     text_Quit,             OBJ_TO_MID_SCREEN_X(text_Quit),       TEXT_QUIT_Y + (gameWidth * 3 / 4));
 #endif
+	/* Continue Menu */
+	SET_TEXT_WITH_OUTLINE("Continue",         text_Continue,         OBJ_TO_MID_SCREEN_X(text_Continue),   TEXT_CONTINUE_Y);
+	SET_TEXT_WITH_OUTLINE("New Game",         text_New_Game,         OBJ_TO_MID_SCREEN_X(text_New_Game),   TEXT_NEW_GAME_Y);
 	/* Play Menu */
 	SET_TEXT_WITH_OUTLINE("Easy",             text_Easy,             OBJ_TO_MID_SCREEN_X(text_Easy),       TEXT_EASY_Y);
 	SET_TEXT_WITH_OUTLINE("Normal",           text_Normal,           OBJ_TO_MID_SCREEN_X(text_Normal),     TEXT_NORMAL_Y);
@@ -313,15 +317,15 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_SIDEBAR(text_Game_VHard),  TEXT_GAME_VHARD_Y);
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
 #if defined(WII_U) || defined(VITA) || defined(PSP)
-	SET_TEXT_WITH_OUTLINE("Press Select",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press Select to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(SWITCH)
-	SET_TEXT_WITH_OUTLINE("Press -",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press - to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(ANDROID)
-	SET_TEXT_WITH_OUTLINE("Press Back", text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
-	SET_TEXT_WITH_OUTLINE("Press Q",          text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press Q to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE("to Quit",          text_Quit_to_Menu_2, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
+	SET_TEXT_WITH_OUTLINE("Save and Quit",    text_Quit_to_Menu_2,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
 	SET_TEXT_WITH_OUTLINE("You Win!",         text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),    TEXT_YOU_WIN_Y);
 	/* Controls */
 	setControlsText();
@@ -399,6 +403,7 @@ int main(int argv, char** args) {
 
 	/* Set Other Initial Variable Values */
 	menuCursorIndex_main = 0;
+	menuCursorIndex_continue = 0;
 	menuCursorIndex_play = 0;
 	menuCursorIndex_options = 0;
 	menuCursorIndex_controls = 0;
@@ -972,7 +977,20 @@ int main(int argv, char** args) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_main) {
 						case 0:
-							programState = 7;
+							canContinue = false;
+							saveFile = SDL_RWFromFile(SAVE_FILE, "rb");
+							if (saveFile != NULL) {
+								SDL_RWread(saveFile, &gameCompleted, sizeof(gameCompleted), 1);
+								SDL_RWclose(saveFile);
+								if (gameCompleted) {
+									programState = 7;
+								} else {
+									canContinue = true;
+									programState = 6;
+								}
+							} else {
+								programState = 7;
+							}
 							changedProgramState = true;
 							break;
 						case 1:
@@ -1011,8 +1029,41 @@ int main(int argv, char** args) {
 				transitionToStateWithTimer(time_anim1, 1, 0);
 				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
 				break;
+			/* Continue Menu */
+			case 6:
+				if (changedProgramState) {
+					updateMenuCursorPositionY(menuCursorIndex_continue);
+					changedProgramState = false;
+				}
+				menuHandleVertCursorMovement(menuCursorIndex_continue, 2);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_Continue, 0);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_continue, text_New_Game, 1);
+				}
+				updateContinueMenuCursorPositionX();
+				menuHandleBackButton(2);
+				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Continue.rect)
+					|| mouseIsInRect(text_New_Game.rect)))) {
+					if (menuCursorIndex_continue == 0) {
+						isContinue = true;
+						programState = 8;
+					} else {
+						programState = 7;
+					}
+					changedProgramState = true;
+				}
+				/* Draw Logo and Text */
+				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderText(&text_Continue);
+				renderText(&text_New_Game);
+				break;
 			/* 7 = Play Menu */
 			case 7:
+				if (changedProgramState) {
+					updateMenuCursorPositionY(menuCursorIndex_play);
+					changedProgramState = false;
+				}
 				/* Key Presses + Animate Cursor */
 				menuHandleVertCursorMovement(menuCursorIndex_play, 4);
 				if (mouseMoved()) {
@@ -1022,9 +1073,14 @@ int main(int argv, char** args) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_play, text_Very_Hard, 3);
 				}
 				updatePlayMenuCursorPositionX();
-				menuHandleBackButton(2);
+				if (canContinue) {
+					menuHandleBackButton(6);
+				} else {
+					menuHandleBackButton(2);
+				}
 				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Easy.rect)
 					|| mouseIsInRect(text_Normal.rect) || mouseIsInRect(text_Hard.rect) || mouseIsInRect(text_Very_Hard.rect)))) {
+					isContinue = false;
 					programState = 8;
 				}
 				/* Draw Logo and Text */
@@ -1043,50 +1099,61 @@ int main(int argv, char** args) {
 				/* Update Screen */
 				SDL_RenderPresent(renderer);
 				preparePauseTimer();
-				switch (menuCursorIndex_play) {
-					case 0:
-						ZERO_OUT_ARRAY(grid);
-						ZERO_OUT_ARRAY(originalGrid);
-						ZERO_OUT_ARRAY(solutionGrid);
-						ZERO_OUT_ARRAY(miniGrid);
-						if (!generateGridAndSolution(RANDINT(30, 35), 52)) { // it will always be the minimum, hence the use of RANDINT
-							setPremadePuzzle(0, RANDINT(0, 999));
-						}
-						programState = 9;
-						break;
-					case 1:
-						ZERO_OUT_ARRAY(grid);
-						ZERO_OUT_ARRAY(originalGrid);
-						ZERO_OUT_ARRAY(solutionGrid);
-						ZERO_OUT_ARRAY(miniGrid);
-						if (!generateGridAndSolution(RANDINT(50, 52), 75)) { // it will always be the minimum, hence the use of RANDINT
-							setPremadePuzzle(1, RANDINT(0, 999));
-						}
-						programState = 9;
-						break;
-					case 2:
-						ZERO_OUT_ARRAY(grid);
-						ZERO_OUT_ARRAY(originalGrid);
-						ZERO_OUT_ARRAY(solutionGrid);
-						ZERO_OUT_ARRAY(miniGrid);
-						// generateGridAndSolution(75, 300); // requires backtracking
-						setPremadePuzzle(2, RANDINT(0, 999));
-						programState = 9;
-						break;
-					case 3:
-						ZERO_OUT_ARRAY(grid);
-						ZERO_OUT_ARRAY(originalGrid);
-						ZERO_OUT_ARRAY(solutionGrid);
-						ZERO_OUT_ARRAY(miniGrid);
-						// generateGridAndSolution(300, 500); // requires more backtracking
-						setPremadePuzzle(3, RANDINT(0, 999));
-						programState = 9;
-						break;
-					default:
-						break;
+				if (isContinue) {
+					loadSavedPuzzle();
+				} else {
+					switch (menuCursorIndex_play) {
+						case 0:
+							ZERO_OUT_ARRAY(grid);
+							ZERO_OUT_ARRAY(originalGrid);
+							ZERO_OUT_ARRAY(solutionGrid);
+							ZERO_OUT_ARRAY(miniGrid);
+							if (!generateGridAndSolution(RANDINT(30, 35), 52)) { // it will always be the minimum, hence the use of RANDINT
+								setPremadePuzzle(0, RANDINT(0, 999));
+							}
+							timer_game.now = 0.0;
+							gameCompleted = false;
+							programState = 9;
+							break;
+						case 1:
+							ZERO_OUT_ARRAY(grid);
+							ZERO_OUT_ARRAY(originalGrid);
+							ZERO_OUT_ARRAY(solutionGrid);
+							ZERO_OUT_ARRAY(miniGrid);
+							if (!generateGridAndSolution(RANDINT(50, 52), 75)) { // it will always be the minimum, hence the use of RANDINT
+								setPremadePuzzle(1, RANDINT(0, 999));
+							}
+							timer_game.now = 0.0;
+							gameCompleted = false;
+							programState = 9;
+							break;
+						case 2:
+							ZERO_OUT_ARRAY(grid);
+							ZERO_OUT_ARRAY(originalGrid);
+							ZERO_OUT_ARRAY(solutionGrid);
+							ZERO_OUT_ARRAY(miniGrid);
+							// generateGridAndSolution(75, 300); // requires backtracking
+							setPremadePuzzle(2, RANDINT(0, 999));
+							timer_game.now = 0.0;
+							gameCompleted = false;
+							programState = 9;
+							break;
+						case 3:
+							ZERO_OUT_ARRAY(grid);
+							ZERO_OUT_ARRAY(originalGrid);
+							ZERO_OUT_ARRAY(solutionGrid);
+							ZERO_OUT_ARRAY(miniGrid);
+							// generateGridAndSolution(300, 500); // requires more backtracking
+							setPremadePuzzle(3, RANDINT(0, 999));
+							timer_game.now = 0.0;
+							gameCompleted = false;
+							programState = 9;
+							break;
+						default:
+							break;
+					}
 				}
 				updatePauseTimer();
-				timer_game.now = 0.0;
 				gridCursorIndex_x = 0;
 				gridCursorIndex_y = 0;
 				setGridCursorByLargeX();
@@ -1168,6 +1235,8 @@ int main(int argv, char** args) {
 			case 11:
 				/* Key Presses */
 				if (keyPressed(INPUT_START)) {
+					gameCompleted = true;
+					savePuzzle();
 					programState = 2;
 					updateMenuCursorPositionY(menuCursorIndex_main);
 				}

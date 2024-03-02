@@ -54,32 +54,29 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 void loadSavedPuzzle() {
 	saveFile = SDL_RWFromFile(SAVE_FILE, "rb");
 	if (saveFile == NULL) {
-		// This shouldn't happen, but generate a Normal difficulty puzzle as a fallback
-		menuCursorIndex_play = 1;
-		ZERO_OUT_ARRAY(grid);
-		ZERO_OUT_ARRAY(originalGrid);
-		ZERO_OUT_ARRAY(solutionGrid);
-		ZERO_OUT_ARRAY(miniGrid);
-		if (!generateGridAndSolution(RANDINT(50, 52), 75)) { // it will always be the minimum, hence the use of RANDINT
-			setPremadePuzzle(1, RANDINT(0, 999));
-		}
-		programState = 9;
+		// This shouldn't happen, but go to the New Game menu as a fallback
+		programState = 7;
 	} else {
+		SDL_RWread(saveFile, &gameCompleted, sizeof(gameCompleted), 1);
 		SDL_RWread(saveFile, &grid, sizeof(grid), 1);
 		SDL_RWread(saveFile, &originalGrid, sizeof(originalGrid), 1);
 		SDL_RWread(saveFile, &solutionGrid, sizeof(solutionGrid), 1);
 		SDL_RWread(saveFile, &miniGrid, sizeof(miniGrid), 1);
+		SDL_RWread(saveFile, &timer_game.now, sizeof(timer_game.now), 1);
 		SDL_RWclose(saveFile);
+		programState = 9;
 	}
 }
 
 void savePuzzle() {
 	saveFile = SDL_RWFromFile(SAVE_FILE, "w+b");
 	if (saveFile != NULL) {
+		SDL_RWwrite(saveFile, &gameCompleted, sizeof(gameCompleted), 1);
 		SDL_RWwrite(saveFile, &grid, sizeof(grid), 1);
 		SDL_RWwrite(saveFile, &originalGrid, sizeof(originalGrid), 1);
 		SDL_RWwrite(saveFile, &solutionGrid, sizeof(solutionGrid), 1);
 		SDL_RWwrite(saveFile, &miniGrid, sizeof(miniGrid), 1);
+		SDL_RWwrite(saveFile, &timer_game.now, sizeof(timer_game.now), 1);
 		SDL_RWclose(saveFile);
 	}
 }

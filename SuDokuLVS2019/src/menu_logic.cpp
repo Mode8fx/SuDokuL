@@ -27,6 +27,17 @@ void updateMainMenuCursorPositionX() {
     }
 }
 
+void updateContinueMenuCursorPositionX() {
+    switch (menuCursorIndex_play) {
+        case 0:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Continue) - menuCursorXOffset());
+            break;
+        default:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_New_Game) - menuCursorXOffset());
+            break;
+    }
+}
+
 void updatePlayMenuCursorPositionX() {
     switch (menuCursorIndex_play) {
     case 0:

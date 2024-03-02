@@ -112,6 +112,8 @@ extern Timer timer_game;
 extern double timer_buttonHold;
 extern double timer_buttonHold_repeater;
 extern Timer timer_paused;
+extern bool canContinue;
+extern bool gameCompleted;
 
 #if !defined(ANDROID)
 #define SYSTEM_WIDTH  DM.w

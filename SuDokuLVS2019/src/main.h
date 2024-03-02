@@ -98,6 +98,7 @@ Sint8 songChangeCounter;
 
 /* Menu Cursors */
 Sint8 menuCursorIndex_main;
+Sint8 menuCursorIndex_continue;
 Sint8 menuCursorIndex_play;
 Sint8 menuIndex_controls;
 Sint8 menuCursorIndex_options;
@@ -144,6 +145,8 @@ Uint8 charCounter;
 Uint16 charWidthCounter;
 /* Specific */
 TextObject text_Loading;
+TextObject text_Continue;
+TextObject text_New_Game;
 TextObject text_Easy;
 TextObject text_Normal;
 TextObject text_Hard;
@@ -341,6 +344,8 @@ Timer timer_game;
 double timer_buttonHold;
 double timer_buttonHold_repeater;
 Timer timer_paused;
+bool canContinue = false;
+bool gameCompleted = false;
 
 /* Program State */
 Uint8 programState;

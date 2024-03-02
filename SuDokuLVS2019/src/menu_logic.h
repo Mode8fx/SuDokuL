@@ -7,6 +7,7 @@
 
 /* Menu Cursors */
 extern Sint8 menuCursorIndex_main;
+extern Sint8 menuCursorIndex_continue;
 extern Sint8 menuCursorIndex_play;
 extern Sint8 menuIndex_controls;
 extern Sint8 menuCursorIndex_options;
@@ -17,6 +18,7 @@ extern Sint8 menuCursorIndex_background;
 extern Sint8 menuIndex_credits;
 
 extern void updateMainMenuCursorPositionX();
+extern void updateContinueMenuCursorPositionX();
 extern void updatePlayMenuCursorPositionX();
 extern void updateOptionsMenuCursorPositionX();
 extern void updateControlsMenuCursorPositionX();
