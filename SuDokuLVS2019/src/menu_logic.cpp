@@ -3,6 +3,7 @@
 #include "config.h"
 #include "sprite_objects.h"
 #include "window.h"
+#include "shared.h"
 
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {
@@ -123,6 +124,7 @@ void updateMenuCursorPositionY(Sint8 cursor) {
 void menuHandleMenuButton() {
     if (keyPressed(INPUT_SELECT)) {
         time_anim1 = 0;
+        savePuzzle();
         programState = 2;
         updateMenuCursorPositionY(menuCursorIndex_main);
     }

@@ -37,6 +37,7 @@ Uint32 frameTime;
 
 /* Settings */
 SDL_RWops *settingsFile;
+SDL_RWops *saveFile;
 BackgroundSettings bgSettings;
 BGScroll bgScroll;
 ControlSettings controlSettings;

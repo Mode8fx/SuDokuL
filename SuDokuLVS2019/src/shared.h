@@ -74,6 +74,7 @@ extern Sint8 numOffset_small_y[9];
 
 /* Settings */
 extern SDL_RWops *settingsFile;
+extern SDL_RWops *saveFile;
 extern BackgroundSettings bgSettings;
 extern BGScroll bgScroll;
 extern ControlSettings controlSettings;
@@ -180,7 +181,12 @@ const string rootDir = "ux0:data/SuDokuL/";
 const string rootDir = "";
 #endif
 #define SETTINGS_FILE (rootDir + "settings.bin").c_str()
+#define SAVE_FILE (rootDir + "save.bin").c_str()
 
+extern void loadSettingsFile();
+extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
+extern void loadSavedPuzzle();
+extern void savePuzzle();
 extern void initDefaultBGScale();
 extern void initStartingWidthHeightMults();
 extern void initStartingSharedVariables();
@@ -189,8 +195,6 @@ extern void updateGlobalTimer();
 extern void preparePauseTimer();
 extern void updatePauseTimer();
 extern void initMenuOptionPositions(TextObject *);
-extern void loadSettingsFile();
-extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void saveCurrentSettings();
 extern void setNativeResolution();
 extern void setResolutionByOptions(const Uint16 *, const Uint16 *, Uint8, Sint8);
