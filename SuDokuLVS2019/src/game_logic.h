@@ -21,6 +21,7 @@ extern void gameHandleMouseMovementMain();
 extern bool mouseBoundsX(Sint8, Sint8);
 extern bool mouseBoundsY(Sint8, Sint8);
 extern bool clickedWithinGrid();
+extern bool clickedInRect(SDL_Rect *);
 extern bool mouseIsInsideGridSquare();
 extern void gameHandleMiniGridNavigation();
 extern void gameHandleMouseMovementMini();

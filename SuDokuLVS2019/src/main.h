@@ -119,6 +119,9 @@ SpriteObjectWithPos gridCursor_bottom_right;
 SpriteObjectWithPos gridCursor_top_left;
 SpriteObjectWithPos gridCursor_top_right;
 SpriteObject game_sidebar_small;
+SDL_Rect game_sidebar_small_1;
+SDL_Rect game_sidebar_small_2;
+SDL_Rect game_sidebar_small_3;
 
 SpriteObjectWithPos miniGrid_bottom_left;
 SpriteObjectWithPos miniGrid_bottom_right;

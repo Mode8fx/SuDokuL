@@ -233,6 +233,11 @@ int main(int argv, char** args) {
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
 	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
+	game_sidebar_small_1 = game_sidebar_small.rect;
+	game_sidebar_small_2 = game_sidebar_small.rect;
+	game_sidebar_small_2.y = SIDEBAR_SMALL_2_POS_Y;
+	game_sidebar_small_3 = game_sidebar_small.rect;
+	game_sidebar_small_3.y = SIDEBAR_SMALL_3_POS_Y;
 	PREPARE_SPRITE(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, 1);
@@ -308,9 +313,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Very Hard",        text_Very_Hard,        OBJ_TO_MID_SCREEN_X(text_Very_Hard),  TEXT_VERY_HARD_Y);
 	/* Game */
 	SET_TEXT_WITH_OUTLINE("Time",             text_Time,             OBJ_TO_MID_SIDEBAR(text_Time),        TEXT_TIME_Y);
-	game_sidebar_small.rect.y = SIDEBAR_SMALL_2_POS_Y;
 	SET_TEXT_WITH_OUTLINE("Empty",            text_Empty,            OBJ_TO_MID_SIDEBAR(text_Empty),       TEXT_EMPTY_Y);
-	game_sidebar_small.rect.y = SIDEBAR_SMALL_3_POS_Y;
 	SET_TEXT_WITH_OUTLINE("Easy",             text_Game_Easy,        OBJ_TO_MID_SIDEBAR(text_Game_Easy),   TEXT_GAME_EASY_Y);
 	SET_TEXT_WITH_OUTLINE("Normal",           text_Game_Normal,      OBJ_TO_MID_SIDEBAR(text_Game_Normal), TEXT_GAME_NORMAL_Y);
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_SIDEBAR(text_Game_Hard),   TEXT_GAME_HARD_Y);

@@ -138,6 +138,10 @@ bool clickedWithinGrid() {
     return (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquare());
 }
 
+bool clickedInRect(SDL_Rect *rect) {
+	return (keyPressed(INPUT_CONFIRM_ALT) && mouseInput_x >= rect->x && mouseInput_x < (rect->x + rect->w) && mouseInput_y >= rect->y && mouseInput_y < (rect->y + rect->h));
+}
+
 // easier to code/check than gameHandleMouseMovementMain()... but also less efficient
 bool mouseIsInsideGridSquare() {
     return ((mouseBoundsX(0, 0) || mouseBoundsX(1, 1) || mouseBoundsX(2, 2) || mouseBoundsX(3, 3) || mouseBoundsX(4, 4)
@@ -327,7 +331,7 @@ void setGridCursorByLargeY() {
 }
 
 void gameHandleCheatRevealCell() {
-    if (keyPressed(INPUT_SWAP) && miniGridState == 0) {
+    if ((keyPressed(INPUT_SWAP) || clickedInRect(&game_sidebar_small_1)) && miniGridState == 0) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (originalGrid[i] == 0) {
             if (++cheat1Counter >= 8) {
@@ -340,8 +344,8 @@ void gameHandleCheatRevealCell() {
 }
 
 void gameHandleCheatClearIncorrectCells() {
-    if ((keyPressed(INPUT_BACK) || keyPressed(INPUT_SWAP)) && miniGridState == 0) {
-        if (keyPressed(INPUT_BACK) == (cheat2Counter % 2 == 0)) {
+    if (((keyPressed(INPUT_BACK) || clickedInRect(&game_sidebar_small_2)) || (keyPressed(INPUT_SWAP) || clickedInRect(&game_sidebar_small_3))) && miniGridState == 0) {
+        if ((keyPressed(INPUT_BACK) || clickedInRect(&game_sidebar_small_2)) == (cheat2Counter % 2 == 0)) {
             if (++cheat2Counter >= 8) {
                 for (i = 0; i < 81; i++) {
                     if (originalGrid[i] == 0 && grid[i] != solutionGrid[i]) {
@@ -380,16 +384,13 @@ void setGridCursorBySmallY() {
 
 void drawSidebar() {
     if (!compactDisplay) {
-        game_sidebar_small.rect.y = SIDEBAR_SMALL_1_POS_Y;
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_1);
         renderText(&text_Time);
-        SET_AND_RENDER_TIMER(game_sidebar_small.rect.x + (game_sidebar_small.rect.w / 8), game_sidebar_small.rect.y + (game_sidebar_small.rect.h * 3 / 4) - FONT_SIZE);
-        game_sidebar_small.rect.y = SIDEBAR_SMALL_2_POS_Y;
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
+        SET_AND_RENDER_TIMER(game_sidebar_small_1.x + (game_sidebar_small_1.w / 8), game_sidebar_small_1.y + (game_sidebar_small_1.h * 3 / 4) - FONT_SIZE);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_2);
         renderText(&text_Empty);
-        RENDER_NUM_EMPTY(game_sidebar_small.rect.x + (game_sidebar_small.rect.w * 23 / 64), game_sidebar_small.rect.y + (game_sidebar_small.rect.h * 3 / 4) - FONT_SIZE);
-        game_sidebar_small.rect.y = SIDEBAR_SMALL_3_POS_Y;
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small.rect);
+        RENDER_NUM_EMPTY(game_sidebar_small_2.x + (game_sidebar_small_2.w * 23 / 64), game_sidebar_small_2.y + (game_sidebar_small_2.h * 3 / 4) - FONT_SIZE);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_3);
         switch (menuCursorIndex_play) {
             case 0:
                 renderText(&text_Game_Easy);
