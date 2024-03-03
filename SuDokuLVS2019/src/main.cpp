@@ -494,6 +494,7 @@ int main(int argv, char** args) {
 					}
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
 						keyInputs |= INPUT_START;
+						keyInputs |= INPUT_BACK;
 						resetCheatCounters();
 						break;
 					}
