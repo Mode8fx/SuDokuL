@@ -18,7 +18,15 @@ struct SpriteObjectWithPos {
 };
 
 /* Textures */
-extern SpriteObject tile;
+extern SpriteObject *tile;
+extern SpriteObject tile1;
+extern SpriteObject tile2;
+extern SpriteObject tile3;
+extern SpriteObject tile_cave;
+extern SpriteObject tile_desert;
+extern SpriteObject tile_grasslands;
+extern SpriteObject tile_grasslands2;
+extern SpriteObject tile_snowymountain;
 extern SpriteObjectWithPos logo;
 extern SpriteObjectWithPos menuCursor;
 extern SpriteObject game_grid;
@@ -53,9 +61,9 @@ extern SpriteObjectWithPos *currMiniGrid;
     spriteObj.rect.w = (int)(spriteObj.width * ((int)ceil(GAME_HEIGHT_MULT)) * scale); \
     spriteObj.rect.h = (int)(spriteObj.height * ((int)ceil(GAME_HEIGHT_MULT)) * scale);
 
-#define SET_SPRITE_SCALE_TILE()                  \
-    tile.rect.w = tile.width * bgSettings.scale; \
-    tile.rect.h = tile.height * bgSettings.scale;
+#define SET_SPRITE_SCALE_TILE()                    \
+    tile->rect.w = tile->width * bgSettings.scale; \
+    tile->rect.h = tile->height * bgSettings.scale;
 
 #define OBJ_TO_MID_SCREEN_X(obj) \
     ((gameWidth - obj.rect.w) / 2)

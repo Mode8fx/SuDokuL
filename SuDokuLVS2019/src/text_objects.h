@@ -111,6 +111,7 @@ extern TextObject text_Apply;
 extern TextObject text_Music;
 extern TextObject text_Music_Volume;
 extern TextObject text_SFX_Volume;
+extern TextObject text_Background_Type;
 extern TextObject text_Scroll_Speed;
 extern TextObject text_Scroll_Direction;
 extern TextObject text_Background_Size;
@@ -195,7 +196,8 @@ extern TextObject text_Credits_20;
 extern TextObject text_Credits_P4;
 extern TextObject text_Credits_21;
 extern TextObject text_Credits_22;
-extern TextObject text_Credits_23;
+extern TextObject text_Credits_23a;
+extern TextObject text_Credits_23b;
 extern TextObject text_Credits_P5;
 extern TextObject text_Credits_24;
 extern TextObject text_Credits_25;
@@ -216,8 +218,13 @@ extern TextObject text_Credits_36;
 extern TextObject text_Credits_37;
 extern TextObject text_Credits_38;
 extern TextObject text_Credits_39;
+extern TextObject text_Credits_40;
+extern TextObject text_Credits_41;
+extern TextObject text_Credits_42a;
+extern TextObject text_Credits_42b;
 extern TextObject text_Credits_P7;
 extern TextObject text_Credits_P8;
+extern TextObject text_Credits_P9;
 extern TextObject text_PressStart;
 extern TextObject text_Version_Number;
 extern TextObject text_Play;
@@ -280,10 +287,11 @@ extern Uint16 backgroundMenuNumPosition_X;
 #endif
 #define TEXT_APPLY_Y                      (text_menuChoice4)
 #define TEXT_SCORES_Y                     (text_menuChoice5)
-#define TEXT_SCROLL_SPEED_Y               (text_menuChoice1)
-#define TEXT_SCROLL_DIRECTION_Y           (text_menuChoice2)
-#define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice3)
-#define TEXT_RESET_TO_DEFAULT_Y           (text_menuChoice4)
+#define TEXT_BACKGROUND_TYPE_Y            (text_menuChoice1)
+#define TEXT_SCROLL_SPEED_Y               (text_menuChoice2)
+#define TEXT_SCROLL_DIRECTION_Y           (text_menuChoice3)
+#define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice4)
+#define TEXT_RESET_TO_DEFAULT_Y           (text_menuChoice5)
 #define TEXT_MUSIC_Y                      (text_menuChoice1)
 #define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
 #define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
@@ -361,6 +369,7 @@ extern void renderCreditsTextPage5();
 extern void renderCreditsTextPage6();
 extern void renderCreditsTextPage7();
 extern void renderCreditsTextPage8();
+extern void renderCreditsTextPage9();
 extern void controlsSetConfirmBackPos();
 
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]

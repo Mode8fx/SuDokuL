@@ -126,7 +126,7 @@
     <ClCompile Include="src\graphics_include\sidebar_small.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics_include\tile.cpp">
+    <ClCompile Include="src\graphics_include\tile1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game_logic.cpp">
@@ -136,6 +136,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile_cave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile_desert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile_grasslands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile_grasslands2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile_snowymountain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\tile3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,13 +299,34 @@
     <ClInclude Include="src\graphics_include\sidebar_small.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\tile.h">
+    <ClInclude Include="src\graphics_include\tile1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include_graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\music_include\ancient_days_.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile_cave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile_desert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile_grasslands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile_grasslands2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile_snowymountain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\tile3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

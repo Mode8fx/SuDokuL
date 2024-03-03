@@ -124,7 +124,15 @@ int main(int argv, char** args) {
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
-	PREPARE_SPRITE(tile, tile_png, tile_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile1, tile1_png, tile1_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile2, tile2_png, tile2_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile3, tile3_png, tile3_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, 1);
+	PREPARE_SPRITE(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, 1);
+	setBGType();
 	SET_SPRITE_SCALE_TILE();
 	/* Set Rectangles */
 	updateBorderRects();
@@ -146,14 +154,14 @@ int main(int argv, char** args) {
 	updateGlobalTimer();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile.rect.h;
+	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile->rect.h;
 	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-	bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile.rect.w;
-	for (bgScroll.j = -tile.rect.h; bgScroll.j <= gameHeight + tile.rect.h; bgScroll.j += tile.rect.h) {
-		for (bgScroll.i = -tile.rect.w; bgScroll.i <= gameWidth + tile.rect.w; bgScroll.i += tile.rect.w) {
-			tile.rect.x = bgScroll.i + bgScroll.speedStep_x_int;
-			tile.rect.y = bgScroll.j + bgScroll.speedStep_y_int;
-			SDL_RenderCopy(renderer, tile.texture, NULL, &tile.rect);
+	bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile->rect.w;
+	for (bgScroll.j = -tile->rect.h; bgScroll.j <= gameHeight + tile->rect.h; bgScroll.j += tile->rect.h) {
+		for (bgScroll.i = -tile->rect.w; bgScroll.i <= gameWidth + tile->rect.w; bgScroll.i += tile->rect.w) {
+			tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
+			tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
+			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
 		}
 	}
 	renderText(&text_Loading);
@@ -388,6 +396,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Music Volume",     text_Music_Volume,     SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_VOLUME_Y);
 	SET_TEXT_WITH_OUTLINE("SFX Volume",       text_SFX_Volume,       SOUND_MENU_CURSOR_POSITION_X,         TEXT_SFX_VOLUME_Y);
 	/* Background Menu */
+	SET_TEXT_WITH_OUTLINE("Background Type",  text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
 	SET_TEXT_WITH_OUTLINE("Scroll Speed",     text_Scroll_Speed,     BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_SPEED_Y);
 	SET_TEXT_WITH_OUTLINE("Scroll Direction", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_DIRECTION_Y);
 	SET_TEXT_WITH_OUTLINE("Background Size",  text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
@@ -896,14 +905,14 @@ int main(int argv, char** args) {
 
 		/* Draw Tile Background */
 		bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-		bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile.rect.h;
+		bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile->rect.h;
 		bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-		bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile.rect.w;
-		for (bgScroll.j = -tile.rect.h; bgScroll.j <= gameHeight + tile.rect.h; bgScroll.j += tile.rect.h) {
-			for (bgScroll.i = -tile.rect.w; bgScroll.i <= gameWidth + tile.rect.w; bgScroll.i += tile.rect.w) {
-				tile.rect.x = bgScroll.i + bgScroll.speedStep_x_int;
-				tile.rect.y = bgScroll.j + bgScroll.speedStep_y_int;
-				SDL_RenderCopy(renderer, tile.texture, NULL, &tile.rect);
+		bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile->rect.w;
+		for (bgScroll.j = -tile->rect.h; bgScroll.j <= gameHeight + tile->rect.h; bgScroll.j += tile->rect.h) {
+			for (bgScroll.i = -tile->rect.w; bgScroll.i <= gameWidth + tile->rect.w; bgScroll.i += tile->rect.w) {
+				tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
+				tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
+				SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
 			}
 		}
 
@@ -1345,7 +1354,7 @@ int main(int argv, char** args) {
 			case 18:
 				/* Key Presses */
 				menuHandleBackButton(2);
-				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 7) {
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 8) {
 					menuIndex_credits++;
 				}
 				else if (keyPressed(INPUT_LEFT) && menuIndex_credits > 0) {
@@ -1375,6 +1384,9 @@ int main(int argv, char** args) {
 						break;
 					case 7:
 						renderCreditsTextPage8();
+						break;
+					case 8:
+						renderCreditsTextPage9();
 						break;
 					default:
 						break;
@@ -1477,7 +1489,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1640,26 +1652,32 @@ int main(int argv, char** args) {
 				/* Key Presses + Animate Cursor */
 				menuHandleVertCursorMovement(menuCursorIndex_background, 4, 0);
 				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 2);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Type, BACKGROUND_MENU_ENDPOINT, 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 4);
 				}
 				updateBackgroundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_background) {
 						case 0:
+							if (--bgSettings.type < 1)
+								bgSettings.type = 8;
+							setBGType();
+							break;
+						case 1:
 							bgSettings.speedMult -= 5;
 							if (bgSettings.speedMult < 0)
 								bgSettings.speedMult = 100;
 							break;
-						case 1:
+						case 2:
 							if (--bgSettings.scrollDir < 0)
 								bgSettings.scrollDir = 71;
 							setBGScrollSpeed();
 							break;
-						case 2:
+						case 3:
 							bgSettings.scale--;
 							if (bgSettings.scale < 1)
 								bgSettings.scale = 10;
@@ -1670,26 +1688,33 @@ int main(int argv, char** args) {
 					}
 				}
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
-					(mouseIsInRectWithSetting(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
+					(mouseIsInRectWithSetting(text_Background_Type.rect, BACKGROUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Scroll_Direction.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Background_Size.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, BACKGROUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_background) {
 						case 0:
-							bgSettings.speedMult = (bgSettings.speedMult + 5) % 105;
+							if (++bgSettings.type > 8)
+								bgSettings.type = 1;
+							setBGType();
 							break;
 						case 1:
+							bgSettings.speedMult = (bgSettings.speedMult + 5) % 105;
+							break;
+						case 2:
 							bgSettings.scrollDir = (bgSettings.scrollDir + 1) % 72;
 							setBGScrollSpeed();
 							break;
-						case 2:
+						case 3:
 							bgSettings.scale++;
 							if (bgSettings.scale > 10)
 								bgSettings.scale = 1;
 							SET_SPRITE_SCALE_TILE();
 							break;
-						case 3:
+						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
+								bgSettings.type = 1;
 								bgSettings.scrollDir = 22;
 								setBGScrollSpeed();
 								bgSettings.speedMult = 15;
@@ -1702,12 +1727,14 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Set and Draw Numbers */
+				setAndRenderNumThreeDigitCentered(bgSettings.type, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_TYPE_Y);
 				setAndRenderNumThreeDigitCentered(bgSettings.speedMult, BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_SPEED_Y);
 				setAndRenderNumThreeDigitCentered((bgSettings.scrollDir * 5), BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
 				setAndRenderNumThreeDigitCentered(bgSettings.scale, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_SIZE_Y);
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderText(&text_Background_Type);
 				renderText(&text_Scroll_Speed);
 				renderText(&text_Scroll_Direction);
 				renderText(&text_Background_Size);

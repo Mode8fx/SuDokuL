@@ -204,6 +204,34 @@ bool mouseIsInRectWithSetting(TextRect r, Sint16 endpointX) {
         && (mouseInput_y >= r.y)
         && (mouseInput_y <= (r.y + r.h));
 }
+void setBGType() {
+    switch (bgSettings.type) {
+		case 2:
+			tile = &tile2;
+            break;
+        case 3:
+            tile = &tile3;
+			break;
+        case 4:
+            tile = &tile_grasslands;
+			break;
+        case 5:
+            tile = &tile_grasslands2;
+            break;
+        case 6:
+            tile = &tile_desert;
+            break;
+        case 7:
+            tile = &tile_cave;
+			break;
+        case 8:
+            tile = &tile_snowymountain;
+			break;
+        default:
+            tile = &tile1;
+			break;
+    }
+}
 
 void setBGScrollSpeed() {
     bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);

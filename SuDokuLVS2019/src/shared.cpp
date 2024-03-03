@@ -10,7 +10,7 @@
 void loadSettingsFile() {
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
-		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 15, 22, DEFAULT_BG_SCALE);
+		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, DEFAULT_BG_SCALE);
 	} else {
 		SDL_RWread(settingsFile, &controlSettings, sizeof(ControlSettings), 1);
 		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
@@ -20,7 +20,7 @@ void loadSettingsFile() {
 	}
 }
 
-void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 sm, Sint8 sd, Sint8 s) {
+void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s) {
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");
 	if (settingsFile != NULL) {
 		controlSettings.swapConfirmAndBack = scab;
@@ -32,6 +32,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 		soundSettings.musicIndex = mi;
 		soundSettings.bgmVolume = bgmv;
 		soundSettings.sfxVolume = sfxv;
+		bgSettings.type = t;
 		bgSettings.speedMult = sm;
 		bgSettings.scrollDir = sd;
 		bgSettings.scale = s;
@@ -44,6 +45,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 		SDL_RWwrite(settingsFile, &soundSettings.musicIndex, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &soundSettings.bgmVolume, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &soundSettings.sfxVolume, sizeof(Sint8), 1);
+		SDL_RWwrite(settingsFile, &bgSettings.type, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &bgSettings.speedMult, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &bgSettings.scrollDir, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &bgSettings.scale, sizeof(Sint8), 1);
@@ -202,7 +204,7 @@ void saveCurrentSettings() {
 	initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting,
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,
-		bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+		bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
 }
 
 void setNativeResolution() {
@@ -381,7 +383,14 @@ void renderBorderRects() {
 void sdlDestroyAll() {
 	/* Destroy Everything */
 	/* Textures */
-	SDL_DestroyTexture(tile.texture);
+	SDL_DestroyTexture(tile1.texture);
+	SDL_DestroyTexture(tile2.texture);
+	SDL_DestroyTexture(tile3.texture);
+	SDL_DestroyTexture(tile_cave.texture);
+	SDL_DestroyTexture(tile_desert.texture);
+	SDL_DestroyTexture(tile_grasslands.texture);
+	SDL_DestroyTexture(tile_grasslands2.texture);
+	SDL_DestroyTexture(tile_snowymountain.texture);
 	SDL_DestroyTexture(logo.texture);
 	SDL_DestroyTexture(menuCursor.texture);
 	SDL_DestroyTexture(game_grid.texture);
