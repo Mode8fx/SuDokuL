@@ -1564,7 +1564,7 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_sound) {
 						case 0:
 							if (--soundSettings.musicIndex < 1)
-								soundSettings.musicIndex = 7;
+								soundSettings.musicIndex = 8;
 							playMusicAtIndex(soundSettings.musicIndex);
 							break;
 						case 1:
@@ -1590,7 +1590,7 @@ int main(int argv, char** args) {
 					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, SOUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_sound) {
 						case 0:
-							if (++soundSettings.musicIndex > 7)
+							if (++soundSettings.musicIndex > 8)
                                 soundSettings.musicIndex = 1;
 							playMusicAtIndex(soundSettings.musicIndex);
 							break;
