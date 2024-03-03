@@ -384,12 +384,20 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Hide",             text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #else
-	SET_TEXT_WITH_OUTLINE("Integer Scale",    text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Integer Scale", text_Integer_Scale,   VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Int. Scale",   text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
+	}
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #endif
 #if !defined(ANDROID)
-	SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,     TEXT_APPLY_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Quit and Apply Changes", text_Apply,  VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
+	}
 #endif
 	/* Music Menu */
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
@@ -399,7 +407,11 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Type",             text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
 	SET_TEXT_WITH_OUTLINE("Size",             text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
 	SET_TEXT_WITH_OUTLINE("Scroll Speed",     text_Scroll_Speed,     BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_SPEED_Y);
-	SET_TEXT_WITH_OUTLINE("Scroll Direction", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_DIRECTION_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Scroll Direction", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Scroll Dir.", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
+	}
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_RESET_TO_DEFAULT_Y);
 	/* Credits */
 	setCreditsText();

@@ -16,11 +16,10 @@ void initStartingTextVariables() {
     text_menuChoice5 = (TEXT_PRESS_START_Y + (FONT_SIZE * 4));
     text_midScreen_Y = ((gameHeight - FONT_SIZE) / 2);
     text_quitToMenu_Y = (TEXT_PAUSED_Y + (FONT_SIZE * 2.5));
+	deepMenuCursorPosition_X = (gameWidth / 6);
 	if (!compactDisplay) {
-		deepMenuCursorPosition_X = (gameWidth / 6);
 		controlsMenuCursorPosition_X = (gameWidth / 8);
 	} else {
-		deepMenuCursorPosition_X = (gameWidth / 12);
 		controlsMenuCursorPosition_X = (gameWidth / 12);
 	}
 	videoMenuNumPosition_X = (gameWidth * 3 / 5);
@@ -628,20 +627,20 @@ void setCreditsText() {
     SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (FONT_SIZE * (CREDITS_STEP * 4.45))          );
     SET_TEXT_WITH_OUTLINE(CHEAT1_TEXT,                  text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (FONT_SIZE * (CREDITS_STEP *  5.6))          );
     SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28),          (FONT_SIZE * (CREDITS_STEP * 6.75))          );
-	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                  text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),           (FONT_SIZE * (CREDITS_STEP * 7.9))           );
+	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                  text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),           (FONT_SIZE * (CREDITS_STEP *  7.9))          );
 	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),        (FONT_SIZE * (CREDITS_STEP * 9.05))          );
     SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (FONT_SIZE * (CREDITS_STEP * 10.2))          );
     SET_TEXT_WITH_OUTLINE("- Mode8fx",                  text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (FONT_SIZE * (CREDITS_STEP * 12.5))          );
 	SET_TEXT_WITH_OUTLINE("(7/9)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P7.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",           text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),              (FONT_SIZE * (CREDITS_STEP *     1))         );
-    SET_TEXT_WITH_OUTLINE("SuDokuL is available on:",   text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),              (FONT_SIZE * (CREDITS_STEP *   3.3))         );
-    SET_TEXT_WITH_OUTLINE("PC",                         text_Credits_33,  OBJ_TO_MID_SCREEN_X(text_Credits_33),              (FONT_SIZE * (CREDITS_STEP *  4.45))         );
-    SET_TEXT_WITH_OUTLINE("Android",                    text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),              (FONT_SIZE * (CREDITS_STEP *   5.6))         );
-    SET_TEXT_WITH_OUTLINE("Switch",                     text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),              (FONT_SIZE * (CREDITS_STEP *  6.75))         );
-    SET_TEXT_WITH_OUTLINE("Wii U",                      text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *   7.9))         );
-    SET_TEXT_WITH_OUTLINE("Vita",                       text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *  9.05))         );
-    SET_TEXT_WITH_OUTLINE("PSP",                        text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *  10.2))         );
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),       (FONT_SIZE * (CREDITS_STEP * 12.5))          );
+    SET_TEXT_WITH_OUTLINE("SuDokuL is available on a wide", text_Credits_32, OBJ_TO_MID_SCREEN_X(text_Credits_32),           (FONT_SIZE * (CREDITS_STEP *   3.5))         );
+    SET_TEXT_WITH_OUTLINE("variety of homebrew-enabled", text_Credits_33, OBJ_TO_MID_SCREEN_X(text_Credits_33),              (FONT_SIZE * (CREDITS_STEP *  4.75))         );
+    SET_TEXT_WITH_OUTLINE("systems, old and new.",      text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),              (FONT_SIZE * (CREDITS_STEP *     6))         );
+    SET_TEXT_WITH_OUTLINE("Play it everywhere!",        text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),              (FONT_SIZE * (CREDITS_STEP *  7.25))         );
+    SET_TEXT_WITH_OUTLINE("",                           text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (FONT_SIZE * (CREDITS_STEP *     0))         );
+    SET_TEXT_WITH_OUTLINE("",                           text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (FONT_SIZE * (CREDITS_STEP *     0))         );
+    SET_TEXT_WITH_OUTLINE("",                           text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (FONT_SIZE * (CREDITS_STEP *     0))         );
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),       (FONT_SIZE * (CREDITS_STEP *  12.5))         );
 	SET_TEXT_WITH_OUTLINE("(8/9)",                      text_Credits_P8,  (gameWidth - (text_Credits_P8.rect.w * 1.25)),     (gameHeight - (text_Credits_P8.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("MOST BACKGROUND ART",  text_Credits_40,  OBJ_TO_MID_SCREEN_X(text_Credits_40),              (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("kddove85",                   text_Credits_41,  OBJ_TO_MID_SCREEN_X(text_Credits_41),              (FONT_SIZE * (CREDITS_STEP *    5))          );
