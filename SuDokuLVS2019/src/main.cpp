@@ -1650,7 +1650,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_background, 4, 0);
+				menuHandleVertCursorMovement(menuCursorIndex_background, 5, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Type, BACKGROUND_MENU_ENDPOINT, 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 1);
@@ -1714,13 +1714,8 @@ int main(int argv, char** args) {
 							break;
 						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
-								bgSettings.type = 1;
-								bgSettings.scrollDir = 22;
-								setBGScrollSpeed();
-								bgSettings.speedMult = 15;
-								//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
-								bgSettings.scale = DEFAULT_BG_SCALE;
-								SET_SPRITE_SCALE_TILE();
+								resetBGToDefault();
+								setBGType();
 							}
 						default:
 							break;

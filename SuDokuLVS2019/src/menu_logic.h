@@ -38,6 +38,7 @@ extern bool mouseIsInRect(TextRect);
 extern void menuHandleVertCursorMovementMouseWithSetting(Sint8 &, TextObject, Sint16, Sint8);
 extern void controlsMenuHandleVertCursorMovementMouse(TextObject, Sint8);
 extern bool mouseIsInRectWithSetting(TextRect, Sint16);
+extern void resetBGToDefault();
 extern void setBGType();
 extern void setBGScrollSpeed();
 extern bool mouseMoved();

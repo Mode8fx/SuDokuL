@@ -204,6 +204,17 @@ bool mouseIsInRectWithSetting(TextRect r, Sint16 endpointX) {
         && (mouseInput_y >= r.y)
         && (mouseInput_y <= (r.y + r.h));
 }
+
+void resetBGToDefault() {
+    bgSettings.type = 1;
+    bgSettings.scrollDir = 22;
+    setBGScrollSpeed();
+    bgSettings.speedMult = 15;
+    //bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
+    bgSettings.scale = DEFAULT_BG_SCALE;
+    SET_SPRITE_SCALE_TILE();
+}
+
 void setBGType() {
     switch (bgSettings.type) {
 		case 2:
@@ -231,6 +242,7 @@ void setBGType() {
             tile = &tile1;
 			break;
     }
+    SET_SPRITE_SCALE_TILE();
 }
 
 void setBGScrollSpeed() {
