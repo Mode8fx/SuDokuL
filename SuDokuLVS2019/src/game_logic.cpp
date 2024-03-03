@@ -340,12 +340,14 @@ void gameHandleCheatRevealCell() {
                 cheat1Counter = 0;
             }
         }
+    } else if (keyPressed(INPUT_CONFIRM_ALT)) {
+        cheat1Counter = 0;
     }
 }
 
 void gameHandleCheatClearIncorrectCells() {
-    if (((keyPressed(INPUT_BACK) || clickedInRect(&game_sidebar_small_2)) || (keyPressed(INPUT_SWAP) || clickedInRect(&game_sidebar_small_3))) && miniGridState == 0) {
-        if ((keyPressed(INPUT_BACK) || clickedInRect(&game_sidebar_small_2)) == (cheat2Counter % 2 == 0)) {
+    if (((keyPressed(INPUT_BACK)) || (keyPressed(INPUT_SWAP)) || clickedInRect(&game_sidebar_small_2)) && miniGridState == 0) {
+        if (clickedInRect(&game_sidebar_small_2) || ((keyPressed(INPUT_BACK)) == (cheat2Counter % 2 == 0))) {
             if (++cheat2Counter >= 8) {
                 for (i = 0; i < 81; i++) {
                     if (originalGrid[i] == 0 && grid[i] != solutionGrid[i]) {
@@ -353,11 +355,32 @@ void gameHandleCheatClearIncorrectCells() {
                     }
                 }
                 Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
+                cheat2Counter = 0;
             }
         } else {
             cheat2Counter = 0;
         }
+    } else if (keyPressed(INPUT_CONFIRM_ALT)) {
+        cheat2Counter = 0;
     }
+}
+
+void gameHandleChangeSong() {
+    if (keyPressed(INPUT_CONFIRM_ALT)) {
+        if (clickedInRect(&game_sidebar_small_3)) {
+            if (++songChangeCounter >= 3) {
+                if (++soundSettings.musicIndex > 8)
+                    soundSettings.musicIndex = 1;
+                playMusicAtIndex(soundSettings.musicIndex);
+                if (programState != 20) {
+                    saveCurrentSettings();
+                }
+                songChangeCounter = 0;
+		    }
+        } else {
+			songChangeCounter = 0;
+        }
+	}
 }
 
 Sint16 xAtMiniGridIndex(Sint8 index) {

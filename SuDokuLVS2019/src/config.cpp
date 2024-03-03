@@ -12,8 +12,14 @@ void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	if (dirInputs & pressedVal) {
 		keyInputs |= inputVal;
 		heldButtons |= inputVal;
-		cheat1Counter = 0;
+		resetCheatCounters();
 	} else if (dirInputs & depressedVal) {
 		heldButtons &= ~inputVal;
 	}
+}
+
+void resetCheatCounters() {
+	cheat1Counter = 0;
+	cheat2Counter = 0;
+	songChangeCounter = 0;
 }
