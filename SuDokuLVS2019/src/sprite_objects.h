@@ -71,7 +71,7 @@ extern SpriteObjectWithPos *currMiniGrid;
 #define OBJ_TO_SCREEN_AT_FRACTION(obj, val) \
     ((gameWidth * val) - (obj.rect.w / 2))
 
-#define OBJ_TO_MID_SIDEBAR(obj) \
-    (gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w - obj.rect.w) / 2)
+#define OBJ_TO_MID_RECT_X(r, obj) \
+    (r.x + (r.w - obj.rect.w) / 2)
 
 #endif

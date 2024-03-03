@@ -315,12 +315,12 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Hard,             OBJ_TO_MID_SCREEN_X(text_Hard),       TEXT_HARD_Y);
 	SET_TEXT_WITH_OUTLINE("Very Hard",        text_Very_Hard,        OBJ_TO_MID_SCREEN_X(text_Very_Hard),  TEXT_VERY_HARD_Y);
 	/* Game */
-	SET_TEXT_WITH_OUTLINE("Time",             text_Time,             OBJ_TO_MID_SIDEBAR(text_Time),        TEXT_TIME_Y);
-	SET_TEXT_WITH_OUTLINE("Empty",            text_Empty,            OBJ_TO_MID_SIDEBAR(text_Empty),       TEXT_EMPTY_Y);
-	SET_TEXT_WITH_OUTLINE("Easy",             text_Game_Easy,        OBJ_TO_MID_SIDEBAR(text_Game_Easy),   TEXT_GAME_EASY_Y);
-	SET_TEXT_WITH_OUTLINE("Normal",           text_Game_Normal,      OBJ_TO_MID_SIDEBAR(text_Game_Normal), TEXT_GAME_NORMAL_Y);
-	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_SIDEBAR(text_Game_Hard),   TEXT_GAME_HARD_Y);
-	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_SIDEBAR(text_Game_VHard),  TEXT_GAME_VHARD_Y);
+	SET_TEXT_WITH_OUTLINE("Time",             text_Time,             OBJ_TO_MID_RECT_X(gameSidebarSmall1Rect, text_Time),        TEXT_TIME_Y);
+	SET_TEXT_WITH_OUTLINE("Empty",            text_Empty,            OBJ_TO_MID_RECT_X(gameSidebarSmall2Rect, text_Empty),       TEXT_EMPTY_Y);
+	SET_TEXT_WITH_OUTLINE("Easy",             text_Game_Easy,        OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_Easy),   TEXT_GAME_EASY_Y);
+	SET_TEXT_WITH_OUTLINE("Normal",           text_Game_Normal,      OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_Normal), TEXT_GAME_NORMAL_Y);
+	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_Hard),   TEXT_GAME_HARD_Y);
+	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_VHard),  TEXT_GAME_VHARD_Y);
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
 #if defined(WII_U) || defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("Press Select to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);

@@ -406,29 +406,27 @@ void setGridCursorBySmallY() {
 }
 
 void drawSidebar() {
-    if (!compactDisplay) {
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
-        renderText(&text_Time);
-        SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8), gameSidebarSmall1Rect.y + (gameSidebarSmall1Rect.h * 3 / 4) - FONT_SIZE);
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
-        renderText(&text_Empty);
-        RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64), gameSidebarSmall2Rect.y + (gameSidebarSmall2Rect.h * 3 / 4) - FONT_SIZE);
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
-        switch (menuCursorIndex_play) {
-            case 0:
-                renderText(&text_Game_Easy);
-                break;
-            case 1:
-                renderText(&text_Game_Normal);
-                break;
-            case 2:
-                renderText(&text_Game_Hard);
-                break;
-            case 3:
-                renderText(&text_Game_VHard);
-                break;
-            default:
-                break;
-        }
+    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
+    renderText(&text_Time);
+    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8), gameSidebarSmall1Rect.y + (compactDisplay * gameSidebarSmall1Rect.h / 16) + (gameSidebarSmall1Rect.h * 3 / 4) - FONT_SIZE);
+    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
+    renderText(&text_Empty);
+    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64), gameSidebarSmall2Rect.y + (compactDisplay * gameSidebarSmall2Rect.h / 16) + (gameSidebarSmall2Rect.h * 3 / 4) - FONT_SIZE);
+    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
+    switch (menuCursorIndex_play) {
+        case 0:
+            renderText(&text_Game_Easy);
+            break;
+        case 1:
+            renderText(&text_Game_Normal);
+            break;
+        case 2:
+            renderText(&text_Game_Hard);
+            break;
+        case 3:
+            renderText(&text_Game_VHard);
+            break;
+        default:
+            break;
     }
 }

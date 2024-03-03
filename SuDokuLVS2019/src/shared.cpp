@@ -100,22 +100,29 @@ void initStartingSharedVariables() {
 	gridSizeB = (4 * GAME_HEIGHT_MULT);
 	gridSizeC = (6 * GAME_HEIGHT_MULT);
 	gridSizeD = (12 * GAME_HEIGHT_MULT);
-	gridSizeA3 = (3 * GRID_SIZE_A);
-	gridSize = (27 * GRID_SIZE_A + 6 * GRID_SIZE_B + 2 * GRID_SIZE_C + 2 * GRID_SIZE_D);
-	if (!compactDisplay) {
-		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2) + (GRID_SIZE * 5 / 24));
-	} else {
-		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2));
-	}
-	gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);
-	gameSidebarSmall1Rect.x = (Uint16)(GRID_POS_X - SIDEBAR_SMALL_SIZE_X - (GRID_SIZE / 12));
-	gameSidebarSmall1Rect.y = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));
+	gridSizeA3 = (3 * gridSizeA);
+	gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
 	gameSidebarSmall1Rect.w = SIDEBAR_SMALL_SIZE_X;
 	gameSidebarSmall1Rect.h = SIDEBAR_SMALL_SIZE_Y;
-	gameSidebarSmall2Rect = gameSidebarSmall1Rect;
-	gameSidebarSmall2Rect.y = (GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));
-	gameSidebarSmall3Rect = gameSidebarSmall1Rect;
-	gameSidebarSmall3Rect.y = (GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));
+	if (!compactDisplay) {
+		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
+		gridPosY = (Uint16)((gameHeight - gridSize) / 2);
+		gameSidebarSmall1Rect.x = (GRID_POS_X - SIDEBAR_SMALL_SIZE_X - (gridSize / 12));
+		gameSidebarSmall1Rect.y = (GRID_POS_Y + (gridSize / 16));
+		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
+		gameSidebarSmall2Rect.y = (GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
+		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
+		gameSidebarSmall3Rect.y = (GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
+	} else {
+		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2));
+		gridPosY = (Uint16)((gameHeight - GRID_SIZE) * 875 / 1000);
+		gameSidebarSmall1Rect.x = (gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2);
+		gameSidebarSmall1Rect.y = -SIDEBAR_SMALL_SIZE_Y / 4;
+		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
+		gameSidebarSmall2Rect.x = (gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2);
+		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
+		gameSidebarSmall3Rect.x = (gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2);
+	}
 	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 0 / 3));
 	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 1 / 3));
 	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 2 / 3));
