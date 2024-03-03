@@ -396,10 +396,10 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Music Volume",     text_Music_Volume,     SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_VOLUME_Y);
 	SET_TEXT_WITH_OUTLINE("SFX Volume",       text_SFX_Volume,       SOUND_MENU_CURSOR_POSITION_X,         TEXT_SFX_VOLUME_Y);
 	/* Background Menu */
-	SET_TEXT_WITH_OUTLINE("Background Type",  text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
+	SET_TEXT_WITH_OUTLINE("Type",             text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
+	SET_TEXT_WITH_OUTLINE("Size",             text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
 	SET_TEXT_WITH_OUTLINE("Scroll Speed",     text_Scroll_Speed,     BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_SPEED_Y);
 	SET_TEXT_WITH_OUTLINE("Scroll Direction", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_SCROLL_DIRECTION_Y);
-	SET_TEXT_WITH_OUTLINE("Background Size",  text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_RESET_TO_DEFAULT_Y);
 	/* Credits */
 	setCreditsText();
@@ -1668,20 +1668,20 @@ int main(int argv, char** args) {
 							setBGType();
 							break;
 						case 1:
-							bgSettings.speedMult -= 5;
-							if (bgSettings.speedMult < 0)
-								bgSettings.speedMult = 100;
-							break;
-						case 2:
-							if (--bgSettings.scrollDir < 0)
-								bgSettings.scrollDir = 71;
-							setBGScrollSpeed();
-							break;
-						case 3:
 							bgSettings.scale--;
 							if (bgSettings.scale < 1)
 								bgSettings.scale = 10;
 							SET_SPRITE_SCALE_TILE();
+							break;
+						case 2:
+							bgSettings.speedMult -= 5;
+							if (bgSettings.speedMult < 0)
+								bgSettings.speedMult = 100;
+							break;
+						case 3:
+							if (--bgSettings.scrollDir < 0)
+								bgSettings.scrollDir = 71;
+							setBGScrollSpeed();
 							break;
 						default:
 							break;
@@ -1700,17 +1700,17 @@ int main(int argv, char** args) {
 							setBGType();
 							break;
 						case 1:
-							bgSettings.speedMult = (bgSettings.speedMult + 5) % 105;
-							break;
-						case 2:
-							bgSettings.scrollDir = (bgSettings.scrollDir + 1) % 72;
-							setBGScrollSpeed();
-							break;
-						case 3:
 							bgSettings.scale++;
 							if (bgSettings.scale > 10)
 								bgSettings.scale = 1;
 							SET_SPRITE_SCALE_TILE();
+							break;
+						case 2:
+							bgSettings.speedMult = (bgSettings.speedMult + 5) % 105;
+							break;
+						case 3:
+							bgSettings.scrollDir = (bgSettings.scrollDir + 1) % 72;
+							setBGScrollSpeed();
 							break;
 						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
@@ -1730,9 +1730,9 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Background_Type);
+				renderText(&text_Background_Size);
 				renderText(&text_Scroll_Speed);
 				renderText(&text_Scroll_Direction);
-				renderText(&text_Background_Size);
 				renderText(&text_Reset_to_Default);
 				break;
 			/* 26 = Scores Menu */
