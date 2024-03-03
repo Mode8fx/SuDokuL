@@ -232,12 +232,7 @@ int main(int argv, char** args) {
 	PREPARE_SPRITE(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, SIDEBAR_SMALL_POS_X, SIDEBAR_SMALL_1_POS_Y, 1);
-	game_sidebar_small_1 = game_sidebar_small.rect;
-	game_sidebar_small_2 = game_sidebar_small.rect;
-	game_sidebar_small_2.y = SIDEBAR_SMALL_2_POS_Y;
-	game_sidebar_small_3 = game_sidebar_small.rect;
-	game_sidebar_small_3.y = SIDEBAR_SMALL_3_POS_Y;
+	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 1);
 	PREPARE_SPRITE(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, 1);
 	PREPARE_SPRITE(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, 1);

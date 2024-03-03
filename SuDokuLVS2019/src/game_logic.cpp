@@ -331,7 +331,7 @@ void setGridCursorByLargeY() {
 }
 
 void gameHandleCheatRevealCell() {
-    if ((keyPressed(INPUT_SWAP) || clickedInRect(&game_sidebar_small_1)) && miniGridState == 0) {
+    if ((keyPressed(INPUT_SWAP) || clickedInRect(&gameSidebarSmall1Rect)) && miniGridState == 0) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (originalGrid[i] == 0) {
             if (++cheat1Counter >= 8) {
@@ -346,8 +346,8 @@ void gameHandleCheatRevealCell() {
 }
 
 void gameHandleCheatClearIncorrectCells() {
-    if (((keyPressed(INPUT_BACK)) || (keyPressed(INPUT_SWAP)) || clickedInRect(&game_sidebar_small_2)) && miniGridState == 0) {
-        if (clickedInRect(&game_sidebar_small_2) || ((keyPressed(INPUT_BACK)) == (cheat2Counter % 2 == 0))) {
+    if (((keyPressed(INPUT_BACK)) || (keyPressed(INPUT_SWAP)) || clickedInRect(&gameSidebarSmall2Rect)) && miniGridState == 0) {
+        if (clickedInRect(&gameSidebarSmall2Rect) || ((keyPressed(INPUT_BACK)) == (cheat2Counter % 2 == 0))) {
             if (++cheat2Counter >= 8) {
                 for (i = 0; i < 81; i++) {
                     if (originalGrid[i] == 0 && grid[i] != solutionGrid[i]) {
@@ -367,7 +367,7 @@ void gameHandleCheatClearIncorrectCells() {
 
 void gameHandleChangeSong() {
     if (keyPressed(INPUT_CONFIRM_ALT)) {
-        if (clickedInRect(&game_sidebar_small_3)) {
+        if (clickedInRect(&gameSidebarSmall3Rect)) {
             if (++songChangeCounter >= 3) {
                 if (++soundSettings.musicIndex > 8)
                     soundSettings.musicIndex = 1;
@@ -407,13 +407,13 @@ void setGridCursorBySmallY() {
 
 void drawSidebar() {
     if (!compactDisplay) {
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_1);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
         renderText(&text_Time);
-        SET_AND_RENDER_TIMER(game_sidebar_small_1.x + (game_sidebar_small_1.w / 8), game_sidebar_small_1.y + (game_sidebar_small_1.h * 3 / 4) - FONT_SIZE);
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_2);
+        SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8), gameSidebarSmall1Rect.y + (gameSidebarSmall1Rect.h * 3 / 4) - FONT_SIZE);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
         renderText(&text_Empty);
-        RENDER_NUM_EMPTY(game_sidebar_small_2.x + (game_sidebar_small_2.w * 23 / 64), game_sidebar_small_2.y + (game_sidebar_small_2.h * 3 / 4) - FONT_SIZE);
-        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &game_sidebar_small_3);
+        RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64), gameSidebarSmall2Rect.y + (gameSidebarSmall2Rect.h * 3 / 4) - FONT_SIZE);
+        SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
         switch (menuCursorIndex_play) {
             case 0:
                 renderText(&text_Game_Easy);

@@ -106,12 +106,14 @@ void initStartingSharedVariables() {
 		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2));
 	}
 	gridPosY = (Uint16)((gameHeight - GRID_SIZE) / 2);
-	sideBarSizeX = (Uint16)(GRID_SIZE / 3);
-	sideBarSizeY = (Uint16)(GRID_SIZE / 4);
-	sidebarSmallPosX = (Uint16)(GRID_POS_X - SIDEBAR_SIZE_X - (GRID_SIZE / 12));
-	sidebarSmall1PosY = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));
-	sidebarSmall2PosY = (Uint16)(GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));
-	sidebarSmall3PosY = (Uint16)(GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));
+	gameSidebarSmall1Rect.x = (Uint16)(GRID_POS_X - SIDEBAR_SMALL_SIZE_X - (GRID_SIZE / 12));
+	gameSidebarSmall1Rect.y = (Uint16)(GRID_POS_Y + (GRID_SIZE / 16));
+	gameSidebarSmall1Rect.w = SIDEBAR_SMALL_SIZE_X;
+	gameSidebarSmall1Rect.h = SIDEBAR_SMALL_SIZE_Y;
+	gameSidebarSmall2Rect = gameSidebarSmall1Rect;
+	gameSidebarSmall2Rect.y = (GRID_POS_Y + SIDEBAR_SMALL_SIZE_Y + (GRID_SIZE / 8));
+	gameSidebarSmall3Rect = gameSidebarSmall1Rect;
+	gameSidebarSmall3Rect.y = (GRID_POS_Y + (2 * SIDEBAR_SMALL_SIZE_Y) + (GRID_SIZE * 3 / 16));
 	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 0 / 3));
 	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 1 / 3));
 	gridStartingPosX[2] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (2 * GRID_SIZE_A3) + (2 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 2 / 3));

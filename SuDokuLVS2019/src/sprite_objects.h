@@ -28,9 +28,9 @@ extern SpriteObjectWithPos gridCursor_bottom_right;
 extern SpriteObjectWithPos gridCursor_top_left;
 extern SpriteObjectWithPos gridCursor_top_right;
 extern SpriteObject game_sidebar_small;
-extern SDL_Rect game_sidebar_small_1;
-extern SDL_Rect game_sidebar_small_2;
-extern SDL_Rect game_sidebar_small_3;
+extern SDL_Rect gameSidebarSmall1Rect;
+extern SDL_Rect gameSidebarSmall2Rect;
+extern SDL_Rect gameSidebarSmall3Rect;
 
 extern SpriteObjectWithPos miniGrid_bottom_left;
 extern SpriteObjectWithPos miniGrid_bottom_right;
@@ -64,6 +64,6 @@ extern SpriteObjectWithPos *currMiniGrid;
     ((gameWidth * val) - (obj.rect.w / 2))
 
 #define OBJ_TO_MID_SIDEBAR(obj) \
-    (game_sidebar_small_1.x + (game_sidebar_small_1.w - obj.rect.w) / 2)
+    (gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w - obj.rect.w) / 2)
 
 #endif

@@ -59,12 +59,6 @@ extern double gridSize;
 extern double gridSizeA3;
 extern Uint16 gridPosX;
 extern Uint16 gridPosY;
-extern Uint16 sideBarSizeX;
-extern Uint16 sideBarSizeY;
-extern Uint16 sidebarSmallPosX;
-extern Uint16 sidebarSmall1PosY;
-extern Uint16 sidebarSmall2PosY;
-extern Uint16 sidebarSmall3PosY;
 extern Uint16 gridStartingPosX[9];
 extern Uint16 gridStartingPosY[9];
 extern Sint8 numOffset_large_x[9];
@@ -166,12 +160,8 @@ extern bool gameCompleted;
 #define GRID_SIZE_A3          (gridSizeA3)
 #define GRID_POS_X            (gridPosX)
 #define GRID_POS_Y            (gridPosY)
-#define SIDEBAR_SIZE_X        (sideBarSizeX)
-#define SIDEBAR_SMALL_SIZE_Y  (sideBarSizeY)
-#define SIDEBAR_SMALL_POS_X   (sidebarSmallPosX)
-#define SIDEBAR_SMALL_1_POS_Y (sidebarSmall1PosY)
-#define SIDEBAR_SMALL_2_POS_Y (sidebarSmall2PosY)
-#define SIDEBAR_SMALL_3_POS_Y (sidebarSmall3PosY)
+#define SIDEBAR_SMALL_SIZE_X        (GRID_SIZE / 3)
+#define SIDEBAR_SMALL_SIZE_Y   (GRID_SIZE / 4)
 #define GRID_STARTING_POS_X   (gridStartingPosX[0])
 #define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
