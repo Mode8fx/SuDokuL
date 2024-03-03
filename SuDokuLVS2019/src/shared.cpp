@@ -262,6 +262,9 @@ void setResolutionByOptions(const Uint16 *resolutionOptions_width, const Uint16 
 	}
 	videoSettings.widthSetting = resolutionOptions_width[videoSettings.resolutionIndex];
 	videoSettings.heightSetting = resolutionOptions_height[videoSettings.resolutionIndex];
+	if (videoSettings.widthSetting > SYSTEM_WIDTH || videoSettings.heightSetting > SYSTEM_HEIGHT) {
+		setResolutionByOptions(resolutionOptions_width, resolutionOptions_height, numOptions, increment);
+	}
 }
 
 void setAspectRatioByOptions(Sint8 increment) {
