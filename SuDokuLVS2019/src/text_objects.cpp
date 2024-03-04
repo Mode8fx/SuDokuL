@@ -6,6 +6,9 @@
 
 void initStartingTextVariables() {
     fontSize = (max(gameHeight / 24, 8));
+	if (fontSize == 11) {
+		fontSize = 10; // for PSP; 11 looks kinda jagged and weird compared to 10
+	}
     gridNumSize = (GRID_SIZE_A * 3);
     text_pressStartAmplitude = (FONT_SIZE / 2);
     text_standardAmplitude = (FONT_SIZE / 10);
