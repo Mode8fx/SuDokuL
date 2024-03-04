@@ -120,8 +120,8 @@ extern bool gameCompleted;
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
 #if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
-#define DEFAULT_WIDTH         0
-#define DEFAULT_HEIGHT        0
+#define DEFAULT_WIDTH         SYSTEM_WIDTH
+#define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0
 #define DEFAULT_ARI           0
 #else
@@ -141,8 +141,8 @@ extern bool gameCompleted;
 #define GRID_SIZE_A3          (gridSizeA3)
 #define GRID_POS_X            (gridPosX)
 #define GRID_POS_Y            (gridPosY)
-#define SIDEBAR_SMALL_SIZE_X        (GRID_SIZE / 3)
-#define SIDEBAR_SMALL_SIZE_Y   (GRID_SIZE / 4)
+#define SIDEBAR_SMALL_SIZE_X  (GRID_SIZE / 3)
+#define SIDEBAR_SMALL_SIZE_Y  (GRID_SIZE / 4)
 #define GRID_STARTING_POS_X   (gridStartingPosX[0])
 #define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])

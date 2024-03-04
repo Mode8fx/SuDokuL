@@ -39,9 +39,5 @@ void stopMusic(Mix_Music *bgm) {
 }
 
 void playMusic(Mix_Music *bgm) {
-#if defined(PSP)
-	Mix_PlayMusic(bgm, 0);
-#else
 	Mix_PlayMusic(bgm, -1);
-#endif
 }
