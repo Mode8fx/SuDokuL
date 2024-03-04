@@ -4,6 +4,12 @@
 #ifndef SHARED_H
 #define SHARED_H
 
+#if defined(SDL1) && !defined(WII)
+extern FILE _iob[];
+
+extern "C" FILE * __cdecl __iob_func(void);
+#endif
+
 struct ControlSettings {
 	bool swapConfirmAndBack;
 	bool enableTouchscreen;
@@ -47,7 +53,9 @@ extern Uint16 gameWidth;
 extern Uint16 gameHeight;
 extern bool compactDisplay;
 extern Uint16 defaultBGScale;
+#if !defined(SDL1)
 extern SDL_DisplayMode DM;
+#endif
 extern double gameWidthMult;
 extern double gameHeightMult;
 
@@ -110,16 +118,19 @@ extern Timer timer_paused;
 extern bool canContinue;
 extern bool gameCompleted;
 
-#if !defined(ANDROID)
-#define SYSTEM_WIDTH  DM.w
-#define SYSTEM_HEIGHT DM.h
-#else
+#if defined(ANDROID)
 #define SYSTEM_WIDTH  max(DM.w, DM.h)
 #define SYSTEM_HEIGHT min(DM.w, DM.h)
+#elif defined(SDL1)
+#define SYSTEM_WIDTH  640
+#define SYSTEM_HEIGHT 480
+#else
+#define SYSTEM_WIDTH  DM.w
+#define SYSTEM_HEIGHT DM.h
 #endif
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0
@@ -182,9 +193,12 @@ extern void sdlDestroyAll();
 extern void closeController();
 extern void systemSpecificClose();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
+#elif defined(SDL1)
+#define SCALING_WIDTH SDL_GetVideoInfo()->current_w
+#define SCALING_HEIGHT SDL_GetVideoInfo()->current_h
 #else
 #define SCALING_WIDTH SDL_GetWindowSurface(window)->w
 #define SCALING_HEIGHT SDL_GetWindowSurface(window)->h

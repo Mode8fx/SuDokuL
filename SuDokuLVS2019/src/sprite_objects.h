@@ -3,14 +3,27 @@
 #ifndef SPRITE_OBJECTS_H
 #define SPRITE_OBJECTS_H
 
+#if defined(SDL1)
+#define SDL_RenderCopy(renderer, currSprite, srcrect, outputRect) SDL_BlitSurface(currSprite, srcrect, windowScreen, outputRect)
+#define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
+#endif
+
 struct SpriteObject {
+#if !defined(SDL1)
     SDL_Texture *texture;
+#else
+    SDL_Surface *texture;
+#endif
     SDL_Rect rect;
     Sint32 width, height;
 };
 
 struct SpriteObjectWithPos {
+#if !defined(SDL1)
     SDL_Texture *texture;
+#else
+    SDL_Surface *texture;
+#endif
     SDL_Rect rect;
     Sint32 width, height;
     Sint16 startPos_x, endPos_x;
@@ -46,12 +59,20 @@ extern SpriteObjectWithPos miniGrid_top_left;
 extern SpriteObjectWithPos miniGrid_top_right;
 extern SpriteObjectWithPos *currMiniGrid;
 
+#if !defined(SDL1)
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale)                  \
     spriteObj.texture = IMG_LoadTexture_RW(renderer, SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
     SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height);                  \
     SET_SPRITE_SCALE(spriteObj, scale);                                                                    \
     spriteObj.rect.x = pos_x;                                                                              \
     spriteObj.rect.y = pos_y;
+#else
+#define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
+    spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    SET_SPRITE_SCALE(spriteObj, scale);                                                   \
+    spriteObj.rect.x = pos_x;                                                             \
+    spriteObj.rect.y = pos_y;
+#endif
 
 #define SET_SPRITE_SCALE(spriteObj, scale)                                \
     spriteObj.rect.w = (int)(spriteObj.width * GAME_HEIGHT_MULT * scale); \

@@ -12,8 +12,6 @@
 #include "include_music.h"
 #include "include_sfx.h"
 
-/* Keyboard State */
-const Uint8 *keyState = SDL_GetKeyboardState(NULL); // scancodes
 bool isContinue = false;
 
 int main(int argv, char** args) {
@@ -42,12 +40,14 @@ int main(int argv, char** args) {
 	chdir("/switch/SuDokuL");
 #endif
 
-#if defined(PSP)
-	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_EVENTS) != 0) {
+#if defined(PSP) || defined(SDL1)
+	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) != 0) {
 #else
 	if (SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS) != 0) {
 #endif
+#if !defined(SDL1) && !defined(ANDROID)
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+#endif
 		return 1;
 	}
 	TTF_Init();
@@ -57,7 +57,9 @@ int main(int argv, char** args) {
 	/* Get settings from settings.bin */
 	loadSettingsFile();
 	/* Set Video Settings */
+#if !defined(SDL1)
 	SDL_GetCurrentDisplayMode(0, &DM);
+#endif
 #if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
@@ -113,9 +115,13 @@ int main(int argv, char** args) {
 #if defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
+#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#elif defined(SDL1)
+	SDL_WM_SetCaption("SuDokuL", NULL);
+	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
+	windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
 #else
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, SDL_WINDOW_RESIZABLE);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -150,7 +156,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
 
 	/* Render loading screen */
-#if defined(PSP) || defined(VITA) || defined(WII_U)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII)
 	updateGlobalTimer();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
@@ -166,13 +172,17 @@ int main(int argv, char** args) {
 	}
 	renderText(&text_Loading);
 	renderBorderRects();
+#if !defined(SDL1)
 	SDL_RenderPresent(renderer);
+#else
+	SDL_Flip(windowScreen);
+#endif
 	preparePauseTimer();
 #endif
 
 	/* Initialize Sound */
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-#if !defined(ANDROID)
+#if !(defined(ANDROID) || defined(SDL1))
 		SDL_Log(Mix_GetError());
 #endif
 	}
@@ -189,16 +199,20 @@ int main(int argv, char** args) {
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 
 	/* Controller */
-#if !defined(PSP)
+#if defined(SDL1) // also applies to PSP SDL1
+	SDL_JoystickEventState(SDL_ENABLE);
+	controller = SDL_JoystickOpen(0);
+	SDL_JoystickEventState(SDL_ENABLE);
+#elif defined(PSP)
+	SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+	joystick = SDL_JoystickOpen(0);
+#else
 	for (i = 0; i < SDL_NumJoysticks(); i++) {
 		if (SDL_IsGameController(i)) {
 			controller = SDL_GameControllerOpen(i);
 			break;
 		}
 	}
-#else
-	SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-	controller = SDL_JoystickOpen(0);
 #endif
 
 	/* Set Background Scrolling Variables */
@@ -437,7 +451,7 @@ int main(int argv, char** args) {
 	sdlToggleFullscreen();
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII)
 	updatePauseTimer();
 #endif
 
@@ -452,11 +466,15 @@ int main(int argv, char** args) {
 			timer_buttonHold = 0;
 			timer_buttonHold_repeater = 0;
 		}
+#if defined(SDL1)
+		SDL_FillRect(windowScreen, NULL, 0x000000);
+#else
 		SDL_RenderClear(renderer);
+#endif
 
 		keyInputs = 0;
 		dirInputs = 0;
-#if !defined(PSP)
+#if !(defined(PSP) || defined(SDL1))
 		/* Update Controller Axes */
 		controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
 		controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
@@ -591,7 +609,7 @@ int main(int argv, char** args) {
 						break;
 					}
 #endif
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					updateMousePosViewportMouse();
@@ -719,7 +737,7 @@ int main(int argv, char** args) {
 						justClickedInMiniGrid = false;
 					}
 					break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 				case SDL_WINDOWEVENT:
 					if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 						windowSizeChanged = true;
@@ -795,7 +813,11 @@ int main(int argv, char** args) {
 							resetCheatCounters();
 							break;
 						}
+#if !defined(SDL1)
 						if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
+#else
+						if (event.jbutton.button == 0) {
+#endif
 							keyInputs |= INPUT_SWAP;
 							break;
 						}
@@ -899,7 +921,7 @@ int main(int argv, char** args) {
 		}
 
 		if (windowSizeChanged && isIntegerScale) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)) && !defined(SDL1)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)) && !defined(SDL1)
 			if (SDL_GetWindowSurface(window)->w < gameWidth)
 				SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
 			if (SDL_GetWindowSurface(window)->h < gameHeight)
@@ -1113,7 +1135,11 @@ int main(int argv, char** args) {
 				renderText(&text_Loading);
 				renderBorderRects();
 				/* Update Screen */
+#if !defined(SDL1)
 				SDL_RenderPresent(renderer);
+#else
+				SDL_Flip(windowScreen);
+#endif
 				preparePauseTimer();
 				if (isContinue) {
 					loadSavedPuzzle();
@@ -1279,7 +1305,7 @@ int main(int argv, char** args) {
 			case 12:
 				/* Key Presses */
 				menuHandleBackButton(2);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(WII)
 				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
 #elif defined(ANDROID)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
@@ -1298,7 +1324,7 @@ int main(int argv, char** args) {
 					case 1:
 						renderControlsTextPage2();
 						break;
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 					case 2:
 						renderControlsTextPage3();
 						break;
@@ -1843,7 +1869,11 @@ int main(int argv, char** args) {
 		renderBorderRects();
 
 		/* Update Screen */
-        SDL_RenderPresent(renderer);
+#if !defined(SDL1)
+		SDL_RenderPresent(renderer);
+#else
+		SDL_Flip(windowScreen);
+#endif
 
 		/* Cap Framerate */
 		frameTime = SDL_GetTicks() - (Uint32)timer_global.now;

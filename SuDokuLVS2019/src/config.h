@@ -4,7 +4,7 @@
 #define CONFIG_H
 
 /* SDL Controller */
-#if defined(PSP)
+#if defined(PSP) || defined(SDL1)
 extern SDL_Joystick *controller;
 #else
 extern SDL_GameController *controller;

@@ -5,6 +5,14 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (SDL1)|Win32">
+      <Configuration>Release (SDL1)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (SDL1)|x64">
+      <Configuration>Release (SDL1)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -39,6 +47,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -46,6 +61,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
@@ -63,10 +85,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -78,6 +106,10 @@
     <IncludePath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|Win32'">
+    <IncludePath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_image\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_mixer\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_image\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_mixer\lib\x86;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_ttf\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\lib\x64;$(LibraryPath)</LibraryPath>
@@ -85,6 +117,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_image\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_mixer\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL2\SDL2_ttf\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|x64'">
+    <IncludePath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_image\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_mixer\include;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_image\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_mixer\lib\x64;D:\GitHub\SuDokuL\SuDokuLVS2019\SDL1\SDL_ttf\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,6 +152,24 @@
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/DSDL1</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDLmain.lib;SDL.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -144,6 +198,24 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (SDL1)|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/DSDL1</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDLmain.lib;SDL.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

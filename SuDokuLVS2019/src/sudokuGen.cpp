@@ -261,7 +261,7 @@ Uint8 generateGrid_Backtracking() {
     return 0;
 }
 
-static Uint8 digHoles(short minDifficulty, short maxDifficulty) {
+Uint8 digHoles(short minDifficulty, short maxDifficulty) {
     /* Set Initial Time Values */
     startTime = SDL_GetTicks();
 
@@ -520,7 +520,7 @@ Uint8 validateGridAndSolution() {
     return 0;
 }
 
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 void printBoard() {
     cout << endl;
     for (row = 0; row < 9; row++) {

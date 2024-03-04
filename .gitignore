@@ -350,10 +350,12 @@ MigrationBackup/
 .ionide/
 
 dist/
+SDL1/
 SDL2/
 build_switch/
 build_vita/
 build_wii_u/
+build_wii/
 fonts/
 graphics/
 music/
@@ -368,3 +370,4 @@ SuDokuLVS2019/Makefile
 *.PBP
 *.SFO
 *.elf
+*.dol

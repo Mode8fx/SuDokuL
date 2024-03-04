@@ -98,6 +98,7 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
 #endif
 
 void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj) {
+#if !defined(SDL1)
 	textObj->surface = TTF_RENDERTEXT(font, text, text_color);
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, textObj->surface);
 	TTF_SizeText(font, text, &textObj->rect.w, &textObj->rect.h);
@@ -108,6 +109,14 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	TTF_SetFontOutline(font, 0);
 	SDL_FreeSurface(textObj->surface);
 	SDL_FreeSurface(textObj->outline_surface);
+#else
+	textObj->texture = TTF_RENDERTEXT(font, text, text_color);
+	TTF_SizeText(font, text, (int *)&textObj->rect.w, (int*)&textObj->rect.h);
+	setFontOutline(font, textObj);
+	textObj->outline_texture = TTF_RENDERTEXT(font, text, outline_color);
+	TTF_SizeText(font, text, (int*)&textObj->outline_rect.w, (int*)&textObj->outline_rect.h);
+	TTF_SetFontOutline(font, 0);
+#endif
 }
 
 void setFontOutline(TTF_Font *font, TextCharObject *textObj) {
@@ -262,8 +271,13 @@ void menuMoveTextDown(TextObject *textObj, double timer) {
 }
 
 void destroyTextObjectTexture(TextCharObject *textObj) {
+#if !defined(SDL1)
 	SDL_DestroyTexture(textObj->texture);
 	SDL_DestroyTexture(textObj->outline_texture);
+#else
+	SDL_FreeSurface(textObj->texture);
+	SDL_FreeSurface(textObj->outline_texture);
+#endif
 }
 
 void renderTestText() {
@@ -510,9 +524,13 @@ void setSelectBtnText() {
 }
 
 void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
     divider.y = (textObj1->rect.y + textObj2->rect.y + FONT_SIZE - divider.h) / 2;
+#if !defined(SDL1)
     SDL_RenderFillRect(renderer, &divider);
+#else
+	SDL_FillRect(windowScreen, &divider, 0);
+#endif
 #endif
 }
 
@@ -559,7 +577,7 @@ void renderControlsTextPage2() {
 	renderText(&text_Controls_P2);
 }
 
-#if !defined(WII_U) && !defined(VITA) && !defined(SWITCH) && !defined(ANDROID) && !defined(PSP)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 void renderControlsTextPage3() {
 	renderTextLarge(&text_Controls_c_1);
 	renderText(&text_Controls_c_2a);
@@ -764,7 +782,7 @@ void renderCreditsTextPage9() {
 }
 
 void controlsSetConfirmBackPos() {
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(WII)
     if (controlSettings.swapConfirmAndBack) {
         text_Controls_3a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 5)) - CONTROLS_SPACER;
         text_Controls_4a.rect.y = (FONT_SIZE * (CONTROLS_STEP * 7));

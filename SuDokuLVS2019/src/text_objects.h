@@ -3,7 +3,7 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else
@@ -11,7 +11,7 @@
     strcpy_s(dest, src);
 #endif
 
-#if defined (WII_U) || defined(PSP) || defined(VITA) || defined(SWITCH)
+#if defined (WII_U) || defined(PSP) || defined(VITA) || defined(SWITCH) || defined(WII)
 #define CONTROLS_STEP 1.89
 #else
 #define CONTROLS_STEP 1.6
@@ -28,8 +28,12 @@ struct TextRect {
 
 /* Single Characters */
 struct TextCharObject {
+#if !defined(SDL1)
     SDL_Surface *surface, *outline_surface;
     SDL_Texture *texture, *outline_texture;
+#else
+    SDL_Surface *texture, *outline_texture;
+#endif
     SDL_Rect rect, outline_rect;
     Sint8 outlineOffset_x, outlineOffset_y;
 };

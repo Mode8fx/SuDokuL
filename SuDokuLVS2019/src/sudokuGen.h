@@ -9,15 +9,15 @@ constexpr auto MAX_TIMEOUT = 8000;
 
 //void test_main();
 //void test_PuzzleDifficulty();
-Uint8 generateGridAndSolution(Uint16, Uint16);
-Uint8 generateGrid_Backtracking();
-Uint8 digHoles(Sint16, Sint16);
-Sint16 solvePuzzle(Sint16);
-Uint8 validateGridAndSolution();
-void printBoard();
-void printTempGrid();
-void printSolutionGrid();
-void initPossibleValsArrByIndex(Sint8);
+extern Uint8 generateGridAndSolution(Uint16, Uint16);
+extern Uint8 generateGrid_Backtracking();
+extern Uint8 digHoles(Sint16, Sint16);
+extern Sint16 solvePuzzle(Sint16);
+extern Uint8 validateGridAndSolution();
+extern void printBoard();
+extern void printTempGrid();
+extern void printSolutionGrid();
+extern void initPossibleValsArrByIndex(Sint8);
 extern void updateNumEmpty();
 extern void checkForVictory();
 

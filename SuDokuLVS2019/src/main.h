@@ -8,8 +8,12 @@
 #define MAIN_H
 
 /* SDL Window */
+#if !defined(SDL1)
 SDL_Window *window;
 SDL_Renderer *renderer;
+#else
+SDL_Surface *windowScreen;
+#endif
 SDL_Event event;
 
 /* SDL Rectangles */
@@ -19,7 +23,7 @@ SDL_Rect leftRect;
 SDL_Rect rightRect;
 
 /* SDL Controller */
-#if defined(PSP)
+#if defined(PSP) || defined(SDL1)
 SDL_Joystick *controller = NULL;
 #else
 SDL_GameController *controller = nullptr;
@@ -32,7 +36,9 @@ bool compactDisplay = false;
 Uint16 defaultBGScale;
 double gameWidthMult;
 double gameHeightMult;
+#if !defined(SDL1)
 SDL_DisplayMode DM;
+#endif
 Uint32 frameTime;
 
 /* Settings */

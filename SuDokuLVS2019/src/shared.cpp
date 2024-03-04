@@ -7,6 +7,14 @@
 #include "puzzleBank.h"
 #include "menu_logic.h"
 
+#if defined(SDL1) && !defined(WII)
+FILE _iob[] = { *stdin, *stdout, *stderr };
+
+FILE * __cdecl __iob_func(void) {
+	return _iob;
+}
+#endif
+
 void loadSettingsFile() {
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
@@ -315,7 +323,7 @@ Uint16 menuCursorXOffset() {
 }
 
 void sdlToggleFullscreen() {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(WII) || defined(SDL1))
 	isWindowed = !isWindowed;
 	if (isWindowed)
 		SDL_SetWindowFullscreen(window, 0);
@@ -332,7 +340,7 @@ void sdlToggleIntegerScale() {
 }
 
 void setScaling() {
-#if !defined(ANDROID)
+#if !(defined(ANDROID) || defined(SDL1))
 	if (isIntegerScale) {
 		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));
 		if (int_i < 1) int_i = 1;
@@ -381,10 +389,17 @@ void updateBorderRects() {
 }
 
 void renderBorderRects() {
+#if !defined(SDL1)
 	SDL_RenderFillRect(renderer, &topRect);
 	SDL_RenderFillRect(renderer, &bottomRect);
 	SDL_RenderFillRect(renderer, &leftRect);
 	SDL_RenderFillRect(renderer, &rightRect);
+#else
+	SDL_FillRect(windowScreen, &topRect, 0);
+	SDL_FillRect(windowScreen, &bottomRect, 0);
+	SDL_FillRect(windowScreen, &leftRect, 0);
+	SDL_FillRect(windowScreen, &rightRect, 0);
+#endif
 }
 
 void sdlDestroyAll() {
@@ -439,13 +454,17 @@ void sdlDestroyAll() {
 	/* Controller */
 	closeController();
 	/* Renderer and Window */
+#if !defined(SDL1)
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+#else
+	SDL_FreeSurface(windowScreen);
+#endif
 	SDL_Quit();
 }
 
 void closeController() {
-#if defined(PSP)
+#if defined(PSP) || defined(SDL1)
 	SDL_JoystickClose(controller);
 #else
 	if (controller != NULL) {

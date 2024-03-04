@@ -4,8 +4,12 @@
 #define WINDOW_H
 
 /* SDL Window */
+#if !defined(SDL1)
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
+#else
+extern SDL_Surface *windowScreen;
+#endif
 extern SDL_Event event;
 
 /* SDL Rectangles */
