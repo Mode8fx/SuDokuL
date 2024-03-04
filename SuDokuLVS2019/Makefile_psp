@@ -14,9 +14,7 @@ ASFLAGS = $(CFLAGS)
 
 LIBDIR =
 LDFLAGS =
-LIBS = -lSDL2main -lSDL2_image -lpng -ljpeg -lSDL2_mixer -lstdc++ -lSDL2_ttf -lSDL2 -lGL -lGLU -lglut -lfreetype -lz -lpspmp3 -lmad -logg -lvorbisenc -lvorbisidec -lvorbis -lvorbisfile -lmikmod \
-         -lpspvfpu -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgum -lpspgu -lpspaudiolib -lpspaudio \
-         -lm -lpspvram
+LIBS = -lSDL2main -lSDL2_image -lpng -ljpeg -lSDL2_mixer -lstdc++ -lSDL2_ttf -lSDL2 -lGL -lGLU -lglut -lfreetype -lz -lvorbis -lvorbisfile -lpspvfpu -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgum -lpspgu -lpspaudiolib -lpspaudio -lm -lpspvram -lxmp -logg -lzip -lbz2
 
 # -lpsphttp -lpspssl -lpspwlan -lpspnet_adhocmatching -lpspnet_adhoc -lpspnet_adhocctl
 
