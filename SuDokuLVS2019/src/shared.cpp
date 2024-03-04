@@ -340,7 +340,7 @@ void sdlToggleIntegerScale() {
 }
 
 void setScaling() {
-#if !(defined(ANDROID) || defined(SDL1))
+#if !defined(ANDROID)
 	if (isIntegerScale) {
 		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));
 		if (int_i < 1) int_i = 1;
@@ -348,8 +348,10 @@ void setScaling() {
 		centerViewport.h = gameHeight * int_i;
 		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);
 		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);
+#if !defined(SDL1)
 		SDL_RenderSetScale(renderer, int_i, int_i);
 		SDL_RenderSetViewport(renderer, &centerViewport);
+#endif
 		screenScale = (double)int_i;
 	} else {
 		screenScale = (double)SCALING_WIDTH / gameWidth;
@@ -361,8 +363,10 @@ void setScaling() {
 		centerViewport.h = (int)(gameHeight * screenScale);
 		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / screenScale), 0);
 		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / screenScale), 0);
+#if !defined(SDL1)
 		SDL_RenderSetScale(renderer, screenScale, screenScale);
 		SDL_RenderSetViewport(renderer, &centerViewport);
+#endif
 	}
 	updateBorderRects();
 	//SDL_RenderSetClipRect(renderer, &centerViewport);

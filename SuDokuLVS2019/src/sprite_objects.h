@@ -8,6 +8,12 @@
 #define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
 #endif
 
+// temporary quick fix
+#if defined(WII)
+#define tile->rect.w 32
+#define tile->rect.h 32
+#endif
+
 struct SpriteObject {
 #if !defined(SDL1)
     SDL_Texture *texture;
@@ -69,18 +75,20 @@ extern SpriteObjectWithPos *currMiniGrid;
 #else
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
     spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    spriteObj.width = spriteObj.texture->w;                                               \
+	spriteObj.height = spriteObj.texture->h;                                              \
     SET_SPRITE_SCALE(spriteObj, scale);                                                   \
     spriteObj.rect.x = pos_x;                                                             \
     spriteObj.rect.y = pos_y;
 #endif
 
-#define SET_SPRITE_SCALE(spriteObj, scale)                                \
-    spriteObj.rect.w = (int)(spriteObj.width * GAME_HEIGHT_MULT * scale); \
-    spriteObj.rect.h = (int)(spriteObj.height * GAME_HEIGHT_MULT * scale);
+#define SET_SPRITE_SCALE(spriteObj, scale)                                   \
+    spriteObj.rect.w = (Uint16)(spriteObj.width * GAME_HEIGHT_MULT * scale); \
+    spriteObj.rect.h = (Uint16)(spriteObj.height * GAME_HEIGHT_MULT * scale);
 
-#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                      \
-    spriteObj.rect.w = (int)(spriteObj.width * ((int)ceil(GAME_HEIGHT_MULT)) * scale); \
-    spriteObj.rect.h = (int)(spriteObj.height * ((int)ceil(GAME_HEIGHT_MULT)) * scale);
+#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                            \
+    spriteObj.rect.w = (Uint16)(spriteObj.width * ((Uint16)ceil(GAME_HEIGHT_MULT)) * scale); \
+    spriteObj.rect.h = (Uint16)(spriteObj.height * ((Uint16)ceil(GAME_HEIGHT_MULT)) * scale);
 
 #define SET_SPRITE_SCALE_TILE()                    \
     tile->rect.w = tile->width * bgSettings.scale; \

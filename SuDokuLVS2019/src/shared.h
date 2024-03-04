@@ -161,6 +161,8 @@ extern bool gameCompleted;
 
 #if defined(VITA)
 const string rootDir = "ux0:data/SuDokuL/";
+#elif defined(WII)
+const string rootDir = "sd:/apps/SuDokuL/";
 #else
 const string rootDir = "";
 #endif
@@ -203,5 +205,10 @@ extern void systemSpecificClose();
 #define SCALING_WIDTH SDL_GetWindowSurface(window)->w
 #define SCALING_HEIGHT SDL_GetWindowSurface(window)->h
 #endif
+
+#define MAKE_DEBUG_FILE(name, body)                              \
+	debugFile = SDL_RWFromFile((rootDir + name).c_str(), "w+b"); \
+	SDL_RWwrite(debugFile, body, sizeof(body), 1);               \
+	SDL_RWclose(debugFile);
 
 #endif
