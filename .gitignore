@@ -371,3 +371,5 @@ SuDokuLVS2019/Makefile
 *.SFO
 *.elf
 *.dol
+*.nacp
+*.nro

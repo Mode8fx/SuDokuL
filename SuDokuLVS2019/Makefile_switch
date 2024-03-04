@@ -39,9 +39,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build_switch
-SOURCES		:=	src src/fonts src/graphics src/music src/sfx
+SOURCES		:=	src src/fonts_include src/graphics_include src/music_include src/sfx_include
 DATA		:=	
-INCLUDES	:=	src src/fonts src/graphics src/music src/sfx
+INCLUDES	:=	src src/fonts_include src/graphics_include src/music_include src/sfx_include
 # ROMFS		:=	romfs
 
 APP_TITLE   := SuDokuL
