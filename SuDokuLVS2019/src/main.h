@@ -332,6 +332,8 @@ bool justClickedInMiniGrid;
 
 /* Font-Related Variables */
 Uint16 fontSize;
+Uint16 fontForceOffset1;
+Uint16 fontForceOffset2;
 Uint16 gridNumSize;
 Uint16 text_pressStartAmplitude;
 Uint16 text_standardAmplitude;

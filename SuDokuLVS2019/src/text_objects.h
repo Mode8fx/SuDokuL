@@ -236,6 +236,8 @@ extern SDL_Rect divider;
 
 /* Font-Related Variables */
 extern Uint16 fontSize;
+extern Uint16 fontForceOffset1;
+extern Uint16 fontForceOffset2;
 extern Uint16 gridNumSize;
 extern Uint16 text_pressStartAmplitude;
 extern Uint16 text_standardAmplitude;
