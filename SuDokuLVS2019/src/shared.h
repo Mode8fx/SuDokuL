@@ -119,29 +119,9 @@ extern bool gameCompleted;
 #endif
 #define GAME_WIDTH_MULT       (gameWidthMult)
 #define GAME_HEIGHT_MULT      (gameHeightMult)
-#if defined(WII_U)
-#define DEFAULT_WIDTH         1280
-#define DEFAULT_HEIGHT        720
-#define DEFAULT_RI            0
-#define DEFAULT_ARI           0
-#elif defined(VITA)
-#define DEFAULT_WIDTH         960
-#define DEFAULT_HEIGHT        544
-#define DEFAULT_RI            0
-#define DEFAULT_ARI           0
-#elif defined(SWITCH)
-#define DEFAULT_WIDTH         1920
-#define DEFAULT_HEIGHT        1080
-#define DEFAULT_RI            0
-#define DEFAULT_ARI           0
-#elif defined(PSP)
-#define DEFAULT_WIDTH         480
-#define DEFAULT_HEIGHT        272
-#define DEFAULT_RI            0
-#define DEFAULT_ARI           0
-#elif defined(ANDROID)
-#define DEFAULT_WIDTH         SYSTEM_WIDTH
-#define DEFAULT_HEIGHT        SYSTEM_HEIGHT
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID)
+#define DEFAULT_WIDTH         0
+#define DEFAULT_HEIGHT        0
 #define DEFAULT_RI            0
 #define DEFAULT_ARI           0
 #else

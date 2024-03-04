@@ -365,3 +365,6 @@ save.bin
 *.lnk
 *.o
 SuDokuLVS2019/Makefile
+*.PBP
+*.SFO
+*.elf

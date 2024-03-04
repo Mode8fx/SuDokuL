@@ -83,12 +83,18 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
     textObj->outline_rect.y = (pos_y) + (offset);
 }
 
+#if defined(PSP)
+#define TTF_RENDERTEXT TTF_RenderText_Blended
+#else
+#define TTF_RENDERTEXT TTF_RenderText_Solid
+#endif
+
 void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj) {
-	textObj->surface = TTF_RenderText_Solid(font, text, text_color);
+	textObj->surface = TTF_RENDERTEXT(font, text, text_color);
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, textObj->surface);
 	TTF_SizeText(font, text, &textObj->rect.w, &textObj->rect.h);
 	setFontOutline(font, textObj);
-	textObj->outline_surface = TTF_RenderText_Solid(font, text, outline_color);
+	textObj->outline_surface = TTF_RENDERTEXT(font, text, outline_color);
 	textObj->outline_texture = SDL_CreateTextureFromSurface(renderer, textObj->outline_surface);
 	TTF_SizeText(font, text, &textObj->outline_rect.w, &textObj->outline_rect.h);
 	TTF_SetFontOutline(font, 0);
