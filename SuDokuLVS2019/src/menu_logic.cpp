@@ -129,7 +129,7 @@ void menuResetCursorPositions(Uint8 state) {
 }
 
 void updateMenuCursorPositionY(Sint8 cursor) {
-    menuCursor.rect.y = TEXT_PLAY_Y + (FONT_SIZE / 2) - (menuCursor.rect.h / 2) + (cursor * (FONT_SIZE * 2));
+    menuCursor.rect.y = TEXT_PLAY_Y + (fontSize / 2) - (menuCursor.rect.h / 2) + (cursor * (fontSize * 2));
 }
 
 void menuHandleMenuButton() {
@@ -167,7 +167,7 @@ void controlsMenuHandleVertCursorMovement() {
 }
 
 void updateControlsMenuCursorPositionY() {
-    menuCursor.rect.y = TEXT_PLAY_Y + (FONT_SIZE / 2) - (menuCursor.rect.h / 2) + (menuCursorIndex_controls * 2 * (FONT_SIZE * 2));
+    menuCursor.rect.y = TEXT_PLAY_Y + (fontSize / 2) - (menuCursor.rect.h / 2) + (menuCursorIndex_controls * 2 * (fontSize * 2));
 }
 
 void menuHandleVertCursorMovementMouse(Sint8 &cursor, TextObject textObj, Sint8 index) {

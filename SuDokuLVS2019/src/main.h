@@ -71,10 +71,10 @@ double gridSizeC;
 double gridSizeD;
 double gridSize;
 double gridSizeA3;
-Uint16 gridPosX;
-Uint16 gridPosY;
-Uint16 gridStartingPosX[9];
-Uint16 gridStartingPosY[9];
+Sint16 gridPosX;
+Sint16 gridPosY;
+Sint16 gridStartingPosX[9];
+Sint16 gridStartingPosY[9];
 Sint8 numOffset_large_x[9];
 Sint8 numOffset_large_y[9];
 Sint8 numOffset_small_x[9];
@@ -334,7 +334,7 @@ Sint8 miniGridState;
 Sint8 lastMiniGridState;
 Sint8 temp_mouseIndex_x;
 Sint8 temp_mouseIndex_y;
-Uint16 gridCursorCornerStep;
+Sint16 gridCursorCornerStep;
 bool justClickedInMiniGrid;
 
 /* Font-Related Variables */
@@ -384,7 +384,7 @@ bool isRunning;
 bool wentPastTitleScreen = 0;
 
 /* Window */
-double screenScale = 1;
+float screenScale = 1;
 bool isWindowed = true;
 bool isIntegerScale = true;
 bool windowSizeChanged = false;

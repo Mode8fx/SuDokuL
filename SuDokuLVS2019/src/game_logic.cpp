@@ -32,22 +32,22 @@ void gameHandleMainGridNavigation() {
             if (gridCursorIndex_x < 4) {
                  if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_left;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 2.5);
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                  } else {
                     currMiniGrid = &miniGrid_bottom_left;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 0.5) - currMiniGrid->rect.h;
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
                  }
             } else {
                 if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_right;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 2.5);
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                 } else {
                     currMiniGrid = &miniGrid_bottom_right;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 0.5) - currMiniGrid->rect.h;
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
                 }
             }
             miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);
@@ -319,12 +319,12 @@ void setGridMiniNum(Sint8 index, Sint8 num) {
 void setGridCursorByLargeX() {
     gridCursor_bottom_left.rect.x = GRID_X_AT_COL(gridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorByLargeY() {
-    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
@@ -384,22 +384,22 @@ void gameHandleChangeSong() {
 }
 
 Sint16 xAtMiniGridIndex(Sint8 index) {
-    return (currMiniGrid->rect.x + (gridSizeD * 3) + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+    return (Sint16)(currMiniGrid->rect.x + (gridSizeD * 3) + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
 }
 
 Sint16 yAtMiniGridIndex(Sint8 index) {
-    return (currMiniGrid->rect.y + (gridSizeD * 3) + (index * gridSizeA3) + (index * gridSizeB));
+    return (Sint16)(currMiniGrid->rect.y + (gridSizeD * 3) + (index * gridSizeA3) + (index * gridSizeB));
 }
 
 void setGridCursorBySmallX() {
     gridCursor_bottom_left.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorBySmallY() {
-    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
@@ -408,10 +408,10 @@ void setGridCursorBySmallY() {
 void drawSidebar() {
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
     renderText(&text_Time);
-    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - FONT_SIZE);
+    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize);
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
     renderText(&text_Empty);
-    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - FONT_SIZE);
+    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize);
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
     switch (menuCursorIndex_play) {
         case 0:

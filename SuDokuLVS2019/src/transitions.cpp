@@ -7,7 +7,7 @@
 
 void transitionGraphicsFromTitleScreen() {
     /* Animate Logo and Text */
-    logo.rect.y = logo.endPos_y + MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
+    logo.rect.y = logo.endPos_y + (Sint16)MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
     menuMoveTextRight(&text_PressStart, time_anim1);
     menuMoveTextRight(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */
@@ -24,7 +24,7 @@ void transitionGraphicsFromTitleScreen() {
 
 void transitionGraphicsToTitleScreen() {
     /* Animate Logo and Text */
-    logo.rect.y = logo.startPos_y - MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
+    logo.rect.y = logo.startPos_y - (Sint16)MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
     menuMoveTextLeft(&text_PressStart, time_anim1);
     menuMoveTextLeft(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */

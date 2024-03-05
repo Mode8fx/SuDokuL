@@ -115,46 +115,46 @@ void initStartingSharedVariables() {
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
 		gridPosY = (Uint16)((gameHeight - gridSize) / 2);
-		gameSidebarSmall1Rect.x = (gridPosX - SIDEBAR_SMALL_SIZE_X - (gridSize / 12));
-		gameSidebarSmall1Rect.y = (gridPosY + (gridSize / 16));
+		gameSidebarSmall1Rect.x = (Sint16)(gridPosX - SIDEBAR_SMALL_SIZE_X - (gridSize / 12));
+		gameSidebarSmall1Rect.y = (Sint16)(gridPosY + (gridSize / 16));
 		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall2Rect.y = (gridPosY + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
+		gameSidebarSmall2Rect.y = (Sint16)(gridPosY + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
 		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall3Rect.y = (gridPosY + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
+		gameSidebarSmall3Rect.y = (Sint16)(gridPosY + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
 	} else {
-		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2));
-		gridPosY = (Uint16)((gameHeight - gridSize) * 875 / 1000);
+		gridPosX = (Sint16)((gameWidth / 2) - (gridSize / 2));
+		gridPosY = (Sint16)((gameHeight - gridSize) * 875 / 1000);
 		gameSidebarSmall1Rect.x = (Sint16)((gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
-		gameSidebarSmall1Rect.y = -(SIDEBAR_SMALL_SIZE_Y / 4);
+		gameSidebarSmall1Rect.y = -(Sint16)(SIDEBAR_SMALL_SIZE_Y / 4);
 		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
 		gameSidebarSmall2Rect.x = (Sint16)((gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2));
 		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
 		gameSidebarSmall3Rect.x = (Sint16)((gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
 	}
-	gridStartingPosX[0] = (Uint16)((gridPosX + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
-	gridStartingPosX[1] = (Uint16)((gridPosX + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
-	gridStartingPosX[2] = (Uint16)((gridPosX + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
-	gridStartingPosX[3] = (Uint16)((gridPosX + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
-	gridStartingPosX[4] = (Uint16)((gridPosX + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
-	gridStartingPosX[5] = (Uint16)((gridPosX + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
-	gridStartingPosX[6] = (Uint16)((gridPosX + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
-	gridStartingPosX[7] = (Uint16)((gridPosX + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
-	gridStartingPosX[8] = (Uint16)((gridPosX + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
-	gridStartingPosY[0] = (Uint16)((gridPosY + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
-	gridStartingPosY[1] = (Uint16)((gridPosY + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
-	gridStartingPosY[2] = (Uint16)((gridPosY + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
-	gridStartingPosY[3] = (Uint16)((gridPosY + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
-	gridStartingPosY[4] = (Uint16)((gridPosY + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
-	gridStartingPosY[5] = (Uint16)((gridPosY + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
-	gridStartingPosY[6] = (Uint16)((gridPosY + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
-	gridStartingPosY[7] = (Uint16)((gridPosY + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
-	gridStartingPosY[8] = (Uint16)((gridPosY + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
+	gridStartingPosX[0] = (Sint16)((gridPosX + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
+	gridStartingPosX[1] = (Sint16)((gridPosX + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
+	gridStartingPosX[2] = (Sint16)((gridPosX + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
+	gridStartingPosX[3] = (Sint16)((gridPosX + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
+	gridStartingPosX[4] = (Sint16)((gridPosX + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
+	gridStartingPosX[5] = (Sint16)((gridPosX + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
+	gridStartingPosX[6] = (Sint16)((gridPosX + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
+	gridStartingPosX[7] = (Sint16)((gridPosX + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
+	gridStartingPosX[8] = (Sint16)((gridPosX + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
+	gridStartingPosY[0] = (Sint16)((gridPosY + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
+	gridStartingPosY[1] = (Sint16)((gridPosY + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
+	gridStartingPosY[2] = (Sint16)((gridPosY + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
+	gridStartingPosY[3] = (Sint16)((gridPosY + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
+	gridStartingPosY[4] = (Sint16)((gridPosY + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
+	gridStartingPosY[5] = (Sint16)((gridPosY + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
+	gridStartingPosY[6] = (Sint16)((gridPosY + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
+	gridStartingPosY[7] = (Sint16)((gridPosY + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
+	gridStartingPosY[8] = (Sint16)((gridPosY + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
 	initNumOffsets();
 }
 
-void initNumOffsets() {
-#if defined(VITA)
-	d = (double)gameHeight / SCALING_HEIGHT;
+static void initNumOffsets_544() {
+	//d = (double)gameHeight / SCALING_HEIGHT;
+	d = 1.0;
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = (Sint8)(2 * d);
 		numOffset_large_y[i] = (Sint8)(d);
@@ -170,8 +170,11 @@ void initNumOffsets() {
 	if (gameHeight <= 240) {
 		for (i = 0; i < 9; i++) numOffset_small_y[i] -= 1;
 	}
-#elif defined(PSP)
-	d = (double)gameHeight / SCALING_HEIGHT;
+}
+
+static void initNumOffsets_272() {
+	//d = (double)gameHeight / SCALING_HEIGHT;
+	d = 1.0;
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = (Sint8)(d);
 		numOffset_large_y[i] = 0;
@@ -185,14 +188,25 @@ void initNumOffsets() {
 	numOffset_small_y[2] = 0;
 	numOffset_small_y[5] = 0;
 	numOffset_small_y[8] = 0;
-#else
+}
+
+static void initNumOffsets_Standard() {
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = 0;
 		numOffset_large_y[i] = 0;
 		numOffset_small_x[i] = 0;
 		numOffset_small_y[i] = 0;
 	}
-#endif
+}
+
+void initNumOffsets() {
+	if (gameHeight == 272) {
+		initNumOffsets_272();
+	} else if (gameHeight == 544) {
+		initNumOffsets_544();
+	} else {
+		initNumOffsets_Standard();
+	}
 }
 
 void updateGlobalTimer() {
@@ -319,7 +333,7 @@ void setAspectRatioByOptions(Sint8 increment) {
 }
 
 Uint16 menuCursorXOffset() {
-	return ((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, TEXT_STANDARD_AMPLITUDE));
+	return (Uint16)((menuCursor.rect.w * 2.5) + SIN_WAVE(timer_global.now, 0.5, text_standardAmplitude));
 }
 
 void sdlToggleFullscreen() {
@@ -349,14 +363,14 @@ void setScaling() {
 		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);
 		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);
 #if !defined(SDL1)
-		SDL_RenderSetScale(renderer, int_i, int_i);
+		SDL_RenderSetScale(renderer, (float)int_i, (float)int_i);
 		SDL_RenderSetViewport(renderer, &centerViewport);
 #endif
-		screenScale = (double)int_i;
+		screenScale = (float)int_i;
 	} else {
-		screenScale = (double)SCALING_WIDTH / gameWidth;
-		if ((double)SCALING_HEIGHT / gameHeight < screenScale) {
-			screenScale = (double)SCALING_HEIGHT / gameHeight;
+		screenScale = (float)SCALING_WIDTH / gameWidth;
+		if ((float)SCALING_HEIGHT / gameHeight < screenScale) {
+			screenScale = (float)SCALING_HEIGHT / gameHeight;
 		}
 		if (screenScale < 1) screenScale = 1;
 		centerViewport.w = (int)(gameWidth * screenScale);

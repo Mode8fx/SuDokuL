@@ -17,7 +17,7 @@
 #define CONTROLS_STEP 1.6
 #endif
 
-#define CONTROLS_SPACER (FONT_SIZE * 0.75)
+#define CONTROLS_SPACER (fontSize * 0.75)
 
 struct TextRect {
     Sint16 x;
@@ -259,10 +259,6 @@ extern Uint16 videoMenuNumPosition_X;
 extern Uint16 backgroundMenuNumPosition_X;
 
 
-#define FONT_SIZE                         (fontSize)
-#define GRID_NUM_SIZE                     (gridNumSize)
-#define TEXT_PRESS_START_AMPLITUDE        (text_pressStartAmplitude)
-#define TEXT_STANDARD_AMPLITUDE           (text_standardAmplitude)
 #define TEXT_PRESS_START_Y                (text_menuChoice3) /* 300 on 480p; top of text, not middle */
 #define TEXT_VERSION_NUMBER_Y             (gameHeight - (text_Version_Number.rect.h * 1.5))
 #define TEXT_PLAY_Y                       (text_menuChoice1)
@@ -277,7 +273,7 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_HARD_Y                       (text_menuChoice3)
 #define TEXT_VERY_HARD_Y                  (text_menuChoice4)
 #define TEXT_LOADING_Y                    (text_midScreen_Y)
-#define TEXT_PAUSED_Y                     (text_midScreen_Y - FONT_SIZE)
+#define TEXT_PAUSED_Y                     (text_midScreen_Y - fontSize)
 #define TEXT_QUIT_TO_MENU_Y               (text_quitToMenu_Y)
 #define TEXT_CONTROLS_MENU_Y              (text_menuChoice1)
 #define TEXT_VIDEO_Y                      (text_menuChoice2)
@@ -317,14 +313,14 @@ extern Uint16 backgroundMenuNumPosition_X;
 constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define TEXT_TIME_Y                       (gameSidebarSmall1Rect.y + (compactDisplay * gameSidebarSmall1Rect.h / 16) + (gameSidebarSmall1Rect.h / 4))
 #define TEXT_EMPTY_Y                      (gameSidebarSmall2Rect.y + (compactDisplay * gameSidebarSmall2Rect.h / 16) + (gameSidebarSmall2Rect.h / 4))
-#define TEXT_GAME_EASY_Y                  (gameSidebarSmall3Rect.y + (compactDisplay * gameSidebarSmall3Rect.h / 16) + (gameSidebarSmall3Rect.h - FONT_SIZE) / 2)
+#define TEXT_GAME_EASY_Y                  (gameSidebarSmall3Rect.y + (compactDisplay * gameSidebarSmall3Rect.h / 16) + (gameSidebarSmall3Rect.h - fontSize) / 2)
 #define TEXT_GAME_NORMAL_Y                (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_HARD_Y                  (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_VHARD_Y                 (TEXT_GAME_EASY_Y)
-#define TEXT_YOU_WIN_Y                    ((game_grid.rect.y + game_grid.rect.h + gameHeight - FONT_SIZE) / 2)
+#define TEXT_YOU_WIN_Y                    ((game_grid.rect.y + game_grid.rect.h + gameHeight - fontSize) / 2)
 #define CONTROLS_MENU_ENDPOINT            (text_A_Confirm.rect.x + text_A_Confirm.rect.w)
-#define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (FONT_SIZE * 2))
-#define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (FONT_SIZE * 3))
+#define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (fontSize * 2))
+#define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (fontSize * 3))
 
 extern void initStartingTextVariables();
 extern void initTextObjectVals(TextObject *);

@@ -13,7 +13,7 @@ extern Sint8 miniGridState;
 extern Sint8 lastMiniGridState;
 extern Sint8 temp_mouseIndex_x;
 extern Sint8 temp_mouseIndex_y;
-extern Uint16 gridCursorCornerStep;
+extern Sint16 gridCursorCornerStep;
 extern bool justClickedInMiniGrid;
 
 extern void gameHandleMainGridNavigation();

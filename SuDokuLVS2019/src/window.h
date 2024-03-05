@@ -19,7 +19,7 @@ extern SDL_Rect leftRect;
 extern SDL_Rect rightRect;
 
 /* Window */
-extern double screenScale;
+extern float screenScale;
 extern bool isWindowed;
 extern bool isIntegerScale;
 extern bool windowSizeChanged;

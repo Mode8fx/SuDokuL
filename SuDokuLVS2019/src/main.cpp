@@ -146,7 +146,7 @@ int main(int argv, char** args) {
 	/* Set Rectangles */
 	updateBorderRects();
 	/* General - Fonts */
-	pixelFont = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE);
+	pixelFont = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, fontSize);
 	char tempCharArr[2];
 	tempCharArr[1] = '\0';
 	/* General */
@@ -271,8 +271,8 @@ int main(int argv, char** args) {
 
 	/* Set Text */
 	/* General - Fonts */
-	pixelFont_large = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE * 1.5);
-	pixelFont_grid = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, GRID_NUM_SIZE);
+	pixelFont_large = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)(fontSize * 1.5));
+	pixelFont_grid = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, gridNumSize);
 	pixelFont_grid_mini = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)gridSizeA);
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
@@ -297,14 +297,14 @@ int main(int argv, char** args) {
 		adjustCharOutlineOffset(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Test Strings */
-	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), FONT_SIZE * 1);
-	//SET_TEXT_WITH_OUTLINE("N O P Q R S T U V W X Y Z", text_test_2, OBJ_TO_MID_SCREEN_X(text_test_2), FONT_SIZE * 3);
-	//SET_TEXT_WITH_OUTLINE("a b c d e f g h i j k l m", text_test_3, OBJ_TO_MID_SCREEN_X(text_test_3), FONT_SIZE * 5);
-	//SET_TEXT_WITH_OUTLINE("n o p q r s t u v w x y z", text_test_4, OBJ_TO_MID_SCREEN_X(text_test_4), FONT_SIZE * 7);
-	//SET_TEXT_WITH_OUTLINE("1 2 3 4 5 6 7 8 9 0",       text_test_5, OBJ_TO_MID_SCREEN_X(text_test_5), FONT_SIZE * 9);
-	//SET_TEXT_WITH_OUTLINE("! \" ( ) + , - . / = :",    text_test_6, OBJ_TO_MID_SCREEN_X(text_test_6), FONT_SIZE * 11);
-	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), FONT_SIZE * 13);
-	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), FONT_SIZE * 15);
+	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), fontSize * 1);
+	//SET_TEXT_WITH_OUTLINE("N O P Q R S T U V W X Y Z", text_test_2, OBJ_TO_MID_SCREEN_X(text_test_2), fontSize * 3);
+	//SET_TEXT_WITH_OUTLINE("a b c d e f g h i j k l m", text_test_3, OBJ_TO_MID_SCREEN_X(text_test_3), fontSize * 5);
+	//SET_TEXT_WITH_OUTLINE("n o p q r s t u v w x y z", text_test_4, OBJ_TO_MID_SCREEN_X(text_test_4), fontSize * 7);
+	//SET_TEXT_WITH_OUTLINE("1 2 3 4 5 6 7 8 9 0",       text_test_5, OBJ_TO_MID_SCREEN_X(text_test_5), fontSize * 9);
+	//SET_TEXT_WITH_OUTLINE("! \" ( ) + , - . / = :",    text_test_6, OBJ_TO_MID_SCREEN_X(text_test_6), fontSize * 11);
+	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), fontSize * 13);
+	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), fontSize * 15);
 	/* Title Screen */
 #if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -723,16 +723,16 @@ int main(int argv, char** args) {
 					break;
 				case SDL_FINGERDOWN:
 					if (controlSettings.enableTouchscreen) {
-						mouseInput_x = event.tfinger.x * gameWidth;
-						mouseInput_y = event.tfinger.y * gameHeight;
+						mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
+						mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
 						updateMousePosViewportTouch();
 						keyInputs |= INPUT_CONFIRM_ALT;
 					}
 					break;
 				case SDL_FINGERMOTION:
 					if (controlSettings.enableTouchscreen) {
-						mouseInput_x = event.tfinger.x * gameWidth;
-						mouseInput_y = event.tfinger.y * gameHeight;
+						mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
+						mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
 						updateMousePosViewportTouch();
 					}
 					break;
@@ -970,7 +970,7 @@ int main(int argv, char** args) {
 					programState = 1;
 				}
 				/* Animate Text */
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				renderText(&text_PressStart);
@@ -982,7 +982,7 @@ int main(int argv, char** args) {
 				transitionGraphicsToMainMenu(-1);
 				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				break;
 			/* 2 = Main Menu */
 			case 2:
@@ -1069,7 +1069,7 @@ int main(int argv, char** args) {
 				transitionGraphicsFromMainMenu();
 				transitionGraphicsToTitleScreen();
 				transitionToStateWithTimer(time_anim1, 1, 0);
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, TEXT_PRESS_START_AMPLITUDE));
+				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				break;
 			/* Continue Menu */
 			case 6:
@@ -1445,15 +1445,15 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)), 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 3)), 1);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
 				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1);
 				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
 				}
 #endif
 				updateVideoMenuCursorPositionX();
@@ -1496,8 +1496,8 @@ int main(int argv, char** args) {
 				}
 #if !defined(ANDROID)
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
-					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 9)))
-					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (FONT_SIZE * 3)))
+					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)))
+					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 3)))
 					|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| mouseIsInRect(text_Apply.rect)))) {
 #else
