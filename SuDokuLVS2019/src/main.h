@@ -33,7 +33,7 @@ SDL_GameController *controller = nullptr;
 Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
 bool compactDisplay = false;
-Uint16 defaultBGScale;
+Uint8 defaultBGScale;
 double gameWidthMult;
 double gameHeightMult;
 #if !defined(SDL1)
@@ -205,7 +205,8 @@ TextObject text_Background_Type;
 TextObject text_Scroll_Speed;
 TextObject text_Scroll_Direction;
 TextObject text_Background_Size;
-TextObject text_Reset_to_Default;
+TextObject text_Reset_to_Default_1;
+TextObject text_Reset_to_Default_2;
 TextObject text_Controls_1;
 TextObject text_Controls_2a;
 TextObject text_Controls_2b;

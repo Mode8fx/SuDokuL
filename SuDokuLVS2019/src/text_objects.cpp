@@ -613,7 +613,7 @@ void renderControlsTextPage4() {
 #endif
 
 void setCreditsText() {
-    SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),         (FONT_SIZE * (CREDITS_STEP *    1))          );
+    SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),             (FONT_SIZE * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (FONT_SIZE * (CREDITS_STEP *    5))          );
     SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3,   OBJ_TO_MID_SCREEN_X(text_Credits_3),               (FONT_SIZE * (CREDITS_STEP * 6.25))          );
 	SET_TEXT_WITH_OUTLINE("(1/9)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5)));

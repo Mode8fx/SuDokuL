@@ -52,7 +52,7 @@ struct Timer {
 extern Uint16 gameWidth;
 extern Uint16 gameHeight;
 extern bool compactDisplay;
-extern Uint16 defaultBGScale;
+extern Uint8 defaultBGScale;
 #if !defined(SDL1)
 extern SDL_DisplayMode DM;
 #endif

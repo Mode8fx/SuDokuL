@@ -637,7 +637,7 @@ void initPossibleValsArrByIndex(Sint8 index) {
 }
 
 void updateNumEmpty() {
-    numEmpty = std::count(grid, grid + 81, 0);
+    numEmpty = (Uint8)std::count(grid, grid + 81, 0);
 }
 
 void checkForVictory() {

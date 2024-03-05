@@ -119,7 +119,8 @@ extern TextObject text_Background_Type;
 extern TextObject text_Scroll_Speed;
 extern TextObject text_Scroll_Direction;
 extern TextObject text_Background_Size;
-extern TextObject text_Reset_to_Default;
+extern TextObject text_Reset_to_Default_1;
+extern TextObject text_Reset_to_Default_2;
 extern TextObject text_Controls_1;
 extern TextObject text_Controls_2a;
 extern TextObject text_Controls_2b;
@@ -297,10 +298,11 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice2)
 #define TEXT_SCROLL_SPEED_Y               (text_menuChoice3)
 #define TEXT_SCROLL_DIRECTION_Y           (text_menuChoice4)
-#define TEXT_RESET_TO_DEFAULT_Y           (text_menuChoice5)
+#define TEXT_RESET_TO_DEFAULT_2_Y         (text_menuChoice5)
 #define TEXT_MUSIC_Y                      (text_menuChoice1)
 #define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
 #define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
+#define TEXT_RESET_TO_DEFAULT_1_Y         (text_menuChoice4)
 #define CONTROLS_MENU_CURSOR_POSITION_X   (controlsMenuCursorPosition_X)
 #define VIDEO_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define VIDEO_MENU_NUM_POSITION_X         (videoMenuNumPosition_X)
@@ -402,8 +404,8 @@ extern void controlsSetConfirmBackPos();
         textObj.rect.w += textChars[tempCharArray[uint_i]].rect.w;                             \
         textObj.rect.h = max(textObj.rect.h, (Sint16)textChars[tempCharArray[uint_i]].rect.h); \
     }                                                                                          \
-    textObj.rect.x = pos_x;                                                                    \
-    textObj.rect.y = pos_y;
+    textObj.rect.x = (Sint16)(pos_x);                                                          \
+    textObj.rect.y = (Sint16)(pos_y);
 
 #define SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y)                              \
     textObj.str = text;                                                                              \
@@ -412,8 +414,8 @@ extern void controlsSetConfirmBackPos();
         textObj.rect.w += textChars_large[tempCharArray[uint_i]].rect.w;                             \
         textObj.rect.h = max(textObj.rect.h, (Sint16)textChars_large[tempCharArray[uint_i]].rect.h); \
     }                                                                                                \
-    textObj.rect.x = pos_x;                                                                          \
-    textObj.rect.y = pos_y;
+    textObj.rect.x = (Sint16)(pos_x);                                                                \
+    textObj.rect.y = (Sint16)(pos_y);
 
 #define SET_AND_RENDER_TIMER(pos_x_left, pos_y)     \
     i = 0;                                          \

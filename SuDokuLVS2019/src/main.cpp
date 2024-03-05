@@ -420,6 +420,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
 	SET_TEXT_WITH_OUTLINE("Music Volume",     text_Music_Volume,     SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_VOLUME_Y);
 	SET_TEXT_WITH_OUTLINE("SFX Volume",       text_SFX_Volume,       SOUND_MENU_CURSOR_POSITION_X,         TEXT_SFX_VOLUME_Y);
+	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default_1, SOUND_MENU_CURSOR_POSITION_X,       TEXT_RESET_TO_DEFAULT_1_Y);
 	/* Background Menu */
 	SET_TEXT_WITH_OUTLINE("Type",             text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
 	SET_TEXT_WITH_OUTLINE("Size",             text_Background_Size,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_SIZE_Y);
@@ -429,7 +430,7 @@ int main(int argv, char** args) {
 	} else {
 		SET_TEXT_WITH_OUTLINE("Scroll Dir.", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
 	}
-	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default, BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_RESET_TO_DEFAULT_Y);
+	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default_2, BACKGROUND_MENU_CURSOR_POSITION_X,  TEXT_RESET_TO_DEFAULT_2_Y);
 	/* Credits */
 	setCreditsText();
 
@@ -1605,7 +1606,7 @@ int main(int argv, char** args) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Reset_to_Default, SOUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Reset_to_Default_1, SOUND_MENU_ENDPOINT, 3);
 				}
 				updateSoundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
@@ -1636,7 +1637,7 @@ int main(int argv, char** args) {
 					(mouseIsInRectWithSetting(text_Music.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Music_Volume.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_SFX_Volume.rect, SOUND_MENU_ENDPOINT)
-					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, SOUND_MENU_ENDPOINT)))) {
+					|| mouseIsInRectWithSetting(text_Reset_to_Default_1.rect, SOUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_sound) {
 						case 0:
 							if (++soundSettings.musicIndex > 8)
@@ -1683,7 +1684,7 @@ int main(int argv, char** args) {
 				renderText(&text_Music);
 				renderText(&text_Music_Volume);
 				renderText(&text_SFX_Volume);
-				renderText(&text_Reset_to_Default);
+				renderText(&text_Reset_to_Default_1);
 				break;
 			/* 24 = Background Menu */
 			case 24:
@@ -1695,10 +1696,10 @@ int main(int argv, char** args) {
 				menuHandleVertCursorMovement(menuCursorIndex_background, 5, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Type, BACKGROUND_MENU_ENDPOINT, 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 2);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 3);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Reset_to_Default, BACKGROUND_MENU_ENDPOINT, 4);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Background_Size, BACKGROUND_MENU_ENDPOINT, 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Speed, BACKGROUND_MENU_ENDPOINT, 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Scroll_Direction, BACKGROUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_background, text_Reset_to_Default_2, BACKGROUND_MENU_ENDPOINT, 4);
 				}
 				updateBackgroundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
@@ -1734,7 +1735,7 @@ int main(int argv, char** args) {
 					|| mouseIsInRectWithSetting(text_Scroll_Speed.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Scroll_Direction.rect, BACKGROUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Background_Size.rect, BACKGROUND_MENU_ENDPOINT)
-					|| mouseIsInRectWithSetting(text_Reset_to_Default.rect, BACKGROUND_MENU_ENDPOINT)))) {
+					|| mouseIsInRectWithSetting(text_Reset_to_Default_2.rect, BACKGROUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_background) {
 						case 0:
 							if (++bgSettings.type > 8)
@@ -1775,7 +1776,7 @@ int main(int argv, char** args) {
 				renderText(&text_Background_Size);
 				renderText(&text_Scroll_Speed);
 				renderText(&text_Scroll_Direction);
-				renderText(&text_Reset_to_Default);
+				renderText(&text_Reset_to_Default_2);
 				break;
 			/* 26 = Scores Menu */
 			case 26:

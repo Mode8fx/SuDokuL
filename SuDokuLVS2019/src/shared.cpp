@@ -95,7 +95,7 @@ void savePuzzle() {
 
 void initDefaultBGScale() {
 	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480));
-	defaultBGScale = max((Uint16)(uint_i), (Uint16)1);
+	defaultBGScale = max((Uint8)(uint_i), (Uint8)1);
 }
 
 void initStartingWidthHeightMults() {
@@ -110,8 +110,8 @@ void initStartingSharedVariables() {
 	gridSizeD = (12 * GAME_HEIGHT_MULT);
 	gridSizeA3 = (3 * gridSizeA);
 	gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
-	gameSidebarSmall1Rect.w = SIDEBAR_SMALL_SIZE_X;
-	gameSidebarSmall1Rect.h = SIDEBAR_SMALL_SIZE_Y;
+	gameSidebarSmall1Rect.w = (Sint16)SIDEBAR_SMALL_SIZE_X;
+	gameSidebarSmall1Rect.h = (Sint16)SIDEBAR_SMALL_SIZE_Y;
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
 		gridPosY = (Uint16)((gameHeight - gridSize) / 2);
@@ -124,12 +124,12 @@ void initStartingSharedVariables() {
 	} else {
 		gridPosX = (Uint16)((gameWidth / 2) - (GRID_SIZE / 2));
 		gridPosY = (Uint16)((gameHeight - GRID_SIZE) * 875 / 1000);
-		gameSidebarSmall1Rect.x = (gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2);
-		gameSidebarSmall1Rect.y = -SIDEBAR_SMALL_SIZE_Y / 4;
+		gameSidebarSmall1Rect.x = (Sint16)((gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
+		gameSidebarSmall1Rect.y = -(SIDEBAR_SMALL_SIZE_Y / 4);
 		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall2Rect.x = (gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2);
+		gameSidebarSmall2Rect.x = (Sint16)((gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2));
 		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall3Rect.x = (gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2);
+		gameSidebarSmall3Rect.x = (Sint16)((gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
 	}
 	gridStartingPosX[0] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (0 * GRID_SIZE_A3) + (0 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 0 / 3));
 	gridStartingPosX[1] = (Uint16)((GRID_POS_X + GRID_SIZE_D) + (1 * GRID_SIZE_A3) + (1 * GRID_SIZE_B) + ((GRID_SIZE_C - GRID_SIZE_B) * 1 / 3));
