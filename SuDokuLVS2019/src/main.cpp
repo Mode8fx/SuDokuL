@@ -222,7 +222,7 @@ int main(int argv, char** args) {
 	//bgSettings.scrollDir = 22;
 	//setBGScrollSpeed();
 	//bgSettings.speedMult = 15;
-	//bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
+	//bgSettings.scale = max(min((int)min(gameWidthMult, gameHeightMult), 5), 1);
 
 	/* Set Textures */
 	if (gameHeight < 272) {
@@ -247,7 +247,7 @@ int main(int argv, char** args) {
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
 	PREPARE_SPRITE(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 1);
-	PREPARE_SPRITE(game_grid, grid_384_png, grid_384_png_len, GRID_POS_X, GRID_POS_Y, 1);
+	PREPARE_SPRITE(game_grid, grid_384_png, grid_384_png_len, gridPosX, gridPosY, 1);
 	PREPARE_SPRITE(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
 	PREPARE_SPRITE(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 1);
@@ -273,7 +273,7 @@ int main(int argv, char** args) {
 	/* General - Fonts */
 	pixelFont_large = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, FONT_SIZE * 1.5);
 	pixelFont_grid = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, GRID_NUM_SIZE);
-	pixelFont_grid_mini = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)GRID_SIZE_A);
+	pixelFont_grid_mini = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)gridSizeA);
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;

@@ -210,8 +210,8 @@ void resetBGToDefault() {
     bgSettings.scrollDir = 22;
     setBGScrollSpeed();
     bgSettings.speedMult = 15;
-    //bgSettings.scale = max(min((int)min(GAME_WIDTH_MULT, GAME_HEIGHT_MULT), 5), 1);
-    bgSettings.scale = DEFAULT_BG_SCALE;
+    //bgSettings.scale = max(min((int)min(gameWidthMult, gameHeightMult), 5), 1);
+    bgSettings.scale = defaultBGScale;
     SET_SPRITE_SCALE_TILE();
 }
 

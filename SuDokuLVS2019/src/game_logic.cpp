@@ -32,22 +32,22 @@ void gameHandleMainGridNavigation() {
             if (gridCursorIndex_x < 4) {
                  if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_left;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (GRID_SIZE_A * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (GRID_SIZE_A * 2.5);
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5);
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 2.5);
                  } else {
                     currMiniGrid = &miniGrid_bottom_left;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (GRID_SIZE_A * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (GRID_SIZE_A * 0.5) - currMiniGrid->rect.h;
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5);
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 0.5) - currMiniGrid->rect.h;
                  }
             } else {
                 if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_right;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (GRID_SIZE_A * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (GRID_SIZE_A * 2.5);
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5) - currMiniGrid->rect.w;
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 2.5);
                 } else {
                     currMiniGrid = &miniGrid_bottom_right;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (GRID_SIZE_A * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (GRID_SIZE_A * 0.5) - currMiniGrid->rect.h;
+                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (gridSizeA * 1.5) - currMiniGrid->rect.w;
+                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (gridSizeA * 0.5) - currMiniGrid->rect.h;
                 }
             }
             miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);
@@ -127,11 +127,11 @@ void gameHandleMouseMovementMain() {
 }
 
 bool mouseBoundsX(Sint8 start, Sint8 end) {
-    return ((mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (GRID_SIZE_A3))));
+    return ((mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (gridSizeA3))));
 }
 
 bool mouseBoundsY(Sint8 start, Sint8 end) {
-    return ((mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (GRID_SIZE_A3))));
+    return ((mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (gridSizeA3))));
 }
 
 bool clickedWithinGrid() {
@@ -247,11 +247,11 @@ void gameHandleMouseMovementMini() {
 }
 
 bool mouseBoundsMiniX(Sint8 start, Sint8 end) {
-    return (mouseInput_x >= xAtMiniGridIndex(start) && (mouseInput_x < (xAtMiniGridIndex(end) + (GRID_SIZE_A3))));
+    return (mouseInput_x >= xAtMiniGridIndex(start) && (mouseInput_x < (xAtMiniGridIndex(end) + (gridSizeA3))));
 }
 
 bool mouseBoundsMiniY(Sint8 start, Sint8 end) {
-    return (mouseInput_y >= yAtMiniGridIndex(start) && (mouseInput_y < (yAtMiniGridIndex(end) + (GRID_SIZE_A3))));
+    return (mouseInput_y >= yAtMiniGridIndex(start) && (mouseInput_y < (yAtMiniGridIndex(end) + (gridSizeA3))));
 }
 
 bool clickedWithinMiniGrid() {
@@ -319,12 +319,12 @@ void setGridMiniNum(Sint8 index, Sint8 num) {
 void setGridCursorByLargeX() {
     gridCursor_bottom_left.rect.x = GRID_X_AT_COL(gridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorByLargeY() {
-    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
@@ -384,22 +384,22 @@ void gameHandleChangeSong() {
 }
 
 Sint16 xAtMiniGridIndex(Sint8 index) {
-    return (currMiniGrid->rect.x + (GRID_SIZE_D * 3) + ((index + 1) * GRID_SIZE_A3) + ((index + 1) * GRID_SIZE_B));
+    return (currMiniGrid->rect.x + (gridSizeD * 3) + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
 }
 
 Sint16 yAtMiniGridIndex(Sint8 index) {
-    return (currMiniGrid->rect.y + (GRID_SIZE_D * 3) + (index * GRID_SIZE_A3) + (index * GRID_SIZE_B));
+    return (currMiniGrid->rect.y + (gridSizeD * 3) + (index * gridSizeA3) + (index * gridSizeB));
 }
 
 void setGridCursorBySmallX() {
     gridCursor_bottom_left.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorBySmallY() {
-    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + GRID_SIZE_A3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + gridSizeA3 - (gridCursorCornerStep * 3);
     gridCursor_top_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;

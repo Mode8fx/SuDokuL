@@ -14,7 +14,7 @@ void initStartingTextVariables() {
 		fontForceOffset1 = 0;
 		fontForceOffset2 = 0;
 	}
-    gridNumSize = (GRID_SIZE_A * 3);
+    gridNumSize = (gridSizeA * 3);
     text_pressStartAmplitude = (FONT_SIZE / 2);
     text_standardAmplitude = (FONT_SIZE / 10);
     text_menuChoice3 = (gameHeight * 5 / 8);
@@ -43,14 +43,14 @@ void initTextObjectVals(TextObject *textObj) {
 
 void adjustCharOutlineOffset(TextCharObject *arr, Uint8 c, float x, float y) {
     if (x > 0) {
-        arr[c].outlineOffset_x += max((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);
+        arr[c].outlineOffset_x += max((int)(x * gameHeightMult * arr[c].rect.h / FONT_SIZE), 1);
     } else if (x < 0) {
-        arr[c].outlineOffset_x += min((int)(x * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1);
+        arr[c].outlineOffset_x += min((int)(x * gameHeightMult * arr[c].rect.h / FONT_SIZE), -1);
     }
     if (y > 0) {
-        arr[c].outlineOffset_y += max((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), 1);
+        arr[c].outlineOffset_y += max((int)(y * gameHeightMult * arr[c].rect.h / FONT_SIZE), 1);
     } else if (y < 0) {
-        arr[c].outlineOffset_y += min((int)(y * GAME_HEIGHT_MULT * arr[c].rect.h / FONT_SIZE), -1);
+        arr[c].outlineOffset_y += min((int)(y * gameHeightMult * arr[c].rect.h / FONT_SIZE), -1);
     }
 }
 
@@ -120,7 +120,7 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 }
 
 void setFontOutline(TTF_Font *font, TextCharObject *textObj) {
-	TTF_SetFontOutline(font, max((textObj->rect.h / 10), int(ceil(GAME_HEIGHT_MULT))));
+	TTF_SetFontOutline(font, max((textObj->rect.h / 10), int(ceil(gameHeightMult))));
 }
 
 void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
@@ -229,28 +229,28 @@ void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
 	k = index / 9;
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + ((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + ((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
     k = index / 9;
-    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * GRID_SIZE_A) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * GRID_SIZE_A) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
+    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (((num - 1) % 3) * gridSizeA) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (((num - 1) / 3) * gridSizeA) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
     renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
     k = (num - 1) / 3;
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + k * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + ((GRID_SIZE_A3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
     renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (GRID_SIZE_D * 3) + (((num - 1) % 3) + 1) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (GRID_SIZE_D * 3) + ((num - 1) / 3) * ((GRID_SIZE_A3) + (GRID_SIZE_B)) + GRID_SIZE_A, textNumsObj[num].outlineOffset_y);
+    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA, textNumsObj[num].outlineOffset_x);
+    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA, textNumsObj[num].outlineOffset_y);
     renderTextChar(&textNumsObj[num]);
 }
 
