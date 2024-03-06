@@ -8,12 +8,6 @@
 #define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
 #endif
 
-// temporary quick fix
-#if defined(WII)
-#define tile->rect.w 32
-#define tile->rect.h 32
-#endif
-
 struct SpriteObject {
 #if !defined(SDL1)
     SDL_Texture *texture;
