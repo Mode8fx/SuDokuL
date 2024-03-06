@@ -335,9 +335,9 @@ void gameHandleCheatRevealCell() {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (originalGrid[i] == 0) {
             if (++cheat1Counter >= 8) {
-                Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
                 setGridNum(i, solutionGrid[i]);
-                cheat1Counter = 0;
+                Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
+                resetCheatCounters();
             }
         }
     } else if (keyPressed(INPUT_CONFIRM_ALT)) {
@@ -355,7 +355,7 @@ void gameHandleCheatClearIncorrectCells() {
                     }
                 }
                 Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
-                cheat2Counter = 0;
+                resetCheatCounters();
             }
         } else {
             cheat2Counter = 0;
