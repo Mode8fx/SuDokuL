@@ -658,10 +658,10 @@ int main(int argv, char** args) {
 #endif
 						if (!controlSettings.swapConfirmAndBack) {
 							keyInputs |= INPUT_CONFIRM;
+							resetCheatCounters();
 						} else {
 							keyInputs |= INPUT_BACK;
 						}
-						resetCheatCounters();
 						break;
 					}
 #if defined(SWITCH)
@@ -674,8 +674,8 @@ int main(int argv, char** args) {
 						}
 						else {
 							keyInputs |= INPUT_CONFIRM;
+							resetCheatCounters();
 						}
-						resetCheatCounters();
 						break;
 					}
 					if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START) {
@@ -792,10 +792,10 @@ int main(int argv, char** args) {
 						if (event.jbutton.button == 1) { // O
 							if (!controlSettings.swapConfirmAndBack) {
 								keyInputs |= INPUT_CONFIRM;
+								resetCheatCounters();
 							} else {
 								keyInputs |= INPUT_BACK;
 							}
-							resetCheatCounters();
 							break;
 						}
 						if (event.jbutton.button == 2) { // X
@@ -803,8 +803,8 @@ int main(int argv, char** args) {
 								keyInputs |= INPUT_BACK;
 							} else {
 								keyInputs |= INPUT_CONFIRM;
+								resetCheatCounters();
 							}
-							resetCheatCounters();
 							break;
 						}
 						if (event.jbutton.button == 11) { // Start

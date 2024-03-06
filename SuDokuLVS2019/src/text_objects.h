@@ -436,10 +436,10 @@ constexpr auto CREDITS_STEP = 1.6;
 
 #if defined(WII_U) || defined(SWITCH) || defined(ANDROID)
 #define CHEAT1_TEXT "press X or Y 8 times"
-#define CHEAT2_TEXT "Or press (B then Select) 4 times"
+#define CHEAT2_TEXT "Or press (B then X/Y) x4"
 #elif defined(VITA) || defined(PSP)
 #define CHEAT1_TEXT "press Square or Triangle 8 times"
-#define CHEAT2_TEXT "Or press (Circle then Select) 4 times"
+#define CHEAT2_TEXT "Or press (Circle then Square/Triangle) x4"
 #else
 #define CHEAT1_TEXT "press the Period key 8 times"
 #define CHEAT2_TEXT "Or press (Backspace then Period) x4"
