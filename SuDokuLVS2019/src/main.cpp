@@ -7,6 +7,7 @@
 #include "sudokuGen.h"
 #include "puzzleBank.h"
 #include "window.h"
+#include "text_objects.h"
 #include "include_fonts.h"
 #include "include_graphics.h"
 #include "include_music.h"
@@ -346,10 +347,16 @@ int main(int argv, char** args) {
 #elif defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
-	SET_TEXT_WITH_OUTLINE("Press Q to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press Q/Select to", text_Quit_to_Menu_1,  OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE("Save and Quit",    text_Quit_to_Menu_2,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_2), TEXT_QUIT_TO_MENU_Y + (CONTROLS_SPACER * 2));
-	SET_TEXT_WITH_OUTLINE("You Win!",         text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),    TEXT_YOU_WIN_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("You Win!",     text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),        TEXT_YOU_WIN_Y);
+		SET_TEXT_WITH_OUTLINE("Amazing! You're a sudoku master!", text_Wow_Incredible, OBJ_TO_MID_SCREEN_X(text_Wow_Incredible), TEXT_YOU_WIN_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("You Win!",     text_You_Win,          OBJ_TO_MID_SCREEN_X(text_You_Win),        TEXT_QUIT_TO_MENU_Y);
+		SET_TEXT_WITH_OUTLINE("Wow! You're a sudoku master!", text_Wow_Incredible, OBJ_TO_MID_SCREEN_X(text_Wow_Incredible), TEXT_QUIT_TO_MENU_Y);
+	}
 	/* Controls */
 	setControlsText();
 	controlsSetConfirmBackPos();
@@ -1303,7 +1310,13 @@ int main(int argv, char** args) {
 					}
 				}
 				drawSidebar();
-				renderText(&text_You_Win);
+				if (menuCursorIndex_play == 3) {
+					renderYouWinRect();
+					renderText(&text_Wow_Incredible);
+				} else {
+					renderYouWinRect();
+					renderText(&text_You_Win);
+				}
 				break;
 			/* 12 = Controls Screen */
 			case 12:

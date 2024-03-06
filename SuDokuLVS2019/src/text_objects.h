@@ -86,6 +86,7 @@ extern TextObject text_Paused;
 extern TextObject text_Quit_to_Menu_1;
 extern TextObject text_Quit_to_Menu_2;
 extern TextObject text_You_Win;
+extern TextObject text_Wow_Incredible;
 extern TextObject text_Controls_Menu;
 extern TextObject text_Video;
 extern TextObject text_Sound;
@@ -238,6 +239,7 @@ extern TextObject text_Options;
 extern TextObject text_Credits;
 extern TextObject text_Quit;
 extern SDL_Rect divider;
+extern SDL_Rect youWinRect;
 
 /* Font-Related Variables */
 extern Uint16 fontSize;
@@ -360,6 +362,7 @@ extern void renderTestText();
 extern void setControlsText();
 extern void setSelectBtnText();
 extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
+extern void renderYouWinRect();
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
 extern void renderControlsTextPage3();

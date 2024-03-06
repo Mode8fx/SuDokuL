@@ -6,6 +6,8 @@
 #include "include.h"
 #include "general.h"
 #include "sudokuGen.h"
+#include "menu_logic.h"
+#include "text_objects.h"
 
 using namespace std;
 
@@ -651,6 +653,17 @@ void checkForVictory() {
         }
         if (k) {
             programState = 11;
+            if (menuCursorIndex_play == 3) {
+                youWinRect.x = text_Wow_Incredible.rect.x;
+                youWinRect.y = text_Wow_Incredible.rect.y;
+                youWinRect.w = text_Wow_Incredible.rect.w;
+                youWinRect.h = text_Wow_Incredible.rect.h;
+            } else {
+                youWinRect.x = text_You_Win.rect.x;
+                youWinRect.y = text_You_Win.rect.y;
+                youWinRect.w = text_You_Win.rect.w;
+                youWinRect.h = text_You_Win.rect.h;
+            }
         }
     }
 }

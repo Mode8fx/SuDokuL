@@ -172,6 +172,7 @@ TextObject text_Paused;
 TextObject text_Quit_to_Menu_1;
 TextObject text_Quit_to_Menu_2;
 TextObject text_You_Win;
+TextObject text_Wow_Incredible;
 TextObject text_Controls_Menu;
 TextObject text_Video;
 TextObject text_Sound;
@@ -324,6 +325,7 @@ TextObject text_Options;
 TextObject text_Credits;
 TextObject text_Quit;
 SDL_Rect divider;
+SDL_Rect youWinRect;
 
 /* Game Logic Variables */
 Sint8 gridCursorIndex_x;

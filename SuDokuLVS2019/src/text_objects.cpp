@@ -534,6 +534,16 @@ void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2) {
 #endif
 }
 
+void renderYouWinRect() {
+	if (compactDisplay) {
+#if !defined(SDL1)
+		SDL_RenderFillRect(renderer, &youWinRect);
+#else
+		SDL_FillRect(windowScreen, &youWinRect, 0);
+#endif
+	}
+}
+
 void renderControlsTextPage1() {
 	renderTextLarge(&text_Controls_1);
 	renderText(&text_Controls_2a);
