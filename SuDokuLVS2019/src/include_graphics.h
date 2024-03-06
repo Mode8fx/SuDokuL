@@ -40,7 +40,7 @@
 #include "graphics_include/logo_720.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII)
+#if defined(PSP) || defined(VITA) || defined(WII)
 #define logo_1080_png NULL
 #define logo_1080_png_len 0
 #else

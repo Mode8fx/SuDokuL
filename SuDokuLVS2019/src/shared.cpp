@@ -494,6 +494,8 @@ void closeController() {
 void systemSpecificClose() {
 #if defined(WII_U)
 	WHBUnmountSdCard();
+	WHBProcInit();
+	WHBProcShutdown();
 #elif defined(VITA)
 	sceKernelExitProcess(0);
 #elif defined(PSP)

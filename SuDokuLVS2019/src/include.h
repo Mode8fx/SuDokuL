@@ -28,6 +28,7 @@
 #if defined(WII_U)
 #include <unistd.h>
 #include <whb/sdcard.h>
+#include <whb/proc.h>
 #elif defined(VITA)
 #include <psp2/kernel/processmgr.h>
 #elif defined(SWITCH)
