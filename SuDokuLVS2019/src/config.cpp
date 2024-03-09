@@ -5,6 +5,11 @@
 #include "menu_logic.h"
 #include "game_logic.h"
 
+#if defined(WII)
+Uint32 wii_keysDown;
+Uint32 wii_keysUp;
+#endif
+
 bool keyPressed(Uint32 key) {
 	return (keyInputs & key);
 }
@@ -82,7 +87,6 @@ inline static void handleButtonDown_SDL1() {
 		}
 		if (event.jbutton.button == 10) { // Select
 			keyInputs |= INPUT_SELECT;
-			resetCheatCounters();
 			return;
 		}
 #if !defined(SDL1)
@@ -122,6 +126,46 @@ inline static void handleButtonUp_SDL1() {
 	if (event.jbutton.button == 9) { // Right
 		dirInputs |= RIGHT_DEPRESSED;
 		return;
+	}
+}
+#elif defined(WII)
+inline static void wii_mapWiiDir(Uint32 wiimoteInput, Uint32 ccInput, Uint32 output) {
+	if (wii_keysDown & wiimoteInput || wii_keysDown & ccInput) {
+		heldDirs_dpad |= output;
+	} else if (wii_keysUp & wiimoteInput || wii_keysUp & ccInput) {
+		heldDirs_dpad &= ~output;
+	}
+}
+
+inline static void wii_mapWiimoteButton(Uint32 wiimoteInput, Uint32 output) {
+	if (wii_keysDown & wiimoteInput) {
+		heldKeys |= output;
+	} else if (wii_keysUp & wiimoteInput) {
+		heldKeys &= ~output;
+	}
+}
+
+inline static void wii_mapWiiCCButton(Uint32 ccInput, Uint32 output) {
+	if (wii_keysDown & ccInput) {
+		heldKeys |= output;
+	} else if (wii_keysUp & ccInput) {
+		heldKeys &= ~output;
+	}
+}
+
+inline static void wii_mapGCDir(Uint32 gcInput, Uint32 output) {
+	if (wii_keysDown & gcInput) {
+		heldDirs_dpad |= output;
+	} else if (wii_keysUp & gcInput) {
+		heldDirs_dpad &= ~output;
+	}
+}
+
+inline static void wii_mapGCButton(Uint32 gcInput, Uint32 output) {
+	if (wii_keysDown & gcInput) {
+		heldKeys |= output;
+	} else if (wii_keysUp & gcInput) {
+		heldKeys &= ~output;
 	}
 }
 #else
@@ -188,7 +232,6 @@ inline static void handleButtonDown_SDL2() {
 	}
 	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
 		keyInputs |= INPUT_SELECT;
-		resetCheatCounters();
 		return;
 	}
 	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_X || event.cbutton.button == SDL_CONTROLLER_BUTTON_Y) {
@@ -266,7 +309,6 @@ inline static void handleKeyboardKeys() {
 	}
 	if (event.key.keysym.sym == SDLK_q) {
 		keyInputs |= INPUT_SELECT;
-		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == SDLK_PERIOD || event.key.keysym.sym == SDLK_KP_PERIOD) {
@@ -404,101 +446,157 @@ inline static void handleInputPressDepress() {
 }
 
 void handlePlayerInput() {
-		keyInputs = 0;
-		dirInputs = 0;
+	keyInputs = 0;
+	dirInputs = 0;
 #if (defined(PSP) || defined(SDL1))
-		/* Handle Key Presses (PSP and SDL1) */
+	/* Handle Key Presses (PSP and SDL1) */
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			/* Handle Analog Input (PSP and SDL1) */
+			case SDL_JOYAXISMOTION:
+				handleAnalogInput_SDL1();
+				break;
+			/* Handle Button Input (PSP and SDL1) */
+			case SDL_JOYBUTTONDOWN:
+				handleButtonDown_SDL1();
+				break;
+			case SDL_JOYBUTTONUP:
+				handleButtonUp_SDL1();
+				break;
+			default:
+				break;
+		}
+	}
+#elif defined(WII)
+	WPAD_ScanPads();
+	wii_keysDown = WPAD_ButtonsDown(0);
+	wii_keysUp = WPAD_ButtonsUp(0);
+	wii_mapWiiDir(WPAD_BUTTON_UP, WPAD_CLASSIC_BUTTON_LEFT, INPUT_LEFT);
+	wii_mapWiiDir(WPAD_BUTTON_DOWN, WPAD_CLASSIC_BUTTON_RIGHT, INPUT_RIGHT);
+	wii_mapWiiDir(WPAD_BUTTON_LEFT, WPAD_CLASSIC_BUTTON_DOWN, INPUT_DOWN);
+	wii_mapWiiDir(WPAD_BUTTON_RIGHT, WPAD_CLASSIC_BUTTON_UP, INPUT_UP);
+	wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM_ALT);
+	wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_BACK);
+	wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_BACK);
+	wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_CONFIRM);
+	wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
+	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT); 
+	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
+	wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_NEXT_TRACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_CONFIRM);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_BACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_X, INPUT_SWAP);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_Y, INPUT_SWAP);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_L, INPUT_PREV_TRACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_R, INPUT_NEXT_TRACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_PLUS, INPUT_START);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_NEXT_TRACK);
+
+	PAD_ScanPads();
+	wii_keysDown = PAD_ButtonsDown(0);
+	wii_keysUp = PAD_ButtonsUp(0);
+	wii_mapGCDir(PAD_BUTTON_UP, INPUT_UP);
+	wii_mapGCDir(PAD_BUTTON_DOWN, INPUT_DOWN);
+	wii_mapGCDir(PAD_BUTTON_LEFT, INPUT_LEFT);
+	wii_mapGCDir(PAD_BUTTON_RIGHT, INPUT_RIGHT);
+	wii_mapGCButton(PAD_BUTTON_A, INPUT_CONFIRM);
+	wii_mapGCButton(PAD_BUTTON_B, INPUT_BACK);
+	wii_mapGCButton(PAD_BUTTON_X, INPUT_SWAP);
+	wii_mapGCButton(PAD_BUTTON_Y, INPUT_SWAP);
+	wii_mapGCButton(PAD_TRIGGER_L, INPUT_PREV_TRACK);
+	wii_mapGCButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
+	wii_mapGCButton(PAD_TRIGGER_Z, INPUT_SELECT);
+	wii_mapGCButton(PAD_BUTTON_START, INPUT_START);
+
+	controllerAxis_leftStickX = PAD_StickX(0) * 256;
+	controllerAxis_leftStickY = PAD_StickY(0) * -256;
+	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+		controllerAxis_leftStickX = 0;
+	}
+	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+		controllerAxis_leftStickY = 0;
+	}
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-				/* Handle Analog Input (PSP and SDL1) */
-				case SDL_JOYAXISMOTION:
-					handleAnalogInput_SDL1();
-					break;
-				/* Handle Button Input (PSP and SDL1) */
-				case SDL_JOYBUTTONDOWN:
-					handleButtonDown_SDL1();
-					break;
-				case SDL_JOYBUTTONUP:
-					handleButtonUp_SDL1();
-					break;
 				default:
 					break;
 			}
 		}
 #else
-		/* Handle Analog Input (SDL2) */
-		handleAnalogInput_SDL2();
-		/* Handle Key Presses and Mouse Input (SDL2) */
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-				case SDL_QUIT:
-					isRunning = false;
-					break;
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
-				/* Handle Mouse Input (PC) */
-				case SDL_MOUSEMOTION:
+	/* Handle Analog Input (SDL2) */
+	handleAnalogInput_SDL2();
+	/* Handle Key Presses and Mouse Input (SDL2) */
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID))
+			/* Handle Mouse Input (PC) */
+			case SDL_MOUSEMOTION:
+				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+				updateMousePosViewportMouse();
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT) {
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					updateMousePosViewportMouse();
+					keyInputs |= INPUT_CONFIRM_ALT;
 					break;
-				case SDL_MOUSEBUTTONDOWN:
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
-						updateMousePosViewportMouse();
-						keyInputs |= INPUT_CONFIRM_ALT;
-						break;
-					}
-					if (event.button.button == SDL_BUTTON_RIGHT) {
-						keyInputs |= INPUT_BACK;
-						break;
-					}
+				}
+				if (event.button.button == SDL_BUTTON_RIGHT) {
+					keyInputs |= INPUT_BACK;
 					break;
-				case SDL_MOUSEBUTTONUP:
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				justClickedInMiniGrid = false;
+				break;
+			/* Handle Window Resizing (PC) */
+			case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+					windowSizeChanged = true;
+				}
+				break;
+#endif
+			/* Handle Keyboard Input (SDL2) */
+			case SDL_KEYDOWN:
+				handleKeyboardKeys();
+				break;
+			/* Handle Button Input (SDL2) */
+			case SDL_CONTROLLERBUTTONDOWN:
+				handleButtonDown_SDL2();
+				break;
+			case SDL_CONTROLLERBUTTONUP:
+				handleButtonUp_SDL2();
+				break;
+			/* Handle Touch Input (SDL2) */
+			case SDL_FINGERDOWN:
+				if (controlSettings.enableTouchscreen) {
+					mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
+					mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
+					updateMousePosViewportTouch();
+					keyInputs |= INPUT_CONFIRM_ALT;
+				}
+				break;
+			case SDL_FINGERMOTION:
+				if (controlSettings.enableTouchscreen) {
+					mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
+					mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
+					updateMousePosViewportTouch();
+				}
+				break;
+			case SDL_FINGERUP:
+				if (controlSettings.enableTouchscreen) {
 					justClickedInMiniGrid = false;
-					break;
-				/* Handle Window Resizing (PC) */
-				case SDL_WINDOWEVENT:
-					if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-						windowSizeChanged = true;
-					}
-					break;
-#endif
-				/* Handle Keyboard Input (SDL2) */
-				case SDL_KEYDOWN:
-					handleKeyboardKeys();
-					break;
-				/* Handle Button Input (SDL2) */
-				case SDL_CONTROLLERBUTTONDOWN:
-					handleButtonDown_SDL2();
-					break;
-				case SDL_CONTROLLERBUTTONUP:
-					handleButtonUp_SDL2();
-					break;
-				/* Handle Touch Input (SDL2) */
-				case SDL_FINGERDOWN:
-					if (controlSettings.enableTouchscreen) {
-						mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
-						mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
-						updateMousePosViewportTouch();
-						keyInputs |= INPUT_CONFIRM_ALT;
-					}
-					break;
-				case SDL_FINGERMOTION:
-					if (controlSettings.enableTouchscreen) {
-						mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
-						mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
-						updateMousePosViewportTouch();
-					}
-					break;
-				case SDL_FINGERUP:
-					if (controlSettings.enableTouchscreen) {
-						justClickedInMiniGrid = false;
-					}
-					break;
-				default:
-					break;
-			}
+				}
+				break;
+			default:
+				break;
 		}
+	}
 #endif
-		/* Handle Press/Depress/Hold */
-		handleInputPressDepress();
+	/* Handle Press/Depress/Hold */
+	handleInputPressDepress();
 }
