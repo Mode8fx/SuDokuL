@@ -29,21 +29,21 @@ void loadSettingsFile() {
 }
 
 void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s) {
+	controlSettings.swapConfirmAndBack = scab;
+	controlSettings.enableTouchscreen = et;
+	videoSettings.resolutionIndex = ri;
+	videoSettings.aspectRatioIndex = ari;
+	videoSettings.widthSetting = gw;
+	videoSettings.heightSetting = gh;
+	soundSettings.musicIndex = mi;
+	soundSettings.bgmVolume = bgmv;
+	soundSettings.sfxVolume = sfxv;
+	bgSettings.type = t;
+	bgSettings.speedMult = sm;
+	bgSettings.scrollDir = sd;
+	bgSettings.scale = s;
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");
 	if (settingsFile != NULL) {
-		controlSettings.swapConfirmAndBack = scab;
-		controlSettings.enableTouchscreen = et;
-		videoSettings.resolutionIndex = ri;
-		videoSettings.aspectRatioIndex = ari;
-		videoSettings.widthSetting = gw;
-		videoSettings.heightSetting = gh;
-		soundSettings.musicIndex = mi;
-		soundSettings.bgmVolume = bgmv;
-		soundSettings.sfxVolume = sfxv;
-		bgSettings.type = t;
-		bgSettings.speedMult = sm;
-		bgSettings.scrollDir = sd;
-		bgSettings.scale = s;
 		SDL_RWwrite(settingsFile, &controlSettings.swapConfirmAndBack, sizeof(Uint8), 1);
 		SDL_RWwrite(settingsFile, &controlSettings.enableTouchscreen, sizeof(Uint8), 1);
 		SDL_RWwrite(settingsFile, &videoSettings.resolutionIndex, sizeof(Uint8), 1);
