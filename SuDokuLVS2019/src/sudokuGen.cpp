@@ -176,6 +176,9 @@ Uint32 beginning;
  * difficulty in difficulty.
  */
 Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
+#if defined(WII)
+    return 0; // Wii rarely crashes from trying to save a generated puzzle... for some reason
+#endif
     seed = SDL_GetTicks();
     srand(seed);
     // If either step fails (it times out or an invalid puzzle is created), retry the entire process

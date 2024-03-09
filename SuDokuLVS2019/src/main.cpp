@@ -721,6 +721,7 @@ int main(int argv, char** args) {
 				break;
 			/* 8 = Generating Puzzle Screen */
 			case 8:
+#if !defined(WII)
 				/* Draw Text */
 				renderText(&text_Loading);
 				renderBorderRects();
@@ -729,6 +730,7 @@ int main(int argv, char** args) {
 				SDL_RenderPresent(renderer);
 #else
 				SDL_Flip(windowScreen);
+#endif
 #endif
 				preparePauseTimer();
 				if (isContinue) {
