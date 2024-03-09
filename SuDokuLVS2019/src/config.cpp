@@ -19,7 +19,7 @@ void resetCheatCounters() {
 	songChangeCounter = 0;
 }
 
-static void handleAnalogInput_SDL2() {
+inline static void handleAnalogInput_SDL2() {
 	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
 	controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
 	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
@@ -30,7 +30,7 @@ static void handleAnalogInput_SDL2() {
 	}
 }
 
-static void handleAnalogInput_SDL1() {
+inline static void handleAnalogInput_SDL1() {
 	if (event.jaxis.which == 0) {
 		if (event.jaxis.axis == 0) {
 			controllerAxis_leftStickX = event.jaxis.value;
@@ -47,7 +47,7 @@ static void handleAnalogInput_SDL1() {
 	}
 }
 
-static void handleKeyboardKeys() {
+inline static void handleKeyboardKeys() {
 	if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
 		keyInputs |= INPUT_UP;
 		resetCheatCounters();
@@ -168,7 +168,7 @@ static void handleKeyboardKeys() {
 #endif
 }
 
-static void handleButtonDown_SDL2() {
+inline static void handleButtonDown_SDL2() {
 	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
 		dirInputs |= UP_PRESSED;
 		return;
@@ -239,7 +239,7 @@ static void handleButtonDown_SDL2() {
 	}
 }
 
-static void handleButtonUp_SDL2() {
+inline static void handleButtonUp_SDL2() {
 	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
 		dirInputs |= UP_DEPRESSED;
 		return;
@@ -258,7 +258,7 @@ static void handleButtonUp_SDL2() {
 	}
 }
 
-static void handleButtonDown_SDL1() {
+inline static void handleButtonDown_SDL1() {
 	if (event.jbutton.which == 0) {
 		if (event.jbutton.button == 8) { // Up
 			dirInputs |= UP_PRESSED;
@@ -327,7 +327,7 @@ static void handleButtonDown_SDL1() {
 	}
 }
 
-static void handleButtonUp_SDL1() {
+inline static void handleButtonUp_SDL1() {
 	if (event.jbutton.button == 8) { // Up
 		dirInputs |= UP_DEPRESSED;
 		return;
@@ -346,7 +346,7 @@ static void handleButtonUp_SDL1() {
 	}
 }
 
-static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
+inline static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	if (dirInputs & pressedVal) {
 		keyInputs |= inputVal;
 		heldButtons |= inputVal;
@@ -356,7 +356,7 @@ static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	}
 }
 
-static void handleInputPressDepress() {
+inline static void handleInputPressDepress() {
 	if ((controllerAxis_leftStickX < 0) && !(controllerAxis_leftStickX_last < 0)) {
 		dirInputs |= LEFT_PRESSED;
 	} else if (!(controllerAxis_leftStickX < 0) && (controllerAxis_leftStickX_last < 0)) { // a little redundant, but easier to read
