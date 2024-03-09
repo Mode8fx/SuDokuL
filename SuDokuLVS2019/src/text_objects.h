@@ -360,13 +360,14 @@ extern void menuMoveTextDown(TextObject *, double);
 extern void destroyTextObjectTexture(TextCharObject *);
 extern void renderTestText();
 extern void setControlsText();
-extern void setSelectBtnText();
 extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
 extern void renderYouWinRect();
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
 extern void renderControlsTextPage3();
 extern void renderControlsTextPage4();
+#endif
 extern void setCreditsText();
 extern void renderCreditsTextPage1();
 extern void renderCreditsTextPage2();

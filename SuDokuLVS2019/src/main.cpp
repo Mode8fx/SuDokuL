@@ -901,15 +901,21 @@ int main(int argv, char** args) {
 			case 12:
 				/* Key Presses */
 				menuHandleBackButton(2);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(WII)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP)
 				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
 #elif defined(ANDROID)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
+#elif defined(WII)
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_UP)) && menuIndex_controls < 1) {
 #else
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 3) {
 #endif
 					menuIndex_controls++;
+#if defined(WII)
+				} else if ((keyPressed(INPUT_LEFT) || keyPressed(INPUT_DOWN)) && menuIndex_controls > 0) {
+#else
 				} else if (keyPressed(INPUT_LEFT) && menuIndex_controls > 0) {
+#endif
 					menuIndex_controls--;
 				}
 				//renderTestText();
@@ -989,10 +995,18 @@ int main(int argv, char** args) {
 			case 18:
 				/* Key Presses */
 				menuHandleBackButton(2);
+#if defined(WII)
+				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT) || keyPressed(INPUT_UP)) && menuIndex_credits < 8) {
+#else
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_credits < 8) {
+#endif
 					menuIndex_credits++;
 				}
+#if defined(WII)
+				else if ((keyPressed(INPUT_LEFT) || keyPressed(INPUT_DOWN)) && menuIndex_credits > 0) {
+#else
 				else if (keyPressed(INPUT_LEFT) && menuIndex_credits > 0) {
+#endif
 					menuIndex_credits--;
 				}
 				switch (menuIndex_credits) {

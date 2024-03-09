@@ -475,7 +475,7 @@ void handlePlayerInput() {
 	wii_mapWiiDir(WPAD_BUTTON_DOWN, WPAD_CLASSIC_BUTTON_RIGHT, RIGHT_PRESSED);
 	wii_mapWiiDir(WPAD_BUTTON_LEFT, WPAD_CLASSIC_BUTTON_DOWN, DOWN_PRESSED);
 	wii_mapWiiDir(WPAD_BUTTON_RIGHT, WPAD_CLASSIC_BUTTON_UP, UP_PRESSED);
-	if (!controlSettings.swapConfirmAndBack) {
+	if (controlSettings.swapConfirmAndBack) {
 		wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM_ALT);
 		wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_CONFIRM);
 		wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_BACK);
@@ -490,7 +490,7 @@ void handlePlayerInput() {
 	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT); 
 	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
 	wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_NEXT_TRACK);
-	if (!controlSettings.swapConfirmAndBack) {
+	if (controlSettings.swapConfirmAndBack) {
 		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_CONFIRM);
 		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_BACK);
 	} else {
@@ -512,7 +512,7 @@ void handlePlayerInput() {
 	wii_mapGCDir(PAD_BUTTON_DOWN, DOWN_PRESSED);
 	wii_mapGCDir(PAD_BUTTON_LEFT, LEFT_PRESSED);
 	wii_mapGCDir(PAD_BUTTON_RIGHT, RIGHT_PRESSED);
-	if (!controlSettings.swapConfirmAndBack) {
+	if (controlSettings.swapConfirmAndBack) {
 		wii_mapGCButton(PAD_BUTTON_A, INPUT_CONFIRM);
 		wii_mapGCButton(PAD_BUTTON_B, INPUT_BACK);
 	} else {
@@ -534,12 +534,26 @@ void handlePlayerInput() {
 	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
 		controllerAxis_leftStickY = 0;
 	}
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-				default:
+	/* Handle Mouse Input (Wii) */
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_MOUSEMOTION:
+				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+				updateMousePosViewportMouse();
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (keyPressed(INPUT_CONFIRM_ALT)) {
+					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+					updateMousePosViewportMouse();
 					break;
-			}
+				}
+			case SDL_MOUSEBUTTONUP:
+				if (!keyPressed(INPUT_CONFIRM_ALT)) {
+					justClickedInMiniGrid = false;
+				}
+				break;
 		}
+	}
 #else
 	/* Handle Analog Input (SDL2) */
 	handleAnalogInput_SDL2();
