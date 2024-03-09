@@ -304,7 +304,7 @@ int main(int argv, char** args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), fontSize * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), fontSize * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP)
+#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP) || defined(WII)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #elif defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -343,6 +343,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Press - to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+#elif defined(WII)
+	SET_TEXT_WITH_OUTLINE("Press Select/Z to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q/Select to", text_Quit_to_Menu_1,  OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
@@ -369,7 +371,7 @@ int main(int argv, char** args) {
 	} else {
 		SET_TEXT_WITH_OUTLINE("Button Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_CONTROLLER_INPUT_Y);
 	}
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
@@ -377,13 +379,18 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("O - Back", text_B_Back, OBJ_TO_SCREEN_AT_FRACTION(text_B_Back, 0.75), TEXT_B_BACK_Y);
 	SET_TEXT_WITH_OUTLINE("O - Confirm", text_B_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("X - Back", text_A_Back, OBJ_TO_SCREEN_AT_FRACTION(text_A_Back, 0.75), TEXT_A_BACK_Y);
+#elif defined(WII)
+	SET_TEXT_WITH_OUTLINE("A/2 - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("B/1 - Back", text_B_Back, OBJ_TO_SCREEN_AT_FRACTION(text_B_Back, 0.75), TEXT_B_BACK_Y);
+	SET_TEXT_WITH_OUTLINE("B/1 - Confirm", text_B_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
+	SET_TEXT_WITH_OUTLINE("A/2 - Back", text_A_Back, OBJ_TO_SCREEN_AT_FRACTION(text_A_Back, 0.75), TEXT_A_BACK_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("A - Confirm",      text_A_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("B - Back",         text_B_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_B_Back,    0.75), TEXT_B_BACK_Y);
 	SET_TEXT_WITH_OUTLINE("B - Confirm",      text_B_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("A - Back",         text_A_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_A_Back,    0.75), TEXT_A_BACK_Y);
 #endif
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -1374,12 +1381,12 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 				controlsMenuHandleVertCursorMovement();
 #endif
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
 #endif
 				}
@@ -1398,7 +1405,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
@@ -1422,7 +1429,7 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controller_Input);
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 				renderText(&text_Touch_Screen_Input);
 #endif
 				if (controlSettings.swapConfirmAndBack) {
@@ -1432,7 +1439,7 @@ int main(int argv, char** args) {
 					renderText(&text_B_Confirm);
 					renderText(&text_A_Back);
 				}
-#if !defined(ANDROID) && !defined(PSP)
+#if !(defined(ANDROID) || defined(PSP) || defined(WII))
 				if (controlSettings.enableTouchscreen) {
 					renderText(&text_Enabled);
 				} else {
