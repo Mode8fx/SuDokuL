@@ -63,7 +63,6 @@ constexpr auto DOWN_DEPRESSED    = (1 << 7);
 
 extern bool keyPressed(Uint32);
 extern bool buttonHeld(Uint32);
-extern void dirHandler(Uint8, Uint8, Uint8);
 extern void resetCheatCounters();
 extern void handlePlayerInput();
 
