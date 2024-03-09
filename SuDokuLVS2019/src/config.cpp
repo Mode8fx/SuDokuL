@@ -19,17 +19,7 @@ void resetCheatCounters() {
 	songChangeCounter = 0;
 }
 
-inline static void handleAnalogInput_SDL2() {
-	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
-	controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
-	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
-		controllerAxis_leftStickX = 0;
-	}
-	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
-		controllerAxis_leftStickY = 0;
-	}
-}
-
+#if (defined(PSP) || defined(SDL1))
 inline static void handleAnalogInput_SDL1() {
 	if (event.jaxis.which == 0) {
 		if (event.jaxis.axis == 0) {
@@ -44,6 +34,195 @@ inline static void handleAnalogInput_SDL1() {
 				controllerAxis_leftStickY = 0;
 			}
 		}
+	}
+}
+
+inline static void handleButtonDown_SDL1() {
+	if (event.jbutton.which == 0) {
+		if (event.jbutton.button == 8) { // Up
+			dirInputs |= UP_PRESSED;
+			return;
+		}
+		if (event.jbutton.button == 6) { // Down
+			dirInputs |= DOWN_PRESSED;
+			return;
+		}
+		if (event.jbutton.button == 7) { // Left
+			dirInputs |= LEFT_PRESSED;
+			return;
+		}
+		if (event.jbutton.button == 9) { // Right
+			dirInputs |= RIGHT_PRESSED;
+			return;
+		}
+		if (event.jbutton.button == 1) { // O
+			if (!controlSettings.swapConfirmAndBack) {
+				keyInputs |= INPUT_CONFIRM;
+				resetCheatCounters();
+			}
+			else {
+				keyInputs |= INPUT_BACK;
+			}
+			return;
+		}
+		if (event.jbutton.button == 2) { // X
+			if (!controlSettings.swapConfirmAndBack) {
+				keyInputs |= INPUT_BACK;
+			}
+			else {
+				keyInputs |= INPUT_CONFIRM;
+				resetCheatCounters();
+			}
+			return;
+		}
+		if (event.jbutton.button == 11) { // Start
+			keyInputs |= INPUT_START;
+			resetCheatCounters();
+			return;
+		}
+		if (event.jbutton.button == 10) { // Select
+			keyInputs |= INPUT_SELECT;
+			resetCheatCounters();
+			return;
+		}
+#if !defined(SDL1)
+		if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
+#else
+		if (event.jbutton.button == 0) {
+#endif
+			keyInputs |= INPUT_SWAP;
+			return;
+		}
+		if (event.jbutton.button == 4) { // L
+			keyInputs |= INPUT_PREV_TRACK;
+			resetCheatCounters();
+			return;
+		}
+		if (event.jbutton.button == 5) { // R
+			keyInputs |= INPUT_NEXT_TRACK;
+			resetCheatCounters();
+			return;
+		}
+	}
+}
+
+inline static void handleButtonUp_SDL1() {
+	if (event.jbutton.button == 8) { // Up
+		dirInputs |= UP_DEPRESSED;
+		return;
+	}
+	if (event.jbutton.button == 6) { // Down
+		dirInputs |= DOWN_DEPRESSED;
+		return;
+	}
+	if (event.jbutton.button == 7) { // Left
+		dirInputs |= LEFT_DEPRESSED;
+		return;
+	}
+	if (event.jbutton.button == 9) { // Right
+		dirInputs |= RIGHT_DEPRESSED;
+		return;
+	}
+}
+#else
+inline static void handleAnalogInput_SDL2() {
+	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+	controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+		controllerAxis_leftStickX = 0;
+	}
+	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+		controllerAxis_leftStickY = 0;
+	}
+}
+
+inline static void handleButtonDown_SDL2() {
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
+		dirInputs |= UP_PRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
+		dirInputs |= DOWN_PRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
+		dirInputs |= LEFT_PRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
+		dirInputs |= RIGHT_PRESSED;
+		return;
+	}
+#if defined(SWITCH)
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
+#else
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
+#endif
+		if (!controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_CONFIRM;
+			resetCheatCounters();
+		}
+		else {
+			keyInputs |= INPUT_BACK;
+		}
+		return;
+	}
+#if defined(SWITCH)
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
+#else
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
+#endif
+		if (!controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_BACK;
+		}
+		else {
+			keyInputs |= INPUT_CONFIRM;
+			resetCheatCounters();
+		}
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START) {
+		keyInputs |= INPUT_START;
+		resetCheatCounters();
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
+		keyInputs |= INPUT_SELECT;
+		resetCheatCounters();
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_X || event.cbutton.button == SDL_CONTROLLER_BUTTON_Y) {
+		keyInputs |= INPUT_SWAP;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER) {
+		keyInputs |= INPUT_PREV_TRACK;
+		resetCheatCounters();
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
+		keyInputs |= INPUT_NEXT_TRACK;
+		resetCheatCounters();
+		return;
+	}
+}
+
+inline static void handleButtonUp_SDL2() {
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
+		dirInputs |= UP_DEPRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
+		dirInputs |= DOWN_DEPRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
+		dirInputs |= LEFT_DEPRESSED;
+		return;
+	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
+		dirInputs |= RIGHT_DEPRESSED;
+		return;
 	}
 }
 
@@ -167,184 +346,7 @@ inline static void handleKeyboardKeys() {
 	}
 #endif
 }
-
-inline static void handleButtonDown_SDL2() {
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-		dirInputs |= UP_PRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-		dirInputs |= DOWN_PRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-		dirInputs |= LEFT_PRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-		dirInputs |= RIGHT_PRESSED;
-		return;
-	}
-#if defined(SWITCH)
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
-#else
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
 #endif
-		if (!controlSettings.swapConfirmAndBack) {
-			keyInputs |= INPUT_CONFIRM;
-			resetCheatCounters();
-		}
-		else {
-			keyInputs |= INPUT_BACK;
-		}
-		return;
-	}
-#if defined(SWITCH)
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B) {
-#else
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A) {
-#endif
-		if (!controlSettings.swapConfirmAndBack) {
-			keyInputs |= INPUT_BACK;
-		}
-		else {
-			keyInputs |= INPUT_CONFIRM;
-			resetCheatCounters();
-		}
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START) {
-		keyInputs |= INPUT_START;
-		resetCheatCounters();
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
-		keyInputs |= INPUT_SELECT;
-		resetCheatCounters();
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_X || event.cbutton.button == SDL_CONTROLLER_BUTTON_Y) {
-		keyInputs |= INPUT_SWAP;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER) {
-		keyInputs |= INPUT_PREV_TRACK;
-		resetCheatCounters();
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
-		keyInputs |= INPUT_NEXT_TRACK;
-		resetCheatCounters();
-		return;
-	}
-}
-
-inline static void handleButtonUp_SDL2() {
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-		dirInputs |= UP_DEPRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-		dirInputs |= DOWN_DEPRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-		dirInputs |= LEFT_DEPRESSED;
-		return;
-	}
-	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-		dirInputs |= RIGHT_DEPRESSED;
-		return;
-	}
-}
-
-inline static void handleButtonDown_SDL1() {
-	if (event.jbutton.which == 0) {
-		if (event.jbutton.button == 8) { // Up
-			dirInputs |= UP_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 6) { // Down
-			dirInputs |= DOWN_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 7) { // Left
-			dirInputs |= LEFT_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 9) { // Right
-			dirInputs |= RIGHT_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 1) { // O
-			if (!controlSettings.swapConfirmAndBack) {
-				keyInputs |= INPUT_CONFIRM;
-				resetCheatCounters();
-			}
-			else {
-				keyInputs |= INPUT_BACK;
-			}
-			return;
-		}
-		if (event.jbutton.button == 2) { // X
-			if (!controlSettings.swapConfirmAndBack) {
-				keyInputs |= INPUT_BACK;
-			}
-			else {
-				keyInputs |= INPUT_CONFIRM;
-				resetCheatCounters();
-			}
-			return;
-		}
-		if (event.jbutton.button == 11) { // Start
-			keyInputs |= INPUT_START;
-			resetCheatCounters();
-			return;
-		}
-		if (event.jbutton.button == 10) { // Select
-			keyInputs |= INPUT_SELECT;
-			resetCheatCounters();
-			return;
-		}
-#if !defined(SDL1)
-		if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
-#else
-		if (event.jbutton.button == 0) {
-#endif
-			keyInputs |= INPUT_SWAP;
-			return;
-		}
-		if (event.jbutton.button == 4) { // L
-			keyInputs |= INPUT_PREV_TRACK;
-			resetCheatCounters();
-			return;
-		}
-		if (event.jbutton.button == 5) { // R
-			keyInputs |= INPUT_NEXT_TRACK;
-			resetCheatCounters();
-			return;
-		}
-	}
-}
-
-inline static void handleButtonUp_SDL1() {
-	if (event.jbutton.button == 8) { // Up
-		dirInputs |= UP_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == 6) { // Down
-		dirInputs |= DOWN_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == 7) { // Left
-		dirInputs |= LEFT_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == 9) { // Right
-		dirInputs |= RIGHT_DEPRESSED;
-		return;
-	}
-}
 
 inline static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	if (dirInputs & pressedVal) {
