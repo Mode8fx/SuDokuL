@@ -110,6 +110,13 @@ Sint8 menuIndex_credits;
 Sint8 wiimoteSchemeTempVal = 1;
 
 /* Textures */
+#if defined(SDL1)
+#define tile_rect_w 32
+#define tile_rect_h 32
+#else
+#define tile_rect_w tile->rect.w
+#define tile_rect_h tile->rect.h
+#endif
 SpriteObject *tile;
 SpriteObject tile1;
 SpriteObject tile2;

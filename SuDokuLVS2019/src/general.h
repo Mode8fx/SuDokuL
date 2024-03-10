@@ -21,7 +21,7 @@ constexpr auto PI = 3.14159265;
 #define ZERO_OUT_ARRAY(arr) \
     (memset(arr, 0, sizeof(arr)))
 
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(FUNKEY))
 #define PRINT(str) \
     cout << str << endl
 #else

@@ -391,6 +391,21 @@ inline static void handleButtonUp_SDL2() {
 		return;
 	}
 }
+#endif
+
+#if defined(SDL1)
+#define SDLK_RETURN2 SDLK_RETURN
+#define SDLK_KP_0 SDLK_KP0
+#define SDLK_KP_1 SDLK_KP1
+#define SDLK_KP_2 SDLK_KP2
+#define SDLK_KP_3 SDLK_KP3
+#define SDLK_KP_4 SDLK_KP4
+#define SDLK_KP_5 SDLK_KP5
+#define SDLK_KP_6 SDLK_KP6
+#define SDLK_KP_7 SDLK_KP7
+#define SDLK_KP_8 SDLK_KP8
+#define SDLK_KP_9 SDLK_KP9
+#endif
 
 inline static void handleKeyboardKeys() {
 	if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
@@ -511,7 +526,6 @@ inline static void handleKeyboardKeys() {
 	}
 #endif
 }
-#endif
 
 inline static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	if (dirInputs & pressedVal) {
@@ -571,15 +585,61 @@ inline static void handleInputPressDepress() {
 void handlePlayerInput() {
 	keyInputs = 0;
 	dirInputs = 0;
-#if (defined(PSP) || defined(SDL1))
-	/* Handle Key Presses (PSP and SDL1) */
+#if defined(PSP)
+	/* Handle Key Presses (PSP) */
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
-			/* Handle Analog Input (PSP and SDL1) */
+			/* Handle Analog Input (PSP) */
 			case SDL_JOYAXISMOTION:
 				handleAnalogInput_SDL1();
 				break;
-			/* Handle Button Input (PSP and SDL1) */
+			/* Handle Button Input (PSP) */
+			case SDL_JOYBUTTONDOWN:
+				handleButtonDown_SDL1();
+				break;
+			case SDL_JOYBUTTONUP:
+				handleButtonUp_SDL1();
+				break;
+			default:
+				break;
+		}
+	}
+#elif defined(SDL1)
+	/* Handle Key Presses (SDL1) */
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+			/* Handle Mouse Input (PC) */
+			case SDL_MOUSEMOTION:
+				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+				updateMousePosViewportMouse();
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
+					updateMousePosViewportMouse();
+					keyInputs |= INPUT_CONFIRM_ALT;
+					break;
+				}
+				if (event.button.button == SDL_BUTTON_RIGHT) {
+					keyInputs |= INPUT_BACK;
+					break;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				justClickedInMiniGrid = false;
+				break;
+			/* Handle Keyboard Input (PC) */
+			case SDL_KEYDOWN:
+				handleKeyboardKeys();
+				break;
+			/* Handle Analog Input (SDL1) */
+			case SDL_JOYAXISMOTION:
+				handleAnalogInput_SDL1();
+				break;
+			/* Handle Button Input (SDL1) */
 			case SDL_JOYBUTTONDOWN:
 				handleButtonDown_SDL1();
 				break;
@@ -667,7 +727,7 @@ void handlePlayerInput() {
 				}
 				break;
 #endif
-			/* Handle Keyboard Input (SDL2) */
+			/* Handle Keyboard Input (PC) */
 			case SDL_KEYDOWN:
 				handleKeyboardKeys();
 				break;

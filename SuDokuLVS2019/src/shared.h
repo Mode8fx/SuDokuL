@@ -129,6 +129,9 @@ extern bool gameCompleted;
 #if defined(ANDROID)
 #define SYSTEM_WIDTH  max(DM.w, DM.h)
 #define SYSTEM_HEIGHT min(DM.w, DM.h)
+#elif defined(FUNKEY)
+#define SYSTEM_WIDTH  240
+#define SYSTEM_HEIGHT 240
 #elif defined(SDL1)
 #define SYSTEM_WIDTH  640
 #define SYSTEM_HEIGHT 480
@@ -136,7 +139,7 @@ extern bool gameCompleted;
 #define SYSTEM_WIDTH  DM.w
 #define SYSTEM_HEIGHT DM.h
 #endif
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII) || defined(FUNKEY)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0
@@ -160,6 +163,8 @@ extern bool gameCompleted;
 const string rootDir = "ux0:data/SuDokuL/";
 #elif defined(WII)
 const string rootDir = "sd:/apps/SuDokuL/";
+#elif defined(FUNKEY)
+const string rootDir = "/mnt/FunKey/.sudokul/";
 #elif defined(LINUX)
 const string rootDir = ("%s/.sudokul", getenv("HOME"));
 #else
