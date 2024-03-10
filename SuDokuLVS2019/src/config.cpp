@@ -129,10 +129,10 @@ inline static void handleButtonUp_SDL1() {
 	}
 }
 #elif defined(WII)
-inline static void wii_mapWiiDir(Uint32 wiimoteInput, Uint32 ccInput, Uint32 output) {
-	if (wii_keysDown & wiimoteInput || wii_keysDown & ccInput) {
+inline static void wii_mapWiimoteDir(Uint32 wiimoteInput, Uint32 output) {
+	if (wii_keysDown & wiimoteInput) {
 		dirInputs |= output;
-	} else if (wii_keysUp & wiimoteInput || wii_keysUp & ccInput) {
+	} else if (wii_keysUp & wiimoteInput) {
 		dirInputs |= output << 1;
 	}
 }
@@ -142,6 +142,14 @@ inline static void wii_mapWiimoteButton(Uint32 wiimoteInput, Uint32 output) {
 		keyInputs |= output;
 	} else if (wii_keysUp & wiimoteInput) {
 		keyInputs &= ~output;
+	}
+}
+
+inline static void wii_mapWiiCCDir(Uint32 ccInput, Uint32 output) {
+	if (wii_keysDown & ccInput) {
+		dirInputs |= output;
+	} else if (wii_keysUp & ccInput) {
+		dirInputs |= output << 1;
 	}
 }
 
@@ -167,6 +175,119 @@ inline static void wii_mapGCButton(Uint32 gcInput, Uint32 output) {
 	} else if (wii_keysUp & gcInput) {
 		keyInputs &= ~output;
 	}
+}
+
+inline static void handleWiimoteButtons() {
+	switch (controlSettings.wiimoteScheme) {
+		case 0:
+			wii_mapWiimoteDir(WPAD_BUTTON_UP, LEFT_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_DOWN, RIGHT_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_LEFT, DOWN_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_RIGHT, UP_PRESSED);
+			wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_SWAP);
+			if (controlSettings.swapConfirmAndBack) {
+				wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_BACK);
+			} else {
+				wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_BACK);
+				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_CONFIRM);
+			}
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_NEXT_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			break;
+		case 1:
+			wii_mapWiimoteDir(WPAD_BUTTON_UP, LEFT_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_DOWN, RIGHT_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_LEFT, DOWN_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_RIGHT, UP_PRESSED);
+			if (controlSettings.swapConfirmAndBack) {
+				if (programState != 9)
+					wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM_ALT);
+				wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_BACK);
+				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_BACK);
+			} else {
+				wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_BACK);
+				wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_BACK);
+				if (programState != 9)
+					wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM_ALT);
+				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_CONFIRM);
+			}
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_NEXT_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			break;
+		case 2:
+			wii_mapWiimoteDir(WPAD_BUTTON_UP, UP_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_DOWN, DOWN_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_LEFT, LEFT_PRESSED);
+			wii_mapWiimoteDir(WPAD_BUTTON_RIGHT, RIGHT_PRESSED);
+			if (controlSettings.swapConfirmAndBack) {
+				if (programState != 9)
+					wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM_ALT);
+				wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_BACK);
+			} else {
+				wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_BACK);
+				if (programState != 9)
+					wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM);
+				wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM_ALT);
+			}
+			wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_NEXT_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_PREV_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
+			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			break;
+	}
+}
+
+inline static void handleWiiCCButtons() {
+	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_LEFT, LEFT_PRESSED);
+	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_RIGHT, RIGHT_PRESSED);
+	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_DOWN, DOWN_PRESSED);
+	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_UP, UP_PRESSED);
+	if (controlSettings.swapConfirmAndBack) {
+		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_CONFIRM);
+		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_BACK);
+	} else {
+		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_BACK);
+		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_CONFIRM);
+	}
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_X, INPUT_SWAP);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_Y, INPUT_SWAP);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_L, INPUT_PREV_TRACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_R, INPUT_NEXT_TRACK);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_PLUS, INPUT_START);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_START);
+}
+
+inline static void handleWiiGCButtons() {
+	wii_mapGCDir(PAD_BUTTON_UP, UP_PRESSED);
+	wii_mapGCDir(PAD_BUTTON_DOWN, DOWN_PRESSED);
+	wii_mapGCDir(PAD_BUTTON_LEFT, LEFT_PRESSED);
+	wii_mapGCDir(PAD_BUTTON_RIGHT, RIGHT_PRESSED);
+	if (controlSettings.swapConfirmAndBack) {
+		wii_mapGCButton(PAD_BUTTON_A, INPUT_CONFIRM);
+		wii_mapGCButton(PAD_BUTTON_B, INPUT_BACK);
+	} else {
+		wii_mapGCButton(PAD_BUTTON_A, INPUT_BACK);
+		wii_mapGCButton(PAD_BUTTON_B, INPUT_CONFIRM);
+	}
+	wii_mapGCButton(PAD_BUTTON_X, INPUT_SWAP);
+	wii_mapGCButton(PAD_BUTTON_Y, INPUT_SWAP);
+	wii_mapGCButton(PAD_TRIGGER_L, INPUT_PREV_TRACK);
+	wii_mapGCButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
+	wii_mapGCButton(PAD_TRIGGER_Z, INPUT_SELECT);
+	wii_mapGCButton(PAD_BUTTON_START, INPUT_START);
 }
 #else
 inline static void handleAnalogInput_SDL2() {
@@ -471,60 +592,13 @@ void handlePlayerInput() {
 	WPAD_ScanPads();
 	wii_keysDown = WPAD_ButtonsDown(0);
 	wii_keysUp = WPAD_ButtonsUp(0);
-	wii_mapWiiDir(WPAD_BUTTON_UP, WPAD_CLASSIC_BUTTON_LEFT, LEFT_PRESSED);
-	wii_mapWiiDir(WPAD_BUTTON_DOWN, WPAD_CLASSIC_BUTTON_RIGHT, RIGHT_PRESSED);
-	wii_mapWiiDir(WPAD_BUTTON_LEFT, WPAD_CLASSIC_BUTTON_DOWN, DOWN_PRESSED);
-	wii_mapWiiDir(WPAD_BUTTON_RIGHT, WPAD_CLASSIC_BUTTON_UP, UP_PRESSED);
-	if (controlSettings.swapConfirmAndBack) {
-		wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_CONFIRM_ALT);
-		wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_CONFIRM);
-		wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_BACK);
-		wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_BACK);
-	} else {
-		wii_mapWiimoteButton(WPAD_BUTTON_A, INPUT_BACK);
-		wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_BACK);
-		wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM_ALT);
-		wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_CONFIRM);
-	}
-	wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
-	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT); 
-	wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
-	wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_NEXT_TRACK);
-	if (controlSettings.swapConfirmAndBack) {
-		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_CONFIRM);
-		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_BACK);
-	} else {
-		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_A, INPUT_BACK);
-		wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_B, INPUT_CONFIRM);
-	}
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_X, INPUT_SWAP);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_Y, INPUT_SWAP);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_L, INPUT_PREV_TRACK);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_R, INPUT_NEXT_TRACK);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_PLUS, INPUT_START);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_NEXT_TRACK);
+	handleWiimoteButtons();
+	handleWiiCCButtons();
 
 	PAD_ScanPads();
 	wii_keysDown = PAD_ButtonsDown(0);
 	wii_keysUp = PAD_ButtonsUp(0);
-	wii_mapGCDir(PAD_BUTTON_UP, UP_PRESSED);
-	wii_mapGCDir(PAD_BUTTON_DOWN, DOWN_PRESSED);
-	wii_mapGCDir(PAD_BUTTON_LEFT, LEFT_PRESSED);
-	wii_mapGCDir(PAD_BUTTON_RIGHT, RIGHT_PRESSED);
-	if (controlSettings.swapConfirmAndBack) {
-		wii_mapGCButton(PAD_BUTTON_A, INPUT_CONFIRM);
-		wii_mapGCButton(PAD_BUTTON_B, INPUT_BACK);
-	} else {
-		wii_mapGCButton(PAD_BUTTON_A, INPUT_BACK);
-		wii_mapGCButton(PAD_BUTTON_B, INPUT_CONFIRM);
-	}
-	wii_mapGCButton(PAD_BUTTON_X, INPUT_SWAP);
-	wii_mapGCButton(PAD_BUTTON_Y, INPUT_SWAP);
-	wii_mapGCButton(PAD_TRIGGER_L, INPUT_PREV_TRACK);
-	wii_mapGCButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
-	wii_mapGCButton(PAD_TRIGGER_Z, INPUT_SELECT);
-	wii_mapGCButton(PAD_BUTTON_START, INPUT_START);
+	handleWiiGCButtons();
 
 	controllerAxis_leftStickX = PAD_StickX(0) * 256;
 	controllerAxis_leftStickY = PAD_StickY(0) * -256;

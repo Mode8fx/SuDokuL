@@ -4,15 +4,23 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1) && !defined(WII)
+#if defined(SDL1)
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
 #endif
 
+#if defined(WII)
+#define wiimoteScheme enableTouchscreen
+#endif
+
 struct ControlSettings {
 	bool swapConfirmAndBack;
+#if defined(WII)
+	Sint8 enableTouchscreen;
+#else
 	bool enableTouchscreen;
+#endif
 };
 
 struct VideoSettings {

@@ -135,7 +135,11 @@ bool mouseBoundsY(Sint8 start, Sint8 end) {
 }
 
 bool clickedWithinGrid() {
+#if defined(WII)
+    return keyPressed(INPUT_CONFIRM_ALT) && !(clickedInRect(&gameSidebarSmall1Rect) || clickedInRect(&gameSidebarSmall2Rect) || clickedInRect(&gameSidebarSmall3Rect));
+#else
     return (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquare());
+#endif
 }
 
 bool clickedInRect(SDL_Rect *rect) {
@@ -181,6 +185,7 @@ void gameHandleMiniGridNavigation() {
         if (lastMiniGridState > 0) {
             if ((keyPressed(INPUT_BACK) || clickedOutsideMiniGrid())) {
                 miniGridState = 0;
+                gameHandleMouseMovementMain();
                 setGridCursorByLargeX();
                 setGridCursorByLargeY();
             }

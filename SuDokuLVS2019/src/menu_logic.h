@@ -16,6 +16,7 @@ extern Sint8 menuCursorIndex_video;
 extern Sint8 menuCursorIndex_sound;
 extern Sint8 menuCursorIndex_background;
 extern Sint8 menuIndex_credits;
+extern Sint8 wiimoteSchemeTempVal;
 
 extern void updateMainMenuCursorPositionX();
 extern void updateContinueMenuCursorPositionX();
@@ -25,8 +26,8 @@ extern void updateControlsMenuCursorPositionX();
 extern void updateVideoMenuCursorPositionX();
 extern void updateSoundMenuCursorPositionX();
 extern void updateBackgroundMenuCursorPositionX();
-extern void menuHandleBackButton(Uint8);
-extern void menuHandleBackButtonWithSettings(Uint8);
+extern bool menuHandleBackButton(Uint8);
+extern bool menuHandleBackButtonWithSettings(Uint8);
 extern void menuResetCursorPositions(Uint8);
 extern void updateMenuCursorPositionY(Sint8);
 extern void menuHandleMenuButton();

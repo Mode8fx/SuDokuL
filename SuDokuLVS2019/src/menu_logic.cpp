@@ -91,40 +91,51 @@ void updateBackgroundMenuCursorPositionX() {
 }
 
 // Settings are re-loaded so that any unsaved changes from the video menu are undone
-void menuHandleBackButton(Uint8 state) {
+bool menuHandleBackButton(Uint8 state) {
     if (keyPressed(INPUT_BACK)) {
         time_anim1 = 0;
         programState = state;
         menuResetCursorPositions(state);
         loadSettingsFile();
         changedProgramState = true;
+        return true;
     }
+    return false;
 }
 
-void menuHandleBackButtonWithSettings(Uint8 state) {
+bool menuHandleBackButtonWithSettings(Uint8 state) {
     if (keyPressed(INPUT_BACK)) {
         time_anim1 = 0;
+#if defined(WII)
+        if (programState == 28) {
+            controlSettings.wiimoteScheme = wiimoteSchemeTempVal;
+            keyInputs = 0;
+            dirInputs = UP_DEPRESSED | DOWN_DEPRESSED | LEFT_DEPRESSED | RIGHT_DEPRESSED;
+        }
+#endif
         programState = state;
         menuResetCursorPositions(state);
         saveCurrentSettings();
         changedProgramState = true;
+        return true;
     }
+    return false;
 }
 
 void menuResetCursorPositions(Uint8 state) {
     switch (state) {
-    case 2:
-        menuCursorIndex_play = 0;
-        menuCursorIndex_options = 0;
-        break;
-    case 13:
-        menuCursorIndex_controls = 0;
-        menuCursorIndex_video = 0;
-        menuCursorIndex_sound = 0;
-        menuCursorIndex_background = 0;
-        break;
-    default:
-        break;
+        case 2:
+            menuCursorIndex_play = 0;
+            menuCursorIndex_options = 0;
+            break;
+        case 13:
+            menuCursorIndex_controls = 0;
+            menuCursorIndex_video = 0;
+            menuCursorIndex_sound = 0;
+            menuCursorIndex_background = 0;
+            break;
+        default:
+            break;
     }
 }
 

@@ -107,6 +107,7 @@ Sint8 menuCursorIndex_video;
 Sint8 menuCursorIndex_sound;
 Sint8 menuCursorIndex_background;
 Sint8 menuIndex_credits;
+Sint8 wiimoteSchemeTempVal = 1;
 
 /* Textures */
 SpriteObject *tile;
@@ -185,6 +186,9 @@ TextObject text_B_Confirm;
 TextObject text_A_Back;
 TextObject text_Enabled;
 TextObject text_Disabled;
+TextObject text_WiimoteScheme_Horizontal;
+TextObject text_WiimoteScheme_General;
+TextObject text_WiimoteScheme_Vertical;
 TextObject text_Resolution;
 TextObject text_x;
 TextObject text_Aspect_Ratio;

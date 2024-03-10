@@ -371,8 +371,10 @@ int main(int argv, char** args) {
 	} else {
 		SET_TEXT_WITH_OUTLINE("Button Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_CONTROLLER_INPUT_Y);
 	}
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
-	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X,               TEXT_TOUCH_SCREEN_INPUT_Y);
+#if defined(WII)
+	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
+#elif !(defined(ANDROID) || defined(PSP))
+	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("X - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
@@ -390,7 +392,11 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("B - Confirm",      text_B_Confirm,        OBJ_TO_SCREEN_AT_FRACTION(text_B_Confirm, 0.75), TEXT_B_CONFIRM_Y);
 	SET_TEXT_WITH_OUTLINE("A - Back",         text_A_Back,           OBJ_TO_SCREEN_AT_FRACTION(text_A_Back,    0.75), TEXT_A_BACK_Y);
 #endif
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if defined(WII)
+	SET_TEXT_WITH_OUTLINE("Horizontal Focus", text_WiimoteScheme_Horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Horizontal, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+	SET_TEXT_WITH_OUTLINE("General",          text_WiimoteScheme_General, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_General, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+	SET_TEXT_WITH_OUTLINE("Vertical Focus",   text_WiimoteScheme_Vertical, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Vertical, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+#elif !(defined(ANDROID) || defined(PSP))
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -853,10 +859,10 @@ int main(int argv, char** args) {
 			/* 10 = Pause Screen */
 			case 10:
 				/* Key Presses */
-#if !defined(ANDROID)
-				if (keyPressed(INPUT_START)) {
-#else
+#if defined(ANDROID)
 				if (keyPressed(INPUT_START) || keyPressed(INPUT_CONFIRM_ALT)) {
+#else
+				if (keyPressed(INPUT_START)) {
 #endif
 					programState = 9;
 				}
@@ -963,6 +969,7 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_options) {
 						case 0:
 							programState = 28;
+							wiimoteSchemeTempVal = controlSettings.enableTouchscreen;
 							changedProgramState = true;
 							break;
 						case 1:
@@ -1397,12 +1404,12 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(ANDROID) || defined(PSP))
 				controlsMenuHandleVertCursorMovement();
 #endif
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(ANDROID) || defined(PSP))
 					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
 #endif
 				}
@@ -1415,13 +1422,19 @@ int main(int argv, char** args) {
 							controlsSetConfirmBackPos();
 							break;
 						case 1:
+#if defined(WII)
+							wiimoteSchemeTempVal -= 1;
+							if (wiimoteSchemeTempVal < 0)
+								wiimoteSchemeTempVal = 2;
+#else
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
+#endif
 							break;
 						default:
 							break;
 					}
 				}
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(ANDROID) || defined(PSP))
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
@@ -1435,8 +1448,11 @@ int main(int argv, char** args) {
 							controlsSetConfirmBackPos();
 							break;
 						case 1:
+#if defined(WII)
+							wiimoteSchemeTempVal = (wiimoteSchemeTempVal + 1) % 3;
+#else
 							controlSettings.enableTouchscreen = !controlSettings.enableTouchscreen;
-							break;
+#endif
 						default:
 							break;
 					}
@@ -1445,7 +1461,7 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controller_Input);
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(ANDROID) || defined(PSP))
 				renderText(&text_Touch_Screen_Input);
 #endif
 				if (controlSettings.swapConfirmAndBack) {
@@ -1455,7 +1471,21 @@ int main(int argv, char** args) {
 					renderText(&text_B_Confirm);
 					renderText(&text_A_Back);
 				}
-#if !(defined(ANDROID) || defined(PSP) || defined(WII))
+#if defined(WII)
+				switch (wiimoteSchemeTempVal) {
+					case 0:
+						renderText(&text_WiimoteScheme_Horizontal);
+						break;
+					case 1:
+						renderText(&text_WiimoteScheme_General);
+						break;
+					case 2:
+						renderText(&text_WiimoteScheme_Vertical);
+						break;
+					default:
+						break;
+				}
+#elif !(defined(ANDROID) || defined(PSP))
 				if (controlSettings.enableTouchscreen) {
 					renderText(&text_Enabled);
 				} else {
