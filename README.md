@@ -8,7 +8,7 @@ This is a Sudoku game made in C++ and SDL2. It's currently available for PC, And
 - Supports any resolution from 240x240 and above (must be 1:1 aspect ratio or wider)
 - Save data support
 - Eight different scrolling backgrounds with customizable settings (size, scroll speed, angle)
-- Calm and envigorating MOD music to suit your mood
+- Calm and invigorating MOD music to suit your mood
 - Shaded text for a nice 3D look
 - Runs on a potato
 - Optional auto-fill and erase-mistake cheats in case you get stuck
