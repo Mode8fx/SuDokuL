@@ -1,5 +1,5 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL2. It's currently available for PC, Android, Switch, Wii U, Vita, and PSP.
+This is a Sudoku game made in C++ and SDL2. It's currently available for PC, Android, Switch, Wii U, Wii, Vita, and PSP.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
@@ -38,10 +38,12 @@ Install Android Studio, then follow [this tutorial](https://discourse.libsdl.org
 Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
 #### Wii U
 Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed.
+#### Wii
+Install devkitPro and SDL2 for Wii, rename `Makefile_wii` to `Makefile`, then build with make.
 #### Vita
 Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed.
 #### PSP
-Install [psptoolchain](https://github.com/pspdev/psptoolchain), along with the latest [PSP ports](https://github.com/pspdev/psp-ports) of SDL2, SDL2_image, SDL2_ttf, and SDL2_mixer (Linux or WSL is strongly recommended). Move everything from the `psp` folder into the `src` directory, rename `Makefile_psp` to `Makefile`, then build with make.
+Install [psptoolchain](https://github.com/pspdev/psptoolchain), which should also come with SDL2, SDL2_image, SDL2_ttf, and SDL2_mixer (Linux or WSL is strongly recommended). Rename `Makefile_psp` to `Makefile`, then build with make.
 
 ## Credits
 Everything in this game is made by me except for the following assets:
@@ -66,6 +68,7 @@ Commodore Pixelized v1.2 by by Devin Cook
 [Luke.RUSTLTD](https://opengameart.org/users/lukerustltd)
 
 ### Libraries / Tools
+
 ##### PC
 - SDL2
 - SDL2_image
@@ -83,6 +86,10 @@ Commodore Pixelized v1.2 by by Devin Cook
 - Wii U Toolkit
 - SDL2 for Wii U
 - CMake
+##### Wii
+- devkitPro
+- SDL2 for Wii
+- Make
 ##### Vita
 - VitaSDK
 - CMake
