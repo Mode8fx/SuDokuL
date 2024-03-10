@@ -304,9 +304,9 @@ int main(int argv, char** args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), fontSize * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), fontSize * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP) || defined(WII)
+#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
-#elif defined(SWITCH)
+#elif defined(SWITCH) || defined(WII)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -344,7 +344,7 @@ int main(int argv, char** args) {
 #elif defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(WII)
-	SET_TEXT_WITH_OUTLINE("Press Select/Z to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+	SET_TEXT_WITH_OUTLINE("Press -/Z to",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q/Select to", text_Quit_to_Menu_1,  OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif

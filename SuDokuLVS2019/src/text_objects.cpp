@@ -418,6 +418,7 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
 	#elif defined(WII)
+	// General
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (fontSize * (CONTROLS_STEP *  3)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Point Wiimote",         text_Controls_2b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b, 0.3),  (fontSize * (CONTROLS_STEP *  3)) + CONTROLS_SPACER);
@@ -430,24 +431,78 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c, 0.7),  (fontSize * (CONTROLS_STEP *  7))                  );
 	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a, 0.3),  (fontSize * (CONTROLS_STEP *  9))                  );
 	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b, 0.7),  (fontSize * (CONTROLS_STEP *  9))                  );
-	SET_TEXT_WITH_OUTLINE("Start (Wiimote) / R",   text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE("+ (Wiimote) / R",       text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a,  0,                                                 0                                                  );
-	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7c,  0,                                                 0                                                  );
 	SET_TEXT_WITH_OUTLINE("(1/2)",                 text_Controls_P1,  (gameWidth - (text_Controls_P1.rect.w * 1.25)),    (gameHeight - (text_Controls_P1.rect.h * 1.5))     );
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
 	initTextObjectVals(&text_Controls_10a);
-	SET_TEXT_WITH_OUTLINE_HELPER("Select / Z",     text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("(while paused)",        text_Controls_7b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7b, 0.3),  (fontSize * (CONTROLS_STEP *  5)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (fontSize * (CONTROLS_STEP *  5))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                 0                                                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                 0                                                  );
-	SET_TEXT_WITH_OUTLINE("Select / X / Y",        text_Controls_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a, 0.3), (fontSize * (CONTROLS_STEP *  7))                  );
+	SET_TEXT_WITH_OUTLINE("- (Wiimote)",           text_Controls_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a, 0.3), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_7c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c,  0.3), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b, 0.7), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
+	// Vertical
+	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  3)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Point Wiimote",         text_Controls_2b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  3)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("A",                     text_Controls_3a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_3b_vertical,  0,                                                 0                                                           );
+	SET_TEXT_WITH_OUTLINE("Confirm",               text_Controls_3c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3c_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE("B",                     text_Controls_4a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  7))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_4b_vertical,  0,                                                 0                                                           );
+	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  7))                  );
+	SET_TEXT_WITH_OUTLINE("1 / L",                 text_Controls_5a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  9))                  );
+	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  9))                  );
+	SET_TEXT_WITH_OUTLINE("2 / R",                 text_Controls_6a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a_vertical, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b_vertical, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a_vertical,  0,                                                 0                                                           );
+	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
+	initTextObjectVals(&text_Controls_10a_vertical);
+	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a_vertical, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("(while paused)",        text_Controls_7b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7b_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  5)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b_vertical, 0.7), (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a_vertical, 0,                                                 0                                                           );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b_vertical, 0,                                                 0                                                           );
+	SET_TEXT_WITH_OUTLINE("+ / - (Wiimote)",       text_Controls_12a_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a_vertical, 0.3), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_7c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c_vertical,  0.3),  (fontSize * (CONTROLS_STEP * 7)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b_vertical, 0.7), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c_vertical, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
+	// Horizontal
+	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  3)));
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_2b_horizontal,  0,  0                                                                                                            );
+	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("2 / A (GC/CC)",         text_Controls_3a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_3b_horizontal,  0,                                                 0                                                             );
+	SET_TEXT_WITH_OUTLINE("Confirm",               text_Controls_3c_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_3c_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE("1 / B (GC/CC)",         text_Controls_4a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  7))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_4b_horizontal,  0,                                                 0                                                             );
+	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  7))                  );
+	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  9))                  );
+	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  9))                  );
+	SET_TEXT_WITH_OUTLINE("+ (Wiimote) / R",       text_Controls_6a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a_horizontal,  0,                                                 0                                                             );
+	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
+	initTextObjectVals(&text_Controls_10a_horizontal);
+	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a_horizontal, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("(while paused)",        text_Controls_7b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7b_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  5)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b_horizontal, 0.7), (fontSize * (CONTROLS_STEP *  5))                  );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a_horizontal, 0,                                                 0                                                             );
+	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b_horizontal, 0,                                                 0                                                             );
+	SET_TEXT_WITH_OUTLINE("A / B (Wiimote)",       text_Controls_12a_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a_horizontal, 0.3), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_7c_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b_horizontal, 0.7), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c_horizontal, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 #elif defined(ANDROID)
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (fontSize * (CONTROLS_STEP *  3)) - CONTROLS_SPACER);
@@ -548,8 +603,140 @@ void renderYouWinRect() {
 	}
 }
 
+#if defined(WII)
+inline static void renderControlsTextPage1_Wii_General() {
+	renderText(&text_Controls_2a);
+	renderText(&text_Controls_2b);
+	renderText(&text_Controls_2c);
+	renderDividerBetweenY(&text_Controls_2c, &text_Controls_3c);
+	renderText(&text_Controls_3a);
+	renderText(&text_Controls_3b);
+	renderText(&text_Controls_3c);
+	renderDividerBetweenY(&text_Controls_3c, &text_Controls_4c);
+	renderText(&text_Controls_4a);
+	renderText(&text_Controls_4b);
+	renderText(&text_Controls_4c);
+	renderDividerBetweenY(&text_Controls_4c, &text_Controls_5b);
+	renderText(&text_Controls_5a);
+	renderText(&text_Controls_5b);
+	renderDividerBetweenY(&text_Controls_5b, &text_Controls_6b);
+	renderText(&text_Controls_6a);
+	renderText(&text_Controls_6b);
+	renderDividerBetweenY(&text_Controls_6b, &text_Controls_7a);
+	renderText(&text_Controls_7a);
+}
+
+inline static void renderControlsTextPage1_Wii_Vertical() {
+	renderText(&text_Controls_2a_vertical);
+	renderText(&text_Controls_2b_vertical);
+	renderText(&text_Controls_2c_vertical);
+	renderDividerBetweenY(&text_Controls_2c_vertical, &text_Controls_3c_vertical);
+	renderText(&text_Controls_3a_vertical);
+	renderText(&text_Controls_3b_vertical);
+	renderText(&text_Controls_3c_vertical);
+	renderDividerBetweenY(&text_Controls_3c_vertical, &text_Controls_4c_vertical);
+	renderText(&text_Controls_4a_vertical);
+	renderText(&text_Controls_4b_vertical);
+	renderText(&text_Controls_4c_vertical);
+	renderDividerBetweenY(&text_Controls_4c_vertical, &text_Controls_5b_vertical);
+	renderText(&text_Controls_5a_vertical);
+	renderText(&text_Controls_5b_vertical);
+	renderDividerBetweenY(&text_Controls_5b_vertical, &text_Controls_6b_vertical);
+	renderText(&text_Controls_6a_vertical);
+	renderText(&text_Controls_6b_vertical);
+	renderDividerBetweenY(&text_Controls_6b_vertical, &text_Controls_7a_vertical);
+	renderText(&text_Controls_7a_vertical);
+}
+
+inline static void renderControlsTextPage1_Wii_Horizontal() {
+	renderText(&text_Controls_2a_horizontal);
+	renderText(&text_Controls_2b_horizontal);
+	renderText(&text_Controls_2c_horizontal);
+	renderDividerBetweenY(&text_Controls_2c_horizontal, &text_Controls_3c_horizontal);
+	renderText(&text_Controls_3a_horizontal);
+	renderText(&text_Controls_3b_horizontal);
+	renderText(&text_Controls_3c_horizontal);
+	renderDividerBetweenY(&text_Controls_3c_horizontal, &text_Controls_4c_horizontal);
+	renderText(&text_Controls_4a_horizontal);
+	renderText(&text_Controls_4b_horizontal);
+	renderText(&text_Controls_4c_horizontal);
+	renderDividerBetweenY(&text_Controls_4c_horizontal, &text_Controls_5b_horizontal);
+	renderText(&text_Controls_5a_horizontal);
+	renderText(&text_Controls_5b_horizontal);
+	renderDividerBetweenY(&text_Controls_5b_horizontal, &text_Controls_6b_horizontal);
+	renderText(&text_Controls_6a_horizontal);
+	renderText(&text_Controls_6b_horizontal);
+	renderDividerBetweenY(&text_Controls_6b_horizontal, &text_Controls_7a_horizontal);
+	renderText(&text_Controls_7a_horizontal);
+}
+
+inline static void renderControlsTextPage2_Wii_General() {
+	renderText(&text_Controls_9a);
+	renderText(&text_Controls_9b);
+	renderDividerBetweenY(&text_Controls_9a, &text_Controls_10a);
+	renderText(&text_Controls_10a);
+	renderText(&text_Controls_7b);
+	renderText(&text_Controls_10b);
+	renderDividerBetweenY(&text_Controls_10a, &text_Controls_11a);
+	renderText(&text_Controls_11a);
+	renderText(&text_Controls_11b);
+	renderDividerBetweenY(&text_Controls_11a, &text_Controls_12a);
+	renderText(&text_Controls_12a);
+	renderText(&text_Controls_7c);
+	renderText(&text_Controls_12b);
+	renderText(&text_Controls_12c);
+}
+
+inline static void renderControlsTextPage2_Wii_Vertical() {
+	renderText(&text_Controls_9a_vertical);
+	renderText(&text_Controls_9b_vertical);
+	renderDividerBetweenY(&text_Controls_9a_vertical, &text_Controls_10a_vertical);
+	renderText(&text_Controls_10a_vertical);
+	renderText(&text_Controls_7b_vertical);
+	renderText(&text_Controls_10b_vertical);
+	renderDividerBetweenY(&text_Controls_10a_vertical, &text_Controls_11a_vertical);
+	renderText(&text_Controls_11a_vertical);
+	renderText(&text_Controls_11b_vertical);
+	renderDividerBetweenY(&text_Controls_11a_vertical, &text_Controls_12a_vertical);
+	renderText(&text_Controls_12a_vertical);
+	renderText(&text_Controls_7c_vertical);
+	renderText(&text_Controls_12b_vertical);
+	renderText(&text_Controls_12c_vertical);
+}
+
+inline static void renderControlsTextPage2_Wii_Horizontal() {
+	renderText(&text_Controls_9a_horizontal);
+	renderText(&text_Controls_9b_horizontal);
+	renderDividerBetweenY(&text_Controls_9a_horizontal, &text_Controls_10a_horizontal);
+	renderText(&text_Controls_10a_horizontal);
+	renderText(&text_Controls_7b_horizontal);
+	renderText(&text_Controls_10b_horizontal);
+	renderDividerBetweenY(&text_Controls_10a_horizontal, &text_Controls_11a_horizontal);
+	renderText(&text_Controls_11a_horizontal);
+	renderText(&text_Controls_11b_horizontal);
+	renderDividerBetweenY(&text_Controls_11a_horizontal, &text_Controls_12a_horizontal);
+	renderText(&text_Controls_12a_horizontal);
+	renderText(&text_Controls_7c_horizontal);
+	renderText(&text_Controls_12b_horizontal);
+	renderText(&text_Controls_12c_horizontal);
+}
+#endif
+
 void renderControlsTextPage1() {
 	renderTextLarge(&text_Controls_1);
+#if defined(WII)
+	switch (controlSettings.wiimoteScheme) {
+		case 0:
+			renderControlsTextPage1_Wii_Horizontal();
+			break;
+		case 1:
+			renderControlsTextPage1_Wii_General();
+			break;
+		case 2:
+			renderControlsTextPage1_Wii_Vertical();
+			break;
+	}
+#else
 	renderText(&text_Controls_2a);
 	renderText(&text_Controls_2b);
 	renderText(&text_Controls_2c);
@@ -569,22 +756,31 @@ void renderControlsTextPage1() {
 	renderText(&text_Controls_6b);
     renderDividerBetweenY(&text_Controls_6b, &text_Controls_7a);
 	renderText(&text_Controls_7a);
-#if !defined(WII)
 	renderText(&text_Controls_7b);
-#endif
 	renderText(&text_Controls_7c);
+#endif
 	renderText(&text_Controls_P1);
 }
 
 void renderControlsTextPage2() {
 	renderTextLarge(&text_Controls_8);
+#if defined(WII)
+	switch (controlSettings.wiimoteScheme) {
+	case 0:
+		renderControlsTextPage2_Wii_Horizontal();
+		break;
+	case 1:
+		renderControlsTextPage2_Wii_General();
+		break;
+	case 2:
+		renderControlsTextPage2_Wii_Vertical();
+		break;
+	}
+#else
 	renderText(&text_Controls_9a);
 	renderText(&text_Controls_9b);
     renderDividerBetweenY(&text_Controls_9a, &text_Controls_10a);
 	renderText(&text_Controls_10a);
-#if defined(WII)
-	renderText(&text_Controls_7b);
-#endif
 	renderText(&text_Controls_10b);
     renderDividerBetweenY(&text_Controls_10a, &text_Controls_11a);
 	renderText(&text_Controls_11a);
@@ -593,6 +789,7 @@ void renderControlsTextPage2() {
 	renderText(&text_Controls_12a);
 	renderText(&text_Controls_12b);
 	renderText(&text_Controls_12c);
+#endif
 	renderText(&text_Controls_P2);
 }
 

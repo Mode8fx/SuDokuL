@@ -247,6 +247,8 @@ inline static void handleWiimoteButtons() {
 			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
 			break;
 	}
+	if (programState == 0)
+		wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
 }
 
 inline static void handleWiiCCButtons() {

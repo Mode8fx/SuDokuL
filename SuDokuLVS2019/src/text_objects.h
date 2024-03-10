@@ -154,6 +154,58 @@ extern TextObject text_Controls_12a;
 extern TextObject text_Controls_12b;
 extern TextObject text_Controls_12c;
 extern TextObject text_Controls_P2;
+#if defined(WII)
+extern TextObject text_Controls_2a_vertical;
+extern TextObject text_Controls_2b_vertical;
+extern TextObject text_Controls_2c_vertical;
+extern TextObject text_Controls_3a_vertical;
+extern TextObject text_Controls_3b_vertical;
+extern TextObject text_Controls_3c_vertical;
+extern TextObject text_Controls_4a_vertical;
+extern TextObject text_Controls_4b_vertical;
+extern TextObject text_Controls_4c_vertical;
+extern TextObject text_Controls_5a_vertical;
+extern TextObject text_Controls_5b_vertical;
+extern TextObject text_Controls_6a_vertical;
+extern TextObject text_Controls_6b_vertical;
+extern TextObject text_Controls_7a_vertical;
+extern TextObject text_Controls_7b_vertical;
+extern TextObject text_Controls_7c_vertical;
+extern TextObject text_Controls_9a_vertical;
+extern TextObject text_Controls_9b_vertical;
+extern TextObject text_Controls_10a_vertical;
+extern TextObject text_Controls_10b_vertical;
+extern TextObject text_Controls_11a_vertical;
+extern TextObject text_Controls_11b_vertical;
+extern TextObject text_Controls_12a_vertical;
+extern TextObject text_Controls_12b_vertical;
+extern TextObject text_Controls_12c_vertical;
+extern TextObject text_Controls_2a_horizontal;
+extern TextObject text_Controls_2b_horizontal;
+extern TextObject text_Controls_2c_horizontal;
+extern TextObject text_Controls_3a_horizontal;
+extern TextObject text_Controls_3b_horizontal;
+extern TextObject text_Controls_3c_horizontal;
+extern TextObject text_Controls_4a_horizontal;
+extern TextObject text_Controls_4b_horizontal;
+extern TextObject text_Controls_4c_horizontal;
+extern TextObject text_Controls_5a_horizontal;
+extern TextObject text_Controls_5b_horizontal;
+extern TextObject text_Controls_6a_horizontal;
+extern TextObject text_Controls_6b_horizontal;
+extern TextObject text_Controls_7a_horizontal;
+extern TextObject text_Controls_7b_horizontal;
+extern TextObject text_Controls_7c_horizontal;
+extern TextObject text_Controls_9a_horizontal;
+extern TextObject text_Controls_9b_horizontal;
+extern TextObject text_Controls_10a_horizontal;
+extern TextObject text_Controls_10b_horizontal;
+extern TextObject text_Controls_11a_horizontal;
+extern TextObject text_Controls_11b_horizontal;
+extern TextObject text_Controls_12a_horizontal;
+extern TextObject text_Controls_12b_horizontal;
+extern TextObject text_Controls_12c_horizontal;
+#endif
 extern TextObject text_Controls_c_1;
 extern TextObject text_Controls_c_2a;
 extern TextObject text_Controls_c_3a;
@@ -447,6 +499,9 @@ constexpr auto CREDITS_STEP = 1.6;
 #elif defined(VITA) || defined(PSP)
 #define CHEAT1_TEXT "press Square or Triangle 8 times"
 #define CHEAT2_TEXT "Or press (Circle then Square/Triangle) x4"
+#elif defined(WII)
+#define CHEAT1_TEXT "press - (Wiimote) or X/Y 8 times"
+#define CHEAT2_TEXT "Or press (B/1 then -/X/Y) x4"
 #else
 #define CHEAT1_TEXT "press the Period key 8 times"
 #define CHEAT2_TEXT "Or press (Backspace then Period) x4"
