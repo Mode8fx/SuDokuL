@@ -3,7 +3,7 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(FUNKEY)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(LINUX)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else

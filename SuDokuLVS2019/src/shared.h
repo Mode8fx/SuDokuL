@@ -4,7 +4,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1) && !defined(FUNKEY)
+#if defined(SDL1) && !defined(LINUX)
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
@@ -160,6 +160,8 @@ extern bool gameCompleted;
 const string rootDir = "ux0:data/SuDokuL/";
 #elif defined(WII)
 const string rootDir = "sd:/apps/SuDokuL/";
+#elif defined(LINUX)
+const string rootDir = ("%s/.sudokul", getenv("HOME"));
 #else
 const string rootDir = "";
 #endif
