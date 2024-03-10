@@ -4,7 +4,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1)
+#if defined(SDL1) && !defined(FUNKEY)
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
@@ -202,6 +202,8 @@ extern void systemSpecificClose();
 #define SCALING_WIDTH SDL_GetWindowSurface(window)->w
 #define SCALING_HEIGHT SDL_GetWindowSurface(window)->h
 #endif
+
+#define INIT_DEBUG() SDL_RWops *debugFile;
 
 #define MAKE_DEBUG_FILE(name, body)                              \
 	debugFile = SDL_RWFromFile((rootDir + name).c_str(), "w+b"); \

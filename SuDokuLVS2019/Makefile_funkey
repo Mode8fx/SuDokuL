@@ -1,0 +1,39 @@
+SRC_DIR = src
+OBJ_DIR = ./obj
+EXE=sudokul
+
+SRC_DIR		= src
+EXCLUDED	= src/graphics_include_logo_272.h src/graphics_include_logo_480.h src/graphics_include_logo_544.h src/graphics_include_logo_720.h src/graphics_include_logo_1080.h src/graphics_include_logo_1440.h src/graphics_include_logo_2160.h
+SRCS		= $(filter-out $(EXCLUDED), $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/*.c))
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
+
+
+CXX ?= g++
+SDLCONFIG ?= sdl-config
+CXXFLAGS ?= -Os -Wall -Wextra
+LDFLAGS ?= -lSDL_image -lSDL_ttf -lSDL_mixer -lmikmod
+
+CXX = /usr/local/FunKey-sdk-2.3.0/usr/bin/arm-linux-g++
+PREFIX = /usr/local/FunKey-sdk-2.3.0/arm-funkey-linux-musleabihf/sysroot/usr
+SDLCONFIG = $(PREFIX)/bin/sdl-config
+CXXFLAGS += -march=armv7-a+neon-vfpv4 -mtune=cortex-a7 -mfpu=neon-vfpv4 -DFUNKEY=1 -DSDL1
+
+CXXFLAGS += `$(SDLCONFIG) --cflags`
+LDFLAGS += `$(SDLCONFIG) --libs`
+
+.PHONY: all clean
+
+all: $(EXE)
+
+$(EXE): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(TARGET_ARCH) $^ $(LDFLAGS) -o $@ 
+
+$(OBJ_DIR)/%.o: %.cpp
+	mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $@
+
+clean:
+	$(RM) -rv *~ $(OBJS) $(EXE)

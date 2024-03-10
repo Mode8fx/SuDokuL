@@ -7,7 +7,7 @@
 #include "puzzleBank.h"
 #include "menu_logic.h"
 
-#if defined(SDL1) && !defined(WII)
+#if defined(SDL1) && !defined(FUNKEY)
 FILE _iob[] = { *stdin, *stdout, *stderr };
 
 FILE * __cdecl __iob_func(void) {
