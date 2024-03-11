@@ -612,6 +612,7 @@ void handlePlayerInput() {
 				isRunning = false;
 				break;
 			/* Handle Mouse Input (PC) */
+#if !defined(THREEDS)
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 				updateMousePosViewportMouse();
@@ -635,6 +636,7 @@ void handlePlayerInput() {
 			case SDL_KEYDOWN:
 				handleKeyboardKeys();
 				break;
+#endif
 			/* Handle Analog Input (SDL1) */
 			case SDL_JOYAXISMOTION:
 				handleAnalogInput_SDL1();
@@ -699,7 +701,7 @@ void handlePlayerInput() {
 			case SDL_QUIT:
 				isRunning = false;
 				break;
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS))
 			/* Handle Mouse Input (PC) */
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);

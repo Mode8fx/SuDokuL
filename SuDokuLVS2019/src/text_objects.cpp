@@ -583,7 +583,7 @@ void setControlsText() {
 }
 
 void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(FUNKEY) || defined(THREEDS))
     divider.y = (textObj1->rect.y + textObj2->rect.y + fontSize - divider.h) / 2;
 #if !defined(SDL1)
     SDL_RenderFillRect(renderer, &divider);
@@ -793,7 +793,7 @@ void renderControlsTextPage2() {
 	renderText(&text_Controls_P2);
 }
 
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(THREEDS))
 void renderControlsTextPage3() {
 	renderTextLarge(&text_Controls_c_1);
 	renderText(&text_Controls_c_2a);
@@ -1006,7 +1006,7 @@ void controlsSetConfirmBackPos() {
         text_Controls_3a.rect.y = (Sint16)(fontSize * (CONTROLS_STEP * 7));
         text_Controls_4a.rect.y = (Sint16)((fontSize * (CONTROLS_STEP * 5)) - CONTROLS_SPACER);
     }
-#elif defined(PSP) || defined(WII)
+#elif defined(PSP) || defined(WII) || defined(THREEDS)
     if (controlSettings.swapConfirmAndBack) {
         text_Controls_3a.rect.y = (Sint16)(fontSize * (CONTROLS_STEP * 5));
         text_Controls_4a.rect.y = (Sint16)(fontSize * (CONTROLS_STEP * 7));

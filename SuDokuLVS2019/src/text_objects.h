@@ -3,7 +3,7 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(LINUX)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(LINUX) || defined(THREEDS)
 #define STRCPY(dest, src) \
     strcpy(dest, src);
 #else
@@ -419,7 +419,7 @@ extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
 extern void renderYouWinRect();
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(THREEDS))
 extern void renderControlsTextPage3();
 extern void renderControlsTextPage4();
 #endif
@@ -493,7 +493,7 @@ extern void controlsSetConfirmBackPos();
 
 constexpr auto CREDITS_STEP = 1.6;
 
-#if defined(WII_U) || defined(SWITCH) || defined(ANDROID)
+#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS)
 #define CHEAT1_TEXT "press X or Y 8 times"
 #define CHEAT2_TEXT "Or press (B then X/Y) x4"
 #elif defined(VITA) || defined(PSP)

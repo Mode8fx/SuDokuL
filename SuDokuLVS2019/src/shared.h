@@ -4,7 +4,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1) && !defined(LINUX)
+#if defined(SDL1) && !defined(LINUX) && !defined(THREEDS)
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
@@ -132,6 +132,9 @@ extern bool gameCompleted;
 #elif defined(FUNKEY)
 #define SYSTEM_WIDTH  240
 #define SYSTEM_HEIGHT 240
+#elif defined(THREEDS)
+#define SYSTEM_WIDTH  400
+#define SYSTEM_HEIGHT 240
 #elif defined(SDL1)
 #define SYSTEM_WIDTH  640
 #define SYSTEM_HEIGHT 480
@@ -139,7 +142,7 @@ extern bool gameCompleted;
 #define SYSTEM_WIDTH  DM.w
 #define SYSTEM_HEIGHT DM.h
 #endif
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII) || defined(FUNKEY)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII) || defined(FUNKEY) || defined(THREEDS)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0
@@ -163,6 +166,8 @@ extern bool gameCompleted;
 const string rootDir = "ux0:data/SuDokuL/";
 #elif defined(WII)
 const string rootDir = "sd:/apps/SuDokuL/";
+#elif defined(THREEDS)
+const string rootDir = "sdmc:/3ds/SuDokuL/";
 #elif defined(FUNKEY)
 const string rootDir = "/mnt/FunKey/.sudokul/";
 #elif defined(LINUX)
@@ -199,7 +204,7 @@ extern void sdlDestroyAll();
 extern void closeController();
 extern void systemSpecificClose();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(THREEDS)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
 #elif defined(SDL1)

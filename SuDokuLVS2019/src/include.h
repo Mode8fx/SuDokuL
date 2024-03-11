@@ -42,6 +42,8 @@
 #include <wiiuse/wpad.h>
 #include <dirent.h>
 #include <fat.h>
+#elif defined(THREEDS)
+#include <3ds.h>
 #endif
 
 using namespace std;

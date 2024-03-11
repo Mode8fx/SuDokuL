@@ -358,6 +358,7 @@ build_wii_u/
 build_wii/
 build_linux/
 build_funkey/
+build_3ds/
 fonts/
 graphics/
 music/
@@ -376,3 +377,4 @@ SuDokuLVS2019/Makefile
 *.nacp
 *.nro
 SuDokuLVS2019/sudokul
+SuDokuLVS2019/SuDokuLVS2019.3dsx

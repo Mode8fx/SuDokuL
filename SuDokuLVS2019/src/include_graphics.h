@@ -21,9 +21,15 @@
 #include "graphics_include/tile_grasslands2.h"
 #include "graphics_include/tile_snowymountain.h"
 #include "graphics_include/logo_240.h"
-#include "graphics_include/logo_272.h"
 
-#if defined(PSP)
+#if defined(FUNKEY) || defined(THREEDS)
+#define logo_272_png NULL
+#define logo_272_png_len 0
+#else
+#include "graphics_include/logo_272.h"
+#endif
+
+#if defined(PSP) || defined(THREEDS)
 #define logo_480_png NULL
 #define logo_480_png_len 0
 #define logo_544_png NULL
@@ -33,21 +39,21 @@
 #include "graphics_include/logo_544.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII)
+#if defined(PSP) || defined(VITA) || defined(WII) || defined(THREEDS)
 #define logo_720_png NULL
 #define logo_720_png_len 0
 #else
 #include "graphics_include/logo_720.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII)
+#if defined(PSP) || defined(VITA) || defined(WII) || defined(THREEDS)
 #define logo_1080_png NULL
 #define logo_1080_png_len 0
 #else
 #include "graphics_include/logo_1080.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(SWITCH) || defined(WII)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(SWITCH) || defined(WII) || defined(THREEDS)
 #define logo_1440_png NULL
 #define logo_1440_png_len 0
 #define logo_2160_png NULL
