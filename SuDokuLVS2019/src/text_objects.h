@@ -334,8 +334,13 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_QUIT_TO_MENU_Y               (text_quitToMenu_Y)
 #define TEXT_CONTROLS_MENU_Y              (text_menuChoice1)
 #define TEXT_VIDEO_Y                      (text_menuChoice2)
+#if defined(GAMECUBE)
+#define TEXT_SOUND_Y                      (text_menuChoice2)
+#define TEXT_BACKGROUND_Y                 (text_menuChoice3)
+#else
 #define TEXT_SOUND_Y                      (text_menuChoice3)
 #define TEXT_BACKGROUND_Y                 (text_menuChoice4)
+#endif
 #define TEXT_CONTROLLER_INPUT_Y           (text_menuChoice1)
 #define TEXT_TOUCH_SCREEN_INPUT_Y         (text_menuChoice3)
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
