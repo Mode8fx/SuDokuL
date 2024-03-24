@@ -8,6 +8,9 @@
 #if defined(WII)
 Uint32 wii_keysDown;
 Uint32 wii_keysUp;
+#elif defined(GAMECUBE)
+Uint32 gc_keysDown;
+Uint32 gc_keysUp;
 #endif
 
 bool keyPressed(Uint32 key) {
@@ -24,7 +27,7 @@ void resetCheatCounters() {
 	songChangeCounter = 0;
 }
 
-#if (defined(PSP) || defined(SDL1))
+#if (defined(PSP) || defined(SDL1)) && !defined(GAMECUBE)
 inline static void handleAnalogInput_SDL1() {
 	if (event.jaxis.which == 0) {
 		if (event.jaxis.axis == 0) {
@@ -290,6 +293,50 @@ inline static void handleWiiGCButtons() {
 	wii_mapGCButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
 	wii_mapGCButton(PAD_TRIGGER_Z, INPUT_SELECT);
 	wii_mapGCButton(PAD_BUTTON_START, INPUT_START);
+}
+#elif defined(GAMECUBE)
+inline static void gc_mapDir(Uint32 gcInput, Uint32 output) {
+	if (gc_keysDown & gcInput) {
+		dirInputs |= output;
+	} else if (gc_keysUp & gcInput) {
+		dirInputs |= output << 1;
+	}
+}
+
+inline static void gc_mapButton(Uint32 gcInput, Uint32 output) {
+	if (gc_keysDown & gcInput) {
+		keyInputs |= output;
+	} else if (gc_keysUp & gcInput) {
+		keyInputs &= ~output;
+	}
+}
+
+inline static void handleGCButtons() {
+	gc_mapDir(PAD_BUTTON_UP, UP_PRESSED);
+	gc_mapDir(PAD_BUTTON_DOWN, DOWN_PRESSED);
+	gc_mapDir(PAD_BUTTON_LEFT, LEFT_PRESSED);
+	gc_mapDir(PAD_BUTTON_RIGHT, RIGHT_PRESSED);
+	if (controlSettings.swapConfirmAndBack) {
+		gc_mapButton(PAD_BUTTON_A, INPUT_CONFIRM);
+		gc_mapButton(PAD_BUTTON_B, INPUT_BACK);
+	} else {
+		gc_mapButton(PAD_BUTTON_A, INPUT_BACK);
+		gc_mapButton(PAD_BUTTON_B, INPUT_CONFIRM);
+	}
+	gc_mapButton(PAD_BUTTON_X, INPUT_SWAP);
+	gc_mapButton(PAD_BUTTON_Y, INPUT_SWAP);
+	gc_mapButton(PAD_TRIGGER_L, INPUT_PREV_TRACK);
+	gc_mapButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
+	gc_mapButton(PAD_TRIGGER_Z, INPUT_SELECT);
+	gc_mapButton(PAD_BUTTON_START, INPUT_START);
+	controllerAxis_leftStickX = PAD_StickX(0) * 256;
+	controllerAxis_leftStickY = PAD_StickY(0) * -256;
+	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+		controllerAxis_leftStickX = 0;
+	}
+	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+		controllerAxis_leftStickY = 0;
+	}
 }
 #else
 inline static void handleAnalogInput_SDL2() {
@@ -604,6 +651,11 @@ void handlePlayerInput() {
 				break;
 		}
 	}
+#elif defined(GAMECUBE)
+	PAD_ScanPads();
+	gc_keysDown = PAD_ButtonsDown(0);
+	gc_keysUp = PAD_ButtonsUp(0);
+	handleGCButtons();
 #elif defined(SDL1)
 	/* Handle Key Presses (SDL1) */
 	while (SDL_PollEvent(&event)) {

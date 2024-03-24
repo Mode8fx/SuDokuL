@@ -42,6 +42,11 @@
 #include <wiiuse/wpad.h>
 #include <dirent.h>
 #include <fat.h>
+#elif defined(GAMECUBE)
+#include <gccore.h>
+#include <ogc/pad.h>
+#include <dirent.h>
+#include <fat.h>
 #elif defined(THREEDS)
 #include <3ds.h>
 #endif

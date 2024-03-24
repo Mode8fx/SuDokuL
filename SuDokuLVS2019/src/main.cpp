@@ -116,7 +116,7 @@ int main(int argv, char** args) {
 #if defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(WII)
+#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(WII) || defined(GAMECUBE)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #elif defined(FUNKEY)
@@ -164,7 +164,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
 
 	/* Render loading screen */
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 	updateGlobalTimer();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
@@ -311,7 +311,7 @@ int main(int argv, char** args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), fontSize * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), fontSize * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP) || defined(THREEDS)
+#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #elif defined(SWITCH) || defined(WII)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
@@ -352,6 +352,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(WII)
 	SET_TEXT_WITH_OUTLINE("Press -/Z to",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+#elif defined(GAMECUBE)
+	SET_TEXT_WITH_OUTLINE("Press Z to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q/Select to", text_Quit_to_Menu_1,  OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
@@ -380,7 +382,7 @@ int main(int argv, char** args) {
 	}
 #if defined(WII)
 	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE))
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
@@ -403,7 +405,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Horizontal Focus", text_WiimoteScheme_Horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Horizontal, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("General",          text_WiimoteScheme_General, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_General, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Vertical Focus",   text_WiimoteScheme_Vertical, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Vertical, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE))
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -479,7 +481,7 @@ int main(int argv, char** args) {
 	sdlToggleFullscreen();
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 	updatePauseTimer();
 #endif
 
@@ -524,7 +526,7 @@ int main(int argv, char** args) {
 		}
 
 		if (windowSizeChanged && isIntegerScale) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)) && !defined(SDL1)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE)) && !defined(SDL1)
 			if (SDL_GetWindowSurface(window)->w < gameWidth)
 				SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
 			if (SDL_GetWindowSurface(window)->h < gameHeight)
@@ -734,7 +736,7 @@ int main(int argv, char** args) {
 				break;
 			/* 8 = Generating Puzzle Screen */
 			case 8:
-#if !defined(WII)
+#if !(defined(WII) || defined(GAMECUBE))
 				/* Draw Text */
 				renderText(&text_Loading);
 				renderBorderRects();
@@ -916,7 +918,7 @@ int main(int argv, char** args) {
 			case 12:
 				/* Key Presses */
 				menuHandleBackButton(2);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(THREEDS)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE)
 				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
 #elif defined(ANDROID)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
@@ -941,7 +943,7 @@ int main(int argv, char** args) {
 					case 1:
 						renderControlsTextPage2();
 						break;
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(THREEDS))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS))
 					case 2:
 						renderControlsTextPage3();
 						break;
@@ -1492,7 +1494,7 @@ int main(int argv, char** args) {
 					default:
 						break;
 				}
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE))
 				if (controlSettings.enableTouchscreen) {
 					renderText(&text_Enabled);
 				} else {

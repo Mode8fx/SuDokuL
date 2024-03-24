@@ -3,7 +3,7 @@
 #include "general.h"
 
 void snapWindow_x(double range, Uint16 size) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)) && !defined(SDL1)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE)) && !defined(SDL1)
 	if (isWindowed) {
 		d = ((float)SDL_GetWindowSurface(window)->w / size);
 		if ((d - floor(d)) >= pow(1 - range, floor(d))) {
@@ -18,7 +18,7 @@ void snapWindow_x(double range, Uint16 size) {
 }
 
 void snapWindow_y(double range, Uint16 size) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII)) && !defined(SDL1)
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE)) && !defined(SDL1)
 	if (isWindowed) {
 		d = ((float)SDL_GetWindowSurface(window)->h / size);
 		if ((d - floor(d)) >= pow(1 - range, (short)(floor(d)))) {

@@ -39,21 +39,21 @@
 #include "graphics_include/logo_544.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 #define logo_720_png NULL
 #define logo_720_png_len 0
 #else
 #include "graphics_include/logo_720.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 #define logo_1080_png NULL
 #define logo_1080_png_len 0
 #else
 #include "graphics_include/logo_1080.h"
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(SWITCH) || defined(WII) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(SWITCH) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 #define logo_1440_png NULL
 #define logo_1440_png_len 0
 #define logo_2160_png NULL

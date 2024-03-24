@@ -4,7 +4,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1) && !defined(LINUX) && !defined(THREEDS)
+#if defined(SDL1) && !(defined(LINUX) || defined(THREEDS))
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
@@ -142,7 +142,7 @@ extern bool gameCompleted;
 #define SYSTEM_WIDTH  DM.w
 #define SYSTEM_HEIGHT DM.h
 #endif
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII) || defined(FUNKEY) || defined(THREEDS)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(ANDROID) || defined(WII) || defined(GAMECUBE) || defined(FUNKEY) || defined(THREEDS)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0
@@ -164,7 +164,7 @@ extern bool gameCompleted;
 
 #if defined(VITA)
 const string rootDir = "ux0:data/SuDokuL/";
-#elif defined(WII)
+#elif defined(WII) || defined(GAMECUBE)
 const string rootDir = "sd:/apps/SuDokuL/";
 #elif defined(THREEDS)
 const string rootDir = "sdmc:/3ds/SuDokuL/";
@@ -204,7 +204,7 @@ extern void sdlDestroyAll();
 extern void closeController();
 extern void systemSpecificClose();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(THREEDS)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
 #elif defined(SDL1)

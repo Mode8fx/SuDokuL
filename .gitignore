@@ -359,6 +359,7 @@ build_wii/
 build_linux/
 build_funkey/
 build_3ds/
+build_gc/
 fonts/
 graphics/
 music/

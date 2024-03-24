@@ -176,7 +176,7 @@ Uint32 beginning;
  * difficulty in difficulty.
  */
 Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
-#if defined(WII) || defined(THREEDS)
+#if defined(WII) || defined(GAMECUBE) || defined(THREEDS)
     return 0; // Wii rarely crashes from trying to save a generated puzzle... for some reason
 #endif
     seed = SDL_GetTicks();
@@ -525,7 +525,7 @@ Uint8 validateGridAndSolution() {
     return 0;
 }
 
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(FUNKEY) || defined(THREEDS))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(FUNKEY) || defined(THREEDS))
 void printBoard() {
     cout << endl;
     for (row = 0; row < 9; row++) {
