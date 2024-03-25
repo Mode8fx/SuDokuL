@@ -57,29 +57,20 @@ void updatePlayMenuCursorPositionX() {
 
 void updateOptionsMenuCursorPositionX() {
     switch (menuCursorIndex_options) {
-        case 0:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls_Menu) - menuCursorXOffset());
-            break;
-#if defined(GAMECUBE)
-        case 1:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Sound) - menuCursorXOffset());
-            break;
-        case 2:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Background) - menuCursorXOffset());
-            break;
-#else
-        case 1:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Video) - menuCursorXOffset());
-            break;
-        case 2:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Sound) - menuCursorXOffset());
-            break;
-        case 3:
-            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Background) - menuCursorXOffset());
-            break;
-#endif
-        default:
-            break;
+    case 0:
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls_Menu) - menuCursorXOffset());
+        break;
+    case 1:
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Video) - menuCursorXOffset());
+        break;
+    case 2:
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Sound) - menuCursorXOffset());
+        break;
+    case 3:
+        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Background) - menuCursorXOffset());
+        break;
+    default:
+        break;
     }
 }
 
