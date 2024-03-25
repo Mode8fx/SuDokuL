@@ -164,8 +164,10 @@ extern bool gameCompleted;
 
 #if defined(VITA)
 const string rootDir = "ux0:data/SuDokuL/";
-#elif defined(WII) || defined(GAMECUBE)
+#elif defined(WII)
 const string rootDir = "sd:/apps/SuDokuL/";
+#elif defined(GAMECUBE)
+const string rootDir = "/SuDokuL/";
 #elif defined(THREEDS)
 const string rootDir = "sdmc:/3ds/SuDokuL/";
 #elif defined(FUNKEY)
