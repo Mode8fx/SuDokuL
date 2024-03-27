@@ -206,7 +206,7 @@ extern void sdlDestroyAll();
 extern void closeController();
 extern void systemSpecificClose();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY) || defined(LINUX)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
 #elif defined(SDL1)
@@ -219,7 +219,7 @@ extern void systemSpecificClose();
 
 #define INIT_DEBUG() SDL_RWops *debugFile;
 
-#define MAKE_DEBUG_FILE(name, body)                              \
+#define MAKE_DEBUG_FILE(name, body)                            \
 	debugFile = SDL_RWFromFile((rootDir + name).c_str(), "w+b"); \
 	SDL_RWwrite(debugFile, body, sizeof(body), 1);               \
 	SDL_RWclose(debugFile);
