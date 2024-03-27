@@ -4,7 +4,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#if defined(SDL1) && !(defined(LINUX) || defined(THREEDS))
+#if defined(SDL1) && !(defined(LINUX) || defined(FUNKEY))
 extern FILE _iob[];
 
 extern "C" FILE * __cdecl __iob_func(void);
@@ -170,8 +170,6 @@ const string rootDir = "sd:/apps/SuDokuL/";
 const string rootDir = "/SuDokuL/";
 #elif defined(THREEDS)
 const string rootDir = "sdmc:/3ds/SuDokuL/";
-#elif defined(FUNKEY)
-const string rootDir = "/mnt/FunKey/.sudokul/";
 #elif defined(LINUX)
 const string rootDir = ("%s/.sudokul", getenv("HOME"));
 #else

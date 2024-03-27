@@ -11,7 +11,7 @@
     strcpy_s(dest, src);
 #endif
 
-#if defined (WII_U) || defined(PSP) || defined(VITA) || defined(SWITCH) || defined(WII) || defined(GAMECUBE)
+#if defined (WII_U) || defined(PSP) || defined(VITA) || defined(SWITCH) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
 #define CONTROLS_STEP 1.89
 #else
 #define CONTROLS_STEP 1.6
@@ -419,7 +419,7 @@ extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
 extern void renderYouWinRect();
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS))
+#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY))
 extern void renderControlsTextPage3();
 extern void renderControlsTextPage4();
 #endif
@@ -493,7 +493,7 @@ extern void controlsSetConfirmBackPos();
 
 constexpr auto CREDITS_STEP = 1.6;
 
-#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS) || defined(GAMECUBE)
+#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY)
 #define CHEAT1_TEXT "press X or Y 8 times"
 #define CHEAT2_TEXT "Or press (B then X/Y) x4"
 #elif defined(VITA) || defined(PSP)
