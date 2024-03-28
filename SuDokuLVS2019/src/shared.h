@@ -171,7 +171,7 @@ const string rootDir = "/SuDokuL/";
 #elif defined(THREEDS)
 const string rootDir = "sdmc:/3ds/SuDokuL/";
 #elif defined(LINUX)
-const string rootDir = ("%s/.sudokul", getenv("HOME"));
+const string rootDir = ("%s/.sudokul/", getenv("HOME"));
 #else
 const string rootDir = "";
 #endif
