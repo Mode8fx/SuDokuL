@@ -111,8 +111,8 @@ Sint8 wiimoteSchemeTempVal = 1;
 
 /* Textures */
 #if defined(SDL1)
-#define tile_rect_w 32
-#define tile_rect_h 32
+#define tile_rect_w tileSizeScaled
+#define tile_rect_h tileSizeScaled
 #else
 #define tile_rect_w tile->rect.w
 #define tile_rect_h tile->rect.h
@@ -140,6 +140,7 @@ SDL_Rect gameSidebarSmall2Rect;
 SDL_Rect gameSidebarSmall3Rect;
 #if defined(SDL1)
 SDL_Surface *scaledImage;
+Sint16 tileSizeScaled;
 #endif
 
 SpriteObjectWithPos miniGrid_bottom_left;

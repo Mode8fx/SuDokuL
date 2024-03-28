@@ -54,6 +54,7 @@ extern SDL_Rect gameSidebarSmall2Rect;
 extern SDL_Rect gameSidebarSmall3Rect;
 #if defined(SDL1)
 extern SDL_Surface *scaledImage;
+extern Sint16 tileSizeScaled;
 #endif
 
 extern SpriteObjectWithPos miniGrid_bottom_left;
@@ -91,9 +92,22 @@ extern SpriteObjectWithPos *currMiniGrid;
     spriteObj.rect.w = (Uint16)(spriteObj.width * ((Uint16)ceil(gameHeightMult)) * scale); \
     spriteObj.rect.h = (Uint16)(spriteObj.height * ((Uint16)ceil(gameHeightMult)) * scale);
 
+#if defined(SDL1)
+#define SET_SPRITE_SCALE_TILE()                    \
+    PREPARE_SPRITE(tile1, tile1_png, tile1_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile2, tile2_png, tile2_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile3, tile3_png, tile3_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, bgSettings.scale); \
+    PREPARE_SPRITE(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, bgSettings.scale); \
+    tileSizeScaled = 32 * bgSettings.scale * gameHeightMult;
+#else
 #define SET_SPRITE_SCALE_TILE()                    \
     tile->rect.w = tile->width * bgSettings.scale; \
     tile->rect.h = tile->height * bgSettings.scale;
+#endif
 
 #define OBJ_TO_MID_SCREEN_X(obj) \
     ((gameWidth - obj.rect.w) / 2)

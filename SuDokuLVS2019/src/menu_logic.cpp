@@ -4,6 +4,7 @@
 #include "sprite_objects.h"
 #include "window.h"
 #include "shared.h"
+#include "include_graphics.h"
 
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {

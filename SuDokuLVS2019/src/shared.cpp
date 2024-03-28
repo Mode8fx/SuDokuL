@@ -94,8 +94,12 @@ void savePuzzle() {
 }
 
 void initDefaultBGScale() {
+#if defined(FUNKEY)
+	defaultBGScale = 2;
+#else
 	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480));
 	defaultBGScale = max((Uint8)(uint_i), (Uint8)1);
+#endif
 }
 
 void initStartingWidthHeightMults() {
