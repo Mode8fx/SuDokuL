@@ -962,7 +962,11 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
+#if defined(FUNKEY)
+				menuHandleVertCursorMovement(menuCursorIndex_options, 3, 0);
+#else
 				menuHandleVertCursorMovement(menuCursorIndex_options, 4, 0);
+#endif
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Controls_Menu, 0);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_options, text_Video, 1);
@@ -976,6 +980,21 @@ int main(int argv, char** args) {
 					|| mouseIsInRect(text_Video.rect) || mouseIsInRect(text_Sound.rect) || mouseIsInRect(text_Background.rect)))) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_options) {
+#if defined(FUNKEY)
+						case 0:
+							programState = 28;
+							wiimoteSchemeTempVal = controlSettings.enableTouchscreen;
+							changedProgramState = true;
+							break;
+						case 1:
+							programState = 22;
+							changedProgramState = true;
+							break;
+						case 2:
+							programState = 24;
+							changedProgramState = true;
+							break;
+#else
 						case 0:
 							programState = 28;
 							wiimoteSchemeTempVal = controlSettings.enableTouchscreen;
@@ -993,6 +1012,7 @@ int main(int argv, char** args) {
 							programState = 24;
 							changedProgramState = true;
 							break;
+#endif
 						case 4:
 							programState = 26;
 							break;
@@ -1004,7 +1024,9 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controls_Menu);
+#if !defined(FUNKEY)
 				renderText(&text_Video);
+#endif
 				renderText(&text_Sound);
 				renderText(&text_Background);
 				// renderText(&text_Scores);
