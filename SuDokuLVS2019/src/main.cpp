@@ -122,7 +122,7 @@ int main(int argv, char** args) {
 #elif defined(FUNKEY)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
-	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 0, SDL_HWSURFACE | SDL_FULLSCREEN);
+	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
 #elif defined(THREEDS)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_DOUBLEBUF);
