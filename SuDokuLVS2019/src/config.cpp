@@ -27,7 +27,7 @@ void resetCheatCounters() {
 	songChangeCounter = 0;
 }
 
-#if (defined(PSP) || defined(SDL1)) && !defined(GAMECUBE)
+#if (defined(PSP) || defined(SDL1)) && !defined(FUNKEY)
 inline static void handleAnalogInput_SDL1() {
 	if (event.jaxis.which == 0) {
 		if (event.jaxis.axis == 0) {
@@ -336,6 +336,63 @@ inline static void handleGCButtons() {
 	}
 	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
 		controllerAxis_leftStickY = 0;
+	}
+}
+#elif defined(FUNKEY)
+inline static void handleKeyboardKeys_FunKey() {
+	if (event.key.keysym.sym == 117) {
+		keyInputs |= INPUT_UP;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 100) {
+		keyInputs |= INPUT_DOWN;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 108) {
+		keyInputs |= INPUT_LEFT;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 114) {
+		keyInputs |= INPUT_RIGHT;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 97) {
+		keyInputs |= INPUT_CONFIRM;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 98) {
+		keyInputs |= INPUT_BACK;
+		cheat1Counter = 0;
+		songChangeCounter = 0;
+		return;
+	}
+	if (event.key.keysym.sym == 115) {
+		keyInputs |= INPUT_START;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 107) {
+		keyInputs |= INPUT_SELECT;
+		return;
+	}
+	if (event.key.keysym.sym == 120 || event.key.keysym.sym == 121) {
+		keyInputs |= INPUT_SWAP;
+		return;
+	}
+	if (event.key.keysym.sym == 109) {
+		keyInputs |= INPUT_PREV_TRACK;
+		resetCheatCounters();
+		return;
+	}
+	if (event.key.keysym.sym == 110) {
+		keyInputs |= INPUT_NEXT_TRACK;
+		resetCheatCounters();
+		return;
 	}
 }
 #else
@@ -656,6 +713,20 @@ void handlePlayerInput() {
 	gc_keysDown = PAD_ButtonsDown(0);
 	gc_keysUp = PAD_ButtonsUp(0);
 	handleGCButtons();
+#elif defined(FUNKEY)
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+				/* Handle Button Input (FunKey) */
+			case SDL_KEYDOWN:
+				handleKeyboardKeys_FunKey();
+				break;
+			default:
+				break;
+		}
+	}
 #elif defined(SDL1)
 	/* Handle Key Presses (SDL1) */
 	while (SDL_PollEvent(&event)) {
