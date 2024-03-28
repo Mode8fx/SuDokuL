@@ -138,6 +138,9 @@ SpriteObject game_sidebar_small;
 SDL_Rect gameSidebarSmall1Rect;
 SDL_Rect gameSidebarSmall2Rect;
 SDL_Rect gameSidebarSmall3Rect;
+#if defined(SDL1)
+SDL_Surface *scaledImage;
+#endif
 
 SpriteObjectWithPos miniGrid_bottom_left;
 SpriteObjectWithPos miniGrid_bottom_right;

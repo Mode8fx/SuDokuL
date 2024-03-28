@@ -52,6 +52,9 @@ extern SpriteObject game_sidebar_small;
 extern SDL_Rect gameSidebarSmall1Rect;
 extern SDL_Rect gameSidebarSmall2Rect;
 extern SDL_Rect gameSidebarSmall3Rect;
+#if defined(SDL1)
+extern SDL_Surface *scaledImage;
+#endif
 
 extern SpriteObjectWithPos miniGrid_bottom_left;
 extern SpriteObjectWithPos miniGrid_bottom_right;
@@ -70,17 +73,21 @@ extern SpriteObjectWithPos *currMiniGrid;
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
     spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
     spriteObj.width = spriteObj.texture->w;                                               \
-	spriteObj.height = spriteObj.texture->h;                                              \
+	  spriteObj.height = spriteObj.texture->h;                                              \
     SET_SPRITE_SCALE(spriteObj, scale);                                                   \
+    scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, spriteObj.texture->format->BitsPerPixel, spriteObj.texture->format->Rmask, spriteObj.texture->format->Gmask, spriteObj.texture->format->Bmask, spriteObj.texture->format->Amask); \
+    SDL_SoftStretch(spriteObj.texture, NULL, scaledImage, NULL);                          \
+    SDL_FreeSurface(spriteObj.texture);                                                   \
+		spriteObj.texture = scaledImage;                                                      \
     spriteObj.rect.x = pos_x;                                                             \
     spriteObj.rect.y = pos_y;
 #endif
 
-#define SET_SPRITE_SCALE(spriteObj, scale)                                   \
+#define SET_SPRITE_SCALE(spriteObj, scale)                                 \
     spriteObj.rect.w = (Uint16)(spriteObj.width * gameHeightMult * scale); \
     spriteObj.rect.h = (Uint16)(spriteObj.height * gameHeightMult * scale);
 
-#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                            \
+#define SPRITE_ENFORCE_INT_MULT(spriteObj, scale)                                          \
     spriteObj.rect.w = (Uint16)(spriteObj.width * ((Uint16)ceil(gameHeightMult)) * scale); \
     spriteObj.rect.h = (Uint16)(spriteObj.height * ((Uint16)ceil(gameHeightMult)) * scale);
 
