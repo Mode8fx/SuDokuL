@@ -204,7 +204,7 @@ extern void sdlDestroyAll();
 extern void closeController();
 extern void systemSpecificClose();
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY) || defined(LINUX)
+#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
 #define SCALING_WIDTH DEFAULT_WIDTH
 #define SCALING_HEIGHT DEFAULT_HEIGHT
 #elif defined(SDL1)

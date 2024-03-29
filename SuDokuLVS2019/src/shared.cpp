@@ -429,16 +429,16 @@ void updateBorderRects() {
 }
 
 void renderBorderRects() {
-#if !defined(SDL1)
-	SDL_RenderFillRect(renderer, &topRect);
-	SDL_RenderFillRect(renderer, &bottomRect);
-	SDL_RenderFillRect(renderer, &leftRect);
-	SDL_RenderFillRect(renderer, &rightRect);
-#else
+#if defined(SDL1)
 	SDL_FillRect(windowScreen, &topRect, 0);
 	SDL_FillRect(windowScreen, &bottomRect, 0);
 	SDL_FillRect(windowScreen, &leftRect, 0);
 	SDL_FillRect(windowScreen, &rightRect, 0);
+#else
+	SDL_RenderFillRect(renderer, &topRect);
+	SDL_RenderFillRect(renderer, &bottomRect);
+	SDL_RenderFillRect(renderer, &leftRect);
+	SDL_RenderFillRect(renderer, &rightRect);
 #endif
 }
 
