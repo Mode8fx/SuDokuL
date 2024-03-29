@@ -413,11 +413,20 @@ void setGridCursorBySmallY() {
 void drawSidebar() {
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
     renderText(&text_Time);
-    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize);
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
     renderText(&text_Empty);
-    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize);
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
+    // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
+#if defined(SDL1)
+    gameSidebarSmall1Rect.y = game_sidebar_small.rect.y;
+    gameSidebarSmall2Rect.y = game_sidebar_small.rect.y;
+    gameSidebarSmall3Rect.y = game_sidebar_small.rect.y;
+    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
+    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize);
+#else
+    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize);
+    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize);
+#endif
     switch (menuCursorIndex_play) {
         case 0:
             renderText(&text_Game_Easy);
