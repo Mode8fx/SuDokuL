@@ -244,6 +244,8 @@ extern TextObject text_Credits_12b;
 extern TextObject text_Credits_music2_1;
 extern TextObject text_Credits_music2_2;
 extern TextObject text_Credits_music2_3;
+extern TextObject text_Credits_music2_4;
+extern TextObject text_Credits_music2_5;
 extern TextObject text_Credits_P2;
 extern TextObject text_Credits_13;
 extern TextObject text_Credits_14;
@@ -498,8 +500,11 @@ extern void controlsSetConfirmBackPos();
 
 constexpr auto CREDITS_STEP = 1.6;
 
-#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY)
+#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS) || defined(GAMECUBE)
 #define CHEAT1_TEXT "press X or Y 8 times"
+#define CHEAT2_TEXT "Or press (B then X/Y) x4"
+#elif defined(FUNKEY)
+#define CHEAT1_TEXT "press X or Y 8 times to"
 #define CHEAT2_TEXT "Or press (B then X/Y) x4"
 #elif defined(VITA) || defined(PSP)
 #define CHEAT1_TEXT "press Square or Triangle 8 times"

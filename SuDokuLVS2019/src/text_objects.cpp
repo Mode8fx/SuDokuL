@@ -535,6 +535,7 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5))     );
 	#elif defined(FUNKEY)
+	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (fontSize* (CONTROLS_STEP * 1))                    );
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_2b,  0,                                                            0                                       );
 	SET_TEXT_WITH_OUTLINE("Navigate",              text_Controls_2c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2c, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
@@ -549,17 +550,20 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("R",                     text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a,  0,                                                            0                                       );
+	SET_TEXT_WITH_OUTLINE("(1/2)",                 text_Controls_P1,  (gameWidth - (text_Controls_P1.rect.w * 1.25)),    (gameHeight - (text_Controls_P1.rect.h * 1.5))     );
+	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("Start",                 text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
 	initTextObjectVals(&text_Controls_10a);
 	SET_TEXT_WITH_OUTLINE_HELPER("Select",         text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
-	SET_TEXT_WITH_OUTLINE("(while paused)",        text_Controls_7b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7b, 0.3),  (fontSize * (CONTROLS_STEP *  5)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("(paused)",              text_Controls_7b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7b, 0.3),  (fontSize * (CONTROLS_STEP *  5)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Quit to Menu",          text_Controls_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10b, 0.7), (fontSize * (CONTROLS_STEP *  5))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a, 0,                                                            0                                       );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b, 0,                                                            0                                       );
 	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_7c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c, 0.3),  (fontSize * (CONTROLS_STEP *  7))                  );
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b, 0.7), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("(2/2)",                 text_Controls_P2,  (gameWidth - (text_Controls_P2.rect.w * 1.25)),    (gameHeight - (text_Controls_P2.rect.h * 1.5)));
 #elif defined(ANDROID)
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (fontSize * (CONTROLS_STEP *  3)) - CONTROLS_SPACER);
@@ -793,6 +797,26 @@ void renderControlsTextPage1() {
 			renderControlsTextPage1_Wii_Vertical();
 			break;
 	}
+#elif defined(FUNKEY)
+	renderText(&text_Controls_2a);
+	renderText(&text_Controls_2b);
+	renderText(&text_Controls_2c);
+	renderDividerBetweenY(&text_Controls_2c, &text_Controls_3c);
+	renderText(&text_Controls_3a);
+	renderText(&text_Controls_3b);
+	renderText(&text_Controls_3c);
+	renderDividerBetweenY(&text_Controls_3c, &text_Controls_4c);
+	renderText(&text_Controls_4a);
+	renderText(&text_Controls_4b);
+	renderText(&text_Controls_4c);
+	renderDividerBetweenY(&text_Controls_4c, &text_Controls_5b);
+	renderText(&text_Controls_5a);
+	renderText(&text_Controls_5b);
+	renderDividerBetweenY(&text_Controls_5b, &text_Controls_6b);
+	renderText(&text_Controls_6a);
+	renderText(&text_Controls_6b);
+	renderDividerBetweenY(&text_Controls_6b, &text_Controls_7a);
+	renderText(&text_Controls_7a);
 #else
 	renderText(&text_Controls_2a);
 	renderText(&text_Controls_2b);
@@ -833,6 +857,21 @@ void renderControlsTextPage2() {
 		renderControlsTextPage2_Wii_Vertical();
 		break;
 	}
+#elif defined(FUNKEY)
+	renderText(&text_Controls_9a);
+	renderText(&text_Controls_9b);
+	renderDividerBetweenY(&text_Controls_9a, &text_Controls_10a);
+	renderText(&text_Controls_10a);
+	renderText(&text_Controls_7b);
+	renderText(&text_Controls_10b);
+	renderDividerBetweenY(&text_Controls_10a, &text_Controls_11a);
+	renderText(&text_Controls_11a);
+	renderText(&text_Controls_11b);
+	renderDividerBetweenY(&text_Controls_11a, &text_Controls_12a);
+	renderText(&text_Controls_12a);
+	renderText(&text_Controls_7c);
+	renderText(&text_Controls_12b);
+	renderText(&text_Controls_12c);
 #else
 	renderText(&text_Controls_9a);
 	renderText(&text_Controls_9b);
@@ -874,10 +913,10 @@ void renderControlsTextPage4() {
 	renderTextLarge(&text_Controls_c_8);
 	renderText(&text_Controls_c_9a);
 	renderText(&text_Controls_9b);
-    renderDividerBetweenY(&text_Controls_c_9a, &text_Controls_c_10a);
-    renderText(&text_Controls_c_10a);
+  renderDividerBetweenY(&text_Controls_c_9a, &text_Controls_c_10a);
+  renderText(&text_Controls_c_10a);
 	renderText(&text_Controls_10b);
-    renderDividerBetweenY(&text_Controls_10a, &text_Controls_c_12a);
+  renderDividerBetweenY(&text_Controls_10a, &text_Controls_c_12a);
 	renderText(&text_Controls_c_12a);
 	renderText(&text_Controls_c_12b);
 	renderText(&text_Controls_c_12c);
@@ -886,7 +925,11 @@ void renderControlsTextPage4() {
 #endif
 
 void setCreditsText() {
+	if (compactDisplay) {
+		SET_LARGE_TEXT_WITH_OUTLINE("CODE,DESIGN,MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),             (fontSize * (CREDITS_STEP *    1))          );
+	} else {
     SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),             (fontSize * (CREDITS_STEP *    1))          );
+	}
     SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (fontSize * (CREDITS_STEP *    5))          );
     SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3,   OBJ_TO_MID_SCREEN_X(text_Credits_3),               (fontSize * (CREDITS_STEP * 6.25))          );
 	SET_TEXT_WITH_OUTLINE("(1/9)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5)));
@@ -908,15 +951,30 @@ void setCreditsText() {
 	SET_TEXT_WITH_OUTLINE("Magnar Harestad",            text_Credits_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12b, 0.25), (fontSize * (CREDITS_STEP * 12.25))         );
 	SET_TEXT_WITH_OUTLINE("\"Ancient Days\"",           text_Credits_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12a, 0.75), (fontSize * (CREDITS_STEP * 12.25))         );
 	SET_TEXT_WITH_OUTLINE("(2/9)",                      text_Credits_P2,  (gameWidth - (text_Credits_P2.rect.w * 1.25)),     (gameHeight - (text_Credits_P2.rect.h * 1.5)));
+	if (compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("All music obtained", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP * 5)));
+		SET_TEXT_WITH_OUTLINE("from modarchive.org", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 6.25)));
+		SET_TEXT_WITH_OUTLINE("\"Ancient Days\"", text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3), (fontSize * (CREDITS_STEP * 8.25)));
+		SET_TEXT_WITH_OUTLINE("edited by Mode8fx", text_Credits_music2_4, OBJ_TO_MID_SCREEN_X(text_Credits_music2_4), (fontSize * (CREDITS_STEP * 9.5)));
+		SET_TEXT_WITH_OUTLINE("for looping purposes", text_Credits_music2_5, OBJ_TO_MID_SCREEN_X(text_Credits_music2_5), (fontSize * (CREDITS_STEP * 10.75)));
+	} else {
     SET_TEXT_WITH_OUTLINE("All music obtained from modarchive.org", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP * 5))   );
-	SET_TEXT_WITH_OUTLINE("\"Ancient Days\" edited by Mode8fx", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 7))       );
-	SET_TEXT_WITH_OUTLINE("for looping purposes",       text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3),   (fontSize * (CREDITS_STEP * 8.25))          );
+		SET_TEXT_WITH_OUTLINE("\"Ancient Days\" edited by Mode8fx", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 7))       );
+		SET_TEXT_WITH_OUTLINE("for looping purposes",       text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3),   (fontSize * (CREDITS_STEP * 8.25))          );
+	}
 	SET_TEXT_WITH_OUTLINE("(3/9)",                      text_Credits_P3,  (gameWidth - (text_Credits_P3.rect.w * 1.25)),     (gameHeight - (text_Credits_P3.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("LIBRARIES",            text_Credits_13,  OBJ_TO_MID_SCREEN_X(text_Credits_13),              (fontSize * (CREDITS_STEP *  1))            );
+#if defined(SDL1)
+		SET_TEXT_WITH_OUTLINE("SDL",                        text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (fontSize * (CREDITS_STEP *  5))            );
+		SET_TEXT_WITH_OUTLINE("SDL_image",                  text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (fontSize * (CREDITS_STEP *  7))            );
+		SET_TEXT_WITH_OUTLINE("SDL_ttf",                    text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (fontSize * (CREDITS_STEP *  9))            );
+		SET_TEXT_WITH_OUTLINE("SDL_mixer",                  text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (fontSize * (CREDITS_STEP * 11))            );
+#else
     SET_TEXT_WITH_OUTLINE("SDL2",                       text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (fontSize * (CREDITS_STEP *  5))            );
     SET_TEXT_WITH_OUTLINE("SDL2_image",                 text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (fontSize * (CREDITS_STEP *  7))            );
     SET_TEXT_WITH_OUTLINE("SDL2_ttf",                   text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (fontSize * (CREDITS_STEP *  9))            );
     SET_TEXT_WITH_OUTLINE("SDL2_mixer",                 text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (fontSize * (CREDITS_STEP * 11))            );
+#endif
 	SET_TEXT_WITH_OUTLINE("(4/9)",                      text_Credits_P4,  (gameWidth - (text_Credits_P4.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("FONT",                 text_Credits_18,  OBJ_TO_MID_SCREEN_X(text_Credits_18),              (fontSize * (CREDITS_STEP *    1))          );
     SET_TEXT_WITH_OUTLINE("Commodore Pixelized v1.2",   text_Credits_19,  OBJ_TO_MID_SCREEN_X(text_Credits_19),              (fontSize * (CREDITS_STEP *    5))          );
@@ -931,7 +989,11 @@ void setCreditsText() {
     SET_TEXT_WITH_OUTLINE("Here are a couple cheats...", text_Credits_25, OBJ_TO_MID_SCREEN_X(text_Credits_25),              (fontSize * (CREDITS_STEP *  3.3))          );
     SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (fontSize * (CREDITS_STEP * 4.45))          );
     SET_TEXT_WITH_OUTLINE(CHEAT1_TEXT,                  text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (fontSize * (CREDITS_STEP *  5.6))          );
-    SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28),          (fontSize * (CREDITS_STEP * 6.75))          );
+#if defined(FUNKEY)
+		SET_TEXT_WITH_OUTLINE("reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75)));
+#else
+		SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75)));
+#endif
 	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                  text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),           (fontSize * (CREDITS_STEP *  7.9))          );
 	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),        (fontSize * (CREDITS_STEP * 9.05))          );
     SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (fontSize * (CREDITS_STEP * 10.2))          );
@@ -993,6 +1055,8 @@ void renderCreditsTextPage3() {
 	renderText(&text_Credits_music2_1);
 	renderText(&text_Credits_music2_2);
 	renderText(&text_Credits_music2_3);
+	renderText(&text_Credits_music2_4);
+	renderText(&text_Credits_music2_5);
 	renderText(&text_Credits_P3);
 }
 

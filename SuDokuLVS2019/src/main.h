@@ -342,6 +342,8 @@ TextObject text_Credits_12b;
 TextObject text_Credits_music2_1;
 TextObject text_Credits_music2_2;
 TextObject text_Credits_music2_3;
+TextObject text_Credits_music2_4;
+TextObject text_Credits_music2_5;
 TextObject text_Credits_P2;
 TextObject text_Credits_13;
 TextObject text_Credits_14;

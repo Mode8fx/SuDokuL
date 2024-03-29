@@ -361,14 +361,25 @@ inline static void handleKeyboardKeysDown_FunKey() {
 		return;
 	}
 	if (event.key.keysym.sym == 97) {
-		keyInputs |= INPUT_CONFIRM;
-		resetCheatCounters();
+		if (controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_CONFIRM;
+			resetCheatCounters();
+		} else {
+			keyInputs |= INPUT_BACK;
+			cheat1Counter = 0;
+			songChangeCounter = 0;
+		}
 		return;
 	}
 	if (event.key.keysym.sym == 98) {
-		keyInputs |= INPUT_BACK;
-		cheat1Counter = 0;
-		songChangeCounter = 0;
+		if (controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_BACK;
+			cheat1Counter = 0;
+			songChangeCounter = 0;
+		} else {
+			keyInputs |= INPUT_CONFIRM;
+			resetCheatCounters();
+		}
 		return;
 	}
 	if (event.key.keysym.sym == 115) {
