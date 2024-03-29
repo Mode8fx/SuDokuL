@@ -565,6 +565,11 @@ int main(int argv, char** args) {
 			/* 0 = Title Screen */
 			case 0:
 				time_anim_PressStart += deltaTime;
+#if defined(FUNKEY)
+				if (time_anim_PressStart >= 2.5) {
+					time_anim_PressStart -= 2.5;
+				}
+#endif
 				/* Key Presses */
 				if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT) || keyPressed(INPUT_START)) {
 					Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
