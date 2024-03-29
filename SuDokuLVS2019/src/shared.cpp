@@ -197,6 +197,17 @@ static void initNumOffsets_272() {
 	numOffset_small_y[8] = 0;
 }
 
+static void initNumOffsets_240() {
+	//d = (double)gameHeight / SCALING_HEIGHT;
+	d = 1.0;
+	for (i = 0; i < 9; i++) {
+		numOffset_large_x[i] = (Sint8)(d);
+		numOffset_large_y[i] = 0;
+		numOffset_small_x[i] = 0;
+		numOffset_small_y[i] = 0;
+	}
+}
+
 static void initNumOffsets_Standard() {
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = 0;
@@ -209,6 +220,10 @@ static void initNumOffsets_Standard() {
 void initNumOffsets() {
 	if (gameHeight == 272) {
 		initNumOffsets_272();
+#if defined(SDL1)
+	} else if (gameHeight == 240) {
+		initNumOffsets_240();
+#endif
 	} else if (gameHeight == 544) {
 		initNumOffsets_544();
 	} else {
