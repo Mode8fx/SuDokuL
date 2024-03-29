@@ -162,7 +162,7 @@ int main(int argv, char** args) {
 	/* General */
 	for (k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1);
 		adjustCharOutlineOffset(textChars, k, -1, -1.5);
 	}
 	/* Loading Screen */
@@ -287,23 +287,23 @@ int main(int argv, char** args) {
 	/* General (Large) */
 	for (k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2);
 		adjustCharOutlineOffset(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2);
 		adjustCharOutlineOffset(gridNums_black, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2);
 		adjustCharOutlineOffset(gridNums_blue, k, -1, -1.5);
 	}
 	for (k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k]);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1);
 		adjustCharOutlineOffset(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Test Strings */

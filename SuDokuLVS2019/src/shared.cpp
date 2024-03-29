@@ -16,6 +16,9 @@ FILE * __cdecl __iob_func(void) {
 #endif
 
 void loadSettingsFile() {
+#if defined(LINUX)
+	mkdir((string(getenv("HOME")) + "/.sudokul").c_str(), 0777);
+#endif
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
 		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, defaultBGScale);

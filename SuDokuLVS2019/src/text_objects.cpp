@@ -97,12 +97,12 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
 #define TTF_RENDERTEXT TTF_RenderText_Solid
 #endif
 
-void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj) {
+void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj, Uint8 minOutlineSize) {
 #if !defined(SDL1)
 	textObj->surface = TTF_RENDERTEXT(font, text, text_color);
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, textObj->surface);
 	TTF_SizeText(font, text, &textObj->rect.w, &textObj->rect.h);
-	setFontOutline(font, textObj);
+	setFontOutline(font, textObj, minOutlineSize);
 	textObj->outline_surface = TTF_RENDERTEXT(font, text, outline_color);
 	textObj->outline_texture = SDL_CreateTextureFromSurface(renderer, textObj->outline_surface);
 	TTF_SizeText(font, text, &textObj->outline_rect.w, &textObj->outline_rect.h);
@@ -112,15 +112,15 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 #else
 	textObj->texture = TTF_RENDERTEXT(font, text, text_color);
 	TTF_SizeText(font, text, (int *)&textObj->rect.w, (int*)&textObj->rect.h);
-	setFontOutline(font, textObj);
+	setFontOutline(font, textObj, minOutlineSize);
 	textObj->outline_texture = TTF_RENDERTEXT(font, text, outline_color);
 	TTF_SizeText(font, text, (int*)&textObj->outline_rect.w, (int*)&textObj->outline_rect.h);
 	TTF_SetFontOutline(font, 0);
 #endif
 }
 
-void setFontOutline(TTF_Font *font, TextCharObject *textObj) {
-	TTF_SetFontOutline(font, max((textObj->rect.h / 10), int(ceil(gameHeightMult))));
+void setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
+	TTF_SetFontOutline(font, max((textObj->rect.h / 10), max(int(ceil(gameHeightMult)), (int)minSize)));
 }
 
 void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
@@ -847,15 +847,15 @@ void renderControlsTextPage2() {
 	renderTextLarge(&text_Controls_8);
 #if defined(WII)
 	switch (controlSettings.wiimoteScheme) {
-	case 0:
-		renderControlsTextPage2_Wii_Horizontal();
-		break;
-	case 1:
-		renderControlsTextPage2_Wii_General();
-		break;
-	case 2:
-		renderControlsTextPage2_Wii_Vertical();
-		break;
+		case 0:
+			renderControlsTextPage2_Wii_Horizontal();
+			break;
+		case 1:
+			renderControlsTextPage2_Wii_General();
+			break;
+		case 2:
+			renderControlsTextPage2_Wii_Vertical();
+			break;
 	}
 #elif defined(FUNKEY)
 	renderText(&text_Controls_9a);
@@ -913,10 +913,10 @@ void renderControlsTextPage4() {
 	renderTextLarge(&text_Controls_c_8);
 	renderText(&text_Controls_c_9a);
 	renderText(&text_Controls_9b);
-  renderDividerBetweenY(&text_Controls_c_9a, &text_Controls_c_10a);
-  renderText(&text_Controls_c_10a);
+	renderDividerBetweenY(&text_Controls_c_9a, &text_Controls_c_10a);
+	renderText(&text_Controls_c_10a);
 	renderText(&text_Controls_10b);
-  renderDividerBetweenY(&text_Controls_10a, &text_Controls_c_12a);
+	renderDividerBetweenY(&text_Controls_10a, &text_Controls_c_12a);
 	renderText(&text_Controls_c_12a);
 	renderText(&text_Controls_c_12b);
 	renderText(&text_Controls_c_12c);
@@ -926,94 +926,107 @@ void renderControlsTextPage4() {
 
 void setCreditsText() {
 	if (compactDisplay) {
-		SET_LARGE_TEXT_WITH_OUTLINE("CODE,DESIGN,MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),             (fontSize * (CREDITS_STEP *    1))          );
+		SET_LARGE_TEXT_WITH_OUTLINE("CODE,DESIGN,MOST ART",     text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),         (fontSize * (CREDITS_STEP * 1))              );
 	} else {
-    SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),             (fontSize * (CREDITS_STEP *    1))          );
+		SET_LARGE_TEXT_WITH_OUTLINE("CODING, DESIGN, MOST ART", text_Credits_1, OBJ_TO_MID_SCREEN_X(text_Credits_1),         (fontSize * (CREDITS_STEP * 1))              );
 	}
-    SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (fontSize * (CREDITS_STEP *    5))          );
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3,   OBJ_TO_MID_SCREEN_X(text_Credits_3),               (fontSize * (CREDITS_STEP * 6.25))          );
+    SET_TEXT_WITH_OUTLINE("Mode8fx",                    text_Credits_2,   OBJ_TO_MID_SCREEN_X(text_Credits_2),               (fontSize * (CREDITS_STEP *    5))           );
+    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx", text_Credits_3,   OBJ_TO_MID_SCREEN_X(text_Credits_3),               (fontSize * (CREDITS_STEP * 6.25))           );
 	SET_TEXT_WITH_OUTLINE("(1/9)",                      text_Credits_P1,  (gameWidth - (text_Credits_P1.rect.w * 1.25)),     (gameHeight - (text_Credits_P1.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("MUSIC",                text_Credits_4,   OBJ_TO_MID_SCREEN_X(text_Credits_4),               (fontSize * (CREDITS_STEP *     1))         );
-    SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5b, 0.25),  (fontSize * (CREDITS_STEP *   3.5))         );
-    SET_TEXT_WITH_OUTLINE("\"Wonder Flow\"",            text_Credits_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5a, 0.75),  (fontSize * (CREDITS_STEP *   3.5))         );
-    SET_TEXT_WITH_OUTLINE("Okeanos",                    text_Credits_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_6b, 0.25),  (fontSize * (CREDITS_STEP *  4.75))         );
-    SET_TEXT_WITH_OUTLINE("\"Sudoku Padawan\"",         text_Credits_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_6a, 0.75),  (fontSize * (CREDITS_STEP *  4.75))         );
-    SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_7b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_7b, 0.25),  (fontSize * (CREDITS_STEP *     6))         );
-    SET_TEXT_WITH_OUTLINE("\"Electroquest\"",           text_Credits_7a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_7a, 0.75),  (fontSize * (CREDITS_STEP *     6))         );
-    SET_TEXT_WITH_OUTLINE("Soundscape",                 text_Credits_8b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_8b, 0.25),  (fontSize * (CREDITS_STEP *  7.25))         );
-    SET_TEXT_WITH_OUTLINE("\"Main Menu\"",              text_Credits_8a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_8a, 0.75),  (fontSize * (CREDITS_STEP *  7.25))         );
-    SET_TEXT_WITH_OUTLINE("Okeanos",                    text_Credits_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_9b, 0.25),  (fontSize * (CREDITS_STEP *   8.5))         );
-    SET_TEXT_WITH_OUTLINE("\"Insomnia\"",               text_Credits_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_9a, 0.75),  (fontSize * (CREDITS_STEP *   8.5))         );
-    SET_TEXT_WITH_OUTLINE("Solon",                      text_Credits_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_10b, 0.25), (fontSize * (CREDITS_STEP *  9.75))         );
-    SET_TEXT_WITH_OUTLINE("\"Ontario\"",                text_Credits_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_10a, 0.75), (fontSize * (CREDITS_STEP *  9.75))         );
-    SET_TEXT_WITH_OUTLINE("Noiseless",                  text_Credits_11b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11b, 0.25), (fontSize * (CREDITS_STEP *    11))         );
-    SET_TEXT_WITH_OUTLINE("\"Addiction\"",              text_Credits_11a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11a, 0.75), (fontSize * (CREDITS_STEP *    11))         );
-	SET_TEXT_WITH_OUTLINE("Magnar Harestad",            text_Credits_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12b, 0.25), (fontSize * (CREDITS_STEP * 12.25))         );
-	SET_TEXT_WITH_OUTLINE("\"Ancient Days\"",           text_Credits_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12a, 0.75), (fontSize * (CREDITS_STEP * 12.25))         );
+    SET_LARGE_TEXT_WITH_OUTLINE("MUSIC",                text_Credits_4,   OBJ_TO_MID_SCREEN_X(text_Credits_4),               (fontSize * (CREDITS_STEP *     1))          );
+    SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5b, 0.25),  (fontSize * (CREDITS_STEP *   3.5))          );
+    SET_TEXT_WITH_OUTLINE("\"Wonder Flow\"",            text_Credits_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_5a, 0.75),  (fontSize * (CREDITS_STEP *   3.5))          );
+    SET_TEXT_WITH_OUTLINE("Okeanos",                    text_Credits_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_6b, 0.25),  (fontSize * (CREDITS_STEP *  4.75))          );
+    SET_TEXT_WITH_OUTLINE("\"Sudoku Padawan\"",         text_Credits_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_6a, 0.75),  (fontSize * (CREDITS_STEP *  4.75))          );
+    SET_TEXT_WITH_OUTLINE("Nuke of Anarchy",            text_Credits_7b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_7b, 0.25),  (fontSize * (CREDITS_STEP *     6))          );
+    SET_TEXT_WITH_OUTLINE("\"Electroquest\"",           text_Credits_7a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_7a, 0.75),  (fontSize * (CREDITS_STEP *     6))          );
+    SET_TEXT_WITH_OUTLINE("Soundscape",                 text_Credits_8b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_8b, 0.25),  (fontSize * (CREDITS_STEP *  7.25))          );
+    SET_TEXT_WITH_OUTLINE("\"Main Menu\"",              text_Credits_8a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_8a, 0.75),  (fontSize * (CREDITS_STEP *  7.25))          );
+    SET_TEXT_WITH_OUTLINE("Okeanos",                    text_Credits_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_9b, 0.25),  (fontSize * (CREDITS_STEP *   8.5))          );
+    SET_TEXT_WITH_OUTLINE("\"Insomnia\"",               text_Credits_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Credits_9a, 0.75),  (fontSize * (CREDITS_STEP *   8.5))          );
+    SET_TEXT_WITH_OUTLINE("Solon",                      text_Credits_10b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_10b, 0.25), (fontSize * (CREDITS_STEP *  9.75))          );
+    SET_TEXT_WITH_OUTLINE("\"Ontario\"",                text_Credits_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_10a, 0.75), (fontSize * (CREDITS_STEP *  9.75))          );
+    SET_TEXT_WITH_OUTLINE("Noiseless",                  text_Credits_11b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11b, 0.25), (fontSize * (CREDITS_STEP *    11))          );
+    SET_TEXT_WITH_OUTLINE("\"Addiction\"",              text_Credits_11a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_11a, 0.75), (fontSize * (CREDITS_STEP *    11))          );
+	SET_TEXT_WITH_OUTLINE("Magnar Harestad",            text_Credits_12b, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12b, 0.25), (fontSize * (CREDITS_STEP * 12.25))          );
+	SET_TEXT_WITH_OUTLINE("\"Ancient Days\"",           text_Credits_12a, OBJ_TO_SCREEN_AT_FRACTION(text_Credits_12a, 0.75), (fontSize * (CREDITS_STEP * 12.25))          );
 	SET_TEXT_WITH_OUTLINE("(2/9)",                      text_Credits_P2,  (gameWidth - (text_Credits_P2.rect.w * 1.25)),     (gameHeight - (text_Credits_P2.rect.h * 1.5)));
 	if (compactDisplay) {
-		SET_TEXT_WITH_OUTLINE("All music obtained", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP * 5)));
-		SET_TEXT_WITH_OUTLINE("from modarchive.org", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 6.25)));
-		SET_TEXT_WITH_OUTLINE("\"Ancient Days\"", text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3), (fontSize * (CREDITS_STEP * 8.25)));
-		SET_TEXT_WITH_OUTLINE("edited by Mode8fx", text_Credits_music2_4, OBJ_TO_MID_SCREEN_X(text_Credits_music2_4), (fontSize * (CREDITS_STEP * 9.5)));
+		SET_TEXT_WITH_OUTLINE("All music obtained",   text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP * 5)));
+		SET_TEXT_WITH_OUTLINE("from modarchive.org",  text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 6.25)));
+		SET_TEXT_WITH_OUTLINE("\"Ancient Days\"",     text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3), (fontSize * (CREDITS_STEP * 8.25)));
+		SET_TEXT_WITH_OUTLINE("edited by Mode8fx",    text_Credits_music2_4, OBJ_TO_MID_SCREEN_X(text_Credits_music2_4), (fontSize * (CREDITS_STEP * 9.5)));
 		SET_TEXT_WITH_OUTLINE("for looping purposes", text_Credits_music2_5, OBJ_TO_MID_SCREEN_X(text_Credits_music2_5), (fontSize * (CREDITS_STEP * 10.75)));
 	} else {
-    SET_TEXT_WITH_OUTLINE("All music obtained from modarchive.org", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP * 5))   );
-		SET_TEXT_WITH_OUTLINE("\"Ancient Days\" edited by Mode8fx", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP * 7))       );
-		SET_TEXT_WITH_OUTLINE("for looping purposes",       text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3),   (fontSize * (CREDITS_STEP * 8.25))          );
+    SET_TEXT_WITH_OUTLINE("All music obtained from modarchive.org", text_Credits_music2_1, OBJ_TO_MID_SCREEN_X(text_Credits_music2_1), (fontSize * (CREDITS_STEP *    5)));
+		SET_TEXT_WITH_OUTLINE("\"Ancient Days\" edited by Mode8fx", text_Credits_music2_2, OBJ_TO_MID_SCREEN_X(text_Credits_music2_2), (fontSize * (CREDITS_STEP *    7)));
+		SET_TEXT_WITH_OUTLINE("for looping purposes",               text_Credits_music2_3, OBJ_TO_MID_SCREEN_X(text_Credits_music2_3), (fontSize * (CREDITS_STEP * 8.25)));
 	}
 	SET_TEXT_WITH_OUTLINE("(3/9)",                      text_Credits_P3,  (gameWidth - (text_Credits_P3.rect.w * 1.25)),     (gameHeight - (text_Credits_P3.rect.h * 1.5)));
     SET_LARGE_TEXT_WITH_OUTLINE("LIBRARIES",            text_Credits_13,  OBJ_TO_MID_SCREEN_X(text_Credits_13),              (fontSize * (CREDITS_STEP *  1))            );
 #if defined(SDL1)
-		SET_TEXT_WITH_OUTLINE("SDL",                        text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (fontSize * (CREDITS_STEP *  5))            );
-		SET_TEXT_WITH_OUTLINE("SDL_image",                  text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (fontSize * (CREDITS_STEP *  7))            );
-		SET_TEXT_WITH_OUTLINE("SDL_ttf",                    text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (fontSize * (CREDITS_STEP *  9))            );
-		SET_TEXT_WITH_OUTLINE("SDL_mixer",                  text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (fontSize * (CREDITS_STEP * 11))            );
+	SET_TEXT_WITH_OUTLINE("SDL",                        text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (fontSize * (CREDITS_STEP *  5))            );
+	SET_TEXT_WITH_OUTLINE("SDL_image",                  text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (fontSize * (CREDITS_STEP *  7))            );
+	SET_TEXT_WITH_OUTLINE("SDL_ttf",                    text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (fontSize * (CREDITS_STEP *  9))            );
+	SET_TEXT_WITH_OUTLINE("SDL_mixer",                  text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (fontSize * (CREDITS_STEP * 11))            );
 #else
     SET_TEXT_WITH_OUTLINE("SDL2",                       text_Credits_14,  OBJ_TO_MID_SCREEN_X(text_Credits_14),              (fontSize * (CREDITS_STEP *  5))            );
     SET_TEXT_WITH_OUTLINE("SDL2_image",                 text_Credits_15,  OBJ_TO_MID_SCREEN_X(text_Credits_15),              (fontSize * (CREDITS_STEP *  7))            );
     SET_TEXT_WITH_OUTLINE("SDL2_ttf",                   text_Credits_16,  OBJ_TO_MID_SCREEN_X(text_Credits_16),              (fontSize * (CREDITS_STEP *  9))            );
     SET_TEXT_WITH_OUTLINE("SDL2_mixer",                 text_Credits_17,  OBJ_TO_MID_SCREEN_X(text_Credits_17),              (fontSize * (CREDITS_STEP * 11))            );
 #endif
-	SET_TEXT_WITH_OUTLINE("(4/9)",                      text_Credits_P4,  (gameWidth - (text_Credits_P4.rect.w * 1.25)),     (gameHeight - (text_Credits_P4.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("FONT",                 text_Credits_18,  OBJ_TO_MID_SCREEN_X(text_Credits_18),              (fontSize * (CREDITS_STEP *    1))          );
-    SET_TEXT_WITH_OUTLINE("Commodore Pixelized v1.2",   text_Credits_19,  OBJ_TO_MID_SCREEN_X(text_Credits_19),              (fontSize * (CREDITS_STEP *    5))          );
-    SET_TEXT_WITH_OUTLINE("by Devin Cook",              text_Credits_20,  OBJ_TO_MID_SCREEN_X(text_Credits_20),              (fontSize * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("(5/9)",                      text_Credits_P5,  (gameWidth - (text_Credits_P5.rect.w * 1.25)),     (gameHeight - (text_Credits_P5.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("SOUND EFFECTS",        text_Credits_21,  OBJ_TO_MID_SCREEN_X(text_Credits_21),              (fontSize * (CREDITS_STEP *    1))          );
-    SET_TEXT_WITH_OUTLINE("Luke.RUSTLTD",               text_Credits_22,  OBJ_TO_MID_SCREEN_X(text_Credits_22),              (fontSize * (CREDITS_STEP *    5))          );
-    SET_TEXT_WITH_OUTLINE("https://opengameart.org",    text_Credits_23a, OBJ_TO_MID_SCREEN_X(text_Credits_23a),             (fontSize * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("/content/10-8bit-coin-sounds", text_Credits_23b, OBJ_TO_MID_SCREEN_X(text_Credits_23b),           (fontSize * (CREDITS_STEP *  7.5))          );
-	SET_TEXT_WITH_OUTLINE("(6/9)",                      text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)),     (gameHeight - (text_Credits_P6.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("THANKS FOR PLAYING!",  text_Credits_24,  OBJ_TO_MID_SCREEN_X(text_Credits_24),              (fontSize * (CREDITS_STEP *    1))          );
-    SET_TEXT_WITH_OUTLINE("Here are a couple cheats...", text_Credits_25, OBJ_TO_MID_SCREEN_X(text_Credits_25),              (fontSize * (CREDITS_STEP *  3.3))          );
-    SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26, OBJ_TO_MID_SCREEN_X(text_Credits_26),            (fontSize * (CREDITS_STEP * 4.45))          );
-    SET_TEXT_WITH_OUTLINE(CHEAT1_TEXT,                  text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),              (fontSize * (CREDITS_STEP *  5.6))          );
+	SET_TEXT_WITH_OUTLINE("(4/9)",                         text_Credits_P4,  (gameWidth - (text_Credits_P4.rect.w * 1.25)), (gameHeight - (text_Credits_P4.rect.h * 1.5)));
+    SET_LARGE_TEXT_WITH_OUTLINE("FONT",                    text_Credits_18,  OBJ_TO_MID_SCREEN_X(text_Credits_18),          (fontSize * (CREDITS_STEP *    1))           );
+    SET_TEXT_WITH_OUTLINE("Commodore Pixelized v1.2",      text_Credits_19,  OBJ_TO_MID_SCREEN_X(text_Credits_19),          (fontSize * (CREDITS_STEP *    5))           );
+    SET_TEXT_WITH_OUTLINE("by Devin Cook",                 text_Credits_20,  OBJ_TO_MID_SCREEN_X(text_Credits_20),          (fontSize * (CREDITS_STEP * 6.25))           );
+	SET_TEXT_WITH_OUTLINE("(5/9)",                         text_Credits_P5,  (gameWidth - (text_Credits_P5.rect.w * 1.25)), (gameHeight - (text_Credits_P5.rect.h * 1.5)));
+    SET_LARGE_TEXT_WITH_OUTLINE("SOUND EFFECTS",           text_Credits_21,  OBJ_TO_MID_SCREEN_X(text_Credits_21),          (fontSize * (CREDITS_STEP *    1))           );
+    SET_TEXT_WITH_OUTLINE("Luke.RUSTLTD",                  text_Credits_22,  OBJ_TO_MID_SCREEN_X(text_Credits_22),          (fontSize * (CREDITS_STEP *    5))           );
+    SET_TEXT_WITH_OUTLINE("https://opengameart.org",       text_Credits_23a, OBJ_TO_MID_SCREEN_X(text_Credits_23a),         (fontSize * (CREDITS_STEP * 6.25))           );
+	SET_TEXT_WITH_OUTLINE("/content/10-8bit-coin-sounds",  text_Credits_23b, OBJ_TO_MID_SCREEN_X(text_Credits_23b),         (fontSize * (CREDITS_STEP *  7.5))           );
+	SET_TEXT_WITH_OUTLINE("(6/9)",                         text_Credits_P6,  (gameWidth - (text_Credits_P6.rect.w * 1.25)), (gameHeight - (text_Credits_P6.rect.h * 1.5)));
+    SET_LARGE_TEXT_WITH_OUTLINE("THANKS FOR PLAYING!",     text_Credits_24,  OBJ_TO_MID_SCREEN_X(text_Credits_24),          (fontSize * (CREDITS_STEP *    1))           );
+    SET_TEXT_WITH_OUTLINE("Here are a couple cheats...",   text_Credits_25,  OBJ_TO_MID_SCREEN_X(text_Credits_25),          (fontSize * (CREDITS_STEP *  3.3))           );
+    SET_TEXT_WITH_OUTLINE("If you get stuck on a puzzle,", text_Credits_26,  OBJ_TO_MID_SCREEN_X(text_Credits_26),          (fontSize * (CREDITS_STEP * 4.45))           );
+    SET_TEXT_WITH_OUTLINE(CHEAT1_TEXT,                     text_Credits_27,  OBJ_TO_MID_SCREEN_X(text_Credits_27),          (fontSize * (CREDITS_STEP *  5.6))           );
 #if defined(FUNKEY)
-		SET_TEXT_WITH_OUTLINE("reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75)));
+		SET_TEXT_WITH_OUTLINE("reveal the highlighted cell.",    text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75))               );
 #else
-		SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75)));
+		SET_TEXT_WITH_OUTLINE("to reveal the highlighted cell.", text_Credits_28, OBJ_TO_MID_SCREEN_X(text_Credits_28), (fontSize * (CREDITS_STEP * 6.75))               );
 #endif
-	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                  text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),           (fontSize * (CREDITS_STEP *  7.9))          );
-	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),        (fontSize * (CREDITS_STEP * 9.05))          );
-    SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!", text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),              (fontSize * (CREDITS_STEP * 10.2))          );
-    SET_TEXT_WITH_OUTLINE("- Mode8fx",                  text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),              (fontSize * (CREDITS_STEP * 12.5))          );
-	SET_TEXT_WITH_OUTLINE("(7/9)",                      text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)),     (gameHeight - (text_Credits_P7.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",           text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),              (fontSize * (CREDITS_STEP *     1))         );
-    SET_TEXT_WITH_OUTLINE("SuDokuL is available on a wide", text_Credits_32, OBJ_TO_MID_SCREEN_X(text_Credits_32),           (fontSize * (CREDITS_STEP *   3.5))         );
-    SET_TEXT_WITH_OUTLINE("variety of homebrew-enabled", text_Credits_33, OBJ_TO_MID_SCREEN_X(text_Credits_33),              (fontSize * (CREDITS_STEP *  4.75))         );
-    SET_TEXT_WITH_OUTLINE("systems, old and new.",      text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),              (fontSize * (CREDITS_STEP *     6))         );
-    SET_TEXT_WITH_OUTLINE("Play it everywhere!",        text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),              (fontSize * (CREDITS_STEP *  7.25))         );
-    SET_TEXT_WITH_OUTLINE("",                           text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),              (fontSize * (CREDITS_STEP *     0))         );
-    SET_TEXT_WITH_OUTLINE("",                           text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),              (fontSize * (CREDITS_STEP *     0))         );
-    SET_TEXT_WITH_OUTLINE("",                           text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),              (fontSize * (CREDITS_STEP *     0))         );
-    SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39, OBJ_TO_MID_SCREEN_X(text_Credits_39),       (fontSize * (CREDITS_STEP *  12.5))         );
-	SET_TEXT_WITH_OUTLINE("(8/9)",                      text_Credits_P8,  (gameWidth - (text_Credits_P8.rect.w * 1.25)),     (gameHeight - (text_Credits_P8.rect.h * 1.5)));
-    SET_LARGE_TEXT_WITH_OUTLINE("MOST BACKGROUND ART",  text_Credits_40,  OBJ_TO_MID_SCREEN_X(text_Credits_40),              (fontSize * (CREDITS_STEP *    1))          );
-    SET_TEXT_WITH_OUTLINE("kddove85",                   text_Credits_41,  OBJ_TO_MID_SCREEN_X(text_Credits_41),              (fontSize * (CREDITS_STEP *    5))          );
-    SET_TEXT_WITH_OUTLINE("https://opengameart.org",    text_Credits_42a, OBJ_TO_MID_SCREEN_X(text_Credits_42a),             (fontSize * (CREDITS_STEP * 6.25))          );
-	SET_TEXT_WITH_OUTLINE("/content/2d-tilesets",       text_Credits_42b, OBJ_TO_MID_SCREEN_X(text_Credits_42b),             (fontSize * (CREDITS_STEP *  7.5))          );
-	SET_TEXT_WITH_OUTLINE("(9/9)",                      text_Credits_P9,  (gameWidth - (text_Credits_P9.rect.w * 1.25)),     (gameHeight - (text_Credits_P9.rect.h * 1.5)));
+	SET_TEXT_WITH_OUTLINE(CHEAT2_TEXT,                     text_Credits_28_1, OBJ_TO_MID_SCREEN_X(text_Credits_28_1),       (fontSize * (CREDITS_STEP *  7.9))           );
+	SET_TEXT_WITH_OUTLINE("to clear all incorrect cells.", text_Credits_28_2, OBJ_TO_MID_SCREEN_X(text_Credits_28_2),       (fontSize * (CREDITS_STEP * 9.05))           );
+    SET_TEXT_WITH_OUTLINE("I hope you enjoy the game!",    text_Credits_29,  OBJ_TO_MID_SCREEN_X(text_Credits_29),          (fontSize * (CREDITS_STEP * 10.2))           );
+    SET_TEXT_WITH_OUTLINE("- Mode8fx",                     text_Credits_30,  OBJ_TO_MID_SCREEN_X(text_Credits_30),          (fontSize * (CREDITS_STEP * 12.5))           );
+	SET_TEXT_WITH_OUTLINE("(7/9)",                         text_Credits_P7,  (gameWidth - (text_Credits_P7.rect.w * 1.25)), (gameHeight - (text_Credits_P7.rect.h * 1.5)));
+    SET_LARGE_TEXT_WITH_OUTLINE("WANT MORE?",              text_Credits_31,  OBJ_TO_MID_SCREEN_X(text_Credits_31),          (fontSize * (CREDITS_STEP *     1))          );
+		if (compactDisplay) {
+			SET_TEXT_WITH_OUTLINE("SuDokuL is available",  text_Credits_32, OBJ_TO_MID_SCREEN_X(text_Credits_32),   (fontSize * (CREDITS_STEP *   3.5)));
+			SET_TEXT_WITH_OUTLINE("on a wide variety of",  text_Credits_33, OBJ_TO_MID_SCREEN_X(text_Credits_33),   (fontSize * (CREDITS_STEP *  4.75)));
+			SET_TEXT_WITH_OUTLINE("homebrew-enabled",      text_Credits_34, OBJ_TO_MID_SCREEN_X(text_Credits_34),   (fontSize * (CREDITS_STEP *     6)));
+			SET_TEXT_WITH_OUTLINE("systems, old and new.", text_Credits_35, OBJ_TO_MID_SCREEN_X(text_Credits_35),   (fontSize * (CREDITS_STEP *  7.25)));
+			SET_TEXT_WITH_OUTLINE("Play it everywhere!",   text_Credits_36, OBJ_TO_MID_SCREEN_X(text_Credits_36),   (fontSize * (CREDITS_STEP *   8.5)));
+			SET_TEXT_WITH_OUTLINE("", text_Credits_37,     OBJ_TO_MID_SCREEN_X(text_Credits_37),                    (fontSize * (CREDITS_STEP *     0)));
+			SET_TEXT_WITH_OUTLINE("", text_Credits_38,     OBJ_TO_MID_SCREEN_X(text_Credits_38),                    (fontSize * (CREDITS_STEP *     0)));
+			SET_TEXT_WITH_OUTLINE("https://github.com/",   text_Credits_39a, OBJ_TO_MID_SCREEN_X(text_Credits_39a), (fontSize * (CREDITS_STEP * 11.25)));
+			SET_TEXT_WITH_OUTLINE("Mode8fx/SuDokuL",       text_Credits_39b, OBJ_TO_MID_SCREEN_X(text_Credits_39b), (fontSize * (CREDITS_STEP *  12.5)));
+		} else {
+			SET_TEXT_WITH_OUTLINE("SuDokuL is available on a wide",     text_Credits_32,  OBJ_TO_MID_SCREEN_X(text_Credits_32),  (fontSize * (CREDITS_STEP *  3.5)));
+			SET_TEXT_WITH_OUTLINE("variety of homebrew-enabled",        text_Credits_33,  OBJ_TO_MID_SCREEN_X(text_Credits_33),  (fontSize * (CREDITS_STEP * 4.75)));
+			SET_TEXT_WITH_OUTLINE("systems, old and new.",              text_Credits_34,  OBJ_TO_MID_SCREEN_X(text_Credits_34),  (fontSize * (CREDITS_STEP *    6)));
+			SET_TEXT_WITH_OUTLINE("Play it everywhere!",                text_Credits_35,  OBJ_TO_MID_SCREEN_X(text_Credits_35),  (fontSize * (CREDITS_STEP * 7.25)));
+			SET_TEXT_WITH_OUTLINE("",                                   text_Credits_36,  OBJ_TO_MID_SCREEN_X(text_Credits_36),  (fontSize * (CREDITS_STEP *    0)));
+			SET_TEXT_WITH_OUTLINE("",                                   text_Credits_37,  OBJ_TO_MID_SCREEN_X(text_Credits_37),  (fontSize * (CREDITS_STEP *    0)));
+			SET_TEXT_WITH_OUTLINE("",                                   text_Credits_38,  OBJ_TO_MID_SCREEN_X(text_Credits_38),  (fontSize * (CREDITS_STEP *    0)));
+			SET_TEXT_WITH_OUTLINE("",                                   text_Credits_39a, OBJ_TO_MID_SCREEN_X(text_Credits_39a), (fontSize * (CREDITS_STEP * 12.5)));
+			SET_TEXT_WITH_OUTLINE("https://github.com/Mode8fx/SuDokuL", text_Credits_39b, OBJ_TO_MID_SCREEN_X(text_Credits_39b), (fontSize * (CREDITS_STEP * 12.5)));
+		}
+	SET_TEXT_WITH_OUTLINE("(8/9)",                      text_Credits_P8,  (gameWidth - (text_Credits_P8.rect.w * 1.25)), (gameHeight - (text_Credits_P8.rect.h * 1.5)));
+    SET_LARGE_TEXT_WITH_OUTLINE("MOST BACKGROUND ART",  text_Credits_40,  OBJ_TO_MID_SCREEN_X(text_Credits_40),          (fontSize * (CREDITS_STEP *    1))           );
+    SET_TEXT_WITH_OUTLINE("kddove85",                   text_Credits_41,  OBJ_TO_MID_SCREEN_X(text_Credits_41),          (fontSize * (CREDITS_STEP *    5))           );
+    SET_TEXT_WITH_OUTLINE("https://opengameart.org",    text_Credits_42a, OBJ_TO_MID_SCREEN_X(text_Credits_42a),         (fontSize * (CREDITS_STEP * 6.25))           );
+	SET_TEXT_WITH_OUTLINE("/content/2d-tilesets",       text_Credits_42b, OBJ_TO_MID_SCREEN_X(text_Credits_42b),         (fontSize * (CREDITS_STEP *  7.5))           );
+	SET_TEXT_WITH_OUTLINE("(9/9)",                      text_Credits_P9,  (gameWidth - (text_Credits_P9.rect.w * 1.25)), (gameHeight - (text_Credits_P9.rect.h * 1.5)));
 }
 
 void renderCreditsTextPage1() {
@@ -1114,7 +1127,8 @@ void renderCreditsTextPage9() {
     renderText(&text_Credits_36);
     renderText(&text_Credits_37);
     renderText(&text_Credits_38);
-    renderText(&text_Credits_39);
+    renderText(&text_Credits_39a);
+    renderText(&text_Credits_39b);
     renderText(&text_Credits_P9);
 }
 

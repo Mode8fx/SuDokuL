@@ -49,6 +49,8 @@
 #include <fat.h>
 #elif defined(THREEDS)
 #include <3ds.h>
+#elif defined(LINUX)
+#include <sys/stat.h>
 #endif
 
 using namespace std;
