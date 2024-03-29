@@ -21,7 +21,7 @@ extern Sint32 mouseInput_x;
 extern Sint32 mouseInput_x_last;
 extern Sint32 mouseInput_y;
 extern Sint32 mouseInput_y_last;
-extern Uint8 heldButtons;
+extern Uint8 heldDirs;
 extern Sint8 cheat1Counter;
 extern Sint8 cheat2Counter;
 extern Sint8 songChangeCounter;

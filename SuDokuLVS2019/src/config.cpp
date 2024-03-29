@@ -18,7 +18,7 @@ bool keyPressed(Uint32 key) {
 }
 
 bool buttonHeld(Uint32 button) {
-	return (heldButtons & button);
+	return (heldDirs & button);
 }
 
 void resetCheatCounters() {
@@ -339,24 +339,24 @@ inline static void handleGCButtons() {
 	}
 }
 #elif defined(FUNKEY)
-inline static void handleKeyboardKeys_FunKey() {
+inline static void handleKeyboardKeysDown_FunKey() {
 	if (event.key.keysym.sym == 117) {
-		keyInputs |= INPUT_UP;
+		dirInputs |= UP_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == 100) {
-		keyInputs |= INPUT_DOWN;
+		dirInputs |= DOWN_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == 108) {
-		keyInputs |= INPUT_LEFT;
+		dirInputs |= LEFT_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == 114) {
-		keyInputs |= INPUT_RIGHT;
+		dirInputs |= RIGHT_PRESSED;
 		resetCheatCounters();
 		return;
 	}
@@ -392,6 +392,25 @@ inline static void handleKeyboardKeys_FunKey() {
 	if (event.key.keysym.sym == 110) {
 		keyInputs |= INPUT_NEXT_TRACK;
 		resetCheatCounters();
+		return;
+	}
+}
+
+inline static void handleKeyboardKeysUp_FunKey() {
+	if (event.key.keysym.sym == 117) {
+		dirInputs |= UP_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == 100) {
+		dirInputs |= DOWN_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == 108) {
+		dirInputs |= LEFT_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == 114) {
+		dirInputs |= RIGHT_DEPRESSED;
 		return;
 	}
 }
@@ -634,10 +653,10 @@ inline static void handleKeyboardKeys() {
 inline static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
 	if (dirInputs & pressedVal) {
 		keyInputs |= inputVal;
-		heldButtons |= inputVal;
+		heldDirs |= inputVal;
 		resetCheatCounters();
 	} else if (dirInputs & depressedVal) {
-		heldButtons &= ~inputVal;
+		heldDirs &= ~inputVal;
 	}
 }
 
@@ -721,7 +740,10 @@ void handlePlayerInput() {
 				break;
 				/* Handle Button Input (FunKey) */
 			case SDL_KEYDOWN:
-				handleKeyboardKeys_FunKey();
+				handleKeyboardKeysDown_FunKey();
+				break;
+			case SDL_KEYUP:
+				handleKeyboardKeysUp_FunKey();
 				break;
 			default:
 				break;

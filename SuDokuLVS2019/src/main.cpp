@@ -51,6 +51,11 @@ int main(int argv, char** args) {
 #endif
 		return 1;
 	}
+
+#if defined(FUNKEY)
+	SDL_ShowCursor(0);
+#endif
+
 	TTF_Init();
 
 	initDefaultBGScale();
@@ -490,7 +495,7 @@ int main(int argv, char** args) {
 		updateGlobalTimer();
 		deltaTime = timer_global.now - timer_global.last;
 		time_anim1 += deltaTime;
-		if (heldButtons > 0) {
+		if (heldDirs > 0) {
 			timer_buttonHold += deltaTime;
 		} else {
 			timer_buttonHold = 0;
@@ -571,7 +576,7 @@ int main(int argv, char** args) {
 					programState = 1;
 				}
 				/* Animate Text */
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
+				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				renderText(&text_PressStart);
@@ -583,7 +588,7 @@ int main(int argv, char** args) {
 				transitionGraphicsToMainMenu(-1);
 				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
-				text_PressStart.rect.y = (Uint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
+				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				break;
 			/* 2 = Main Menu */
 			case 2:
