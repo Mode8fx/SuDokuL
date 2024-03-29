@@ -70,6 +70,9 @@ extern SpriteObjectWithPos *currMiniGrid;
     SET_SPRITE_SCALE(spriteObj, scale);                                                                    \
     spriteObj.rect.x = pos_x;                                                                              \
     spriteObj.rect.y = pos_y;
+
+#define PREPARE_SPRITE_KEEP_SCALE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
+		PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale)
 #else
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
     spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
@@ -80,6 +83,14 @@ extern SpriteObjectWithPos *currMiniGrid;
     SDL_SoftStretch(spriteObj.texture, NULL, scaledImage, NULL);                          \
     SDL_FreeSurface(spriteObj.texture);                                                   \
 		spriteObj.texture = scaledImage;                                                      \
+    spriteObj.rect.x = pos_x;                                                             \
+    spriteObj.rect.y = pos_y;
+
+#define PREPARE_SPRITE_KEEP_SCALE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
+    spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    spriteObj.width = spriteObj.texture->w;                                               \
+	  spriteObj.height = spriteObj.texture->h;                                              \
+    SET_SPRITE_SCALE(spriteObj, scale);                                                   \
     spriteObj.rect.x = pos_x;                                                             \
     spriteObj.rect.y = pos_y;
 #endif

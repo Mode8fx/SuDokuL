@@ -169,7 +169,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
 
 	/* Render loading screen */
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
+#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
 	updateGlobalTimer();
 	deltaTime = timer_global.now - timer_global.last;
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
@@ -258,13 +258,13 @@ int main(int argv, char** args) {
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
 	PREPARE_SPRITE(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 1);
 	PREPARE_SPRITE(game_grid, grid_384_png, grid_384_png_len, gridPosX, gridPosY, 1);
-	PREPARE_SPRITE(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 1);
+	PREPARE_SPRITE_KEEP_SCALE(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_left, 1);
-	PREPARE_SPRITE(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 1);
+	PREPARE_SPRITE_KEEP_SCALE(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_bottom_right, 1);
-	PREPARE_SPRITE(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 1);
+	PREPARE_SPRITE_KEEP_SCALE(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_left, 1);
-	PREPARE_SPRITE(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 1);
+	PREPARE_SPRITE_KEEP_SCALE(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 1);
 	SPRITE_ENFORCE_INT_MULT(gridCursor_top_right, 1);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
 	PREPARE_SPRITE(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 1);
