@@ -34,6 +34,7 @@ Uint16 gameWidth = 640;
 Uint16 gameHeight = 480;
 bool compactDisplay = false;
 Uint8 defaultBGScale;
+Uint8 defaultFrameRateIndex;
 double gameWidthMult;
 double gameHeightMult;
 #if !defined(SDL1)
@@ -49,7 +50,7 @@ BGScroll bgScroll;
 ControlSettings controlSettings;
 VideoSettings videoSettings;
 SoundSettings soundSettings;
-
+Addon131Settings addon131Settings;
 /* Window Width and Height */
 SDL_Rect centerViewport;
 
@@ -210,6 +211,14 @@ TextObject text_Native_16_9;
 TextObject text_Native_16_10;
 TextObject text_Native_1_1;
 TextObject text_Native_Aspect;
+TextObject text_Frame_Rate;
+TextObject text_Frame_Rate_Uncapped;
+TextObject text_Frame_Rate_20;
+TextObject text_Frame_Rate_30;
+TextObject text_Frame_Rate_40;
+TextObject text_Frame_Rate_50;
+TextObject text_Frame_Rate_60;
+TextObject text_Uncapped_Frame_Rate;
 TextObject text_Integer_Scale;
 TextObject text_On;
 TextObject text_Off;
@@ -439,6 +448,8 @@ double timer_buttonHold_repeater;
 Timer timer_paused;
 bool canContinue = false;
 bool gameCompleted = false;
+Uint8 frameRate;
+Uint32 ticksPerFrame;
 
 /* Program State */
 Uint8 programState;

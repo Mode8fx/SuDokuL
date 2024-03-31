@@ -59,6 +59,7 @@ int main(int argv, char** args) {
 	TTF_Init();
 
 	initDefaultBGScale();
+	initDefaultFrameRate();
 
 	/* Get settings from settings.bin */
 	loadSettingsFile();
@@ -153,6 +154,7 @@ int main(int argv, char** args) {
 	PREPARE_SPRITE(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, 1);
 	setBGType();
 	SET_SPRITE_SCALE_TILE();
+	setFrameRateByOptions(0);
 	/* Set Rectangles */
 	updateBorderRects();
 	/* General - Fonts */
@@ -427,6 +429,13 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Native 16:10",     text_Native_16_10,     VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Native 1:1",       text_Native_1_1,       VIDEO_MENU_NUM_POSITION_X,            TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Native",           text_Native_Aspect,    VIDEO_MENU_NUM_POSITION_X,            TEXT_ASPECT_RATIO_Y);
+	SET_TEXT_WITH_OUTLINE("Frame Rate",       text_Frame_Rate,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("Uncapped",         text_Frame_Rate_Uncapped, VIDEO_MENU_NUM_POSITION_X,         TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("20 FPS",           text_Frame_Rate_20,    VIDEO_MENU_NUM_POSITION_X,            TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("30 FPS",           text_Frame_Rate_30,    VIDEO_MENU_NUM_POSITION_X,            TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("40 FPS",           text_Frame_Rate_40,    VIDEO_MENU_NUM_POSITION_X,            TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("50 FPS",           text_Frame_Rate_50,    VIDEO_MENU_NUM_POSITION_X,            TEXT_FRAME_RATE_Y);
+	SET_TEXT_WITH_OUTLINE("60 FPS",           text_Frame_Rate_60,    VIDEO_MENU_NUM_POSITION_X,            TEXT_FRAME_RATE_Y);
 #if defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Status Bar",       text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
@@ -1099,17 +1108,19 @@ int main(int argv, char** args) {
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 5, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 3)), 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 2);
-					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 4);
 				}
 #else
-				menuHandleVertCursorMovement(menuCursorIndex_video, 1);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 2);
 				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 1);
 				}
 #endif
 				updateVideoMenuCursorPositionX();
@@ -1118,31 +1129,22 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_video) {
 #if !defined(ANDROID)
 						case 0:
-							switch (videoSettings.aspectRatioIndex) {
-								case 1:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), -1);
-									break;
-								case 2:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), -1);
-									break;
-								case 3:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), -1);
-									break;
-								case 4:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), -1);
-									break;
-								default:
-									break;
-							}
+							setResolution(-1);
 							break;
 						case 1:
 							setAspectRatioByOptions(-1);
 							break;
 						case 2:
+							setFrameRateByOptions(-1);
+							break;
+						case 3:
 							sdlToggleIntegerScale();
 							break;
 #else
 						case 0:
+							setFrameRateByOptions(-1);
+							break;
+						case 1:
 							sdlToggleFullscreen();
 							break;
 #endif
@@ -1154,6 +1156,7 @@ int main(int argv, char** args) {
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)))
 					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 3)))
+					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))
 					|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| mouseIsInRect(text_Apply.rect)))) {
 #else
@@ -1162,33 +1165,21 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_video) {
 #if !defined(ANDROID)
 						case 0:
-							switch (videoSettings.aspectRatioIndex) {
-								case 1:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), 1);
-									break;
-								case 2:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), 1);
-									break;
-								case 3:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), 1);
-									break;
-								case 4:
-									setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), 1);
-									break;
-								default:
-									break;
-							}
+							setResolution(1);
 							break;
 						case 1:
 							setAspectRatioByOptions(1);
 							break;
 						case 2:
-							sdlToggleIntegerScale();
+							setFrameRateByOptions(1);
 							break;
 						case 3:
+							sdlToggleIntegerScale();
+							break;
+						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1201,6 +1192,9 @@ int main(int argv, char** args) {
 							break;
 #else
 						case 0:
+							setFrameRateByOptions(1);
+							break;
+						case 1:
 							sdlToggleFullscreen();
 							break;
 #endif
@@ -1211,34 +1205,19 @@ int main(int argv, char** args) {
 				/* Set and Draw Numbers */
 #if !defined(ANDROID)
 				setAndRenderNumResolution(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
-				switch (videoSettings.aspectRatioIndex) {
-					case 0:
-						renderText(&text_Native_Aspect);
-						break;
-					case 1:
-						setAndRenderNumAspectRatio4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
-						break;
-					case 2:
-						setAndRenderNumAspectRatio16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
-						break;
-					case 3:
-						setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
-						break;
-					case 4:
-						setAndRenderNumAspectRatio1_1(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
-						break;
-					default:
-						break;
-				}
+				renderAspectRatioChoice();
 #endif
+				renderFrameRateChoice();
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 #if !defined(ANDROID)
 				renderText(&text_Resolution);
 				renderText(&text_Aspect_Ratio);
+				renderText(&text_Frame_Rate);
 				renderText(&text_Apply);
 #endif
+				renderText(&text_Frame_Rate);
 				renderText(&text_Integer_Scale);
 #if defined(ANDROID)
 				if (isWindowed) {
@@ -1560,8 +1539,8 @@ int main(int argv, char** args) {
 
 		/* Cap Framerate */
 		frameTime = SDL_GetTicks() - (Uint32)timer_global.now;
-		if (frameTime < 8) { // 1000 / 120 FPS = 8.333; after rounding down, 1000 / 8 = 125 FPS
-			SDL_Delay(8 - frameTime);
+		if (frameTime < ticksPerFrame) {
+			SDL_Delay(ticksPerFrame - frameTime);
 		}
 	}
 

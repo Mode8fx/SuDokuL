@@ -112,6 +112,13 @@ extern TextObject text_Native_16_9;
 extern TextObject text_Native_16_10;
 extern TextObject text_Native_1_1;
 extern TextObject text_Native_Aspect;
+extern TextObject text_Frame_Rate;
+extern TextObject text_Frame_Rate_Uncapped;
+extern TextObject text_Frame_Rate_20;
+extern TextObject text_Frame_Rate_30;
+extern TextObject text_Frame_Rate_40;
+extern TextObject text_Frame_Rate_50;
+extern TextObject text_Frame_Rate_60;
 extern TextObject text_Integer_Scale;
 extern TextObject text_On;
 extern TextObject text_Off;
@@ -349,11 +356,13 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
 #if !defined(ANDROID)
-#define TEXT_INTEGER_SCALE_Y              (text_menuChoice3)
+#define TEXT_FRAME_RATE_Y                 (text_menuChoice3)
+#define TEXT_INTEGER_SCALE_Y              (text_menuChoice4)
 #else
-#define TEXT_INTEGER_SCALE_Y              (text_menuChoice1)
+#define TEXT_FRAME_RATE_Y                 (text_menuChoice1)
+#define TEXT_INTEGER_SCALE_Y              (text_menuChoice2)
 #endif
-#define TEXT_APPLY_Y                      (text_menuChoice4)
+#define TEXT_APPLY_Y                      (text_menuChoice5)
 #define TEXT_SCORES_Y                     (text_menuChoice5)
 #define TEXT_BACKGROUND_TYPE_Y            (text_menuChoice1)
 #define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice2)
@@ -405,6 +414,8 @@ extern void setFontOutline(TTF_Font *, TextCharObject *, Uint8);
 extern void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
 extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
+extern void renderAspectRatioChoice();
+extern void renderFrameRateChoice();
 extern void setAndRenderNumAspectRatio4_3(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_9(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_10(Sint16, Sint16);

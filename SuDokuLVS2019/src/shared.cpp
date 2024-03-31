@@ -21,17 +21,18 @@ void loadSettingsFile() {
 #endif
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
-		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, defaultBGScale);
+		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, defaultBGScale, defaultFrameRateIndex);
 	} else {
 		SDL_RWread(settingsFile, &controlSettings, sizeof(ControlSettings), 1);
 		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
 		SDL_RWread(settingsFile, &soundSettings, sizeof(SoundSettings), 1);
 		SDL_RWread(settingsFile, &bgSettings, sizeof(BackgroundSettings), 1);
+		SDL_RWread(settingsFile, &addon131Settings, sizeof(Addon131Settings), 1);
 		SDL_RWclose(settingsFile);
 	}
 }
 
-void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s) {
+void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s, Sint8 fr) {
 	controlSettings.swapConfirmAndBack = scab;
 	controlSettings.enableTouchscreen = et;
 	videoSettings.resolutionIndex = ri;
@@ -45,6 +46,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 	bgSettings.speedMult = sm;
 	bgSettings.scrollDir = sd;
 	bgSettings.scale = s;
+	addon131Settings.frameRateIndex = fr;
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");
 	if (settingsFile != NULL) {
 		SDL_RWwrite(settingsFile, &controlSettings.swapConfirmAndBack, sizeof(Uint8), 1);
@@ -60,6 +62,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 		SDL_RWwrite(settingsFile, &bgSettings.speedMult, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &bgSettings.scrollDir, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &bgSettings.scale, sizeof(Sint8), 1);
+		SDL_RWwrite(settingsFile, &addon131Settings.frameRateIndex, sizeof(Sint8), 1);
 		SDL_RWclose(settingsFile);
 	}
 }
@@ -102,6 +105,14 @@ void initDefaultBGScale() {
 #else
 	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480));
 	defaultBGScale = max((Uint8)(uint_i), (Uint8)1);
+#endif
+}
+
+void initDefaultFrameRate() {
+#if defined(FUNKEY) || defined(THREEDS)
+	defaultFrameRateIndex = 2;
+#else
+	defaultFrameRateIndex = 5;
 #endif
 }
 
@@ -255,7 +266,8 @@ void saveCurrentSettings() {
 	initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting,
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,
-		bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale);
+		bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale,
+		addon131Settings.frameRateIndex);
 }
 
 void setNativeResolution() {
@@ -307,6 +319,25 @@ void setNativeResolution() {
 	}
 }
 
+void setResolution(Sint8 increment) {
+	switch (videoSettings.aspectRatioIndex) {
+		case 1:
+			setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_4_3, RESOLUTION_OPTIONS_HEIGHT_4_3, LEN(RESOLUTION_OPTIONS_WIDTH_4_3), increment);
+			break;
+		case 2:
+			setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_9, RESOLUTION_OPTIONS_HEIGHT_16_9, LEN(RESOLUTION_OPTIONS_WIDTH_16_9), increment);
+			break;
+		case 3:
+			setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_16_10, RESOLUTION_OPTIONS_HEIGHT_16_10, LEN(RESOLUTION_OPTIONS_WIDTH_16_10), increment);
+			break;
+		case 4:
+			setResolutionByOptions(RESOLUTION_OPTIONS_WIDTH_1_1, RESOLUTION_OPTIONS_HEIGHT_1_1, LEN(RESOLUTION_OPTIONS_WIDTH_1_1), increment);
+			break;
+		default:
+			break;
+	}
+}
+
 void setResolutionByOptions(const Uint16 *resolutionOptions_width, const Uint16 *resolutionOptions_height, Uint8 numOptions, Sint8 increment) {
 	videoSettings.resolutionIndex += increment;
 	if (videoSettings.resolutionIndex < 0) {
@@ -352,6 +383,37 @@ void setAspectRatioByOptions(Sint8 increment) {
 			videoSettings.heightSetting = 0;
 			break;
 	}
+}
+
+void setFrameRateByOptions(Sint8 increment) {
+	addon131Settings.frameRateIndex += increment;
+	if (addon131Settings.frameRateIndex < 0) {
+		addon131Settings.frameRateIndex = 5;
+	}
+	else if (addon131Settings.frameRateIndex > 5) {
+		addon131Settings.frameRateIndex = 0;
+	}
+	switch (addon131Settings.frameRateIndex) {
+		case 1:
+			frameRate = 20;
+			break;
+		case 2:
+			frameRate = 30;
+			break;
+		case 3:
+			frameRate = 40;
+			break;
+		case 4:
+			frameRate = 50;
+			break;
+		case 5:
+			frameRate = 60;
+			break;
+		default:
+			frameRate = 255;
+			break;
+	}
+	ticksPerFrame = (Uint32)(1000 / frameRate);
 }
 
 Uint16 menuCursorXOffset() {

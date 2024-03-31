@@ -43,6 +43,10 @@ struct BackgroundSettings {
 	Sint8 scale; // Background Size
 };
 
+struct Addon131Settings {
+	Sint8 frameRateIndex;
+};
+
 struct BGScroll {
 	double speed_x, speed_y;
 	double speedStep_x, speedStep_y;
@@ -61,6 +65,7 @@ extern Uint16 gameWidth;
 extern Uint16 gameHeight;
 extern bool compactDisplay;
 extern Uint8 defaultBGScale;
+extern Uint8 defaultFrameRateIndex;
 #if !defined(SDL1)
 extern SDL_DisplayMode DM;
 #endif
@@ -91,6 +96,7 @@ extern BGScroll bgScroll;
 extern ControlSettings controlSettings;
 extern VideoSettings videoSettings;
 extern SoundSettings soundSettings;
+extern Addon131Settings addon131Settings;
 
 /* Window Width and Height */
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[15] =    { 0, 320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
@@ -125,6 +131,8 @@ extern double timer_buttonHold_repeater;
 extern Timer timer_paused;
 extern bool canContinue;
 extern bool gameCompleted;
+extern Uint8 frameRate;
+extern Uint32 ticksPerFrame;
 
 #if defined(ANDROID)
 #define SYSTEM_WIDTH  max(DM.w, DM.h)
@@ -179,10 +187,11 @@ const string rootDir = "";
 #define SAVE_FILE (rootDir + "save.bin").c_str()
 
 extern void loadSettingsFile();
-extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
+extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void loadSavedPuzzle();
 extern void savePuzzle();
 extern void initDefaultBGScale();
+extern void initDefaultFrameRate();
 extern void initStartingWidthHeightMults();
 extern void initStartingSharedVariables();
 extern void initNumOffsets();
@@ -192,8 +201,10 @@ extern void updatePauseTimer();
 extern void initMenuOptionPositions(TextObject *);
 extern void saveCurrentSettings();
 extern void setNativeResolution();
+extern void setResolution(Sint8);
 extern void setResolutionByOptions(const Uint16 *, const Uint16 *, Uint8, Sint8);
 extern void setAspectRatioByOptions(Sint8);
+extern void setFrameRateByOptions(Sint8);
 extern Uint16 menuCursorXOffset();
 extern void sdlToggleFullscreen();
 extern void sdlToggleIntegerScale();

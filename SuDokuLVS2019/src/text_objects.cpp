@@ -189,6 +189,51 @@ void setAndRenderNumResolution(Sint16 width, Sint16 height, Sint16 pos_x_left, S
     setAndRenderNumHelper(height % 10, pos_x_left, pos_y, 0);
 }
 
+void renderAspectRatioChoice() {
+	switch (videoSettings.aspectRatioIndex) {
+		case 0:
+			renderText(&text_Native_Aspect);
+			break;
+		case 1:
+			setAndRenderNumAspectRatio4_3(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+			break;
+		case 2:
+			setAndRenderNumAspectRatio16_9(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+			break;
+		case 3:
+			setAndRenderNumAspectRatio16_10(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+			break;
+		case 4:
+			setAndRenderNumAspectRatio1_1(VIDEO_MENU_NUM_POSITION_X, TEXT_ASPECT_RATIO_Y);
+			break;
+		default:
+			break;
+	}
+}
+
+void renderFrameRateChoice() {
+	switch (addon131Settings.frameRateIndex) {
+		case 1:
+			renderText(&text_Frame_Rate_20);
+			break;
+		case 2:
+			renderText(&text_Frame_Rate_30);
+			break;
+		case 3:
+			renderText(&text_Frame_Rate_40);
+			break;
+		case 4:
+			renderText(&text_Frame_Rate_50);
+			break;
+		case 5:
+			renderText(&text_Frame_Rate_60);
+			break;
+		default:
+			renderText(&text_Frame_Rate_Uncapped);
+			break;
+	}
+}
+
 void setAndRenderNumAspectRatio4_3(Sint16 pos_x_left, Sint16 pos_y) {
     i = 0;
     setAndRenderNumHelper(4, pos_x_left, pos_y, 0);
