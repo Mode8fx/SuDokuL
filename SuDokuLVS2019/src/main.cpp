@@ -173,7 +173,7 @@ int main(int argv, char** args) {
 	/* Render loading screen */
 #if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
 	updateGlobalTimer();
-	deltaTime = timer_global.now - timer_global.last;
+	deltaTime = (timer_global.now - timer_global.last);
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
 	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile_rect_h;
 	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
@@ -1538,7 +1538,7 @@ int main(int argv, char** args) {
 #endif
 
 		/* Cap Framerate */
-		frameTime = SDL_GetTicks() - (Uint32)timer_global.now;
+		frameTime = SDL_GetTicks() - currTicks;
 		if (frameTime < ticksPerFrame) {
 			SDL_Delay(ticksPerFrame - frameTime);
 		}

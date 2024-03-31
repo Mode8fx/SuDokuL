@@ -440,6 +440,7 @@ Uint16 backgroundMenuNumPosition_X;
 /* Time */
 double deltaTime;
 Timer timer_global;
+Uint32 currTicks;
 double time_anim1;
 double time_anim_PressStart;
 Timer timer_game;

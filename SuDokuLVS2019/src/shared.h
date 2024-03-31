@@ -123,6 +123,7 @@ extern Mix_Chunk *sfx;
 /* Time */
 extern double deltaTime;
 extern Timer timer_global;
+extern Uint32 currTicks;
 extern double time_anim1;
 extern double time_anim_PressStart;
 extern Timer timer_game;

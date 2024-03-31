@@ -244,7 +244,8 @@ void initNumOffsets() {
 
 void updateGlobalTimer() {
 	timer_global.last = timer_global.now;
-	timer_global.now = (SDL_GetTicks() - timer_paused.now) / 1000.0;
+	currTicks = SDL_GetTicks();
+	timer_global.now = (currTicks - timer_paused.now) / 1000.0;
 }
 
 void preparePauseTimer() {
