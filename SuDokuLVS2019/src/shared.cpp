@@ -433,9 +433,9 @@ void sdlToggleFullscreen() {
 }
 
 void sdlToggleIntegerScale() {
-	isIntegerScale = !isIntegerScale;
-	//setScaling();
-	windowSizeChanged = true;
+	//isIntegerScale = !isIntegerScale;
+	////setScaling();
+	//windowSizeChanged = true;
 }
 
 void setScaling() {

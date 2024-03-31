@@ -362,7 +362,7 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice1)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice2)
 #endif
-#define TEXT_APPLY_Y                      (text_menuChoice5)
+#define TEXT_APPLY_Y                      (text_menuChoice4)
 #define TEXT_SCORES_Y                     (text_menuChoice5)
 #define TEXT_BACKGROUND_TYPE_Y            (text_menuChoice1)
 #define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice2)

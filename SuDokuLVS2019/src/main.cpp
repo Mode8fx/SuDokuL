@@ -539,7 +539,7 @@ int main(int argv, char** args) {
 			}
 		}
 
-		if (windowSizeChanged && isIntegerScale) {
+		if (windowSizeChanged) {
 #if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE)) && !defined(SDL1)
 			if (SDL_GetWindowSurface(window)->w < gameWidth)
 				SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
@@ -1108,19 +1108,19 @@ int main(int argv, char** args) {
 				}
 				/* Key Presses + Animate Cursor */
 #if !defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 5, 0);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 2);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
-					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 4);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)), 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 2);
+					//menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
 				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 2);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 1);
+					//menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 1);
 				}
 #endif
 				updateVideoMenuCursorPositionX();
@@ -1137,9 +1137,9 @@ int main(int argv, char** args) {
 						case 2:
 							setFrameRateByOptions(-1);
 							break;
-						case 3:
-							sdlToggleIntegerScale();
-							break;
+						//case 3:
+						//	sdlToggleIntegerScale();
+						//	break;
 #else
 						case 0:
 							setFrameRateByOptions(-1);
@@ -1155,9 +1155,9 @@ int main(int argv, char** args) {
 #if !defined(ANDROID)
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)))
-					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 3)))
-					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))
-					|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
+					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)))
+					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)))
+					//|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| mouseIsInRect(text_Apply.rect)))) {
 #else
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT))) {
@@ -1173,10 +1173,10 @@ int main(int argv, char** args) {
 						case 2:
 							setFrameRateByOptions(1);
 							break;
+						//case 3:
+						//	sdlToggleIntegerScale();
+						//	break;
 						case 3:
-							sdlToggleIntegerScale();
-							break;
-						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
 									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex);
@@ -1211,23 +1211,20 @@ int main(int argv, char** args) {
 				/* Draw Logo and Text */
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderText(&text_Frame_Rate);
 #if !defined(ANDROID)
 				renderText(&text_Resolution);
 				renderText(&text_Aspect_Ratio);
 				renderText(&text_Frame_Rate);
 				renderText(&text_Apply);
-#endif
-				renderText(&text_Frame_Rate);
-				renderText(&text_Integer_Scale);
-#if defined(ANDROID)
-				if (isWindowed) {
 #else
-				if (isIntegerScale) {
-#endif
+				renderText(&text_Integer_Scale);
+				if (isWindowed) {
 					renderText(&text_On);
 				} else {
 					renderText(&text_Off);
 				}
+#endif
 				break;
 			/* 22 = Sound Menu */
 			case 22:
