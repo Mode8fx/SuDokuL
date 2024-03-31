@@ -188,6 +188,7 @@ const string rootDir = "";
 #define SAVE_FILE (rootDir + "save.bin").c_str()
 
 extern void loadSettingsFile();
+extern void reloadVideoSettings();
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void loadSavedPuzzle();
 extern void savePuzzle();

@@ -15,6 +15,8 @@ FILE * __cdecl __iob_func(void) {
 }
 #endif
 
+Sint64 seekPos;
+
 void loadSettingsFile() {
 #if defined(LINUX)
 	mkdir((string(getenv("HOME")) + "/.sudokul").c_str(), 0777);
@@ -28,6 +30,15 @@ void loadSettingsFile() {
 		SDL_RWread(settingsFile, &soundSettings, sizeof(SoundSettings), 1);
 		SDL_RWread(settingsFile, &bgSettings, sizeof(BackgroundSettings), 1);
 		SDL_RWread(settingsFile, &addon131Settings, sizeof(Addon131Settings), 1);
+		SDL_RWclose(settingsFile);
+	}
+}
+
+void reloadVideoSettings() {
+	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
+	if (settingsFile != NULL) {
+		seekPos = SDL_RWseek(settingsFile, sizeof(ControlSettings), RW_SEEK_SET);
+		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
 		SDL_RWclose(settingsFile);
 	}
 }

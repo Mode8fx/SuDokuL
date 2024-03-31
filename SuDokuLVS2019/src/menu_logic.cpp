@@ -100,13 +100,13 @@ void updateBackgroundMenuCursorPositionX() {
     menuCursor.rect.x = (int)(BACKGROUND_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
-// Settings are re-loaded so that any unsaved changes from the video menu are undone
+// VideoSettings (resolution and index only) are re-loaded so that any unsaved changes that can only be applied by closing the game are undone
 bool menuHandleBackButton(Uint8 state) {
     if (keyPressed(INPUT_BACK)) {
         time_anim1 = 0;
         programState = state;
         menuResetCursorPositions(state);
-        loadSettingsFile();
+        reloadVideoSettings();
         changedProgramState = true;
         return true;
     }
