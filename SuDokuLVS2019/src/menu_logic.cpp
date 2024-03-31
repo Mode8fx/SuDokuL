@@ -8,24 +8,24 @@
 
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {
-    case 0:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Play) - menuCursorXOffset());
-        break;
-    case 1:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls) - menuCursorXOffset());
-        break;
-    case 2:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Options) - menuCursorXOffset());
-        break;
+        case 0:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Play) - menuCursorXOffset());
+            break;
+        case 1:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Controls) - menuCursorXOffset());
+            break;
+        case 2:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Options) - menuCursorXOffset());
+            break;
 #if !defined(ANDROID)
-    case 4:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Quit) - menuCursorXOffset());
-        break;
+        case 4:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Quit) - menuCursorXOffset());
+            break;
 #endif
-    default:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Credits) - menuCursorXOffset());
-        break;
-    }
+        default:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Credits) - menuCursorXOffset());
+            break;
+        }
 }
 
 void updateContinueMenuCursorPositionX() {
@@ -41,19 +41,19 @@ void updateContinueMenuCursorPositionX() {
 
 void updatePlayMenuCursorPositionX() {
     switch (menuCursorIndex_play) {
-    case 0:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Easy) - menuCursorXOffset());
-        break;
-    case 1:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Normal) - menuCursorXOffset());
-        break;
-    case 2:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Hard) - menuCursorXOffset());
-        break;
-    default:
-        menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Very_Hard) - menuCursorXOffset());
-        break;
-    }
+        case 0:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Easy) - menuCursorXOffset());
+            break;
+        case 1:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Normal) - menuCursorXOffset());
+            break;
+        case 2:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Hard) - menuCursorXOffset());
+            break;
+        default:
+            menuCursor.rect.x = (int)(OBJ_TO_MID_SCREEN_X(text_Very_Hard) - menuCursorXOffset());
+            break;
+        }
 }
 
 void updateOptionsMenuCursorPositionX() {
