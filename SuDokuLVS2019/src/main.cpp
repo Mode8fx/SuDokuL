@@ -335,7 +335,11 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
 	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.31",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
-	text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 3 / 16);
+	if (compactDisplay) {
+		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 6 / 32);
+	} else {
+		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 7 / 32);
+	}
 	/* Main Menu */
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Play",     text_Play,             OBJ_TO_MID_SCREEN_X(text_Play),       TEXT_PLAY_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Controls", text_Controls,         OBJ_TO_MID_SCREEN_X(text_Controls),   TEXT_CONTROLS_Y + (gameWidth * 3 / 4));

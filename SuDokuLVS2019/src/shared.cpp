@@ -120,7 +120,7 @@ void initDefaultBGScale() {
 }
 
 void initDefaultFrameRate() {
-#if defined(FUNKEY) || defined(THREEDS)
+#if defined(THREEDS)
 	defaultFrameRateIndex = 2;
 #else
 	defaultFrameRateIndex = 5;
