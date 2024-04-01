@@ -15,7 +15,11 @@
 
 bool isContinue = false;
 
+#if defined(EMSCRIPTEN)
+void mainloop() {
+#else
 int main(int argv, char** args) {
+#endif
 	/* [Wii U] Set SD Card Mount Path */
 #if defined(WII_U)
 	if (!WHBMountSdCard()) {
@@ -49,10 +53,12 @@ int main(int argv, char** args) {
 #if !defined(SDL1) && !defined(ANDROID)
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 #endif
+#if !defined(EMSCRIPTEN)
 		return 1;
+#endif
 	}
 
-#if defined(FUNKEY)
+#if defined(SDL1) && !defined(PC)
 	SDL_ShowCursor(0);
 #endif
 
@@ -122,9 +128,6 @@ int main(int argv, char** args) {
 #if defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-#elif defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(WII) || defined(GAMECUBE)
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #elif defined(FUNKEY)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
@@ -136,9 +139,15 @@ int main(int argv, char** args) {
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
 	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
+#elif defined(EMSCRIPTEN)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+#elif !defined(PC)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #else
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, SDL_WINDOW_RESIZABLE);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #endif
 	setScaling();
 
@@ -171,7 +180,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
 
 	/* Render loading screen */
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
+#if !(defined(PC) || defined(SWITCH))
 	updateGlobalTimer();
 	deltaTime = (timer_global.now - timer_global.last);
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
@@ -214,7 +223,7 @@ int main(int argv, char** args) {
 	Mix_Volume(SFX_CHANNEL, (int)(soundSettings.sfxVolume * 128.0 / 100));
 
 	/* Controller */
-#if defined(SDL1) // also applies to PSP SDL1
+#if defined(SDL1)
 	SDL_JoystickEventState(SDL_ENABLE);
 	controller = SDL_JoystickOpen(0);
 	SDL_JoystickEventState(SDL_ENABLE);
@@ -318,10 +327,10 @@ int main(int argv, char** args) {
 	//SET_TEXT_WITH_OUTLINE("The quick brown fox",       text_test_7, OBJ_TO_MID_SCREEN_X(text_test_7), fontSize * 13);
 	//SET_TEXT_WITH_OUTLINE("jumped over the lazy dog",  text_test_8, OBJ_TO_MID_SCREEN_X(text_test_8), fontSize * 15);
 	/* Title Screen */
-#if defined(WII_U) || defined(VITA) || defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY)
-	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
-#elif defined(SWITCH) || defined(WII)
+#if defined(SWITCH) || defined(WII)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press +",     text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
+#elif !defined(PC)
+	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Start", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
@@ -351,9 +360,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Hard",             text_Game_Hard,        OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_Hard),   TEXT_GAME_HARD_Y);
 	SET_TEXT_WITH_OUTLINE("V.Hard",           text_Game_VHard,       OBJ_TO_MID_RECT_X(gameSidebarSmall3Rect, text_Game_VHard),  TEXT_GAME_VHARD_Y);
 	SET_TEXT_WITH_OUTLINE("Paused",           text_Paused,           OBJ_TO_MID_SCREEN_X(text_Paused),     TEXT_PAUSED_Y);
-#if defined(WII_U) || defined(VITA) || defined(PSP) || defined(THREEDS) || defined(FUNKEY)
-	SET_TEXT_WITH_OUTLINE("Press Select to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
-#elif defined(SWITCH)
+#if defined(SWITCH)
 	SET_TEXT_WITH_OUTLINE("Press - to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Press Back to",    text_Quit_to_Menu_1, OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
@@ -361,6 +368,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Press -/Z to",     text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #elif defined(GAMECUBE)
 	SET_TEXT_WITH_OUTLINE("Press Z to",       text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
+#elif !defined(PC)
+	SET_TEXT_WITH_OUTLINE("Press Select to",  text_Quit_to_Menu_1,   OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("Press Q/Select to", text_Quit_to_Menu_1,  OBJ_TO_MID_SCREEN_X(text_Quit_to_Menu_1), TEXT_QUIT_TO_MENU_Y);
 #endif
@@ -389,7 +398,7 @@ int main(int argv, char** args) {
 	}
 #if defined(WII)
 	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
+#elif defined(MOUSE_INPUT) && !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
@@ -412,7 +421,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Horizontal Focus", text_WiimoteScheme_Horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Horizontal, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("General",          text_WiimoteScheme_General, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_General, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Vertical Focus",   text_WiimoteScheme_Vertical, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Vertical, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
+#elif defined(MOUSE_INPUT) && !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
@@ -495,7 +504,7 @@ int main(int argv, char** args) {
 	sdlToggleFullscreen();
 #endif
 
-#if defined(PSP) || defined(VITA) || defined(WII_U) || defined(WII) || defined(GAMECUBE) || defined(THREEDS)
+#if !(defined(PC) || defined(SWITCH))
 	updatePauseTimer();
 #endif
 
@@ -540,7 +549,7 @@ int main(int argv, char** args) {
 		}
 
 		if (windowSizeChanged) {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE)) && !defined(SDL1)
+#if defined(PC) && !defined(SDL1)
 			if (SDL_GetWindowSurface(window)->w < gameWidth)
 				SDL_SetWindowSize(window, gameWidth, SDL_GetWindowSurface(window)->h);
 			if (SDL_GetWindowSurface(window)->h < gameHeight)
@@ -937,12 +946,12 @@ int main(int argv, char** args) {
 			case 12:
 				/* Key Presses */
 				menuHandleBackButton(2);
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY)
-				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
-#elif defined(ANDROID)
+#if defined(ANDROID)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 1) {
 #elif defined(WII)
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_UP)) && menuIndex_controls < 1) {
+#elif !defined(PC)
+				if (keyPressed(INPUT_RIGHT) && menuIndex_controls < 1) {
 #else
 				if ((keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM_ALT)) && menuIndex_controls < 3) {
 #endif
@@ -962,7 +971,7 @@ int main(int argv, char** args) {
 					case 1:
 						renderControlsTextPage2();
 						break;
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY))
+#if defined(PC)
 					case 2:
 						renderControlsTextPage3();
 						break;
@@ -1086,13 +1095,13 @@ int main(int argv, char** args) {
 				}
 				/* Key Presses + Animate Cursor */
 #if defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 2);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 1);
 				}
 #elif defined(FUNKEY)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 1);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
@@ -1182,7 +1191,9 @@ int main(int argv, char** args) {
 								// End the program here; otherwise, text and sprites will be resized and look weird for one frame before closing
 								sdlDestroyAll();
 								systemSpecificClose();
+#if !defined(EMSCRIPTEN)
 								return 0;
+#endif
 							}
 							break;
 #endif
@@ -1406,12 +1417,12 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 				controlsMenuHandleVertCursorMovement();
 #endif
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
 #endif
 				}
@@ -1436,7 +1447,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
@@ -1463,7 +1474,7 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controller_Input);
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS))
+#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 				renderText(&text_Touch_Screen_Input);
 #endif
 				if (controlSettings.swapConfirmAndBack) {
@@ -1529,5 +1540,14 @@ int main(int argv, char** args) {
 	sdlDestroyAll();
 	systemSpecificClose();
 
+#if !defined(EMSCRIPTEN)
+	return 0;
+#endif
+}
+
+#if defined(EMSCRIPTEN)
+int main() {
+	emscripten_set_main_loop(mainloop, 0, 1);
 	return 0;
 }
+#endif

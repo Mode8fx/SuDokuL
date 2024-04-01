@@ -768,7 +768,7 @@ void handlePlayerInput() {
 				isRunning = false;
 				break;
 			/* Handle Mouse Input (PC) */
-#if !defined(THREEDS)
+#if defined(MOUSE_INPUT)
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 				updateMousePosViewportMouse();
@@ -857,7 +857,7 @@ void handlePlayerInput() {
 			case SDL_QUIT:
 				isRunning = false;
 				break;
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS))
+#if defined(MOUSE_INPUT) && defined(PC)
 			/* Handle Mouse Input (PC) */
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);

@@ -51,6 +51,9 @@
 #include <3ds.h>
 #elif defined(LINUX)
 #include <sys/stat.h>
+#elif defined(EMSCRIPTEN)
+#include <random>
+#include <emscripten.h>
 #endif
 
 using namespace std;

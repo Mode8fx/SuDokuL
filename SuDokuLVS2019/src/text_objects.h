@@ -3,15 +3,15 @@
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
 
-#if defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(LINUX) || defined(THREEDS)
-#define STRCPY(dest, src) \
-    strcpy(dest, src);
-#else
+#if defined(_MSC_VER)
 #define STRCPY(dest, src) \
     strcpy_s(dest, src);
+#else
+#define STRCPY(dest, src) \
+    strcpy(dest, src);
 #endif
 
-#if defined (WII_U) || defined(PSP) || defined(VITA) || defined(SWITCH) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY)
+#if !defined(PC)
 #define CONTROLS_STEP 1.89
 #else
 #define CONTROLS_STEP 1.6
@@ -433,7 +433,7 @@ extern void renderDividerBetweenY(TextObject *textObj1, TextObject *textObj2);
 extern void renderYouWinRect();
 extern void renderControlsTextPage1();
 extern void renderControlsTextPage2();
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(THREEDS) || defined(FUNKEY))
+#if defined(PC)
 extern void renderControlsTextPage3();
 extern void renderControlsTextPage4();
 #endif
@@ -507,21 +507,21 @@ extern void controlsSetConfirmBackPos();
 
 constexpr auto CREDITS_STEP = 1.6;
 
-#if defined(WII_U) || defined(SWITCH) || defined(ANDROID) || defined(THREEDS) || defined(GAMECUBE)
-#define CHEAT1_TEXT "press X or Y 8 times"
-#define CHEAT2_TEXT "Or press (B then X/Y) x4"
-#elif defined(FUNKEY)
-#define CHEAT1_TEXT "press X or Y 8 times to"
-#define CHEAT2_TEXT "Or press (B then X/Y) x4"
-#elif defined(VITA) || defined(PSP)
+#if defined(VITA) || defined(PSP)
 #define CHEAT1_TEXT "press Square or Triangle 8 times"
 #define CHEAT2_TEXT "Or press (Circle then Square/Triangle) x4"
 #elif defined(WII)
 #define CHEAT1_TEXT "press - (Wiimote) or X/Y 8 times"
 #define CHEAT2_TEXT "Or press (B/1 then -/X/Y) x4"
-#else
+#elif defined(PC)
 #define CHEAT1_TEXT "press the Period key 8 times"
 #define CHEAT2_TEXT "Or press (Backspace then Period) x4"
+#elif defined(FUNKEY)
+#define CHEAT1_TEXT "press X or Y 8 times to"
+#define CHEAT2_TEXT "Or press (B then X/Y) x4"
+#else
+#define CHEAT1_TEXT "press X or Y 8 times"
+#define CHEAT2_TEXT "Or press (B then X/Y) x4"
 #endif
 
 #endif

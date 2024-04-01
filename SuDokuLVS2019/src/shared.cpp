@@ -7,7 +7,7 @@
 #include "puzzleBank.h"
 #include "menu_logic.h"
 
-#if defined(SDL1) && !(defined(LINUX) || defined(THREEDS) || defined(FUNKEY))
+#if defined(SDL1) && !(defined(LINUX) || defined(CONSOLE))
 FILE _iob[] = { *stdin, *stdout, *stderr };
 
 FILE * __cdecl __iob_func(void) {
@@ -433,7 +433,7 @@ Uint16 menuCursorXOffset() {
 }
 
 void sdlToggleFullscreen() {
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(SDL1))
+#if !(defined(CONSOLE) || defined(SDL1))
 	isWindowed = !isWindowed;
 	if (isWindowed)
 		SDL_SetWindowFullscreen(window, 0);

@@ -11,6 +11,10 @@
 
 using namespace std;
 
+#if defined(EMSCRIPTEN)
+unsigned seed2 = std::random_device()();
+#endif
+
 /* BOARD BY INDEX
  * 
  *   0  1  2|  3  4  5|  6  7  8
@@ -525,7 +529,7 @@ Uint8 validateGridAndSolution() {
     return 0;
 }
 
-#if !(defined(WII_U) || defined(VITA) || defined(SWITCH) || defined(ANDROID) || defined(PSP) || defined(WII) || defined(GAMECUBE) || defined(FUNKEY) || defined(THREEDS))
+#if defined(PC)
 void printBoard() {
     cout << endl;
     for (row = 0; row < 9; row++) {
@@ -638,7 +642,12 @@ void initPossibleValsArrByIndex(Sint8 index) {
     possibleValsArr[8] = 9;
     srand(seed);
     srand(rand() + index);
+#if defined(EMSCRIPTEN)
+    std::mt19937 rng(seed2);
+		std::shuffle(possibleValsArr, possibleValsArr + 9, rng);
+#else
     std::random_shuffle(possibleValsArr, possibleValsArr + 9);
+#endif
 }
 
 void updateNumEmpty() {
