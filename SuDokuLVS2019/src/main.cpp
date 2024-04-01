@@ -1117,7 +1117,7 @@ int main(int argv, char** args) {
 				}
 #endif
 				updateVideoMenuCursorPositionX();
-				menuHandleBackButton(13);
+				menuHandleBackButtonWithSettings(13);
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
 #if defined(ANDROID)

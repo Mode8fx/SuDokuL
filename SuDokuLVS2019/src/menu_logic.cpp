@@ -114,6 +114,9 @@ bool menuHandleBackButtonWithSettings(Uint8 state) {
             dirInputs = UP_DEPRESSED | DOWN_DEPRESSED | LEFT_DEPRESSED | RIGHT_DEPRESSED;
         }
 #endif
+        if (programState == 20) {
+          reloadVideoSettings();
+        }
         programState = state;
         menuResetCursorPositions(state);
         saveCurrentSettings();
