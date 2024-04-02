@@ -113,9 +113,12 @@ void savePuzzle() {
 void initDefaultBGScale() {
 #if defined(FUNKEY)
 	defaultBGScale = 4;
+#elif defined(VITA)
+	defaultBGScale = 2;
+#elif defined(WII_U) || defined(SWITCH)
+	defaultBGScale = 3;
 #else
-	uint_i = (max(int(ceil(DEFAULT_WIDTH / 640.0)), int(ceil(DEFAULT_HEIGHT / 480.0))));
-	defaultBGScale = max((Uint8)(uint_i), (Uint8)1);
+	defaultBGScale = max((Uint8)(max(int(ceil(DEFAULT_WIDTH / 640.0)), int(ceil(DEFAULT_HEIGHT / 480.0)))), (Uint8)1);
 #endif
 }
 
