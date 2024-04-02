@@ -114,7 +114,7 @@ void initDefaultBGScale() {
 #if defined(FUNKEY)
 	defaultBGScale = 4;
 #else
-	uint_i = (max(DEFAULT_WIDTH / 640, DEFAULT_HEIGHT / 480));
+	uint_i = (max(int(ceil(DEFAULT_WIDTH / 640)), int(ceil(DEFAULT_HEIGHT / 480))));
 	defaultBGScale = max((Uint8)(uint_i), (Uint8)1);
 #endif
 }
