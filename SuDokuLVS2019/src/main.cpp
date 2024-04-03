@@ -64,15 +64,16 @@ int main(int argv, char** args) {
 
 	TTF_Init();
 
+#if !defined(SDL1)
+	SDL_GetCurrentDisplayMode(0, &DM);
+#endif
+
 	initDefaultBGScale();
 	initDefaultFrameRate();
 
 	/* Get settings from settings.bin */
 	loadSettingsFile();
 	/* Set Video Settings */
-#if !defined(SDL1)
-	SDL_GetCurrentDisplayMode(0, &DM);
-#endif
 #if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
