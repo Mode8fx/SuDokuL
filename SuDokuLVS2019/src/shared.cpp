@@ -425,7 +425,7 @@ void setFrameRateByOptions(Sint8 increment) {
 			frameRate = 60;
 			break;
 		default:
-			frameRate = 255;
+			frameRate = (Uint8)min((int)displayRefreshRate, 255);
 			break;
 	}
 	ticksPerFrame = (Uint32)(1000 / frameRate);
