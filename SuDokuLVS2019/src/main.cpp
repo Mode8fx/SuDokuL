@@ -66,6 +66,7 @@ int main(int argv, char** args) {
 
 #if !defined(SDL1)
 	SDL_GetCurrentDisplayMode(0, &DM);
+	displayRefreshRate = DM.refresh_rate;
 #endif
 
 	initDefaultBGScale();
@@ -126,10 +127,7 @@ int main(int argv, char** args) {
 	setBGScrollSpeed();
 
 	/* Set Window/Renderer */
-#if defined(PSP)
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-#elif defined(FUNKEY)
+#if defined(FUNKEY)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
 	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
@@ -140,14 +138,16 @@ int main(int argv, char** args) {
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
 	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
+#else
+#if defined(PSP)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
 #elif defined(EMSCRIPTEN)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #elif !defined(PC)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #else
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, SDL_WINDOW_RESIZABLE);
+#endif
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #endif
 	setScaling();
@@ -1536,9 +1536,17 @@ int main(int argv, char** args) {
 #endif
 
 		/* Cap Framerate */
-		frameTime = SDL_GetTicks() - currTicks;
-		if (frameTime < ticksPerFrame) {
-			SDL_Delay(ticksPerFrame - frameTime);
+#if defined(SDL1)
+		if (true) {
+#elif defined(THREEDS)
+		if (frameRate < 30) {
+#else
+		if (frameRate < displayRefreshRate) {
+#endif
+			frameTime = SDL_GetTicks() - currTicks;
+			if (frameTime < ticksPerFrame) {
+				SDL_Delay(ticksPerFrame - frameTime);
+			}
 		}
 	}
 
