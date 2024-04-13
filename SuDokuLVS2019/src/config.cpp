@@ -8,6 +8,7 @@
 #if defined(WII)
 Uint32 wii_keysDown;
 Uint32 wii_keysUp;
+expansion_t wii_exp;
 #elif defined(GAMECUBE)
 Uint32 gc_keysDown;
 Uint32 gc_keysUp;
@@ -27,20 +28,28 @@ void resetCheatCounters() {
 	songChangeCounter = 0;
 }
 
+inline static void applyStickDeadZoneX() {
+	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
+		controllerAxis_leftStickX = 0;
+	}
+}
+
+inline static void applyStickDeadZoneY() {
+	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
+		controllerAxis_leftStickY = 0;
+	}
+}
+
 #if (defined(PSP) || defined(SDL1)) && !defined(FUNKEY)
 inline static void handleAnalogInput_SDL1() {
 	if (event.jaxis.which == 0) {
 		if (event.jaxis.axis == 0) {
 			controllerAxis_leftStickX = event.jaxis.value;
-			if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
-				controllerAxis_leftStickX = 0;
-			}
+			applyStickDeadZoneX();
 		}
 		if (event.jaxis.axis == 1) {
 			controllerAxis_leftStickY = event.jaxis.value;
-			if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
-				controllerAxis_leftStickY = 0;
-			}
+			applyStickDeadZoneY();
 		}
 	}
 }
@@ -255,6 +264,7 @@ inline static void handleWiimoteButtons() {
 }
 
 inline static void handleWiiCCButtons() {
+	WPAD_Expansion(WPAD_CHAN_0, &wii_exp);
 	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_LEFT, LEFT_PRESSED);
 	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_RIGHT, RIGHT_PRESSED);
 	wii_mapWiiCCDir(WPAD_CLASSIC_BUTTON_DOWN, DOWN_PRESSED);
@@ -273,6 +283,18 @@ inline static void handleWiiCCButtons() {
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_PLUS, INPUT_START);
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_START);
+
+	wii_mapWiiButton(WPAD_BUTTON_HOME, WPAD_CLASSIC_BUTTON_Y, INPUT_Y);
+	if (wii_exp.type == EXP_CLASSIC) {
+		controllerAxis_leftStickX = ((Sint16)wii_exp.classic.ljs.pos.x - 32) * 1023;
+		controllerAxis_leftStickY = ((Sint16)wii_exp.classic.ljs.pos.y - 32) * -1023;
+		applyStickDeadZoneX();
+		applyStickDeadZoneY();
+	}
+	else {
+		controllerAxis_leftStickX = 0;
+		controllerAxis_leftStickY = 0;
+	}
 }
 
 inline static void handleWiiGCButtons() {
@@ -293,6 +315,12 @@ inline static void handleWiiGCButtons() {
 	wii_mapGCButton(PAD_TRIGGER_R, INPUT_NEXT_TRACK);
 	wii_mapGCButton(PAD_TRIGGER_Z, INPUT_SELECT);
 	wii_mapGCButton(PAD_BUTTON_START, INPUT_START);
+	if (controllerAxis_leftStickX == 0 && controllerAxis_leftStickY == 0) {
+		controllerAxis_leftStickX = PAD_StickX(0) * 256;
+		controllerAxis_leftStickY = PAD_StickY(0) * -256;
+		applyStickDeadZoneX();
+		applyStickDeadZoneY();
+	}
 }
 #elif defined(GAMECUBE)
 inline static void gc_mapDir(Uint32 gcInput, Uint32 output) {
@@ -331,12 +359,8 @@ inline static void handleGCButtons() {
 	gc_mapButton(PAD_BUTTON_START, INPUT_START);
 	controllerAxis_leftStickX = PAD_StickX(0) * 256;
 	controllerAxis_leftStickY = PAD_StickY(0) * -256;
-	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
-		controllerAxis_leftStickX = 0;
-	}
-	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
-		controllerAxis_leftStickY = 0;
-	}
+	applyStickDeadZoneX();
+	applyStickDeadZoneY();
 }
 #elif defined(FUNKEY)
 inline static void handleKeyboardKeysDown_FunKey() {
@@ -429,12 +453,8 @@ inline static void handleKeyboardKeysUp_FunKey() {
 inline static void handleAnalogInput_SDL2() {
 	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
 	controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
-	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
-		controllerAxis_leftStickX = 0;
-	}
-	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
-		controllerAxis_leftStickY = 0;
-	}
+	applyStickDeadZoneX();
+	applyStickDeadZoneY();
 }
 
 inline static void handleButtonDown_SDL2() {
@@ -820,14 +840,6 @@ void handlePlayerInput() {
 	wii_keysUp = PAD_ButtonsUp(0);
 	handleWiiGCButtons();
 
-	controllerAxis_leftStickX = PAD_StickX(0) * 256;
-	controllerAxis_leftStickY = PAD_StickY(0) * -256;
-	if ((controllerAxis_leftStickX > -STICK_DEADZONE) && (controllerAxis_leftStickX < STICK_DEADZONE)) {
-		controllerAxis_leftStickX = 0;
-	}
-	if ((controllerAxis_leftStickY > -STICK_DEADZONE) && (controllerAxis_leftStickY < STICK_DEADZONE)) {
-		controllerAxis_leftStickY = 0;
-	}
 	/* Handle Mouse Input (Wii) */
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
