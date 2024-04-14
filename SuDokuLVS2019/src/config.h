@@ -49,6 +49,7 @@ constexpr auto INPUT_NUM_7       = (1 << 27);
 constexpr auto INPUT_NUM_8       = (1 << 28);
 constexpr auto INPUT_NUM_9       = (1 << 29);
 constexpr auto INPUT_FULLSCREEN  = (1 << 30);
+constexpr auto INPUT_BACK_ALT    = (1 << 31); // Right Click (only distinguished by one specific action)
 
 constexpr auto STICK_DEADZONE    = 13107;
 

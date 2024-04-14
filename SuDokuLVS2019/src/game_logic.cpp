@@ -185,11 +185,13 @@ void gameHandleMiniGridNavigation() {
         if (lastMiniGridState > 0) {
             if ((keyPressed(INPUT_BACK) || clickedOutsideMiniGrid())) {
                 miniGridState = 0;
-                gameHandleMouseMovementMain();
+                if ((!keyPressed(INPUT_BACK)) || keyPressed(INPUT_BACK_ALT)) {
+                  gameHandleMouseMovementMain();
+                }
                 setGridCursorByLargeX();
                 setGridCursorByLargeY();
             }
-            if ((keyPressed(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
+            else if ((keyPressed(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
                 i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
                 if (miniGridCursorIndex_x > -1) {
                     if (miniGridState == 1) {

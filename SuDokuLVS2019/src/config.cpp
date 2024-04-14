@@ -805,6 +805,7 @@ void handlePlayerInput() {
 				}
 				if (event.button.button == SDL_BUTTON_RIGHT) {
 					keyInputs |= INPUT_BACK;
+					keyInputs |= INPUT_BACK_ALT;
 					break;
 				}
 				break;
@@ -887,6 +888,7 @@ void handlePlayerInput() {
 				}
 				if (event.button.button == SDL_BUTTON_RIGHT) {
 					keyInputs |= INPUT_BACK;
+					keyInputs |= INPUT_BACK_ALT;
 					break;
 				}
 				break;
