@@ -284,7 +284,6 @@ inline static void handleWiiCCButtons() {
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_START);
 
-	wii_mapWiiButton(WPAD_BUTTON_HOME, WPAD_CLASSIC_BUTTON_Y, INPUT_Y);
 	if (wii_exp.type == EXP_CLASSIC) {
 		controllerAxis_leftStickX = ((Sint16)wii_exp.classic.ljs.pos.x - 32) * 1023;
 		controllerAxis_leftStickY = ((Sint16)wii_exp.classic.ljs.pos.y - 32) * -1023;
