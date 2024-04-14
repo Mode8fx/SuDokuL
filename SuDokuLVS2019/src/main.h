@@ -39,8 +39,8 @@ double gameWidthMult;
 double gameHeightMult;
 #if !defined(SDL1)
 SDL_DisplayMode DM;
-Uint16 displayRefreshRate;
 #endif
+Uint16 displayRefreshRate;
 Uint32 frameTime;
 
 /* Settings */

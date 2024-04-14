@@ -68,8 +68,8 @@ extern Uint8 defaultBGScale;
 extern Uint8 defaultFrameRateIndex;
 #if !defined(SDL1)
 extern SDL_DisplayMode DM;
-extern Uint16 displayRefreshRate;
 #endif
+extern Uint16 displayRefreshRate;
 extern double gameWidthMult;
 extern double gameHeightMult;
 

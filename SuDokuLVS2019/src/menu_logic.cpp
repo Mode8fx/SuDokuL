@@ -261,8 +261,18 @@ void setBGType() {
 }
 
 void setBGScrollSpeed() {
+#if defined(FUNKEY) // FunKey just doesn't handle cos and sin properly
+  if (bgSettings.scrollDir == 18 || bgSettings.scrollDir == 36 || bgSettings.scrollDir == 54) {
+    bgScroll.speed_x = cos(((double)bgSettings.scrollDir + 18) * 5 * PI / 180);
+    bgScroll.speed_y = sin(((double)bgSettings.scrollDir + 18) * 5 * PI / 180);
+  } else {
     bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);
     bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
+  }
+#else
+    bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);
+    bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
+#endif
 }
 
 // Used for both menu and game

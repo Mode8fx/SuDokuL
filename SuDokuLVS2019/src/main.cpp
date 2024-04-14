@@ -67,6 +67,8 @@ int main(int argv, char** args) {
 #if !defined(SDL1)
 	SDL_GetCurrentDisplayMode(0, &DM);
 	displayRefreshRate = DM.refresh_rate;
+#else
+	displayRefreshRate = 60;
 #endif
 
 	initDefaultBGScale();
