@@ -219,6 +219,7 @@ extern TextObject text_Controls_c_3a;
 extern TextObject text_Controls_c_4a;
 extern TextObject text_Controls_c_5a;
 extern TextObject text_Controls_c_6a;
+extern TextObject text_Controls_c_7a;
 extern TextObject text_Controls_c_P1;
 extern TextObject text_Controls_c_8;
 extern TextObject text_Controls_c_9a;

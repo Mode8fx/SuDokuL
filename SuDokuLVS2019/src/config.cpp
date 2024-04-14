@@ -525,6 +525,10 @@ inline static void handleButtonDown_SDL2() {
 		resetCheatCounters();
 		return;
 	}
+	if (event.cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK) {
+		keyInputs |= INPUT_FULLSCREEN;
+		return;
+	}
 }
 
 inline static void handleButtonUp_SDL2() {
@@ -667,7 +671,7 @@ inline static void handleKeyboardKeys() {
 		resetCheatCounters();
 		return;
 	}
-	if (event.key.keysym.sym == SDLK_f) {
+	if (event.key.keysym.sym == SDLK_F11) {
 		keyInputs |= INPUT_FULLSCREEN;
 		return;
 	}

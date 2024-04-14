@@ -320,6 +320,7 @@ TextObject text_Controls_c_3a;
 TextObject text_Controls_c_4a;
 TextObject text_Controls_c_5a;
 TextObject text_Controls_c_6a;
+TextObject text_Controls_c_7a;
 TextObject text_Controls_c_P1;
 TextObject text_Controls_c_8;
 TextObject text_Controls_c_9a;
