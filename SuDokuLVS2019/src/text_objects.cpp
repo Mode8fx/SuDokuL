@@ -476,12 +476,12 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c, 0.7),  (fontSize * (CONTROLS_STEP *  7))                  );
 	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a, 0.3),  (fontSize * (CONTROLS_STEP *  9))                  );
 	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b, 0.7),  (fontSize * (CONTROLS_STEP *  9))                  );
-	SET_TEXT_WITH_OUTLINE("+ (Wiimote) / R",       text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE("Home / R",              text_Controls_6a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a,  0,                                                 0                                                  );
 	SET_TEXT_WITH_OUTLINE("(1/2)",                 text_Controls_P1,  (gameWidth - (text_Controls_P1.rect.w * 1.25)),    (gameHeight - (text_Controls_P1.rect.h * 1.5))     );
 	SET_LARGE_TEXT_WITH_OUTLINE("GAME",            text_Controls_8,   OBJ_TO_MID_SCREEN_X(text_Controls_8),              (fontSize * (CONTROLS_STEP *  1))                  );
-	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("+ / Start",             text_Controls_9a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
 	initTextObjectVals(&text_Controls_10a);
 	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
@@ -509,7 +509,7 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("2 / R",                 text_Controls_6a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a_vertical, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b_vertical, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a_vertical,  0,                                                 0                                                           );
-	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("+ / Start",             text_Controls_9a_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_vertical, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b_vertical, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
 	initTextObjectVals(&text_Controls_10a_vertical);
 	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a_vertical, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);
@@ -518,7 +518,7 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11a_vertical, 0,                                                 0                                                           );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_11b_vertical, 0,                                                 0                                                           );
 	SET_TEXT_WITH_OUTLINE("+ / - (Wiimote)",       text_Controls_12a_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12a_vertical, 0.3), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
-	SET_TEXT_WITH_OUTLINE("X / Y",                 text_Controls_7c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c_vertical,  0.3),  (fontSize * (CONTROLS_STEP * 7)) + CONTROLS_SPACER);
+	SET_TEXT_WITH_OUTLINE("X / Y / Home",          text_Controls_7c_vertical,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_7c_vertical,  0.3),  (fontSize * (CONTROLS_STEP * 7)) + CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Quick Toggle",          text_Controls_12b_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12b_vertical, 0.7), (fontSize * (CONTROLS_STEP *  7)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Mini-Grid",             text_Controls_12c_vertical, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_12c_vertical, 0.7), (fontSize * (CONTROLS_STEP *  7)) + CONTROLS_SPACER);
 	// Horizontal
@@ -533,10 +533,10 @@ void setControlsText() {
 	SET_TEXT_WITH_OUTLINE("Back",                  text_Controls_4c_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_4c_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  7))                  );
 	SET_TEXT_WITH_OUTLINE("L",                     text_Controls_5a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  9))                  );
 	SET_TEXT_WITH_OUTLINE("Prev. Song",            text_Controls_5b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_5b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  9))                  );
-	SET_TEXT_WITH_OUTLINE("+ (Wiimote) / R",       text_Controls_6a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
+	SET_TEXT_WITH_OUTLINE("Home / R",              text_Controls_6a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE("Next Song",             text_Controls_6b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_6b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP * 11))                  );
 	SET_TEXT_WITH_OUTLINE(" ",                     text_Controls_7a_horizontal,  0,                                                 0                                                             );
-	SET_TEXT_WITH_OUTLINE("Home / Start (GC/CC)",  text_Controls_9a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
+	SET_TEXT_WITH_OUTLINE("+ / Start",             text_Controls_9a_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9a_horizontal, 0.3),  (fontSize * (CONTROLS_STEP *  3))                  );
 	SET_TEXT_WITH_OUTLINE("Pause",                 text_Controls_9b_horizontal,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_9b_horizontal, 0.7),  (fontSize * (CONTROLS_STEP *  3))                  );
 	initTextObjectVals(&text_Controls_10a_horizontal);
 	SET_TEXT_WITH_OUTLINE_HELPER("- / Z",          text_Controls_10a_horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_Controls_10a_horizontal, 0.3), (fontSize * (CONTROLS_STEP *  5)) - CONTROLS_SPACER);

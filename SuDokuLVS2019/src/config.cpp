@@ -205,10 +205,10 @@ inline static void handleWiimoteButtons() {
 				wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_BACK);
 				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_CONFIRM);
 			}
-			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_NEXT_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
-			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_NEXT_TRACK);
 			break;
 		case 1:
 			wii_mapWiimoteDir(WPAD_BUTTON_UP, LEFT_PRESSED);
@@ -230,10 +230,10 @@ inline static void handleWiimoteButtons() {
 				wii_mapWiimoteButton(WPAD_BUTTON_B, INPUT_CONFIRM_ALT);
 				wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_CONFIRM);
 			}
-			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_NEXT_TRACK);
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
-			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_NEXT_TRACK);
 			break;
 		case 2:
 			wii_mapWiimoteDir(WPAD_BUTTON_UP, UP_PRESSED);
@@ -253,10 +253,10 @@ inline static void handleWiimoteButtons() {
 			}
 			wii_mapWiimoteButton(WPAD_BUTTON_1, INPUT_NEXT_TRACK);
 			wii_mapWiimoteButton(WPAD_BUTTON_2, INPUT_PREV_TRACK);
-			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_SWAP);
+			wii_mapWiimoteButton(WPAD_BUTTON_PLUS, INPUT_START);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SELECT);
 			wii_mapWiimoteButton(WPAD_BUTTON_MINUS, INPUT_SWAP);
-			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_START);
+			wii_mapWiimoteButton(WPAD_BUTTON_HOME, INPUT_SWAP);
 			break;
 	}
 	if (programState == 0)
@@ -282,7 +282,7 @@ inline static void handleWiiCCButtons() {
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_FULL_R, INPUT_NEXT_TRACK);
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_PLUS, INPUT_START);
 	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_MINUS, INPUT_SELECT);
-	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_START);
+	wii_mapWiiCCButton(WPAD_CLASSIC_BUTTON_HOME, INPUT_NEXT_TRACK);
 
 	if (wii_exp.type == EXP_CLASSIC) {
 		controllerAxis_leftStickX = ((Sint16)wii_exp.classic.ljs.pos.x - 32) * 1023;
