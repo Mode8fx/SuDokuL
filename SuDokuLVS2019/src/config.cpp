@@ -9,6 +9,7 @@
 Uint32 wii_keysDown;
 Uint32 wii_keysUp;
 expansion_t wii_exp;
+WPADData *wii_data;
 #elif defined(GAMECUBE)
 Uint32 gc_keysDown;
 Uint32 gc_keysUp;
@@ -190,6 +191,8 @@ inline static void wii_mapGCButton(Uint32 gcInput, Uint32 output) {
 }
 
 inline static void handleWiimoteButtons() {
+	wii_data = WPAD_Data(0);
+	SDL_ShowCursor(wii_data->ir.valid);
 	switch (controlSettings.wiimoteScheme) {
 		case 0:
 			wii_mapWiimoteDir(WPAD_BUTTON_UP, LEFT_PRESSED);

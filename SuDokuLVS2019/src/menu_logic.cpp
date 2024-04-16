@@ -281,8 +281,13 @@ bool mouseMoved() {
 }
 
 void updateMousePosViewportMouse() {
+#if defined(WII)
+  mouseInput_x = (Sint32)(mouseInput_x / screenScale);
+  mouseInput_y = (Sint32)(mouseInput_y / screenScale);
+#else
     mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
     mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+#endif
 }
 
 void updateMousePosViewportTouch() {
