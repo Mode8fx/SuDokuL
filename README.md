@@ -1,5 +1,5 @@
 # SuDokuL
-This is a Sudoku game made in C++ and SDL1.2/SDL2. It's currently available for PC, Linux, Switch, Wii U, Wii, Gamecube, Vita, PSP, and FunKey. An older version is also available for Android.
+This is a Sudoku game made in C++ and SDL1.2/SDL2. It's currently available for PC, Linux, Switch, Wii U, Wii, Gamecube, Vita, PSP, FunKey, and [PortMaster](https://portmaster.games/detail.html?name=sudokul). An older version is also available for Android.
 
 ## Features
 - Play Sudoku puzzles of Easy, Normal, Hard, or Very Hard difficulty
