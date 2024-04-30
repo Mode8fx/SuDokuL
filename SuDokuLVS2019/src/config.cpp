@@ -567,24 +567,24 @@ inline static void handleButtonUp_SDL2() {
 #define SDLK_KP_9 SDLK_KP9
 #endif
 
-inline static void handleKeyboardKeys() {
+inline static void handleKeyboardKeys_Down() {
 	if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
-		keyInputs |= INPUT_UP;
+		dirInputs |= UP_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
-		keyInputs |= INPUT_DOWN;
+		dirInputs |= DOWN_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a) {
-		keyInputs |= INPUT_LEFT;
+		dirInputs |= LEFT_PRESSED;
 		resetCheatCounters();
 		return;
 	}
 	if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
-		keyInputs |= INPUT_RIGHT;
+		dirInputs |= RIGHT_PRESSED;
 		resetCheatCounters();
 		return;
 	}
@@ -687,8 +687,27 @@ inline static void handleKeyboardKeys() {
 #endif
 }
 
+inline static void handleKeyboardKeys_Up() {
+	if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
+		dirInputs |= UP_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
+		dirInputs |= DOWN_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a) {
+		dirInputs |= LEFT_DEPRESSED;
+		return;
+	}
+	if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
+		dirInputs |= RIGHT_DEPRESSED;
+		return;
+	}
+}
+
 inline static void dirHandler(Uint8 pressedVal, Uint8 depressedVal, Uint8 inputVal) {
-	if (dirInputs & pressedVal) {
+	if ((dirInputs & pressedVal) && !(heldDirs & inputVal)) {
 		keyInputs |= inputVal;
 		heldDirs |= inputVal;
 		resetCheatCounters();
@@ -815,11 +834,14 @@ void handlePlayerInput() {
 			case SDL_MOUSEBUTTONUP:
 				justClickedInMiniGrid = false;
 				break;
+#endif
 			/* Handle Keyboard Input (PC) */
 			case SDL_KEYDOWN:
-				handleKeyboardKeys();
+				handleKeyboardKeys_Down();
 				break;
-#endif
+			case SDL_KEYUP:
+				handleKeyboardKeys_Up();
+				break;
 			/* Handle Analog Input (SDL1) */
 			case SDL_JOYAXISMOTION:
 				handleAnalogInput_SDL1();
@@ -907,7 +929,10 @@ void handlePlayerInput() {
 #endif
 			/* Handle Keyboard Input (PC) */
 			case SDL_KEYDOWN:
-				handleKeyboardKeys();
+				handleKeyboardKeys_Down();
+				break;
+			case SDL_KEYUP:
+				handleKeyboardKeys_Up();
 				break;
 			/* Handle Button Input (SDL2) */
 			case SDL_CONTROLLERBUTTONDOWN:

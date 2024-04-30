@@ -407,6 +407,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #elif defined(MOUSE_INPUT) && !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
+#else
+	SET_TEXT_WITH_OUTLINE("",                 text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 #if defined(VITA) || defined(PSP)
 	SET_TEXT_WITH_OUTLINE("X - Confirm", text_A_Confirm, OBJ_TO_SCREEN_AT_FRACTION(text_A_Confirm, 0.75), TEXT_A_CONFIRM_Y);
@@ -431,6 +433,9 @@ int main(int argv, char** args) {
 #elif defined(MOUSE_INPUT) && !defined(ANDROID)
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+#else
+	SET_TEXT_WITH_OUTLINE("",                 text_Enabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,    0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
+	SET_TEXT_WITH_OUTLINE("",                 text_Disabled,        OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 	/* Video Menu */
 #if !defined(ANDROID)
@@ -1424,15 +1429,13 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
+#if defined(MOUSE_INPUT) && !defined(ANDROID)
 				controlsMenuHandleVertCursorMovement();
-#endif
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
-#endif
 				}
+#endif
 				updateControlsMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
 				if (keyPressed(INPUT_LEFT)) {
@@ -1454,7 +1457,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
+#if defined(MOUSE_INPUT) && !defined(ANDROID)
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
@@ -1481,9 +1484,7 @@ int main(int argv, char** args) {
 				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controller_Input);
-#if !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
 				renderText(&text_Touch_Screen_Input);
-#endif
 				if (controlSettings.swapConfirmAndBack) {
 					renderText(&text_A_Confirm);
 					renderText(&text_B_Back);
@@ -1505,7 +1506,7 @@ int main(int argv, char** args) {
 					default:
 						break;
 				}
-#elif !(defined(ANDROID) || defined(PSP) || defined(THREEDS) || defined(GAMECUBE) || defined(FUNKEY))
+#else
 				if (controlSettings.enableTouchscreen) {
 					renderText(&text_Enabled);
 				} else {
