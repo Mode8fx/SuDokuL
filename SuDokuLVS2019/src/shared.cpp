@@ -20,6 +20,8 @@ Sint64 seekPos;
 void loadSettingsFile() {
 #if defined(LINUX)
 	mkdir((string(getenv("HOME")) + "/.sudokul").c_str(), 0777);
+#elif defined(VITA)
+	mkdir("ux0:data/SuDokuL", 0777);
 #endif
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
