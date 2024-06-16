@@ -24,6 +24,7 @@ This game was initially designed for 640x480 displays, but it is compatible with
 <img src="https://github.com/Mode8fx/SuDokuL/blob/main/screenshots/screenshot-640-480_1.png?raw=true" width="320" height="240"/> <img src="https://github.com/Mode8fx/SuDokuL/blob/main/screenshots/screenshot-640-480_2.png?raw=true" width="320" height="240"/> <img src="https://github.com/Mode8fx/SuDokuL/blob/main/screenshots/screenshot-640-480_3.png?raw=true" width="320" height="240"/>
 
 ## How to Compile
+
 #### PC
 1. Download the latest SDL2 development libraries (Visual C++ versions):
 - [SDL2](https://www.libsdl.org/download-2.0.php)
@@ -35,17 +36,17 @@ This game was initially designed for 640x480 displays, but it is compatible with
 #### Android
 Install Android Studio, then follow [this tutorial](https://discourse.libsdl.org/t/building-sdl2-0-10-in-android-studio-3-4-2-in-windows-10/26481).
 #### Switch
-Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile`, then build with make.
+Install devkitPro and switch-portlibs (which includes SDL2 for Switch), rename `Makefile_switch` to `Makefile` and move it out of the `Makefiles` directory into `SuDokuLVS2019`, then build with make.
 #### Wii U
 Install devkitPro, Wii U Toolkit, and SDL2 for Wii U, then build with CMake. I've included a `make_wii_u.sh` file for convenience once you have everything installed.
 #### Wii
-Install devkitPro and SDL2 for Wii, rename `Makefile_wii` to `Makefile`, then build with make.
+Install devkitPro and SDL2 for Wii, rename `Makefile_wii` to `Makefile` and move it out of the `Makefiles` directory into `SuDokuLVS2019`, then build with make.
 #### Gamecube
-Install devkitPro and SDL2 for Gamecube, rename `Makefile_gc` to `Makefile`, then build with make.
+Install devkitPro and SDL2 for Gamecube, rename `Makefile_gc` to `Makefile` and move it out of the `Makefiles` directory into `SuDokuLVS2019`, then build with make.
 #### Vita
 Install VitaSDK, then build with CMake. I've included a `make_vita.sh` file for convenience once you have everything installed.
 #### PSP
-Install [psptoolchain](https://github.com/pspdev/psptoolchain), which should also come with SDL2, SDL2_image, SDL2_ttf, and SDL2_mixer (Linux or WSL is strongly recommended). Rename `Makefile_psp` to `Makefile`, then build with make.
+Install [psptoolchain](https://github.com/pspdev/psptoolchain), which should also come with SDL2, SDL2_image, SDL2_ttf, and SDL2_mixer (Linux or WSL is strongly recommended). Rename `Makefile_psp` to `Makefile` and move it out of the `Makefiles` directory into `SuDokuLVS2019`, then build with make.
 
 ## Credits
 Everything in this game is made by me except for the following assets:
