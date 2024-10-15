@@ -2,6 +2,7 @@
 
 :: Manual sleep amounts (because `start /wait` doesn't work...)
 set SLEEP_COMPILE=45
+set SLEEP_COMPILE_LONG=60
 set SLEEP_COMPILE_SHORT=5
 set SLEEP_CLEAN=2
 
@@ -164,14 +165,16 @@ goto :eof
 :compile_wii_u
 echo Wii U: Compiling with devkitPro...
 start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; sh %MAKEFILE_DKP_WII_U%"
-sleep %SLEEP_COMPILE%
+sleep %SLEEP_COMPILE_LONG%
 echo Wii U: Moving compiled rpx to %OUTPUT_WII_U%...
 mv %REPO%/build_wii_u/sudokul.rpx %OUTPUT_WII_U%
-echo Wii U: Creating WUHB in %OUTPUT_WII_U_WUHB%...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "wuhbtool %OUTPUT_WII_U% %OUTPUT_WII_U_WUHB% --name=\"SuDokuL\" --short-name=\"SuDokuL\" --author=Mode8fx --icon=%RELEASE_RESOURCES%/sce_sys/icon0.png --tv-image=%RELEASE_RESOURCES%/splash_screen_wiiu_tv.png --drc-image=%RELEASE_RESOURCES%/splash_screen_wiiu_gamepad.png"
+echo Wii U WHUB: Creating WUHB in %OUTPUT_WII_U_WUHB%...
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "wuhbtool %REPO%/build_wii_u_whub/sudokul.rpx %OUTPUT_WII_U_WUHB% --name=\"SuDokuL\" --short-name=\"SuDokuL\" --author=Mode8fx --icon=%RELEASE_RESOURCES%/sce_sys/icon0.png --tv-image=%RELEASE_RESOURCES%/splash_screen_wiiu_tv.png --drc-image=%RELEASE_RESOURCES%/splash_screen_wiiu_gamepad.png"
 sleep %SLEEP_COMPILE_SHORT%
 echo Wii U: Cleaning up...
 rm -r %REPO%/build_wii_u
+sleep %SLEEP_CLEAN%
+rm -r %REPO%/build_wii_u_whub
 sleep %SLEEP_CLEAN%
 echo.
 goto :eof

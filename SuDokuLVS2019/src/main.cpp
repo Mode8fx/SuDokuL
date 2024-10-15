@@ -337,7 +337,7 @@ int main(int argv, char** args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.32",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.33",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	if (compactDisplay) {
 		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 6 / 32);
 	} else {
@@ -348,7 +348,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Controls", text_Controls,         OBJ_TO_MID_SCREEN_X(text_Controls),   TEXT_CONTROLS_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Options",  text_Options,          OBJ_TO_MID_SCREEN_X(text_Options),    TEXT_OPTIONS_Y + (gameWidth * 3 / 4));
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Credits",  text_Credits,          OBJ_TO_MID_SCREEN_X(text_Credits),    TEXT_CREDITS_Y + (gameWidth * 3 / 4));
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Quit",     text_Quit,             OBJ_TO_MID_SCREEN_X(text_Quit),       TEXT_QUIT_Y + (gameWidth * 3 / 4));
 #endif
 	/* Continue Menu */
@@ -470,7 +470,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("On",               text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Off",              text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 #endif
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 	if (!compactDisplay) {
 		SET_TEXT_WITH_OUTLINE("Exit Game and Apply Changes", text_Apply, VIDEO_MENU_CURSOR_POSITION_X,     TEXT_APPLY_Y);
 	} else {
@@ -632,7 +632,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 				menuHandleVertCursorMovement(menuCursorIndex_main, 5, 0);
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_main, 4, 0);
@@ -642,13 +642,13 @@ int main(int argv, char** args) {
 					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Controls, 1);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Options, 2);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Credits, 3);
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 					menuHandleVertCursorMovementMouse(menuCursorIndex_main, text_Quit, 4);
 #endif
 				}
 				updateMainMenuCursorPositionX();
 				menuHandleBackButton(3);
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Play.rect)
 					|| mouseIsInRect(text_Controls.rect) || mouseIsInRect(text_Options.rect)
 					|| mouseIsInRect(text_Credits.rect) || mouseIsInRect(text_Quit.rect)))) {
@@ -700,7 +700,7 @@ int main(int argv, char** args) {
 				renderText(&text_Controls);
 				renderText(&text_Options);
 				renderText(&text_Credits);
-#if !defined(ANDROID)
+#if !defined(NO_QUIT)
 				renderText(&text_Quit);
 #endif
 				break;
@@ -1106,14 +1106,15 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if defined(ANDROID)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
-				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 1);
-				}
-#elif defined(FUNKEY)
+#if defined(FUNKEY)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
+#elif defined(NO_QUIT)
+				menuHandleVertCursorMovement(menuCursorIndex_video, 3, 0);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)), 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 2);
+				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
@@ -1128,14 +1129,7 @@ int main(int argv, char** args) {
 				menuHandleBackButtonWithSettings(13);
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
-#if defined(ANDROID)
-						case 0:
-							setFrameRateByOptions(-1);
-							break;
-						case 1:
-							sdlToggleFullscreen();
-							break;
-#elif defined(FUNKEY)
+#if defined(FUNKEY)
 						case 0:
 							setFrameRateByOptions(-1);
 							break;
@@ -1168,14 +1162,7 @@ int main(int argv, char** args) {
 					|| mouseIsInRect(text_Apply.rect)))) {
 #endif
 					switch (menuCursorIndex_video) {
-#if defined(ANDROID)
-						case 0:
-							setFrameRateByOptions(1);
-							break;
-						case 1:
-							sdlToggleFullscreen();
-							break;
-#elif defined(FUNKEY)
+#if defined(FUNKEY)
 						case 0:
 							setFrameRateByOptions(1);
 							break;
