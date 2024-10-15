@@ -476,6 +476,12 @@ int main(int argv, char** args) {
 	} else {
 		SET_TEXT_WITH_OUTLINE("Quit and Apply Changes", text_Apply,  VIDEO_MENU_CURSOR_POSITION_X,         TEXT_APPLY_Y);
 	}
+#else
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Save Changes (Restart To Apply)", text_Apply, VIDEO_MENU_CURSOR_POSITION_X, TEXT_APPLY_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Save (Restart To Apply)", text_Apply, VIDEO_MENU_CURSOR_POSITION_X, TEXT_APPLY_Y);
+	}
 #endif
 	/* Music Menu */
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
@@ -1108,13 +1114,6 @@ int main(int argv, char** args) {
 				/* Key Presses + Animate Cursor */
 #if defined(FUNKEY)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
-#elif defined(NO_QUIT)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 3, 0);
-				if (mouseMoved()) {
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)), 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 2);
-				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
@@ -1188,10 +1187,15 @@ int main(int argv, char** args) {
 								}
 								// isRunning = false;
 								// End the program here; otherwise, text and sprites will be resized and look weird for one frame before closing
+#if !defined(NO_QUIT)
 								sdlDestroyAll();
 								systemSpecificClose();
-#if !defined(EMSCRIPTEN)
 								return 0;
+#else
+								time_anim1 = 0;
+								programState = 13;
+								menuResetCursorPositions(13);
+								changedProgramState = true;
 #endif
 							}
 							break;
