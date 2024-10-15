@@ -54,7 +54,7 @@ set OUTPUT_WII=%OUTPUT_DIR%-wii/apps/SuDokuL/boot.dol
 :: Makefile: Wii U
 set MAKEFILE_DKP_WII_U=%MAKEFILES_DKP%/make_wii_u.sh
 set OUTPUT_WII_U=%OUTPUT_DIR%-wiiu/wiiu/apps/SuDokuL/SuDokuL.rpx
-set OUTPUT_WII_U_WUHB=%OUTPUT_DIR%-wiiu/wiiu/apps/SuDokuL.wuhb
+set OUTPUT_WII_U_WUHB=%OUTPUT_DIR%-wiiu/wiiu/apps/SuDokuL/SuDokuL.wuhb
 
 :: Makefile: Switch
 set MAKEFILE_DKP_SWITCH=%MAKEFILES_DKP%/Makefile_switch
@@ -168,7 +168,7 @@ sleep %SLEEP_COMPILE%
 echo Wii U: Moving compiled rpx to %OUTPUT_WII_U%...
 mv %REPO%/build_wii_u/sudokul.rpx %OUTPUT_WII_U%
 echo Wii U: Creating WUHB in %OUTPUT_WII_U_WUHB%...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "wuhbtool %OUTPUT_WII_U% %OUTPUT_WII_U_WUHB% --name=\"SuDokuL\" --short-name=\"SuDokuL\" --author=Mode8fx --icon=%RELEASE_RESOURCES%/logo_icon_vita.png --tv-image=%RELEASE_RESOURCES%/splash_screen_wiiu_tv.png --drc-image=%RELEASE_RESOURCES%/splash_screen_wiiu_gamepad.png"
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "wuhbtool %OUTPUT_WII_U% %OUTPUT_WII_U_WUHB% --name=\"SuDokuL\" --short-name=\"SuDokuL\" --author=Mode8fx --icon=%RELEASE_RESOURCES%/sce_sys/icon0.png --tv-image=%RELEASE_RESOURCES%/splash_screen_wiiu_tv.png --drc-image=%RELEASE_RESOURCES%/splash_screen_wiiu_gamepad.png"
 sleep %SLEEP_COMPILE_SHORT%
 echo Wii U: Cleaning up...
 rm -r %REPO%/build_wii_u
