@@ -152,7 +152,7 @@ extern Uint32 ticksPerFrame;
 #define SYSTEM_WIDTH  DM.w
 #define SYSTEM_HEIGHT DM.h
 #endif
-#if !defined(PC)
+#if defined(LINUX) || !defined(PC)
 #define DEFAULT_WIDTH         SYSTEM_WIDTH
 #define DEFAULT_HEIGHT        SYSTEM_HEIGHT
 #define DEFAULT_RI            0

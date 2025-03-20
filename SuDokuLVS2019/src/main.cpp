@@ -339,7 +339,7 @@ int main(int argv, char** args) {
 #endif
 	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.33",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	if (compactDisplay) {
-		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 6 / 32);
+		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 8 / 32);
 	} else {
 		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 7 / 32);
 	}
