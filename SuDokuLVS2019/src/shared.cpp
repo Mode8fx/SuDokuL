@@ -584,12 +584,17 @@ void sdlDestroyAll() {
 
 void closeController() {
 #if defined(PSP) || defined(SDL1)
-	SDL_JoystickClose(controller);
+	for (auto& joystick : controllers) {
+		SDL_JoystickClose(joystick);
+}
 #else
-	if (controller != NULL) {
-		SDL_GameControllerClose(controller);
+	for (auto& gameController : controllers) {
+		if (gameController != NULL) {
+			SDL_GameControllerClose(gameController);
+		}
 	}
 #endif
+	controllers.clear();
 }
 
 void systemSpecificClose() {

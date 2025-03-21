@@ -24,9 +24,9 @@ SDL_Rect rightRect;
 
 /* SDL Controller */
 #if defined(PSP) || defined(SDL1)
-SDL_Joystick *controller = NULL;
+std::vector<SDL_Joystick*> controllers;
 #else
-SDL_GameController *controller = nullptr;
+std::vector<SDL_GameController*> controllers;
 #endif
 
 /* Window Width and Height */

@@ -43,83 +43,79 @@ inline static void applyStickDeadZoneY() {
 
 #if (defined(PSP) || defined(SDL1)) && !defined(FUNKEY)
 inline static void handleAnalogInput_SDL1() {
-	if (event.jaxis.which == 0) {
-		if (event.jaxis.axis == 0) {
-			controllerAxis_leftStickX = event.jaxis.value;
-			applyStickDeadZoneX();
-		}
-		if (event.jaxis.axis == 1) {
-			controllerAxis_leftStickY = event.jaxis.value;
-			applyStickDeadZoneY();
-		}
+	if (event.jaxis.axis == 0) {
+		controllerAxis_leftStickX = event.jaxis.value;
+		applyStickDeadZoneX();
+	}
+	if (event.jaxis.axis == 1) {
+		controllerAxis_leftStickY = event.jaxis.value;
+		applyStickDeadZoneY();
 	}
 }
 
 inline static void handleButtonDown_SDL1() {
-	if (event.jbutton.which == 0) {
-		if (event.jbutton.button == 8) { // Up
-			dirInputs |= UP_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 6) { // Down
-			dirInputs |= DOWN_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 7) { // Left
-			dirInputs |= LEFT_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 9) { // Right
-			dirInputs |= RIGHT_PRESSED;
-			return;
-		}
-		if (event.jbutton.button == 1) { // O
-			if (!controlSettings.swapConfirmAndBack) {
-				keyInputs |= INPUT_CONFIRM;
-				resetCheatCounters();
-			}
-			else {
-				keyInputs |= INPUT_BACK;
-			}
-			return;
-		}
-		if (event.jbutton.button == 2) { // X
-			if (!controlSettings.swapConfirmAndBack) {
-				keyInputs |= INPUT_BACK;
-			}
-			else {
-				keyInputs |= INPUT_CONFIRM;
-				resetCheatCounters();
-			}
-			return;
-		}
-		if (event.jbutton.button == 11) { // Start
-			keyInputs |= INPUT_START;
+	if (event.jbutton.button == 8) { // Up
+		dirInputs |= UP_PRESSED;
+		return;
+	}
+	if (event.jbutton.button == 6) { // Down
+		dirInputs |= DOWN_PRESSED;
+		return;
+	}
+	if (event.jbutton.button == 7) { // Left
+		dirInputs |= LEFT_PRESSED;
+		return;
+	}
+	if (event.jbutton.button == 9) { // Right
+		dirInputs |= RIGHT_PRESSED;
+		return;
+	}
+	if (event.jbutton.button == 1) { // O
+		if (!controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_CONFIRM;
 			resetCheatCounters();
-			return;
 		}
-		if (event.jbutton.button == 10) { // Select
-			keyInputs |= INPUT_SELECT;
-			return;
+		else {
+			keyInputs |= INPUT_BACK;
 		}
+		return;
+	}
+	if (event.jbutton.button == 2) { // X
+		if (!controlSettings.swapConfirmAndBack) {
+			keyInputs |= INPUT_BACK;
+		}
+		else {
+			keyInputs |= INPUT_CONFIRM;
+			resetCheatCounters();
+		}
+		return;
+	}
+	if (event.jbutton.button == 11) { // Start
+		keyInputs |= INPUT_START;
+		resetCheatCounters();
+		return;
+	}
+	if (event.jbutton.button == 10) { // Select
+		keyInputs |= INPUT_SELECT;
+		return;
+	}
 #if !defined(SDL1)
-		if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
+	if (event.jbutton.button == 0 || event.cbutton.button == 3) { // Triangle || Square
 #else
-		if (event.jbutton.button == 0) {
+	if (event.jbutton.button == 0) {
 #endif
-			keyInputs |= INPUT_SWAP;
-			return;
-		}
-		if (event.jbutton.button == 4) { // L
-			keyInputs |= INPUT_PREV_TRACK;
-			resetCheatCounters();
-			return;
-		}
-		if (event.jbutton.button == 5) { // R
-			keyInputs |= INPUT_NEXT_TRACK;
-			resetCheatCounters();
-			return;
-		}
+		keyInputs |= INPUT_SWAP;
+		return;
+	}
+	if (event.jbutton.button == 4) { // L
+		keyInputs |= INPUT_PREV_TRACK;
+		resetCheatCounters();
+		return;
+	}
+	if (event.jbutton.button == 5) { // R
+		keyInputs |= INPUT_NEXT_TRACK;
+		resetCheatCounters();
+		return;
 	}
 }
 
@@ -452,7 +448,7 @@ inline static void handleKeyboardKeysUp_FunKey() {
 	}
 }
 #else
-inline static void handleAnalogInput_SDL2() {
+inline static void handleAnalogInput_SDL2(SDL_GameController *controller) {
 	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
 	controllerAxis_leftStickY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
 	applyStickDeadZoneX();
@@ -785,8 +781,8 @@ void handlePlayerInput() {
 	}
 #elif defined(GAMECUBE)
 	PAD_ScanPads();
-	gc_keysDown = PAD_ButtonsDown(0);
-	gc_keysUp = PAD_ButtonsUp(0);
+	gc_keysDown = PAD_ButtonsDown(0) | PAD_ButtonsDown(1) | PAD_ButtonsDown(2) | PAD_ButtonsDown(3);
+	gc_keysUp = PAD_ButtonsUp(0) | PAD_ButtonsUp(1) | PAD_ButtonsUp(2) | PAD_ButtonsUp(3);
 	handleGCButtons();
 #elif defined(FUNKEY)
 	while (SDL_PollEvent(&event)) {
@@ -859,14 +855,14 @@ void handlePlayerInput() {
 	}
 #elif defined(WII)
 	WPAD_ScanPads();
-	wii_keysDown = WPAD_ButtonsDown(0);
-	wii_keysUp = WPAD_ButtonsUp(0);
+	wii_keysDown = WPAD_ButtonsDown(0) | WPAD_ButtonsDown(1) | WPAD_ButtonsDown(2) | WPAD_ButtonsDown(3);
+	wii_keysUp = WPAD_ButtonsUp(0) | WPAD_ButtonsUp(1) | WPAD_ButtonsUp(2) | WPAD_ButtonsUp(3);
 	handleWiimoteButtons();
 	handleWiiCCButtons();
 
 	PAD_ScanPads();
-	wii_keysDown = PAD_ButtonsDown(0);
-	wii_keysUp = PAD_ButtonsUp(0);
+	wii_keysDown = PAD_ButtonsDown(0) | PAD_ButtonsDown(1) | PAD_ButtonsDown(2) | PAD_ButtonsDown(3);
+	wii_keysUp = PAD_ButtonsUp(0) | PAD_ButtonsUp(1) | PAD_ButtonsUp(2) | PAD_ButtonsUp(3);
 	handleWiiGCButtons();
 
 	/* Handle Mouse Input (Wii) */
@@ -891,7 +887,14 @@ void handlePlayerInput() {
 	}
 #else
 	/* Handle Analog Input (SDL2) */
-	handleAnalogInput_SDL2();
+	controllerAxis_leftStickX = 0;
+	controllerAxis_leftStickY = 0;
+	for (auto& gameController : controllers) {
+		handleAnalogInput_SDL2(gameController);
+		if (controllerAxis_leftStickX != 0 || controllerAxis_leftStickY != 0) {
+			break; // Stop checking other controllers if any non-zero input is found
+		}
+	}
 	/* Handle Key Presses and Mouse Input (SDL2) */
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -960,6 +963,24 @@ void handlePlayerInput() {
 			case SDL_FINGERUP:
 				if (controlSettings.enableTouchscreen) {
 					justClickedInMiniGrid = false;
+				}
+				break;
+			/* Handle Controller Connect/Disconnect (SDL2) */
+			case SDL_CONTROLLERDEVICEADDED:
+				if (SDL_IsGameController(event.cdevice.which)) {
+					SDL_GameController *gameController = SDL_GameControllerOpen(event.cdevice.which);
+					if (gameController) {
+						controllers.push_back(gameController);
+					}
+				}
+				break;
+			case SDL_CONTROLLERDEVICEREMOVED:
+				for (auto it = controllers.begin(); it != controllers.end(); ++it) {
+					if (SDL_GameControllerGetJoystick(*it) == SDL_JoystickFromInstanceID(event.cdevice.which)) {
+						SDL_GameControllerClose(*it);
+						controllers.erase(it);
+						break;
+					}
 				}
 				break;
 			default:

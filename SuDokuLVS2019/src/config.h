@@ -5,9 +5,9 @@
 
 /* SDL Controller */
 #if defined(PSP) || defined(SDL1)
-extern SDL_Joystick *controller;
+extern std::vector<SDL_Joystick*> controllers;
 #else
-extern SDL_GameController *controller;
+extern std::vector<SDL_GameController*> controllers;
 #endif
 
 /* General Input */

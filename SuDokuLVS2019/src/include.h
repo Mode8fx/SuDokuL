@@ -24,6 +24,7 @@
 #include <math.h>
 //#include <chrono>
 #include <algorithm>
+#include <vector>
 
 #if defined(WII_U)
 #include <unistd.h>
