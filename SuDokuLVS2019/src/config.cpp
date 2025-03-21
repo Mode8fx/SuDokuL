@@ -899,6 +899,7 @@ void handlePlayerInput() {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_QUIT:
+				savePuzzle();
 				isRunning = false;
 				break;
 #if defined(MOUSE_INPUT) && defined(PC)
