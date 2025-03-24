@@ -14,6 +14,9 @@ WPADData *wii_data;
 Uint32 gc_keysDown;
 Uint32 gc_keysUp;
 #endif
+#if !defined(PC)
+bool windowLostFocus = false;
+#endif
 
 bool keyPressed(Uint32 key) {
 	return (keyInputs & key);
@@ -678,6 +681,9 @@ inline static void handleKeyboardKeys_Down() {
 		keyInputs |= INPUT_BACK;
 		keyInputs |= INPUT_START;
 		keyInputs |= INPUT_SELECT;
+		cheat1Counter = 0;
+		songChangeCounter = 0;
+		resetCheatCounters();
 		return;
 	}
 #endif
@@ -930,6 +936,25 @@ void handlePlayerInput() {
 					windowSizeChanged = true;
 				}
 				break;
+#elif !defined(PC)
+			case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST || event.window.event == SDL_WINDOWEVENT_HIDDEN) {
+					if (programState == 9) {
+						preparePauseTimer();
+						programState = 10;
+						windowLostFocus = true;
+						resetCheatCounters();
+					}
+					break;
+				}
+				if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED || event.window.event == SDL_WINDOWEVENT_SHOWN) {
+					if (programState == 10 && windowLostFocus) {
+						programState = 9;
+						windowLostFocus = false;
+						updatePauseTimer();
+					}
+					break;
+				}
 #endif
 			/* Handle Keyboard Input (PC) */
 			case SDL_KEYDOWN:

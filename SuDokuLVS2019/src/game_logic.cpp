@@ -157,12 +157,13 @@ bool mouseIsInsideGridSquare() {
 void gameHandleMiniGridNavigation() {
     if (miniGridState > 0) {
         if (keyPressed(INPUT_LEFT)) {
-            if (--miniGridCursorIndex_x < 0)
+            if (--miniGridCursorIndex_x < 0) {
                 if (miniGridCursorIndex_y == 0) {
                     miniGridCursorIndex_x = 2;
                 } else if (miniGridCursorIndex_x == -2) {
                     miniGridCursorIndex_x = 2;
                 }
+            }
             setGridCursorBySmallX();
         }
         if (keyPressed(INPUT_RIGHT)) {

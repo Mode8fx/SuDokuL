@@ -17,6 +17,8 @@ bool isContinue = false;
 
 #if defined(EMSCRIPTEN)
 void mainloop() {
+#elif defined(ANDROID)
+int SDL_main(int argv, char** args) {
 #else
 int main(int argv, char** args) {
 #endif
@@ -103,6 +105,8 @@ int main(int argv, char** args) {
 	videoSettings.widthSetting = SYSTEM_WIDTH;
 	videoSettings.heightSetting = SYSTEM_HEIGHT;
 	SDL_SetHint(SDL_HINT_ORIENTATIONS, "Landscape");
+	SDL_SetHint(SDL_HINT_ANDROID_BLOCK_ON_PAUSE, "1");
+	SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");
 #endif
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
@@ -349,7 +353,7 @@ int main(int argv, char** args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart,    OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.33",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.34",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	if (compactDisplay) {
 		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 8 / 32);
 	} else {
@@ -1130,6 +1134,8 @@ int main(int argv, char** args) {
 				/* Key Presses + Animate Cursor */
 #if defined(FUNKEY)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
+#elif defined(ANDROID)
+				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
@@ -1147,6 +1153,13 @@ int main(int argv, char** args) {
 #if defined(FUNKEY)
 						case 0:
 							setFrameRateByOptions(-1);
+							break;
+#elif defined(ANDROID)
+						case 0:
+							setFrameRateByOptions(-1);
+							break;
+						case 1:
+							sdlToggleFullscreen();
 							break;
 #else
 						case 0:
@@ -1180,6 +1193,13 @@ int main(int argv, char** args) {
 #if defined(FUNKEY)
 						case 0:
 							setFrameRateByOptions(1);
+							break;
+#elif defined(ANDROID)
+						case 0:
+							setFrameRateByOptions(1);
+							break;
+						case 1:
+							sdlToggleFullscreen();
 							break;
 #else
 						case 0:
