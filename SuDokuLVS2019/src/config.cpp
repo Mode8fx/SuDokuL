@@ -939,11 +939,14 @@ void handlePlayerInput() {
 #elif !defined(PC)
 			case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST || event.window.event == SDL_WINDOWEVENT_HIDDEN) {
-					if (programState == 9) {
+					if (programState == 9 || programState == 10) {
 						preparePauseTimer();
-						programState = 10;
-						windowLostFocus = true;
+						savePuzzle();
 						resetCheatCounters();
+						if (programState == 9) {
+							windowLostFocus = true;
+							programState = 10;
+						}
 					}
 					break;
 				}
