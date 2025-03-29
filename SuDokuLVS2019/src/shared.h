@@ -53,6 +53,8 @@ struct BGScroll {
 	Sint16 speedStep_x_int, speedStep_y_int;
 	Sint16 i;
 	Sint16 j;
+	Uint16 final_x;
+	Uint16 final_y;
 };
 
 struct Timer {

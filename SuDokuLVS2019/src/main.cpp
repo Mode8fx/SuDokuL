@@ -191,11 +191,13 @@ int main(int argv, char** args) {
 	updateGlobalTimer();
 	deltaTime = (timer_global.now - timer_global.last);
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-	bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile_rect_h;
+	bgScroll.speedStep_x_int = int(floor(bgScroll.speedStep_x)) % tile_rect_h;
 	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-	bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile_rect_w;
-	for (bgScroll.j = -tile_rect_h; bgScroll.j <= gameHeight + tile_rect_h; bgScroll.j += tile_rect_h) {
-		for (bgScroll.i = -tile_rect_w; bgScroll.i <= gameWidth + tile_rect_w; bgScroll.i += tile_rect_w) {
+	bgScroll.speedStep_y_int = int(floor(bgScroll.speedStep_y)) % tile_rect_w;
+	bgScroll.final_x = gameHeight + tile_rect_w;
+	bgScroll.final_y = gameHeight + tile_rect_h;
+	for (bgScroll.j = -tile_rect_h; bgScroll.j <= bgScroll.final_y; bgScroll.j += tile_rect_h) {
+		for (bgScroll.i = -tile_rect_w; bgScroll.i <= bgScroll.final_x; bgScroll.i += tile_rect_w) {
 			tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
 			tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
 			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
@@ -606,11 +608,13 @@ int main(int argv, char** args) {
 
 		/* Draw Tile Background */
 		bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-		bgScroll.speedStep_x_int = int(bgScroll.speedStep_x) % tile_rect_h;
+		bgScroll.speedStep_x_int = int(floor(bgScroll.speedStep_x)) % tile_rect_h;
 		bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-		bgScroll.speedStep_y_int = int(bgScroll.speedStep_y) % tile_rect_w;
-		for (bgScroll.j = -tile_rect_h; bgScroll.j <= gameHeight + tile_rect_h; bgScroll.j += tile_rect_h) {
-			for (bgScroll.i = -tile_rect_w; bgScroll.i <= gameWidth + tile_rect_w; bgScroll.i += tile_rect_w) {
+		bgScroll.speedStep_y_int = int(floor(bgScroll.speedStep_y)) % tile_rect_w;
+		bgScroll.final_x = gameWidth + (Uint16)tile_rect_w;
+		bgScroll.final_y = gameHeight + (Uint16)tile_rect_h;
+		for (bgScroll.j = -tile_rect_h; bgScroll.j <= bgScroll.final_y; bgScroll.j += tile_rect_h) {
+			for (bgScroll.i = -tile_rect_w; bgScroll.i <= bgScroll.final_x; bgScroll.i += tile_rect_w) {
 				tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
 				tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
 				SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
