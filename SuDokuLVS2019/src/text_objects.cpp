@@ -133,17 +133,12 @@ void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i
 void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16 pos_y) {
     i = 0;
     if (num > 99) {
-        j = num / 100;
-        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
-        j = (num / 10) % 10;
-        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
-        j = num % 10;
-        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0);
+        setAndRenderNumHelper(num / 100, pos_x_centered, pos_y, 0);
+        setAndRenderNumHelper((num / 10) % 10, pos_x_centered, pos_y, 0);
+        setAndRenderNumHelper(num % 10, pos_x_centered, pos_y, 0);
     } else if (num > 9) {
-        j = num / 10;
-        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0.5);
-        j = num % 10;
-        setAndRenderNumHelper(j, pos_x_centered, pos_y, 0.5);
+        setAndRenderNumHelper(num / 10, pos_x_centered, pos_y, 0.5);
+        setAndRenderNumHelper(num % 10, pos_x_centered, pos_y, 0.5);
     } else {
         setAndRenderNumHelper((Sint8)num, pos_x_centered, pos_y, 1);
     }
@@ -235,34 +230,34 @@ void renderFrameRateChoice() {
 }
 
 void setAndRenderNumAspectRatio4_3(Sint16 pos_x_left, Sint16 pos_y) {
-    i = 0;
-    setAndRenderNumHelper(4, pos_x_left, pos_y, 0);
-    setAndRenderColon(pos_x_left, pos_y);
-    setAndRenderNumHelper(3, pos_x_left, pos_y, 0);
+	i = 0;
+	setAndRenderNumHelper(4, pos_x_left, pos_y, 0);
+	setAndRenderColon(pos_x_left, pos_y);
+	setAndRenderNumHelper(3, pos_x_left, pos_y, 0);
 }
 
 void setAndRenderNumAspectRatio16_9(Sint16 pos_x_left, Sint16 pos_y) {
-    i = 0;
-    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
-    setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
-    setAndRenderColon(pos_x_left, pos_y);
-    setAndRenderNumHelper(9, pos_x_left, pos_y, 0);
+	i = 0;
+	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+	setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
+	setAndRenderColon(pos_x_left, pos_y);
+	setAndRenderNumHelper(9, pos_x_left, pos_y, 0);
 }
 
 void setAndRenderNumAspectRatio16_10(Sint16 pos_x_left, Sint16 pos_y) {
-    i = 0;
-    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
-    setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
-    setAndRenderColon(pos_x_left, pos_y);
-    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
-    setAndRenderNumHelper(0, pos_x_left, pos_y, 0);
+	i = 0;
+	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+	setAndRenderNumHelper(6, pos_x_left, pos_y, 0);
+	setAndRenderColon(pos_x_left, pos_y);
+	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+	setAndRenderNumHelper(0, pos_x_left, pos_y, 0);
 }
 
 void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
-    i = 0;
-    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
-    setAndRenderColon(pos_x_left, pos_y);
-    setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+	i = 0;
+	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
+	setAndRenderColon(pos_x_left, pos_y);
+	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
 }
 
 void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
@@ -273,30 +268,30 @@ void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
 }
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-	k = index / 9;
+	Sint8 k = index / 9;
 	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
 	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-    k = index / 9;
-    setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)(((num - 1) / 3) * gridSizeA) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
-    renderTextChar(&textNumsObj[num]);
+	Sint8 k = index / 9;
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)(((num - 1) / 3) * gridSizeA) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
+	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
-    k = (num - 1) / 3;
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k]), textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k]), textNumsObj[num].outlineOffset_y);
-    renderTextChar(&textNumsObj[num]);
+	Sint8 k = (num - 1) / 3;
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k]), textNumsObj[num].outlineOffset_x);
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k]), textNumsObj[num].outlineOffset_y);
+	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-    setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_x);
-    setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_y);
-    renderTextChar(&textNumsObj[num]);
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_x);
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_y);
+	renderTextChar(&textNumsObj[num]);
 }
 
 void menuMoveTextRight(TextObject *textObj, double timer) {

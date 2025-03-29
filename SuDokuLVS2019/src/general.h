@@ -38,9 +38,7 @@ constexpr auto PI = 3.14159265;
     (0.5 * pow(((((numSeconds) - (timeVal)) / (numSeconds)) * sqrt(2 * (dist))), 2))
 
 /* General-use Variables */
-extern Sint8 i, j, k;
-extern Sint8 char_x1, char_y1, char_x2, char_y2;
-extern double d;
+extern Sint8 i;
 
 /* Other */
 extern bool isRunning;

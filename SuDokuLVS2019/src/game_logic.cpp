@@ -419,21 +419,32 @@ void drawSidebar() {
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
     renderText(&text_Empty);
     SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
+    Sint16 pos_x_left_s1 = gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1;
+    Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
+    Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;
+    Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
     // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
 #if defined(SDL1)
     if (compactDisplay) {
         gameSidebarSmall1Rect.y = game_sidebar_small.rect.y;
         gameSidebarSmall2Rect.y = game_sidebar_small.rect.y;
         gameSidebarSmall3Rect.y = game_sidebar_small.rect.y;
-        SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
-        RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize);
+        SET_AND_RENDER_TIMER(pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
+        RENDER_NUM_EMPTY(pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize);
     } else {
-        SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize);
-        RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize);
+      SET_AND_RENDER_TIMER(pos_x_left_s1, pos_y_s1);
+      RENDER_NUM_EMPTY(pos_x_left_s2, pos_y_s2);
     }
 #else
-    SET_AND_RENDER_TIMER(gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1, text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize);
-    RENDER_NUM_EMPTY(gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1, text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize);
+    i = 0;
+    setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
+    setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
+    setAndRenderColon(pos_x_left_s1, pos_y_s1);
+    setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
+    setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
+    i = 0;
+    setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
+    setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
 #endif
     switch (menuCursorIndex_play) {
         case 0:

@@ -485,25 +485,6 @@ extern void controlsSetConfirmBackPos();
     textObj.rect.x = (Sint16)(pos_x);                                                                \
     textObj.rect.y = (Sint16)(pos_y);
 
-#define SET_AND_RENDER_TIMER(pos_x_left, pos_y)     \
-    i = 0;                                          \
-    j = (int(timer_game.now) / 600);                \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
-    j = ((int(timer_game.now) / 60) % 10);          \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
-    setAndRenderColon(pos_x_left, pos_y);           \
-    j = ((int(timer_game.now) % 60) / 10);          \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
-    j = (int(timer_game.now) % 10);                 \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0);
-
-#define RENDER_NUM_EMPTY(pos_x_left, pos_y)         \
-    i = 0;                                          \
-    j = int(numEmpty) / 10;                         \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0); \
-    j = int(numEmpty) % 10;                         \
-    setAndRenderNumHelper(j, pos_x_left, pos_y, 0);
-
 constexpr auto CREDITS_STEP = 1.6;
 
 #if defined(VITA) || defined(PSP)

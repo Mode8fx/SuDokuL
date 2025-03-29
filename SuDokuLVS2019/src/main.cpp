@@ -178,7 +178,7 @@ int main(int argv, char** args) {
 	char tempCharArr[2];
 	tempCharArr[1] = '\0';
 	/* General */
-	for (k = 32; k < LEN(textChars); k++) {
+	for (Sint8 k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1);
 		adjustCharOutlineOffset(textChars, k, -1, -1.5);
@@ -317,23 +317,23 @@ int main(int argv, char** args) {
 	pixelFont_grid = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, gridNumSize);
 	pixelFont_grid_mini = TTF_OpenFontRW(SDL_RWFromConstMem(Commodore_Pixelized_v1_2_ttf, Commodore_Pixelized_v1_2_ttf_len), 1, (int)gridSizeA);
 	/* General (Large) */
-	for (k = 32; k < 91; k++) {
+	for (Sint8 k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2);
 		adjustCharOutlineOffset(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
-	for (k = 0; k < 10; k++) {
+	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2);
 		adjustCharOutlineOffset(gridNums_black, k, -1, -1.5);
 	}
-	for (k = 0; k < 10; k++) {
+	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2);
 		adjustCharOutlineOffset(gridNums_blue, k, -1, -1.5);
 	}
-	for (k = 0; k < 10; k++) {
+	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1);
 		adjustCharOutlineOffset(gridNums_blue_mini, k, -1, -1.5);
@@ -910,7 +910,7 @@ int main(int argv, char** args) {
 					} else if (grid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
-						for (j = 1; j < 10; j++) {
+						for (Sint8 j = 1; j < 10; j++) {
 							if (miniGrid[i] & (1<<j)) {
 								setAndRenderNumGridMainMini(gridNums_blue_mini, int(j), i);
 							}
@@ -968,7 +968,7 @@ int main(int argv, char** args) {
 					} else if (grid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
-						for (j = 1; j < 10; j++) {
+						for (Sint8 j = 1; j < 10; j++) {
 							if (miniGrid[i] & (1<<j)) {
 								setAndRenderNumGridMainMini(gridNums_blue_mini, int(j), i);
 							}

@@ -236,10 +236,10 @@ Uint8 generateGrid_Backtracking() {
 
     i = 0;
     initPossibleValsArrByIndex(i);
-    j = 0;
+    Sint8 j = 0;
     while (i < 81) {
-        char_x1 = true; /* flag */
-        for (k = 0; k < 20; k++) {
+        Sint8 flag = true;
+        for (Sint8 k = 0; k < 20; k++) {
             if (grid[relevantIndicesTable_All[i][k]] == possibleValsArr[j]) {
                 j++;
                 while (j > 8) {
@@ -247,19 +247,19 @@ Uint8 generateGrid_Backtracking() {
                     grid[i] = 0;
                     i--;
                     initPossibleValsArrByIndex(i);
-                    for (char_x2 = 0; char_x2 < 9; char_x2++) {
-                        if (possibleValsArr[char_x2] == grid[i]) {
-                            j = char_x2 + 1;
+                    for (Sint8 num = 0; num < 9; num++) {
+                        if (possibleValsArr[num] == grid[i]) {
+                            j = num + 1;
                             break;
                         }
                     }
                     // j = grid[i] + 1;
                 }
-                char_x1 = false;
+                flag = false;
                 break;
             }
         }
-        if (char_x1) {
+        if (flag) {
             // PRINT("SET " << (int)cellIndices[i] << " TO " << (int) possibleValsArr[j]);
             grid[i] = possibleValsArr[j];
             i++;
@@ -351,9 +351,9 @@ Sint16 solvePuzzle(Sint16 recursiveDifficulty) {
     for (i = 0; i < 81; i++) {
         if (tempGrid[i] == 0) {
             currNumVals = 0;
-            for (j = 9; j > 0; j--) {
+            for (Sint8 j = 9; j > 0; j--) {
                 passed = true;
-                for (k = 0; (Uint32)k < LEN(relevantIndicesTable_All[i]); k++) {
+                for (Uint32 k = 0; k < LEN(relevantIndicesTable_All[i]); k++) {
                     if (j == tempGrid[relevantIndicesTable_All[i][k]]) {
                         passed = false;
                         break;
@@ -655,9 +655,9 @@ void updateNumEmpty() {
 }
 
 void checkForVictory() {
-    k = 1;
+    Sint8 k = 1;
     if (numEmpty == 0) {
-        for (j = 0; j < 81; j++) {
+        for (Sint8 j = 0; j < 81; j++) {
             if (grid[j] != solutionGrid[j]) {
                 k = 0;
                 break;

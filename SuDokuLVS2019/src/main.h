@@ -457,9 +457,7 @@ Uint8 programState;
 bool changedProgramState;
 
 /* General-use Variables */
-Sint8 i, j, k;
-Sint8 char_x1, char_y1, char_x2, char_y2;
-double d;
+Sint8 i;
 
 /* Other */
 bool isRunning;

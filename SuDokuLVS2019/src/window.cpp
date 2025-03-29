@@ -5,7 +5,7 @@
 void snapWindow_x(double range, Uint16 size) {
 #if defined(PC) && !defined(SDL1)
 	if (isWindowed) {
-		d = ((float)SDL_GetWindowSurface(window)->w / size);
+		double d = ((float)SDL_GetWindowSurface(window)->w / size);
 		if ((d - floor(d)) >= pow(1 - range, floor(d))) {
 			if ((size * ceil(d)) < DM.w) {
 				SDL_SetWindowSize(window, size * (short)(ceil(d)), SDL_GetWindowSurface(window)->h);
@@ -20,7 +20,7 @@ void snapWindow_x(double range, Uint16 size) {
 void snapWindow_y(double range, Uint16 size) {
 #if defined(PC) && !defined(SDL1)
 	if (isWindowed) {
-		d = ((float)SDL_GetWindowSurface(window)->h / size);
+		double d = ((float)SDL_GetWindowSurface(window)->h / size);
 		if ((d - floor(d)) >= pow(1 - range, (short)(floor(d)))) {
 			if ((size * ceil(d)) < DM.h) {
 				SDL_SetWindowSize(window, SDL_GetWindowSurface(window)->w, size * (short)ceil(d));

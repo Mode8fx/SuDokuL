@@ -188,7 +188,7 @@ void initStartingSharedVariables() {
 
 static void initNumOffsets_544() {
 	//d = (double)gameHeight / SCALING_HEIGHT;
-	d = 1.0;
+	double d = 1.0;
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = (Sint8)(2 * d);
 		numOffset_large_y[i] = (Sint8)(d);
@@ -208,7 +208,7 @@ static void initNumOffsets_544() {
 
 static void initNumOffsets_272() {
 	//d = (double)gameHeight / SCALING_HEIGHT;
-	d = 1.0;
+	double d = 1.0;
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = (Sint8)(d);
 		numOffset_large_y[i] = 0;
@@ -226,7 +226,7 @@ static void initNumOffsets_272() {
 
 static void initNumOffsets_240() {
 	//d = (double)gameHeight / SCALING_HEIGHT;
-	d = 1.0;
+	double d = 1.0;
 	for (i = 0; i < 9; i++) {
 		numOffset_large_x[i] = (Sint8)(d);
 		numOffset_large_y[i] = 0;
