@@ -288,6 +288,7 @@ void saveCurrentSettings() {
 }
 
 void setNativeResolution() {
+	Sint32 int_i;
 	switch (videoSettings.aspectRatioIndex) {
 		case 1:
 			int_i = SYSTEM_HEIGHT * 4 / 3;
@@ -457,17 +458,17 @@ void sdlToggleIntegerScale() {
 void setScaling() {
 #if !defined(ANDROID)
 	if (isIntegerScale) {
-		int_i = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));
-		if (int_i < 1) int_i = 1;
-		centerViewport.w = gameWidth * int_i;
-		centerViewport.h = gameHeight * int_i;
-		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / int_i), 0);
-		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / int_i), 0);
+		Sint32 intScreenScale = min((int)(SCALING_WIDTH / gameWidth), (int)(SCALING_HEIGHT / gameHeight));
+		if (intScreenScale < 1) intScreenScale = 1;
+		centerViewport.w = gameWidth * intScreenScale;
+		centerViewport.h = gameHeight * intScreenScale;
+		centerViewport.x = max((int)((SCALING_WIDTH - centerViewport.w) / 2 / intScreenScale), 0);
+		centerViewport.y = max((int)((SCALING_HEIGHT - centerViewport.h) / 2 / intScreenScale), 0);
 #if !defined(SDL1)
-		SDL_RenderSetScale(renderer, (float)int_i, (float)int_i);
+		SDL_RenderSetScale(renderer, (float)intScreenScale, (float)intScreenScale);
 		SDL_RenderSetViewport(renderer, &centerViewport);
 #endif
-		screenScale = (float)int_i;
+		screenScale = (float)intScreenScale;
 	} else {
 		screenScale = (float)SCALING_WIDTH / gameWidth;
 		if ((float)SCALING_HEIGHT / gameHeight < screenScale) {

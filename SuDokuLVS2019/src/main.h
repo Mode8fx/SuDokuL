@@ -166,8 +166,6 @@ TextCharObject gridNums_blue_mini[10];
 TextCharObject textChars[127];
 TextCharObject textChars_large[91];
 char tempCharArray[64];
-Uint8 charCounter;
-Uint16 charWidthCounter;
 /* Specific */
 TextObject text_Loading;
 TextObject text_Continue;
@@ -405,7 +403,7 @@ TextObject text_Controls;
 TextObject text_Options;
 TextObject text_Credits;
 TextObject text_Quit;
-SDL_Rect divider;
+//SDL_Rect divider;
 SDL_Rect youWinRect;
 
 /* Game Logic Variables */
@@ -461,8 +459,6 @@ bool changedProgramState;
 /* General-use Variables */
 Sint8 i, j, k;
 Sint8 char_x1, char_y1, char_x2, char_y2;
-Sint32 int_i;
-Uint32 uint_i;
 double d;
 
 /* Other */

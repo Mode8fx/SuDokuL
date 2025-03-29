@@ -169,8 +169,6 @@ extern Uint32 ticksPerFrame;
 // the grid is a square; these sizes represent both X and Y dimensions
 #define SIDEBAR_SMALL_SIZE_X  (gridSize / 3)
 #define SIDEBAR_SMALL_SIZE_Y  (gridSize / 4)
-#define GRID_STARTING_POS_X   (gridStartingPosX[0])
-#define GRID_STARTING_POS_Y   (gridStartingPosY[0])
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 

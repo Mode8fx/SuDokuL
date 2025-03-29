@@ -61,8 +61,8 @@ void renderTextChar(TextCharObject *textObj) {
 
 void renderText(TextObject *textObj) {
 	STRCPY(tempCharArray, textObj->str.c_str());
-	charWidthCounter = 0;
-	for (charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
+	Uint16 charWidthCounter = 0;
+	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
 		setTextPosX(&CHAR_AT_INDEX(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX(charCounter).outlineOffset_x);
 		setTextPosY(&CHAR_AT_INDEX(charCounter), textObj->rect.y, CHAR_AT_INDEX(charCounter).outlineOffset_y);
 		renderTextChar(&textChars[tempCharArray[charCounter]]);
@@ -72,8 +72,8 @@ void renderText(TextObject *textObj) {
 
 void renderTextLarge(TextObject *textObj) {
 	STRCPY(tempCharArray, textObj->str.c_str());
-	charWidthCounter = 0;
-	for (charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
+	Uint16 charWidthCounter = 0;
+	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
 		setTextPosX(&CHAR_AT_INDEX_LARGE(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_x);
 		setTextPosY(&CHAR_AT_INDEX_LARGE(charCounter), textObj->rect.y, CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_y);
 		renderTextChar(&textChars_large[tempCharArray[charCounter]]);

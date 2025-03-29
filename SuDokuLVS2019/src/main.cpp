@@ -306,10 +306,10 @@ int main(int argv, char** args) {
 	PREPARE_SPRITE(miniGrid_top_right, grid_mini_top_right_png, grid_mini_top_right_png_len, 0, 0, 1);
 
 	/* Set Rectangles */
-	divider.w = gameWidth * 17 / 20;
-	divider.h = gameHeight / 96;
-	divider.x = (gameWidth - divider.w) / 2;
-	divider.y = 0;
+	//divider.w = gameWidth * 17 / 20;
+	//divider.h = gameHeight / 96;
+	//divider.x = (gameWidth - divider.w) / 2;
+	//divider.y = 0;
 
 	/* Set Text */
 	/* General - Fonts */

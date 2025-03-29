@@ -66,8 +66,6 @@ extern TextCharObject gridNums_blue_mini[10];
 extern TextCharObject textChars[127];
 extern TextCharObject textChars_large[91];
 extern char tempCharArray[64];
-extern Uint8 charCounter;
-extern Uint16 charWidthCounter;
 /* Specific */
 extern TextObject text_Loading;
 extern TextObject text_Continue;
@@ -304,7 +302,7 @@ extern TextObject text_Controls;
 extern TextObject text_Options;
 extern TextObject text_Credits;
 extern TextObject text_Quit;
-extern SDL_Rect divider;
+//extern SDL_Rect divider;
 extern SDL_Rect youWinRect;
 
 /* Font-Related Variables */
@@ -470,7 +468,7 @@ extern void controlsSetConfirmBackPos();
 #define SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y)                              \
     textObj.str = text;                                                                        \
     STRCPY(tempCharArray, textObj.str.c_str());                                                \
-    for (uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                                \
+    for (Uint32 uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                         \
         textObj.rect.w += textChars[tempCharArray[uint_i]].rect.w;                             \
         textObj.rect.h = max(textObj.rect.h, (Sint16)textChars[tempCharArray[uint_i]].rect.h); \
     }                                                                                          \
@@ -480,7 +478,7 @@ extern void controlsSetConfirmBackPos();
 #define SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y)                              \
     textObj.str = text;                                                                              \
     STRCPY(tempCharArray, textObj.str.c_str());                                                      \
-    for (uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                                      \
+    for (Uint32 uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                               \
         textObj.rect.w += textChars_large[tempCharArray[uint_i]].rect.w;                             \
         textObj.rect.h = max(textObj.rect.h, (Sint16)textChars_large[tempCharArray[uint_i]].rect.h); \
     }                                                                                                \
