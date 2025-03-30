@@ -429,11 +429,25 @@ void drawSidebar() {
         gameSidebarSmall1Rect.y = game_sidebar_small.rect.y;
         gameSidebarSmall2Rect.y = game_sidebar_small.rect.y;
         gameSidebarSmall3Rect.y = game_sidebar_small.rect.y;
-        SET_AND_RENDER_TIMER(pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
-        RENDER_NUM_EMPTY(pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize);
+        i = 0;
+        setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
+        setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
+        setAndRenderColon(pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
+        setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
+        setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
+        i = 0;
+        setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
+        setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
     } else {
-      SET_AND_RENDER_TIMER(pos_x_left_s1, pos_y_s1);
-      RENDER_NUM_EMPTY(pos_x_left_s2, pos_y_s2);
+      i = 0;
+      setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
+      setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
+      setAndRenderColon(pos_x_left_s1, pos_y_s1);
+      setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
+      setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
+      i = 0;
+      setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
+      setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
     }
 #else
     i = 0;

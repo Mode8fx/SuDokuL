@@ -1,5 +1,7 @@
 @echo off
 
+set "CURR_DIR=%CD%"
+
 :: Manual sleep amounts (because `start /wait` doesn't work...)
 set SLEEP_COMPILE=45
 set SLEEP_COMPILE_LONG=60
@@ -13,6 +15,8 @@ set REPO_WSL=/mnt%REPO_DKP%
 set REPO_MSYS=%REPO_DKP%
 set OUTPUT_DIR=%REPO%/dist/new_version/SuDokuL
 set RELEASE_RESOURCES=%REPO%
+set MAKEFILE_DEFAULT=%REPO%/Makefile
+set MAKEFILE_DEFAULT=%MAKEFILE_DEFAULT:/=\%
 
 :: Path: devkitPro
 set DEVKITPRO=C:/devkitPro/msys2/mingw64.exe
@@ -81,11 +85,18 @@ set MAKEFILE_WSL_XBOX=%MAKEFILES_WSL%/Makefile_xbox
 set MAKEFILE_WSL_FUNKEY=%MAKEFILES_WSL%/Makefile_funkey
 set OUTPUT_FUNKEY=%OUTPUT_DIR%-funkey
 
+:: Makefile: Android
+set OUTPUT_ANDROID=%OUTPUT_DIR%-android.apk
+set OUTPUT_ANDROID_IDSIG=%OUTPUT_ANDROID%.idsig
+set OUTPUT_ANDROID_IDSIG=%OUTPUT_ANDROID_IDSIG:/=\%
+
 
 
 :: Running compilation commands...
-call :compile_windows_x64
-call :compile_windows_x86
+rem call :compile_windows_x64
+rem call :compile_windows_x86
+call :compile_3ds
+goto :eof
 call :compile_linux
 call :compile_gc
 call :compile_wii
@@ -94,7 +105,8 @@ call :compile_switch
 call :compile_vita
 call :compile_funkey
 rem call :compile_psp
-rem call :compile_3ds
+call :compile_3ds
+call :compile_android
 
 echo Done.
 goto :eof
@@ -138,27 +150,29 @@ goto :eof
 
 :compile_gc
 echo Gamecube: Compiling with devkitPro...
-:: make is run twice to get around a makefile issue
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make -f %MAKEFILE_DKP_GC%; make -f %MAKEFILE_DKP_GC%"
+cp %MAKEFILE_DKP_GC% %MAKEFILE_DEFAULT%
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make"
 sleep %SLEEP_COMPILE%
 echo Gamecube: Moving compiled dol to %OUTPUT_GC%...
 mv %REPO%/boot.dol %OUTPUT_GC%
 echo Gamecube: Cleaning up...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean -f %MAKEFILE_DKP_GC%"
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean"
 sleep %SLEEP_CLEAN%
+del /q "%MAKEFILE_DEFAULT%"
 echo.
 goto :eof
 
 :compile_wii
 echo Wii: Compiling with devkitPro...
-:: make is run twice to get around a makefile issue
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make -f %MAKEFILE_DKP_WII%; make -f %MAKEFILE_DKP_WII%"
+cp %MAKEFILE_DKP_WII% %MAKEFILE_DEFAULT%
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make"
 sleep %SLEEP_COMPILE%
 echo Wii: Moving compiled dol to %OUTPUT_WII%...
 mv %REPO%/boot.dol %OUTPUT_WII%
 echo Wii: Cleaning up...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean -f %MAKEFILE_DKP_WII%"
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean"
 sleep %SLEEP_CLEAN%
+del /q "%MAKEFILE_DEFAULT%"
 echo.
 goto :eof
 
@@ -181,27 +195,31 @@ goto :eof
 
 :compile_switch
 echo Switch: Compiling with devkitPro...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make -f %MAKEFILE_DKP_SWITCH%"
+cp %MAKEFILE_DKP_SWITCH% %MAKEFILE_DEFAULT%
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make"
 sleep %SLEEP_COMPILE%
 echo Switch: Moving compiled nro to %OUTPUT_SWITCH%...
-mv %REPO%/SuDokuL.nro %OUTPUT_SWITCH%
+mv %REPO%/SuDokuLVS2019.nro %OUTPUT_SWITCH%
 echo Switch: Cleaning up...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean -f %MAKEFILE_DKP_SWITCH%"
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean"
 sleep %SLEEP_CLEAN%
+del /q "%MAKEFILE_DEFAULT%"
 echo.
 goto :eof
 
 :compile_3ds
 echo 3DS: Compiling with devkitPro...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make -f %MAKEFILE_DKP_3DS%"
+cp %MAKEFILE_DKP_3DS% %MAKEFILE_DEFAULT%
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make"
 sleep %SLEEP_COMPILE%
 echo 3DS: Moving compiled 3dsx to %OUTPUT_3DS%...
-mv %REPO%/SuDokuL.3dsx %OUTPUT_3DS%
+mv %REPO%/SuDokuLVS2019.3dsx %OUTPUT_3DS%
 echo 3DS: Creating CIA in %OUTPUT_3DS_CIA%...
-%MAKEROM% -f cia -o %OUTPUT_3DS_CIA% -elf %REPO%/SuDokuL.elf -icon %RELEASE_RESOURCES%/icon_3ds.smdh -banner %RELEASE_RESOURCES%/banner_3ds.bnr -ver %VERSION_3DS% -rsf %RELEASE_RESOURCES%/app_3ds.rsf
+%MAKEROM% -f cia -o %OUTPUT_3DS_CIA% -elf %REPO%/SuDokuLVS2019.elf -icon %RELEASE_RESOURCES%/icon_3ds.smdh -banner %RELEASE_RESOURCES%/banner_3ds.bnr -ver %VERSION_3DS% -rsf %RELEASE_RESOURCES%/app_3ds.rsf
 echo 3DS: Cleaning up...
-start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean -f %MAKEFILE_DKP_3DS%"
+start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean"
 sleep %SLEEP_CLEAN%
+del /q "%MAKEFILE_DEFAULT%"
 echo.
 goto :eof
 
@@ -244,4 +262,21 @@ rem wsl -e sh -c "cd ~/nxdk/bin && ./activate && cd %REPO_WSL% && make -f %MAKEF
 rem echo Xbox: Moving compiled binary to %OUTPUT_XBOX%...
 rem mv %REPO%/build_xbox/sudokul %OUTPUT_XBOX%
 rem echo.
+goto :eof
+
+:compile_android
+echo Android: Compiling with Android Studio...
+cd "%REPO%/Android/android-project"
+rem call ndk-build clean NDK_PROJECT_PATH=app NDK_MODULE_PATH=app/jni
+call ndk-build NDK_PROJECT_PATH=app NDK_MODULE_PATH=app/jni
+call gradlew assembleRelease
+echo Android: Signing compiled apk and moving it to %OUTPUT_ANDROID%...
+echo Type keystore password and press Enter.
+call apksigner sign --ks my-release-key.keystore --out %OUTPUT_ANDROID% ./app/build/outputs/apk/release/app-release-unsigned.apk
+rem call adb install -r app-release-signed.apk
+sleep 2
+echo Android: Deleting unneeded idsig file...
+del /q "%OUTPUT_ANDROID_IDSIG%"
+cd /d "%CURR_DIR%"
+echo.
 goto :eof
