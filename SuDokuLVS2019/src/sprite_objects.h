@@ -65,7 +65,7 @@ extern SpriteObjectWithPos *currMiniGrid;
 
 #if !defined(SDL1)
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale)                  \
-    spriteObj.texture = IMG_LoadTexture_RW(renderer, SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    spriteObj.texture = IMG_LoadTexture_RW(renderer, SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1); \
     SDL_QueryTexture(spriteObj.texture, NULL, NULL, &spriteObj.width, &spriteObj.height);                  \
     SET_SPRITE_SCALE(spriteObj, scale);                                                                    \
     spriteObj.rect.x = pos_x;                                                                              \
@@ -75,11 +75,13 @@ extern SpriteObjectWithPos *currMiniGrid;
 		PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale)
 #else
 #define PREPARE_SPRITE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
-    spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    spriteObj.texture = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1); \
+    SDL_SetColorKey(spriteObj.texture, SDL_SRCCOLORKEY, SDL_MapRGB(spriteObj.texture->format, 0xFF, 0, 0xFF)); \
     spriteObj.width = spriteObj.texture->w;                                               \
 	  spriteObj.height = spriteObj.texture->h;                                              \
     SET_SPRITE_SCALE(spriteObj, scale);                                                   \
     scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, spriteObj.texture->format->BitsPerPixel, spriteObj.texture->format->Rmask, spriteObj.texture->format->Gmask, spriteObj.texture->format->Bmask, spriteObj.texture->format->Amask); \
+    SDL_SetColorKey(scaledImage, SDL_SRCCOLORKEY, SDL_MapRGB(scaledImage->format, 0xFF, 0, 0xFF)); \
     SDL_SoftStretch(spriteObj.texture, NULL, scaledImage, NULL);                          \
     SDL_FreeSurface(spriteObj.texture);                                                   \
 		spriteObj.texture = scaledImage;                                                      \
@@ -87,7 +89,8 @@ extern SpriteObjectWithPos *currMiniGrid;
     spriteObj.rect.y = pos_y;
 
 #define PREPARE_SPRITE_KEEP_SCALE(spriteObj, spriteImage_data, spriteImage_len, pos_x, pos_y, scale) \
-    spriteObj.texture = IMG_Load_RW(SDL_RWFromMem(spriteImage_data, spriteImage_len), 1); \
+    spriteObj.texture = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1); \
+    SDL_SetColorKey(spriteObj.texture, SDL_SRCCOLORKEY, SDL_MapRGB(spriteObj.texture->format, 0xFF, 0, 0xFF)); \
     spriteObj.width = spriteObj.texture->w;                                               \
 	  spriteObj.height = spriteObj.texture->h;                                              \
     SET_SPRITE_SCALE(spriteObj, scale);                                                   \

@@ -115,7 +115,7 @@ void savePuzzle() {
 void initDefaultBGScale() {
 #if defined(FUNKEY)
 	defaultBGScale = 4;
-#elif defined(VITA)
+#elif defined(VITA) || defined(THREEDS)
 	defaultBGScale = 2;
 #elif defined(WII_U) || defined(SWITCH)
 	defaultBGScale = 3;
@@ -403,12 +403,18 @@ void setAspectRatioByOptions(Sint8 increment) {
 	}
 }
 
+#if defined(THREEDS)
+#define NUM_FRAMERATE_OPTIONS 2
+#else
+#define NUM_FRAMERATE_OPTIONS 5
+#endif
+
 void setFrameRateByOptions(Sint8 increment) {
 	addon131Settings.frameRateIndex += increment;
 	if (addon131Settings.frameRateIndex < 0) {
-		addon131Settings.frameRateIndex = 5;
+		addon131Settings.frameRateIndex = NUM_FRAMERATE_OPTIONS;
 	}
-	else if (addon131Settings.frameRateIndex > 5) {
+	else if (addon131Settings.frameRateIndex > NUM_FRAMERATE_OPTIONS) {
 		addon131Settings.frameRateIndex = 0;
 	}
 	switch (addon131Settings.frameRateIndex) {
