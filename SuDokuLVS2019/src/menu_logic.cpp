@@ -282,20 +282,23 @@ bool mouseMoved() {
 
 void updateMousePosViewportMouse() {
 #if defined(WII)
-  mouseInput_x = (Sint32)(mouseInput_x / screenScale);
-  mouseInput_y = (Sint32)(mouseInput_y / screenScale);
+  mouseInput_x = (int)(mouseInput_x / screenScale);
+  mouseInput_y = (int)(mouseInput_y / screenScale);
+#elif defined(THREEDS)
+	mouseInput_x = (mouseInput_x - 6) * 160 / 193 + 40; // convert mouse range (6,392) to 3DS range (40,360) (middle 320 pixels)
+  //mouseInput_y = (int)(mouseInput_y / screenScale);
 #else
-    mouseInput_x = (Sint32)(mouseInput_x / screenScale - centerViewport.x);
-    mouseInput_y = (Sint32)(mouseInput_y / screenScale - centerViewport.y);
+  mouseInput_x = (int)(mouseInput_x / screenScale - centerViewport.x);
+  mouseInput_y = (int)(mouseInput_y / screenScale - centerViewport.y);
 #endif
 }
 
 void updateMousePosViewportTouch() {
 #if defined(WII_U)
-    mouseInput_x = (Sint32)((mouseInput_x * SCALING_WIDTH / centerViewport.w) - centerViewport.x);
-    mouseInput_y = (Sint32)((mouseInput_y * SCALING_HEIGHT / centerViewport.h) - centerViewport.y);
+    mouseInput_x = (int)((mouseInput_x * SCALING_WIDTH / centerViewport.w) - centerViewport.x);
+    mouseInput_y = (int)((mouseInput_y * SCALING_HEIGHT / centerViewport.h) - centerViewport.y);
 #elif !defined(ANDROID)
-    mouseInput_x = (Sint32)(mouseInput_x * screenScale);
-    mouseInput_y = (Sint32)(mouseInput_y * screenScale);
+    mouseInput_x = (int)(mouseInput_x * screenScale);
+    mouseInput_y = (int)(mouseInput_y * screenScale);
 #endif
 }
