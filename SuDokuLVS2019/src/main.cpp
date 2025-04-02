@@ -75,6 +75,7 @@ int main(int argv, char** args) {
 
 	initDefaultBGScale();
 	initDefaultFrameRate();
+	initDefaultWindowedSetting();
 
 	/* Get settings from settings.bin */
 	loadSettingsFile();
@@ -139,7 +140,11 @@ int main(int argv, char** args) {
 	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
 #elif defined(THREEDS)
 	SDL_WM_SetCaption("SuDokuL", NULL);
-	windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_TOPSCR);
+	if (addon134Settings.windowedSetting) {
+		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_TOPSCR);
+	} else {
+		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_BOTTOMSCR);
+	}
 #elif defined(SDL1)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
@@ -479,6 +484,10 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Status Bar",       text_Integer_Scale,    VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Show",             text_On,               VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
 	SET_TEXT_WITH_OUTLINE("Hide",             text_Off,              VIDEO_MENU_NUM_POSITION_X,            TEXT_INTEGER_SCALE_Y);
+#elif defined(THREEDS)
+	SET_TEXT_WITH_OUTLINE("Display", text_Integer_Scale, VIDEO_MENU_CURSOR_POSITION_X, TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Top Screen", text_On, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
+	SET_TEXT_WITH_OUTLINE("Bottom Screen", text_Off, VIDEO_MENU_NUM_POSITION_X, TEXT_INTEGER_SCALE_Y);
 #else
 	if (!compactDisplay) {
 		SET_TEXT_WITH_OUTLINE("Integer Scale", text_Integer_Scale,   VIDEO_MENU_CURSOR_POSITION_X,         TEXT_INTEGER_SCALE_Y);
@@ -1138,7 +1147,7 @@ int main(int argv, char** args) {
 				/* Key Presses + Animate Cursor */
 #if defined(FUNKEY)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
-#elif defined(ANDROID)
+#elif defined(ANDROID) || defined(THREEDS)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
@@ -1164,6 +1173,13 @@ int main(int argv, char** args) {
 							break;
 						case 1:
 							sdlToggleFullscreen();
+							break;
+#elif defined(THREEDS)
+						case 0:
+							toggleDualScreen();
+							break;
+						case 1:
+							setFrameRateByOptions(-1);
 							break;
 #else
 						case 0:
@@ -1205,6 +1221,13 @@ int main(int argv, char** args) {
 						case 1:
 							sdlToggleFullscreen();
 							break;
+#elif defined(THREEDS)
+						case 0:
+							toggleDualScreen();
+							break;
+						case 1:
+							setFrameRateByOptions(1);
+							break;
 #else
 						case 0:
 							setResolution(1);
@@ -1221,7 +1244,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1256,12 +1279,18 @@ int main(int argv, char** args) {
 				} else {
 					renderText(&text_Off);
 				}
+#elif defined(THREEDS)
+				renderText(&text_Integer_Scale);
+				if (addon134Settings.windowedSetting) {
+					renderText(&text_On);
+				} else {
+					renderText(&text_Off);
+				}
 #elif !defined(FUNKEY)
 				renderText(&text_Resolution);
 				renderText(&text_Aspect_Ratio);
 				setAndRenderNumResolution(videoSettings.widthSetting, videoSettings.heightSetting, VIDEO_MENU_NUM_POSITION_X, TEXT_RESOLUTION_Y);
 				renderAspectRatioChoice();
-				renderText(&text_Frame_Rate);
 				renderText(&text_Apply);
 #endif
 				break;
@@ -1570,10 +1599,10 @@ int main(int argv, char** args) {
 #endif
 
 		/* Cap Framerate */
-#if defined(SDL1)
-		if (true) {
-#elif defined(THREEDS)
+#if defined(THREEDS)
 		if (frameRate < 30) {
+#elif defined(SDL1)
+		if (true) {
 #else
 		if (frameRate < displayRefreshRate) {
 #endif

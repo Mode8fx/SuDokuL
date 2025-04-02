@@ -47,6 +47,10 @@ struct Addon131Settings {
 	Sint8 frameRateIndex;
 };
 
+struct Addon134Settings {
+	bool windowedSetting;
+};
+
 struct BGScroll {
 	double speed_x, speed_y;
 	double speedStep_x, speedStep_y;
@@ -68,6 +72,7 @@ extern Uint16 gameHeight;
 extern bool compactDisplay;
 extern Uint8 defaultBGScale;
 extern Uint8 defaultFrameRateIndex;
+extern Uint8 defaultWindowedSetting;
 #if !defined(SDL1)
 extern SDL_DisplayMode DM;
 #endif
@@ -100,6 +105,7 @@ extern ControlSettings controlSettings;
 extern VideoSettings videoSettings;
 extern SoundSettings soundSettings;
 extern Addon131Settings addon131Settings;
+extern Addon134Settings addon134Settings;
 
 /* Window Width and Height */
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[15] =    { 0, 320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
@@ -190,11 +196,12 @@ const string rootDir = "";
 
 extern void loadSettingsFile();
 extern void reloadVideoSettings();
-extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
+extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void loadSavedPuzzle();
 extern void savePuzzle();
 extern void initDefaultBGScale();
 extern void initDefaultFrameRate();
+extern void initDefaultWindowedSetting();
 extern void initStartingWidthHeightMults();
 extern void initStartingSharedVariables();
 extern void initNumOffsets();
@@ -211,6 +218,7 @@ extern void setFrameRateByOptions(Sint8);
 extern Uint16 menuCursorXOffset();
 extern void sdlToggleFullscreen();
 extern void sdlToggleIntegerScale();
+extern void toggleDualScreen();
 extern void setScaling();
 extern void updateBorderRects();
 extern void renderBorderRects();

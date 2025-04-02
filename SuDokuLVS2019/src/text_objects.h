@@ -352,6 +352,9 @@ extern Uint16 backgroundMenuNumPosition_X;
 #if defined(ANDROID) || defined(FUNKEY)
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice1)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice2)
+#elif defined(THREEDS)
+#define TEXT_INTEGER_SCALE_Y              (text_menuChoice1)
+#define TEXT_FRAME_RATE_Y                 (text_menuChoice2)
 #else
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice3)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice4)

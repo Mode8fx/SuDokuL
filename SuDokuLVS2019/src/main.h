@@ -35,6 +35,7 @@ Uint16 gameHeight = 480;
 bool compactDisplay = false;
 Uint8 defaultBGScale;
 Uint8 defaultFrameRateIndex;
+Uint8 defaultWindowedSetting;
 double gameWidthMult;
 double gameHeightMult;
 #if !defined(SDL1)
@@ -52,6 +53,7 @@ ControlSettings controlSettings;
 VideoSettings videoSettings;
 SoundSettings soundSettings;
 Addon131Settings addon131Settings;
+Addon134Settings addon134Settings;
 /* Window Width and Height */
 SDL_Rect centerViewport;
 
