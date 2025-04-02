@@ -428,7 +428,7 @@ int main(int argv, char** args) {
 	}
 #if defined(WII)
 	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif defined(MOUSE_INPUT) && !defined(ANDROID)
+#elif defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 	SET_TEXT_WITH_OUTLINE("Touch Screen",     text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #else
 	SET_TEXT_WITH_OUTLINE("",                 text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
@@ -453,7 +453,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("Horizontal Focus", text_WiimoteScheme_Horizontal, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Horizontal, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("General",          text_WiimoteScheme_General, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_General, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Vertical Focus",   text_WiimoteScheme_Vertical, OBJ_TO_SCREEN_AT_FRACTION(text_WiimoteScheme_Vertical, 0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
-#elif defined(MOUSE_INPUT) && !defined(ANDROID)
+#elif defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 	SET_TEXT_WITH_OUTLINE("Enabled",          text_Enabled,          OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("Disabled",         text_Disabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,  0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #else
@@ -461,7 +461,7 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("",                 text_Disabled,        OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
 	/* Video Menu */
-#if !defined(ANDROID)
+#if !(defined(ANDROID) || defined(THREEDS))
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("x",                text_x,                0,                                    TEXT_RESOLUTION_Y);
 	SET_TEXT_WITH_OUTLINE("Aspect Ratio",     text_Aspect_Ratio,     VIDEO_MENU_CURSOR_POSITION_X,         TEXT_ASPECT_RATIO_Y);
@@ -1147,14 +1147,22 @@ int main(int argv, char** args) {
 				/* Key Presses + Animate Cursor */
 #if defined(FUNKEY)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 1, 0);
-#elif defined(ANDROID) || defined(THREEDS)
+#elif defined(ANDROID)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
+#elif defined(THREEDS)
+				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
+				if (mouseMoved()) {
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 13)), 0);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 1);
+					//menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
+				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Resolution, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)), 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Aspect_Ratio, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)), 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)), 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 2);
 					//menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
 					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
 				}
@@ -1201,11 +1209,15 @@ int main(int argv, char** args) {
 				}
 #if defined(ANDROID)
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT))) {
+#elif defined(THREEDS)
+				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
+					(mouseIsInRectWithSetting(text_Integer_Scale.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 13)))
+					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))))) {
 #else
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)))
 					|| mouseIsInRectWithSetting(text_Aspect_Ratio.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 5)))
-					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 6)))
+					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))
 					//|| mouseIsInRectWithSetting(text_Integer_Scale.rect, (text_Off.rect.x + text_Off.rect.w))
 					|| mouseIsInRect(text_Apply.rect)))) {
 #endif
@@ -1489,7 +1501,7 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if defined(MOUSE_INPUT) && !defined(ANDROID)
+#if defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 				controlsMenuHandleVertCursorMovement();
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
@@ -1517,7 +1529,7 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
-#if defined(MOUSE_INPUT) && !defined(ANDROID)
+#if defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {

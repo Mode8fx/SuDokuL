@@ -484,7 +484,6 @@ void toggleDualScreen() {
 	} else {
 		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_BOTTOMSCR);
 	}
-	controlSettings.enableTouchscreen = !addon134Settings.windowedSetting;
 #endif
 }
 
