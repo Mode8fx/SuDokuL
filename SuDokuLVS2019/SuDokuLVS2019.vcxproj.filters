@@ -159,6 +159,9 @@
     <ClCompile Include="src\graphics_include\tile3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sprite_objects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">

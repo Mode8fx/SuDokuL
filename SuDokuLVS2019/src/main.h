@@ -130,14 +130,14 @@ SpriteObject tile_desert;
 SpriteObject tile_grasslands;
 SpriteObject tile_grasslands2;
 SpriteObject tile_snowymountain;
-SpriteObjectWithPos logo;
-SpriteObjectWithPos menuCursor;
+SpriteObject logo;
+SpriteObject menuCursor;
 SpriteObject game_grid;
-//SpriteObjectWithPos gridCursor;
-SpriteObjectWithPos gridCursor_bottom_left;
-SpriteObjectWithPos gridCursor_bottom_right;
-SpriteObjectWithPos gridCursor_top_left;
-SpriteObjectWithPos gridCursor_top_right;
+//SpriteObject gridCursor;
+SpriteObject gridCursor_bottom_left;
+SpriteObject gridCursor_bottom_right;
+SpriteObject gridCursor_top_left;
+SpriteObject gridCursor_top_right;
 SpriteObject game_sidebar_small;
 SDL_Rect gameSidebarSmall1Rect;
 SDL_Rect gameSidebarSmall2Rect;
@@ -147,11 +147,11 @@ SDL_Surface *scaledImage;
 Sint16 tileSizeScaled;
 #endif
 
-SpriteObjectWithPos miniGrid_bottom_left;
-SpriteObjectWithPos miniGrid_bottom_right;
-SpriteObjectWithPos miniGrid_top_left;
-SpriteObjectWithPos miniGrid_top_right;
-SpriteObjectWithPos *currMiniGrid;
+SpriteObject miniGrid_bottom_left;
+SpriteObject miniGrid_bottom_right;
+SpriteObject miniGrid_top_left;
+SpriteObject miniGrid_top_right;
+SpriteObject *currMiniGrid;
 
 /* Fonts */
 TTF_Font *pixelFont;

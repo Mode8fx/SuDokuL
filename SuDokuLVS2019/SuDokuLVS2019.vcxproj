@@ -267,6 +267,7 @@
     <ClCompile Include="src\sfx_include\coin1.cpp" />
     <ClCompile Include="src\shared.cpp" />
     <ClCompile Include="src\sound_logic.cpp" />
+    <ClCompile Include="src\sprite_objects.cpp" />
     <ClCompile Include="src\sudokuGen.cpp" />
     <ClCompile Include="src\text_objects.cpp" />
     <ClCompile Include="src\transitions.cpp" />

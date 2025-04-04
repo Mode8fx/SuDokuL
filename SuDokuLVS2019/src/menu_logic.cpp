@@ -227,7 +227,7 @@ void resetBGToDefault() {
     bgSettings.speedMult = 15;
     //bgSettings.scale = max(min((int)min(gameWidthMult, gameHeightMult), 5), 1);
     bgSettings.scale = defaultBGScale;
-    SET_SPRITE_SCALE_TILE();
+    setSpriteScaleTile();
 }
 
 void setBGType() {
@@ -257,7 +257,7 @@ void setBGType() {
             tile = &tile1;
 			break;
     }
-    SET_SPRITE_SCALE_TILE();
+    setSpriteScaleTile();
 }
 
 void setBGScrollSpeed() {
