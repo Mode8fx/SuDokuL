@@ -565,7 +565,9 @@ int main(int argv, char** args) {
 			timer_buttonHold_repeater = 0;
 		}
 #if defined(SDL1)
+#if !defined(THREEDS) // performance hack
 		SDL_FillRect(windowScreen, NULL, 0x000000);
+#endif
 #else
 		SDL_RenderClear(renderer);
 #endif

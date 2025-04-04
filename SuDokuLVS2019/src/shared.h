@@ -151,7 +151,7 @@ extern Uint32 ticksPerFrame;
 #define SYSTEM_WIDTH  240
 #define SYSTEM_HEIGHT 240
 #elif defined(THREEDS)
-#define SYSTEM_WIDTH  400
+#define SYSTEM_WIDTH  320
 #define SYSTEM_HEIGHT 240
 #elif defined(SDL1)
 #define SYSTEM_WIDTH  640

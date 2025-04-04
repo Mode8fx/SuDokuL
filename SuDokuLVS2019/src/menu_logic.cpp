@@ -285,7 +285,7 @@ void updateMousePosViewportMouse() {
   mouseInput_x = (int)(mouseInput_x / screenScale);
   mouseInput_y = (int)(mouseInput_y / screenScale);
 #elif defined(THREEDS)
-	mouseInput_x = (mouseInput_x - 6) * 160 / 193 + 40; // convert mouse range (6,392) to 3DS range (40,360) (middle 320 pixels)
+	mouseInput_x = (mouseInput_x - 5) * 320 / 314 + 40; // convert mouse range (5,314) to 3DS range (40,360) (middle 320 pixels)
   //mouseInput_y = (int)(mouseInput_y / screenScale);
 #else
   mouseInput_x = (int)(mouseInput_x / screenScale - centerViewport.x);
