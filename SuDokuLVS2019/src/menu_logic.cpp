@@ -1,10 +1,6 @@
 #include "general.h"
 #include "menu_logic.h"
-#include "config.h"
-#include "sprite_objects.h"
-#include "window.h"
 #include "shared.h"
-#include "include_graphics.h"
 
 void updateMainMenuCursorPositionX() {
     switch (menuCursorIndex_main) {
@@ -73,22 +69,6 @@ void updateOptionsMenuCursorPositionX() {
         default:
             break;
     }
-}
-
-void updateControlsMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(CONTROLS_MENU_CURSOR_POSITION_X - menuCursorXOffset());
-}
-
-void updateVideoMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(VIDEO_MENU_CURSOR_POSITION_X - menuCursorXOffset());
-}
-
-void updateSoundMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(SOUND_MENU_CURSOR_POSITION_X - menuCursorXOffset());
-}
-
-void updateBackgroundMenuCursorPositionX() {
-    menuCursor.rect.x = (int)(BACKGROUND_MENU_CURSOR_POSITION_X - menuCursorXOffset());
 }
 
 // VideoSettings (resolution and index only) are re-loaded so that any unsaved changes that can only be applied by closing the game are undone
@@ -192,13 +172,6 @@ void menuHandleVertCursorMovementMouse(Sint8 &cursor, TextObject textObj, Sint8 
     }
 }
 
-bool mouseIsInRect(TextRect r) {
-    return (mouseInput_x >= r.x)
-        && (mouseInput_x <= (r.x + r.w))
-        && (mouseInput_y >= r.y)
-        && (mouseInput_y <= (r.y + r.h));
-}
-
 void menuHandleVertCursorMovementMouseWithSetting(Sint8 &cursor, TextObject textObj, Sint16 endpointX, Sint8 index) {
     if (mouseIsInRectWithSetting(textObj.rect, endpointX)) {
         cursor = index;
@@ -211,13 +184,6 @@ void controlsMenuHandleVertCursorMovementMouse(TextObject textObj, Sint8 index) 
         menuCursorIndex_controls = index;
         updateControlsMenuCursorPositionY();
     }
-}
-
-bool mouseIsInRectWithSetting(TextRect r, Sint16 endpointX) {
-    return (mouseInput_x >= r.x)
-        && (mouseInput_x <= (endpointX))
-        && (mouseInput_y >= r.y)
-        && (mouseInput_y <= (r.y + r.h));
 }
 
 void resetBGToDefault() {
@@ -272,33 +238,5 @@ void setBGScrollSpeed() {
 #else
     bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);
     bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
-#endif
-}
-
-// Used for both menu and game
-bool mouseMoved() {
-    return (mouseInput_x != mouseInput_x_last) || (mouseInput_y != mouseInput_y_last) || keyPressed(INPUT_CONFIRM_ALT);
-}
-
-void updateMousePosViewportMouse() {
-#if defined(WII)
-  mouseInput_x = (int)(mouseInput_x / screenScale);
-  mouseInput_y = (int)(mouseInput_y / screenScale);
-#elif defined(THREEDS)
-	mouseInput_x = (mouseInput_x - 5) * 320 / 314 + 40; // convert mouse range (5,314) to 3DS range (40,360) (middle 320 pixels)
-  //mouseInput_y = (int)(mouseInput_y / screenScale);
-#else
-  mouseInput_x = (int)(mouseInput_x / screenScale - centerViewport.x);
-  mouseInput_y = (int)(mouseInput_y / screenScale - centerViewport.y);
-#endif
-}
-
-void updateMousePosViewportTouch() {
-#if defined(WII_U)
-    mouseInput_x = (int)((mouseInput_x * SCALING_WIDTH / centerViewport.w) - centerViewport.x);
-    mouseInput_y = (int)((mouseInput_y * SCALING_HEIGHT / centerViewport.h) - centerViewport.y);
-#elif !defined(ANDROID)
-    mouseInput_x = (int)(mouseInput_x * screenScale);
-    mouseInput_y = (int)(mouseInput_y * screenScale);
 #endif
 }
