@@ -41,6 +41,13 @@ void initTextObjectVals(TextObject *textObj) {
 	textObj->rect.h = 0;
 }
 
+void initMenuOptionPositions(TextObject *textObj) {
+	textObj->startPos_x = textObj->rect.x;
+	textObj->startPos_y = textObj->rect.y;
+	textObj->endPos_x = textObj->startPos_x + (gameWidth * 3 / 4);
+	textObj->endPos_y = textObj->startPos_y - (gameWidth * 3 / 4);
+}
+
 void adjustCharOutlineOffset(TextCharObject *arr, Uint8 c, float x, float y) {
     if (x > 0) {
         arr[c].outlineOffset_x += max((int)(x * gameHeightMult * arr[c].rect.h / fontSize), 1);
@@ -52,11 +59,6 @@ void adjustCharOutlineOffset(TextCharObject *arr, Uint8 c, float x, float y) {
     } else if (y < 0) {
         arr[c].outlineOffset_y += min((int)(y * gameHeightMult * arr[c].rect.h / fontSize), -1);
     }
-}
-
-void renderTextChar(TextCharObject *textObj) {
-	SDL_RenderCopy(renderer, textObj->outline_texture, NULL, &textObj->outline_rect);
-	SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
 }
 
 void renderText(TextObject *textObj) {
@@ -121,13 +123,6 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 
 void setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
 	TTF_SetFontOutline(font, max((textObj->rect.h / 10), max(int(ceil(gameHeightMult)), (int)minSize)));
-}
-
-void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
-	setTextPosX(&textChars[(digit + 48)], (Sint16)(pos_x_left + ((i + i_offset) * fontSize)), textChars[digit + 48].outlineOffset_x);
-	i++;
-	setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);
-	renderTextChar(&textChars[(digit + 48)]);
 }
 
 void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16 pos_y) {
@@ -258,13 +253,6 @@ void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
 	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
 	setAndRenderColon(pos_x_left, pos_y);
 	setAndRenderNumHelper(1, pos_x_left, pos_y, 0);
-}
-
-void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
-	text_colon.rect.x = pos_x_left + (i * fontSize);
-	i++;
-	text_colon.rect.y = pos_y;
-	renderText(&text_colon);
 }
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {

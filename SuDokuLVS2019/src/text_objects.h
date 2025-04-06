@@ -1,7 +1,14 @@
 #include "include.h"
+#include "general.h"
+#include "window.h"
 
 #ifndef TEXT_OBJECTS_H
 #define TEXT_OBJECTS_H
+
+#if defined(SDL1)
+#define SDL_RenderCopy(renderer, currSprite, srcrect, outputRect) SDL_BlitSurface(currSprite, srcrect, windowScreen, outputRect)
+#define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
+#endif
 
 #if defined(_MSC_VER)
 #define STRCPY(dest, src) \
@@ -395,20 +402,14 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 
 extern void initStartingTextVariables();
 extern void initTextObjectVals(TextObject *);
+extern void initMenuOptionPositions(TextObject *);
 extern void adjustCharOutlineOffset(TextCharObject *, Uint8, float, float);
-extern void renderTextChar(TextCharObject *);
 extern void renderText(TextObject *);
 extern void renderTextLarge(TextObject *);
 extern void setTextPosX(TextCharObject *, Sint16, Sint8);
 extern void setTextPosY(TextCharObject *, Sint16, Sint8);
 extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *, Uint8);
 extern void setFontOutline(TTF_Font *, TextCharObject *, Uint8);
-//extern void SET_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y);
-//extern void SET_LARGE_TEXT_WITH_OUTLINE(text, textObj, pos_x, pos_y);
-//extern void SET_TEXT_WITH_OUTLINE_ANIMATED(text, textObj, pos_x, pos_y);
-//extern void SET_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
-//extern void SET_LARGE_TEXT_WITH_OUTLINE_HELPER(text, textObj, pos_x, pos_y);
-extern void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
 extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
 extern void renderAspectRatioChoice();
@@ -417,9 +418,6 @@ extern void setAndRenderNumAspectRatio4_3(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_9(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_10(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio1_1(Sint16, Sint16);
-//extern void SET_AND_RENDER_TIMER(pos_x_left, pos_y);
-//extern void RENDER_NUM_EMPTY(pos_x_left, pos_y);
-extern void setAndRenderColon(Sint16, Sint16);
 extern void setAndRenderNumGridMainNormal(TextCharObject *, Uint8, Sint8);
 extern void setAndRenderNumGridMainMini(TextCharObject *, Uint8, Sint8);
 extern void setAndRenderNumGridSubNormal(TextCharObject *, Uint8);
@@ -450,6 +448,28 @@ extern void renderCreditsTextPage7();
 extern void renderCreditsTextPage8();
 extern void renderCreditsTextPage9();
 extern void controlsSetConfirmBackPos();
+extern inline void renderTextChar(TextCharObject *);
+extern inline void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
+extern inline void setAndRenderColon(Sint16, Sint16);
+
+inline void renderTextChar(TextCharObject *textObj) {
+  SDL_RenderCopy(renderer, textObj->outline_texture, NULL, &textObj->outline_rect);
+  SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
+}
+
+inline void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
+  setTextPosX(&textChars[(digit + 48)], (Sint16)(pos_x_left + ((i + i_offset) * fontSize)), textChars[digit + 48].outlineOffset_x);
+  i++;
+  setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);
+  renderTextChar(&textChars[(digit + 48)]);
+}
+
+inline void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
+  text_colon.rect.x = pos_x_left + (i * fontSize);
+  i++;
+  text_colon.rect.y = pos_y;
+  renderText(&text_colon);
+}
 
 #define CHAR_AT_INDEX(index) textChars[tempCharArray[index]]
 

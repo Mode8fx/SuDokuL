@@ -1,5 +1,4 @@
 #include "include.h"
-#include "text_objects.h"
 
 #ifndef SHARED_H
 #define SHARED_H
@@ -208,7 +207,6 @@ extern void initNumOffsets();
 extern void updateGlobalTimer();
 extern void preparePauseTimer();
 extern void updatePauseTimer();
-extern void initMenuOptionPositions(TextObject *);
 extern void saveCurrentSettings();
 extern void setNativeResolution();
 extern void setResolution(Sint8);

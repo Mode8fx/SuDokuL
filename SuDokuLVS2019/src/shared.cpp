@@ -291,13 +291,6 @@ void updatePauseTimer() {
 	timer_paused.now += (SDL_GetTicks() - timer_paused.last);
 }
 
-void initMenuOptionPositions(TextObject *textObj) {
-	textObj->startPos_x = textObj->rect.x;
-	textObj->startPos_y = textObj->rect.y;
-	textObj->endPos_x = textObj->startPos_x + (gameWidth * 3 / 4);
-	textObj->endPos_y = textObj->startPos_y - (gameWidth * 3 / 4);
-}
-
 void saveCurrentSettings() {
 	initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen,
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting,
