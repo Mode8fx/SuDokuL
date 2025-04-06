@@ -221,6 +221,7 @@ extern void sdlToggleIntegerScale();
 extern void toggleDualScreen();
 extern void setScaling();
 extern void updateBorderRects();
+extern void renderBackground();
 extern void renderBorderRects();
 extern void sdlDestroyAll();
 extern void closeController();

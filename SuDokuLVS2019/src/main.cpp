@@ -195,19 +195,7 @@ int main(int argv, char** args) {
 #if !(defined(PC) || defined(SWITCH))
 	updateGlobalTimer();
 	deltaTime = (timer_global.now - timer_global.last);
-	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-	bgScroll.speedStep_x_int = int(floor(bgScroll.speedStep_x)) % tile_rect_h;
-	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-	bgScroll.speedStep_y_int = int(floor(bgScroll.speedStep_y)) % tile_rect_w;
-	bgScroll.final_x = gameHeight + tile_rect_w;
-	bgScroll.final_y = gameHeight + tile_rect_h;
-	for (bgScroll.j = -tile_rect_h; bgScroll.j <= bgScroll.final_y; bgScroll.j += tile_rect_h) {
-		for (bgScroll.i = -tile_rect_w; bgScroll.i <= bgScroll.final_x; bgScroll.i += tile_rect_w) {
-			tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
-			tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
-			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
-		}
-	}
+	renderBackground();
 	renderText(&text_Loading);
 	renderBorderRects();
 #if !defined(SDL1)
@@ -620,19 +608,7 @@ int main(int argv, char** args) {
 		// SDL_RenderClear(renderer);
 
 		/* Draw Tile Background */
-		bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
-		bgScroll.speedStep_x_int = int(floor(bgScroll.speedStep_x)) % tile_rect_h;
-		bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
-		bgScroll.speedStep_y_int = int(floor(bgScroll.speedStep_y)) % tile_rect_w;
-		bgScroll.final_x = gameWidth + (Uint16)tile_rect_w;
-		bgScroll.final_y = gameHeight + (Uint16)tile_rect_h;
-		for (bgScroll.j = -tile_rect_h; bgScroll.j <= bgScroll.final_y; bgScroll.j += tile_rect_h) {
-			for (bgScroll.i = -tile_rect_w; bgScroll.i <= bgScroll.final_x; bgScroll.i += tile_rect_w) {
-				tile->rect.x = bgScroll.i + bgScroll.speedStep_x_int;
-				tile->rect.y = bgScroll.j + bgScroll.speedStep_y_int;
-				SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
-			}
-		}
+		renderBackground();
 
 		switch (programState) {
 			/* 0 = Title Screen */

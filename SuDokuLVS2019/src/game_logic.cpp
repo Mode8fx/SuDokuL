@@ -59,6 +59,7 @@ void gameHandleMainGridNavigation() {
     }
 }
 
+// This looks complicated, but it's slightly more efficient than a simple for loop on average
 void gameHandleMouseMovementMain() {
     if (miniGridState == 0 && !justClickedInMiniGrid) {
         temp_mouseIndex_x = -1;

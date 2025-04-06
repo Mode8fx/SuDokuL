@@ -57,9 +57,13 @@ void setSpriteScaleTile() {
   prepareSprite(tile_grasslands2, tile_grasslands2_img, tile_grasslands2_img_len, 0, 0, bgSettings.scale);
   prepareSprite(tile_snowymountain, tile_snowymountain_img, tile_snowymountain_img_len, 0, 0, bgSettings.scale);
   tileSizeScaled = 32 * bgSettings.scale * gameHeightMult;
+  bgScroll.final_x = gameWidth + tileSizeScaled;
+  bgScroll.final_y = gameHeight + tileSizeScaled;
 #else
   tile->rect.w = tile->width * bgSettings.scale;
   tile->rect.h = tile->height * bgSettings.scale;
+  bgScroll.final_x = gameWidth + tile->rect.w;
+  bgScroll.final_y = gameHeight + tile->rect.h;
 #endif
 }
 

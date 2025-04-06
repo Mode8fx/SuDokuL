@@ -15,6 +15,14 @@ FILE * __cdecl __iob_func(void) {
 }
 #endif
 
+#if defined(SDL1)
+#define tile_rect_w tileSizeScaled
+#define tile_rect_h tileSizeScaled
+#else
+#define tile_rect_w tile->rect.w
+#define tile_rect_h tile->rect.h
+#endif
+
 Sint64 seekPos;
 
 void loadSettingsFile() {
@@ -538,6 +546,22 @@ void updateBorderRects() {
 	rightRect.y = leftRect.y;
 	rightRect.w = leftRect.w;
 	rightRect.h = leftRect.h;
+}
+
+void renderBackground() {
+	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
+	bgScroll.speedStep_x_int = static_cast<int>(floor(bgScroll.speedStep_x)) % tile_rect_h;
+	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
+	bgScroll.speedStep_y_int = static_cast<int>(floor(bgScroll.speedStep_y)) % tile_rect_w;
+	int start_x = -tile_rect_w + bgScroll.speedStep_x_int;
+	int start_y = -tile_rect_h + bgScroll.speedStep_y_int;
+	for (int j = start_y; j <= bgScroll.final_y; j += tile_rect_h) {
+		for (int i = start_x; i <= bgScroll.final_x; i += tile_rect_w) {
+			tile->rect.x = i;
+			tile->rect.y = j;
+			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
+		}
+	}
 }
 
 void renderBorderRects() {
