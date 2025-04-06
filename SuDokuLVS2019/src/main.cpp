@@ -138,13 +138,6 @@ int main(int argv, char** args) {
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
 	windowScreen = SDL_SetVideoMode(SYSTEM_WIDTH, SYSTEM_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-#elif defined(THREEDS)
-	SDL_WM_SetCaption("SuDokuL", NULL);
-	if (addon134Settings.windowedSetting) {
-		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_TOPSCR);
-	} else {
-		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_BOTTOMSCR);
-	}
 #elif defined(SDL1)
 	SDL_WM_SetCaption("SuDokuL", NULL);
 	SDL_putenv("SDL_VIDEO_WINDOW_POS=center");
@@ -152,14 +145,20 @@ int main(int argv, char** args) {
 #else
 #if defined(PSP)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #elif defined(EMSCRIPTEN)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+#elif defined(THREEDS)
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED_DISPLAY(addon134Settings.windowedSetting), SDL_WINDOWPOS_CENTERED_DISPLAY(addon134Settings.windowedSetting), SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 #elif !defined(PC)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #else
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, SDL_WINDOW_RESIZABLE);
-#endif
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+#endif
 #endif
 	setScaling();
 
@@ -555,9 +554,7 @@ int main(int argv, char** args) {
 			timer_buttonHold_repeater = 0;
 		}
 #if defined(SDL1)
-#if !defined(THREEDS) // performance hack
 		SDL_FillRect(windowScreen, NULL, 0x000000);
-#endif
 #else
 		SDL_RenderClear(renderer);
 #endif

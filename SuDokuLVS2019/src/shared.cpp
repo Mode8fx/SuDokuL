@@ -126,7 +126,7 @@ void savePuzzle() {
 void initDefaultBGScale() {
 #if defined(FUNKEY)
 	defaultBGScale = 4;
-#elif defined(VITA) || defined(THREEDS)
+#elif defined(VITA)
 	defaultBGScale = 2;
 #elif defined(WII_U) || defined(SWITCH)
 	defaultBGScale = 3;
@@ -476,15 +476,15 @@ void sdlToggleIntegerScale() {
 void toggleDualScreen() {
 #if defined(THREEDS)
 	addon134Settings.windowedSetting = !addon134Settings.windowedSetting;
-	SDL_FillRect(windowScreen, NULL, 0x000000);
-	SDL_Flip(windowScreen);
-	SDL_Delay(35);
-	SDL_FreeSurface(windowScreen);
-	if (addon134Settings.windowedSetting) {
-		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_TOPSCR);
-	} else {
-		windowScreen = SDL_SetVideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT, 24, SDL_BOTTOMSCR);
-	}
+	//SDL_RenderClear(renderer);
+	//SDL_Delay(35);
+	//SDL_RenderPresent(renderer);
+	//SDL_FreeSurface(windowScreen);
+	//if (addon134Settings.windowedSetting) {
+	//	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	//} else {
+	//	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	//}
 #endif
 }
 

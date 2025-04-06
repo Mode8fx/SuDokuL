@@ -49,7 +49,7 @@ inline static void handleAnalogInput_Joystick() {
 }
 #endif
 
-#if (defined(PSP) || defined(SDL1)) && !defined(FUNKEY) && !defined(THREEDS)
+#if (defined(PSP) || defined(SDL1)) && !defined(FUNKEY)
 inline static void handleButtonDown_Joystick() {
 	if (event.jbutton.button == 8) { // Up
 		dirInputs |= UP_PRESSED;
@@ -444,93 +444,6 @@ inline static void handleKeyboardKeysUp_FunKey() {
 		return;
 	}
 }
-#elif defined(THREEDS)
-inline static void handleKeyboardKeysDown_3DS() {
-	if (event.jbutton.button == KEY_UP) {
-		dirInputs |= UP_PRESSED;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_DOWN) {
-		dirInputs |= DOWN_PRESSED;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_LEFT) {
-		dirInputs |= LEFT_PRESSED;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_RIGHT) {
-		dirInputs |= RIGHT_PRESSED;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_A) {
-		if (controlSettings.swapConfirmAndBack) {
-			keyInputs |= INPUT_CONFIRM;
-			resetCheatCounters();
-		} else {
-			keyInputs |= INPUT_BACK;
-			cheat1Counter = 0;
-			songChangeCounter = 0;
-		}
-		return;
-	}
-	if (event.jbutton.button == KEY_B) {
-		if (controlSettings.swapConfirmAndBack) {
-			keyInputs |= INPUT_BACK;
-			cheat1Counter = 0;
-			songChangeCounter = 0;
-		} else {
-			keyInputs |= INPUT_CONFIRM;
-			resetCheatCounters();
-		}
-		return;
-	}
-	if (event.jbutton.button == KEY_START) {
-		keyInputs |= INPUT_START;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_SELECT) {
-		keyInputs |= INPUT_SELECT;
-		return;
-	}
-	if (event.jbutton.button == KEY_X || event.jbutton.button == KEY_Y) {
-		keyInputs |= INPUT_SWAP;
-		return;
-	}
-	if (event.jbutton.button == KEY_L) {
-		keyInputs |= INPUT_PREV_TRACK;
-		resetCheatCounters();
-		return;
-	}
-	if (event.jbutton.button == KEY_R) {
-		keyInputs |= INPUT_NEXT_TRACK;
-		resetCheatCounters();
-		return;
-	}
-}
-
-inline static void handleKeyboardKeysUp_3DS() {
-	if (event.jbutton.button == KEY_UP) {
-		dirInputs |= UP_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == KEY_DOWN) {
-		dirInputs |= DOWN_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == KEY_LEFT) {
-		dirInputs |= LEFT_DEPRESSED;
-		return;
-	}
-	if (event.jbutton.button == KEY_RIGHT) {
-		dirInputs |= RIGHT_DEPRESSED;
-		return;
-	}
-}
 #else
 inline static void handleAnalogInput_SDL2(SDL_GameController *controller) {
 	controllerAxis_leftStickX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
@@ -898,16 +811,10 @@ void handlePlayerInput() {
 			/* Handle Mouse Input (PC) */
 #if defined(MOUSE_INPUT)
 			case SDL_MOUSEMOTION:
-#if defined(THREEDS)
-				if (addon134Settings.windowedSetting) break;
-#endif
 				SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 				updateMousePosViewportMouse();
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-#if defined(THREEDS)
-				if (addon134Settings.windowedSetting) break;
-#endif
 				if (event.button.button == SDL_BUTTON_LEFT) {
 					SDL_GetMouseState(&mouseInput_x, &mouseInput_y);
 					updateMousePosViewportMouse();
@@ -931,19 +838,6 @@ void handlePlayerInput() {
 			case SDL_KEYUP:
 				handleKeyboardKeys_Up();
 				break;
-#if defined(THREEDS)
-			/* Handle Analog Input (3DS) */
-			case SDL_JOYAXISMOTION:
-				handleAnalogInput_Joystick();
-				break;
-			/* Handle Button Input (3DS) */
-			case SDL_JOYBUTTONDOWN:
-				handleKeyboardKeysDown_3DS();
-				break;
-			case SDL_JOYBUTTONUP:
-				handleKeyboardKeysUp_3DS();
-				break;
-#else
 			/* Handle Analog Input (SDL1) */
 			case SDL_JOYAXISMOTION:
 				handleAnalogInput_Joystick();
@@ -955,7 +849,6 @@ void handlePlayerInput() {
 			case SDL_JOYBUTTONUP:
 				handleButtonUp_Joystick();
 				break;
-#endif
 			default:
 				break;
 		}

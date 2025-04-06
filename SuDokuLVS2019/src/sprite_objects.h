@@ -15,7 +15,7 @@ struct SpriteObject {
     SDL_Surface *texture;
 #endif
     SDL_Rect rect;
-    Sint32 width, height;
+    int width, height;
     Sint16 startPos_x, endPos_x;
     Sint16 startPos_y, endPos_y;
 };
