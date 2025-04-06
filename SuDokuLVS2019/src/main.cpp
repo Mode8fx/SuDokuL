@@ -1581,7 +1581,9 @@ int main(int argv, char** args) {
 		mouseInput_y_last = mouseInput_y;
 
 		/* Draw Black Rectangles (to fix background scrolling bug for some aspect ratios in fullscreen) */
+#if !(defined(FUNKEY) || defined(THREEDS))
 		renderBorderRects();
+#endif
 
 		/* Update Screen */
 #if !defined(SDL1)

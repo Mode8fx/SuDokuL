@@ -62,9 +62,17 @@ constexpr auto UP_DEPRESSED      = (1 << 5);
 constexpr auto DOWN_PRESSED      = (1 << 6);
 constexpr auto DOWN_DEPRESSED    = (1 << 7);
 
-extern bool keyPressed(Uint32);
-extern bool buttonHeld(Uint32);
 extern void resetCheatCounters();
 extern void handlePlayerInput();
+extern inline bool keyPressed(Uint32);
+extern inline bool buttonHeld(Uint32);
+
+inline bool keyPressed(Uint32 key) {
+	return (keyInputs & key);
+}
+
+inline bool buttonHeld(Uint32 button) {
+	return (heldDirs & button);
+}
 
 #endif

@@ -18,14 +18,6 @@ Uint32 gc_keysUp;
 bool windowLostFocus = false;
 #endif
 
-bool keyPressed(Uint32 key) {
-	return (keyInputs & key);
-}
-
-bool buttonHeld(Uint32 button) {
-	return (heldDirs & button);
-}
-
 void resetCheatCounters() {
 	cheat1Counter = 0;
 	cheat2Counter = 0;

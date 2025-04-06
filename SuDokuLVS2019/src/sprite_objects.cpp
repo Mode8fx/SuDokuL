@@ -1,3 +1,4 @@
+#include "include_graphics.h"
 #include "sprite_objects.h"
 #include "window.h"
 
@@ -66,4 +67,3 @@ void setSpriteScaleTile() {
   bgScroll.final_y = gameHeight + tile->rect.h;
 #endif
 }
-

@@ -53,10 +53,10 @@ extern SpriteObject miniGrid_top_left;
 extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
-extern void prepareSprite(SpriteObject& spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale);
-extern void prepareSpriteKeepScale(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale);
-extern void setSpriteScale(SpriteObject &spriteObj, double scale);
-extern void spriteEnforceIntMult(SpriteObject& spriteObj, double scale);
+extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double);
+extern void prepareSpriteKeepScale(SpriteObject &, const unsigned char *, unsigned int, int, int, double);
+extern void setSpriteScale(SpriteObject &, double);
+extern void spriteEnforceIntMult(SpriteObject &, double);
 extern void setSpriteScaleTile();
 
 #define OBJ_TO_MID_SCREEN_X(obj) \

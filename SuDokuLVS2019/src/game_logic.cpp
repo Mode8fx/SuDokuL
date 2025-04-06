@@ -127,15 +127,15 @@ void gameHandleMouseMovementMain() {
     }
 }
 
-bool mouseBoundsX(Sint8 start, Sint8 end) {
+inline bool mouseBoundsX(Sint8 start, Sint8 end) {
     return ((mouseInput_x >= GRID_X_AT_COL(start)) && (mouseInput_x < (GRID_X_AT_COL(end) + (gridSizeA3))));
 }
 
-bool mouseBoundsY(Sint8 start, Sint8 end) {
+inline bool mouseBoundsY(Sint8 start, Sint8 end) {
     return ((mouseInput_y >= GRID_Y_AT_ROW(start)) && (mouseInput_y < (GRID_Y_AT_ROW(end) + (gridSizeA3))));
 }
 
-bool clickedWithinGrid() {
+inline bool clickedWithinGrid() {
 #if defined(WII)
     return keyPressed(INPUT_CONFIRM_ALT) && !(clickedInRect(&gameSidebarSmall1Rect) || clickedInRect(&gameSidebarSmall2Rect) || clickedInRect(&gameSidebarSmall3Rect));
 #else
@@ -143,12 +143,12 @@ bool clickedWithinGrid() {
 #endif
 }
 
-bool clickedInRect(SDL_Rect *rect) {
+inline bool clickedInRect(SDL_Rect *rect) {
 	return (keyPressed(INPUT_CONFIRM_ALT) && mouseInput_x >= rect->x && mouseInput_x < (rect->x + rect->w) && mouseInput_y >= rect->y && mouseInput_y < (rect->y + rect->h));
 }
 
 // easier to code/check than gameHandleMouseMovementMain()... but also less efficient
-bool mouseIsInsideGridSquare() {
+inline bool mouseIsInsideGridSquare() {
     return ((mouseBoundsX(0, 0) || mouseBoundsX(1, 1) || mouseBoundsX(2, 2) || mouseBoundsX(3, 3) || mouseBoundsX(4, 4)
         || mouseBoundsX(5, 5) || mouseBoundsX(6, 6) || mouseBoundsX(7, 7) || mouseBoundsX(8, 8)) &&
         (mouseBoundsY(0, 0) || mouseBoundsY(1, 1) || mouseBoundsY(2, 2) || mouseBoundsY(3, 3) || mouseBoundsY(4, 4)
@@ -255,26 +255,26 @@ void gameHandleMouseMovementMini() {
     }
 }
 
-bool mouseBoundsMiniX(Sint8 start, Sint8 end) {
+inline bool mouseBoundsMiniX(Sint8 start, Sint8 end) {
     return (mouseInput_x >= xAtMiniGridIndex(start) && (mouseInput_x < (xAtMiniGridIndex(end) + (gridSizeA3))));
 }
 
-bool mouseBoundsMiniY(Sint8 start, Sint8 end) {
+inline bool mouseBoundsMiniY(Sint8 start, Sint8 end) {
     return (mouseInput_y >= yAtMiniGridIndex(start) && (mouseInput_y < (yAtMiniGridIndex(end) + (gridSizeA3))));
 }
 
-bool clickedWithinMiniGrid() {
+inline bool clickedWithinMiniGrid() {
     return (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInsideGridSquareMini());
 }
 
 // easier to code/check than gameHandleMouseMovementMini()... but also less efficient
-bool mouseIsInsideGridSquareMini() {
+inline bool mouseIsInsideGridSquareMini() {
     return ((mouseBoundsMiniX(-1, -1) || mouseBoundsMiniX(0, 0) || mouseBoundsMiniX(1, 1) || mouseBoundsMiniX(2, 2)) &&
         (mouseBoundsMiniY(0, 0) || mouseBoundsMiniY(1, 1) || mouseBoundsMiniY(2, 2)) &&
         !(mouseBoundsMiniX(-1, -1) && mouseBoundsMiniY(0, 0)));
 }
 
-bool clickedOutsideMiniGrid() {
+inline bool clickedOutsideMiniGrid() {
     return (keyPressed(INPUT_CONFIRM_ALT) && !(mouseBoundsMiniX(-1, 2) && mouseBoundsMiniY(0, 2)));
 }
 
@@ -305,23 +305,17 @@ void checkNumKeyPress(Uint32 key, Sint8 num) {
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if (miniGridState == 1) {
             setGridNum(i, num);
-        }
-        else if (grid[i] == 0) {
+        } else if (grid[i] == 0) {
             setGridMiniNum(i, num);
         }
     }
 }
 
-void swapMiniGridState() {
-    if (miniGridState == 1) {
-        miniGridState = 2;
-    }
-    else {
-        miniGridState = 1;
-    }
+inline void swapMiniGridState() {
+  miniGridState = (miniGridState == 1) ? 2 : 1;
 }
 
-void setGridMiniNum(Sint8 index, Sint8 num) {
+inline void setGridMiniNum(Sint8 index, Sint8 num) {
     miniGrid[index] ^= (1 << num);
 }
 
@@ -375,28 +369,29 @@ void gameHandleCheatClearIncorrectCells() {
 }
 
 void gameHandleChangeSong() {
-    if (keyPressed(INPUT_CONFIRM_ALT)) {
-        if (clickedInRect(&gameSidebarSmall3Rect)) {
-            if (++songChangeCounter >= 3) {
-                if (++soundSettings.musicIndex > 8)
-                    soundSettings.musicIndex = 1;
-                playMusicAtIndex(soundSettings.musicIndex);
-                if (programState != 20) {
-                    saveCurrentSettings();
-                }
-                songChangeCounter = 0;
-		    }
-        } else {
-			songChangeCounter = 0;
+  if (keyPressed(INPUT_CONFIRM_ALT)) {
+    if (clickedInRect(&gameSidebarSmall3Rect)) {
+      if (++songChangeCounter >= 3) {
+        if (++soundSettings.musicIndex > 8) {
+          soundSettings.musicIndex = 1;
         }
-	}
+        playMusicAtIndex(soundSettings.musicIndex);
+        if (programState != 20) {
+          saveCurrentSettings();
+        }
+        songChangeCounter = 0;
+      }
+      return;
+    }
+    songChangeCounter = 0;
+  }
 }
 
-Sint16 xAtMiniGridIndex(Sint8 index) {
+inline Sint16 xAtMiniGridIndex(Sint8 index) {
     return (Sint16)(currMiniGrid->rect.x + (gridSizeD * 3) + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
 }
 
-Sint16 yAtMiniGridIndex(Sint8 index) {
+inline Sint16 yAtMiniGridIndex(Sint8 index) {
     return (Sint16)(currMiniGrid->rect.y + (gridSizeD * 3) + (index * gridSizeA3) + (index * gridSizeB));
 }
 
