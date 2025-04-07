@@ -13,6 +13,32 @@
 #include "include_music.h"
 #include "include_sfx.h"
 
+//Uint64 fps_lastTime = 0;
+//double fps_freq;
+//int fps_frameCount = 0;
+//int fps_frameCountLastSecond = 0;
+//
+//void printFPS() {
+//	fps_frameCount++;
+//	Uint64 currentTime = SDL_GetPerformanceCounter();
+//	if (fps_lastTime == 0) {
+//		fps_lastTime = currentTime;
+//		fps_freq = (double)SDL_GetPerformanceFrequency();
+//	}
+//
+//	double elapsed = (double)(currentTime - fps_lastTime) / fps_freq;
+//	if (elapsed >= 1.0) {
+//		fps_frameCountLastSecond = fps_frameCount;
+//		fps_frameCount = 0;
+//		fps_lastTime = currentTime;
+//	}
+//	Sint16 fps_counterX = gameWidth / 2;
+//	Sint16 fps_counterY = gameHeight * 7 / 8;
+//	i = 0;
+//	setAndRenderNumHelper(int(fps_frameCountLastSecond) / 10, fps_counterX, fps_counterY, 0);
+//	setAndRenderNumHelper(int(fps_frameCountLastSecond) % 10, fps_counterX + 20, fps_counterY, 0);
+//}
+
 bool isContinue = false;
 
 #if defined(EMSCRIPTEN)
@@ -62,6 +88,11 @@ int main(int argv, char** args) {
 
 #if defined(SDL1) && !defined(PC)
 	SDL_ShowCursor(0);
+#endif
+
+	/* [3DS] Enable New 3DS clock speed*/
+#if defined(THREEDS)
+	osSetSpeedupEnable(true);
 #endif
 
 	TTF_Init();
@@ -174,14 +205,14 @@ int main(int argv, char** args) {
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
-	prepareSprite(tile1, tile1_img, tile1_img_len, 0, 0, 1);
-	prepareSprite(tile2, tile2_img, tile2_img_len, 0, 0, 1);
-	prepareSprite(tile3, tile3_img, tile3_img_len, 0, 0, 1);
-	prepareSprite(tile_cave, tile_cave_img, tile_cave_img_len, 0, 0, 1);
-	prepareSprite(tile_desert, tile_desert_img, tile_desert_img_len, 0, 0, 1);
-	prepareSprite(tile_grasslands, tile_grasslands_img, tile_grasslands_img_len, 0, 0, 1);
-	prepareSprite(tile_grasslands2, tile_grasslands2_img, tile_grasslands2_img_len, 0, 0, 1);
-	prepareSprite(tile_snowymountain, tile_snowymountain_img, tile_snowymountain_img_len, 0, 0, 1);
+	prepareSprite(tile1, tile1_img, tile1_img_len, 0, 0, 1, false);
+	prepareSprite(tile2, tile2_img, tile2_img_len, 0, 0, 1, false);
+	prepareSprite(tile3, tile3_img, tile3_img_len, 0, 0, 1, false);
+	prepareSprite(tile_cave, tile_cave_img, tile_cave_img_len, 0, 0, 1, false);
+	prepareSprite(tile_desert, tile_desert_img, tile_desert_img_len, 0, 0, 1, false);
+	prepareSprite(tile_grasslands, tile_grasslands_img, tile_grasslands_img_len, 0, 0, 1, false);
+	prepareSprite(tile_grasslands2, tile_grasslands2_img, tile_grasslands2_img_len, 0, 0, 1, false);
+	prepareSprite(tile_snowymountain, tile_snowymountain_img, tile_snowymountain_img_len, 0, 0, 1, false);
 	setBGType();
 	setSpriteScaleTile();
 	setFrameRateByOptions(0);
@@ -270,21 +301,21 @@ int main(int argv, char** args) {
 
 	/* Set Textures */
 	if (gameHeight < 272) {
-		prepareSprite(logo, logo_240_img, logo_240_img_len, 0, 0, 480.0 / 240);
+		prepareSprite(logo, logo_240_img, logo_240_img_len, 0, 0, 480.0 / 240, true);
 	} else if (gameHeight < 480) {
-		prepareSprite(logo, logo_272_img, logo_272_img_len, 0, 0, 480.0 / 272);
+		prepareSprite(logo, logo_272_img, logo_272_img_len, 0, 0, 480.0 / 272, true);
 	} else if (gameHeight < 544) {
-		prepareSprite(logo, logo_480_img, logo_480_img_len, 0, 0, 1);
+		prepareSprite(logo, logo_480_img, logo_480_img_len, 0, 0, 1, true);
 	} else if (gameHeight < 720) {
-		prepareSprite(logo, logo_544_img, logo_544_img_len, 0, 0, 480.0 / 544);
+		prepareSprite(logo, logo_544_img, logo_544_img_len, 0, 0, 480.0 / 544, true);
 	} else if (gameHeight < 1080) {
-		prepareSprite(logo, logo_720_img, logo_720_img_len, 0, 0, 480.0 / 720);
+		prepareSprite(logo, logo_720_img, logo_720_img_len, 0, 0, 480.0 / 720, true);
 	} else if (gameHeight < 1440) {
-		prepareSprite(logo, logo_1080_img, logo_1080_img_len, 0, 0, 480.0 / 1080);
+		prepareSprite(logo, logo_1080_img, logo_1080_img_len, 0, 0, 480.0 / 1080, true);
 	} else if (gameHeight < 2160) {
-		prepareSprite(logo, logo_1440_img, logo_1440_img_len, 0, 0, 480.0 / 1440);
+		prepareSprite(logo, logo_1440_img, logo_1440_img_len, 0, 0, 480.0 / 1440, true);
 	} else {
-		prepareSprite(logo, logo_2160_img, logo_2160_img_len, 0, 0, 480.0 / 2160);
+		prepareSprite(logo, logo_2160_img, logo_2160_img_len, 0, 0, 480.0 / 2160, true);
 	}
 	logo.rect.x = (gameWidth / 2) - (logo.rect.w / 2);
 	logo.rect.y = gameHeight * 3 / 8 - (logo.rect.h / 2);
@@ -292,22 +323,28 @@ int main(int argv, char** args) {
 	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	prepareSprite(menuCursor, menu_cursor_img, menu_cursor_img_len, 0, 0, 1);
-	prepareSprite(game_grid, grid_384_img, grid_384_img_len, gridPosX, gridPosY, 1);
-	prepareSpriteKeepScale(gridCursor_bottom_left, grid_cursor_bottom_left_img, grid_cursor_bottom_left_img_len, 0, 0, 1);
+	prepareSprite(menuCursor, menu_cursor_img, menu_cursor_img_len, 0, 0, 1, true);
+#if defined(THREEDS)
+	prepareSprite(game_grid_top, grid_384_top_img, grid_384_top_img_len, gridPosX, gridPosY, 1, true);
+	prepareSprite(game_grid_middle, grid_384_middle_img, grid_384_middle_img_len, gridPosX, gridPosY + game_grid_top.rect.h, 1, false);
+	prepareSprite(game_grid_bottom, grid_384_bottom_img, grid_384_bottom_img_len, gridPosX, gridPosY + game_grid_top.rect.h + game_grid_middle.rect.h, 1, true);
+#else
+	prepareSprite(game_grid, grid_384_img, grid_384_img_len, gridPosX, gridPosY, 1, true);
+#endif
+	prepareSpriteKeepScale(gridCursor_bottom_left, grid_cursor_bottom_left_img, grid_cursor_bottom_left_img_len, 0, 0, 1, true);
 	spriteEnforceIntMult(gridCursor_bottom_left, 1);
-	prepareSpriteKeepScale(gridCursor_bottom_right, grid_cursor_bottom_right_img, grid_cursor_bottom_right_img_len, 0, 0, 1);
+	prepareSpriteKeepScale(gridCursor_bottom_right, grid_cursor_bottom_right_img, grid_cursor_bottom_right_img_len, 0, 0, 1, true);
 	spriteEnforceIntMult(gridCursor_bottom_right, 1);
-	prepareSpriteKeepScale(gridCursor_top_left, grid_cursor_top_left_img, grid_cursor_top_left_img_len, 0, 0, 1);
+	prepareSpriteKeepScale(gridCursor_top_left, grid_cursor_top_left_img, grid_cursor_top_left_img_len, 0, 0, 1, true);
 	spriteEnforceIntMult(gridCursor_top_left, 1);
-	prepareSpriteKeepScale(gridCursor_top_right, grid_cursor_top_right_img, grid_cursor_top_right_img_len, 0, 0, 1);
+	prepareSpriteKeepScale(gridCursor_top_right, grid_cursor_top_right_img, grid_cursor_top_right_img_len, 0, 0, 1, true);
 	spriteEnforceIntMult(gridCursor_top_right, 1);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	prepareSprite(game_sidebar_small, sidebar_small_img, sidebar_small_img_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 1);
-	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_img, grid_mini_bottom_left_img_len, 0, 0, 1);
-	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_img, grid_mini_bottom_right_img_len, 0, 0, 1);
-	prepareSprite(miniGrid_top_left, grid_mini_top_left_img, grid_mini_top_left_img_len, 0, 0, 1);
-	prepareSprite(miniGrid_top_right, grid_mini_top_right_img, grid_mini_top_right_img_len, 0, 0, 1);
+	prepareSprite(game_sidebar_small, sidebar_small_img, sidebar_small_img_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 1, true);
+	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_img, grid_mini_bottom_left_img_len, 0, 0, 1, true);
+	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_img, grid_mini_bottom_right_img_len, 0, 0, 1, true);
+	prepareSprite(miniGrid_top_left, grid_mini_top_left_img, grid_mini_top_left_img_len, 0, 0, 1, true);
+	prepareSprite(miniGrid_top_right, grid_mini_top_right_img, grid_mini_top_right_img_len, 0, 0, 1, true);
 
 	/* Set Rectangles */
 	//divider.w = gameWidth * 17 / 20;
@@ -899,7 +936,7 @@ int main(int argv, char** args) {
 				gameHandleChangeSong();
 				lastMiniGridState = miniGridState;
 				/* Draw Grid */
-				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
+				renderGrid();
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
@@ -957,7 +994,7 @@ int main(int argv, char** args) {
 					updateMenuCursorPositionY(menuCursorIndex_main);
 				}
 				/* Draw Grid */
-				SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
+				renderGrid();
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
@@ -1137,12 +1174,12 @@ int main(int argv, char** args) {
 #elif defined(ANDROID)
 				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
 #elif defined(THREEDS)
-				menuHandleVertCursorMovement(menuCursorIndex_video, 2, 0);
+				menuHandleVertCursorMovement(menuCursorIndex_video, 3, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 13)), 0);
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Frame_Rate, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)), 1);
 					//menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_video, text_Integer_Scale, (text_Off.rect.x + text_Off.rect.w), 3);
-					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 3);
+					menuHandleVertCursorMovementMouse(menuCursorIndex_video, text_Apply, 2);
 				}
 #else
 				menuHandleVertCursorMovement(menuCursorIndex_video, 4, 0);
@@ -1199,7 +1236,8 @@ int main(int argv, char** args) {
 #elif defined(THREEDS)
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Integer_Scale.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 13)))
-					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))))) {
+					|| mouseIsInRectWithSetting(text_Frame_Rate.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 8)))
+					|| mouseIsInRect(text_Apply.rect)))) {
 #else
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Resolution.rect, (VIDEO_MENU_NUM_POSITION_X + (fontSize * 9)))
@@ -1226,6 +1264,18 @@ int main(int argv, char** args) {
 							break;
 						case 1:
 							setFrameRateByOptions(1);
+							break;
+						case 2:
+							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
+								if (settingsFile == NULL) {
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting);
+								} else {
+									saveCurrentSettings();
+								}
+								sdlDestroyAll();
+								systemSpecificClose();
+								return 0;
+							}
 							break;
 #else
 						case 0:
@@ -1285,6 +1335,7 @@ int main(int argv, char** args) {
 				} else {
 					renderText(&text_Off);
 				}
+				renderText(&text_Apply);
 #elif !defined(FUNKEY)
 				renderText(&text_Resolution);
 				renderText(&text_Aspect_Ratio);
@@ -1594,15 +1645,14 @@ int main(int argv, char** args) {
 
 		/* Update Screen */
 #if !defined(SDL1)
+		//printFPS();
 		SDL_RenderPresent(renderer);
 #else
 		SDL_Flip(windowScreen);
 #endif
 
 		/* Cap Framerate */
-#if defined(THREEDS)
-		if (frameRate < 30) {
-#elif defined(SDL1)
+#if defined(SDL1)
 		if (true) {
 #else
 		if (frameRate < displayRefreshRate) {

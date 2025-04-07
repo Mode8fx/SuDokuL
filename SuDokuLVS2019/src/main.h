@@ -129,7 +129,13 @@ SpriteObject tile_grasslands2;
 SpriteObject tile_snowymountain;
 SpriteObject logo;
 SpriteObject menuCursor;
+#if defined(THREEDS)
+SpriteObject game_grid_top;
+SpriteObject game_grid_middle;
+SpriteObject game_grid_bottom;
+#else
 SpriteObject game_grid;
+#endif
 //SpriteObject gridCursor;
 SpriteObject gridCursor_bottom_left;
 SpriteObject gridCursor_bottom_right;

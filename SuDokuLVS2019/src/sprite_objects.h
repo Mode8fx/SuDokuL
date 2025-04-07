@@ -1,4 +1,5 @@
 #include "shared.h"
+#include "window.h"
 
 #ifndef SPRITE_OBJECTS_H
 #define SPRITE_OBJECTS_H
@@ -32,7 +33,13 @@ extern SpriteObject tile_grasslands2;
 extern SpriteObject tile_snowymountain;
 extern SpriteObject logo;
 extern SpriteObject menuCursor;
+#if defined(THREEDS)
+extern SpriteObject game_grid_top;
+extern SpriteObject game_grid_middle;
+extern SpriteObject game_grid_bottom;
+#else
 extern SpriteObject game_grid;
+#endif
 //extern SpriteObject gridCursor;
 extern SpriteObject gridCursor_bottom_left;
 extern SpriteObject gridCursor_bottom_right;
@@ -53,11 +60,22 @@ extern SpriteObject miniGrid_top_left;
 extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
-extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double);
-extern void prepareSpriteKeepScale(SpriteObject &, const unsigned char *, unsigned int, int, int, double);
+extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool);
+extern void prepareSpriteKeepScale(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool);
 extern void setSpriteScale(SpriteObject &, double);
 extern void spriteEnforceIntMult(SpriteObject &, double);
 extern void setSpriteScaleTile();
+extern inline void renderGrid();
+
+inline void renderGrid() {
+#if defined(THREEDS)
+  SDL_RenderCopy(renderer, game_grid_top.texture, NULL, &game_grid_top.rect);
+  SDL_RenderCopy(renderer, game_grid_middle.texture, NULL, &game_grid_middle.rect);
+  SDL_RenderCopy(renderer, game_grid_bottom.texture, NULL, &game_grid_bottom.rect);
+#else
+  SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
+#endif
+}
 
 #define OBJ_TO_MID_SCREEN_X(obj) \
     ((gameWidth - obj.rect.w) / 2)

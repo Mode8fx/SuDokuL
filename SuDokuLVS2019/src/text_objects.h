@@ -359,14 +359,16 @@ extern Uint16 backgroundMenuNumPosition_X;
 #if defined(ANDROID) || defined(FUNKEY)
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice1)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice2)
+#define TEXT_APPLY_Y                      (text_menuChoice4)
 #elif defined(THREEDS)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice1)
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice2)
+#define TEXT_APPLY_Y                      (text_menuChoice3)
 #else
 #define TEXT_FRAME_RATE_Y                 (text_menuChoice3)
 #define TEXT_INTEGER_SCALE_Y              (text_menuChoice4)
-#endif
 #define TEXT_APPLY_Y                      (text_menuChoice4)
+#endif
 #define TEXT_SCORES_Y                     (text_menuChoice5)
 #define TEXT_BACKGROUND_TYPE_Y            (text_menuChoice1)
 #define TEXT_BACKGROUND_SIZE_Y            (text_menuChoice2)
@@ -395,7 +397,11 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define TEXT_GAME_NORMAL_Y                (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_HARD_Y                  (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_VHARD_Y                 (TEXT_GAME_EASY_Y)
+#if defined(THREEDS)
+#define TEXT_YOU_WIN_Y                    ((game_grid_top.rect.y + game_grid_top.rect.h + game_grid_middle.rect.h + game_grid_bottom.rect.h + gameHeight - fontSize) / 2)
+#else
 #define TEXT_YOU_WIN_Y                    ((game_grid.rect.y + game_grid.rect.h + gameHeight - fontSize) / 2)
+#endif
 #define CONTROLS_MENU_ENDPOINT            (text_A_Confirm.rect.x + text_A_Confirm.rect.w)
 #define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (fontSize * 2))
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (fontSize * 3))

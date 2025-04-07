@@ -136,11 +136,7 @@ void initDefaultBGScale() {
 }
 
 void initDefaultFrameRate() {
-#if defined(THREEDS)
-	defaultFrameRateIndex = 2;
-#else
 	defaultFrameRateIndex = 5;
-#endif
 }
 
 void initDefaultWindowedSetting() {
@@ -415,18 +411,13 @@ void setAspectRatioByOptions(Sint8 increment) {
 	}
 }
 
-#if defined(THREEDS)
-#define NUM_FRAMERATE_OPTIONS 2
-#else
 #define NUM_FRAMERATE_OPTIONS 5
-#endif
 
 void setFrameRateByOptions(Sint8 increment) {
 	addon131Settings.frameRateIndex += increment;
 	if (addon131Settings.frameRateIndex < 0) {
 		addon131Settings.frameRateIndex = NUM_FRAMERATE_OPTIONS;
-	}
-	else if (addon131Settings.frameRateIndex > NUM_FRAMERATE_OPTIONS) {
+	} else if (addon131Settings.frameRateIndex > NUM_FRAMERATE_OPTIONS) {
 		addon131Settings.frameRateIndex = 0;
 	}
 	switch (addon131Settings.frameRateIndex) {
@@ -583,7 +574,13 @@ void sdlDestroyAll() {
 	SDL_DestroyTexture(tile_snowymountain.texture);
 	SDL_DestroyTexture(logo.texture);
 	SDL_DestroyTexture(menuCursor.texture);
+#if defined(THREEDS)
+	SDL_DestroyTexture(game_grid_top.texture);
+	SDL_DestroyTexture(game_grid_middle.texture);
+	SDL_DestroyTexture(game_grid_bottom.texture);
+#else
 	SDL_DestroyTexture(game_grid.texture);
+#endif
 	SDL_DestroyTexture(gridCursor_bottom_left.texture);
 	SDL_DestroyTexture(gridCursor_bottom_right.texture);
 	SDL_DestroyTexture(gridCursor_top_left.texture);

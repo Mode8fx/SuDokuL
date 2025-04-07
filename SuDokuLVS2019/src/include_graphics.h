@@ -3,7 +3,6 @@
 
 #if defined(USE_BMP) // Better performance, but higher RAM+disk space usage
 
-#include "graphics_include_bmp/grid_384.h"
 #include "graphics_include_bmp/grid_cursor_bottom_left.h"
 #include "graphics_include_bmp/grid_cursor_bottom_right.h"
 #include "graphics_include_bmp/grid_cursor_top_left.h"
@@ -25,6 +24,9 @@
 #include "graphics_include_bmp/logo_240.h"
 
 #if defined(THREEDS)
+#include "graphics_include_bmp/grid_384_top.h"
+#include "graphics_include_bmp/grid_384_middle.h"
+#include "graphics_include_bmp/grid_384_bottom.h"
 #define logo_272_img NULL
 #define logo_272_img_len 0
 #define logo_480_img NULL
@@ -40,6 +42,7 @@
 #define logo_2160_img NULL
 #define logo_2160_img_len 0
 #else
+#include "graphics_include_bmp/grid_384.h"
 #include "graphics_include_bmp/logo_272.h"
 #include "graphics_include_bmp/logo_480.h"
 #include "graphics_include_bmp/logo_544.h"
