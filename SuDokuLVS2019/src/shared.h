@@ -47,7 +47,7 @@ struct Addon131Settings {
 };
 
 struct Addon134Settings {
-	bool windowedSetting;
+	Uint8 windowedSetting;
 };
 
 struct BGScroll {
@@ -150,8 +150,8 @@ extern Uint32 ticksPerFrame;
 #define SYSTEM_WIDTH  240
 #define SYSTEM_HEIGHT 240
 #elif defined(THREEDS)
-#define SYSTEM_WIDTH  320
-#define SYSTEM_HEIGHT 240
+extern Uint16 SYSTEM_WIDTH;
+extern Uint16 SYSTEM_HEIGHT;
 #elif defined(SDL1)
 #define SYSTEM_WIDTH  640
 #define SYSTEM_HEIGHT 480

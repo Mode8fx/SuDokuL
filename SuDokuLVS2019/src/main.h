@@ -15,6 +15,10 @@ SDL_Renderer *renderer;
 SDL_Surface *windowScreen;
 #endif
 SDL_Event event;
+#if defined(THREEDS)
+Uint16 SYSTEM_WIDTH = 400;
+Uint16 SYSTEM_HEIGHT = 240;
+#endif
 
 /* SDL Rectangles */
 SDL_Rect topRect;

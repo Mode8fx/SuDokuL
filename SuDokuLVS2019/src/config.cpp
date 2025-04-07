@@ -968,6 +968,9 @@ void handlePlayerInput() {
 				break;
 			/* Handle Touch Input (SDL2) */
 			case SDL_FINGERDOWN:
+#if defined(THREEDS)
+				if (addon134Settings.windowedSetting) break;
+#endif
 				if (controlSettings.enableTouchscreen) {
 					mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
 					mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
@@ -976,6 +979,9 @@ void handlePlayerInput() {
 				}
 				break;
 			case SDL_FINGERMOTION:
+#if defined(THREEDS)
+				if (addon134Settings.windowedSetting) break;
+#endif
 				if (controlSettings.enableTouchscreen) {
 					mouseInput_x = (Sint32)(event.tfinger.x * gameWidth);
 					mouseInput_y = (Sint32)(event.tfinger.y * gameHeight);
@@ -983,6 +989,9 @@ void handlePlayerInput() {
 				}
 				break;
 			case SDL_FINGERUP:
+#if defined(THREEDS)
+				if (addon134Settings.windowedSetting) break;
+#endif
 				if (controlSettings.enableTouchscreen) {
 					justClickedInMiniGrid = false;
 				}

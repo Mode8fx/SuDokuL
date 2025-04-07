@@ -109,8 +109,18 @@ int main(int argv, char** args) {
 	SDL_SetHint(SDL_HINT_ANDROID_BLOCK_ON_PAUSE, "1");
 	SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");
 #endif
+#if defined(THREEDS)
+	if (addon134Settings.windowedSetting) {
+		SYSTEM_WIDTH = 400;
+	} else {
+		SYSTEM_WIDTH = 320;
+	}
+	gameWidth = SYSTEM_WIDTH;
+	gameHeight = SYSTEM_HEIGHT;
+#else
 	gameWidth = videoSettings.widthSetting;
 	gameHeight = videoSettings.heightSetting;
+#endif
 	if (gameWidth == 0 || gameHeight == 0) {
 		setNativeResolution();
 	}
@@ -150,7 +160,7 @@ int main(int argv, char** args) {
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gameWidth, gameHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 #elif defined(THREEDS)
-	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED_DISPLAY(addon134Settings.windowedSetting), SDL_WINDOWPOS_CENTERED_DISPLAY(addon134Settings.windowedSetting), SYSTEM_WIDTH, SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED_DISPLAY(!addon134Settings.windowedSetting), SDL_WINDOWPOS_CENTERED_DISPLAY(addon134Settings.windowedSetting), gameWidth, gameHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 #elif !defined(PC)
 	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);

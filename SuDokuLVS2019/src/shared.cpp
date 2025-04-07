@@ -145,9 +145,9 @@ void initDefaultFrameRate() {
 
 void initDefaultWindowedSetting() {
 #if defined(THREEDS)
-	defaultWindowedSetting = false;
+	defaultWindowedSetting = 0;
 #else
-	defaultWindowedSetting = true;
+	defaultWindowedSetting = 1;
 #endif
 }
 
@@ -476,14 +476,13 @@ void sdlToggleIntegerScale() {
 void toggleDualScreen() {
 #if defined(THREEDS)
 	addon134Settings.windowedSetting = !addon134Settings.windowedSetting;
-	//SDL_RenderClear(renderer);
-	//SDL_Delay(35);
-	//SDL_RenderPresent(renderer);
-	//SDL_FreeSurface(windowScreen);
+	// 3DS SDL2 doesn't support this...
 	//if (addon134Settings.windowedSetting) {
-	//	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	//	window = windowTop;
+	//	renderer = rendererTop;
 	//} else {
-	//	window = SDL_CreateWindow("SuDokuL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SYSTEM_WIDTH, SYSTEM_HEIGHT, 0);
+	//	window = windowBottom;
+	//	renderer = rendererBottom;
 	//}
 #endif
 }
