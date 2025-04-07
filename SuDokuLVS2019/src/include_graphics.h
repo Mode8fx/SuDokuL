@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GRAPHICS_H
 #define INCLUDE_GRAPHICS_H
 
-#if defined(THREEDS) // 3DS SDL has to use BMP
+#if defined(USE_BMP) // Better performance, but higher RAM+disk space usage
 
 #include "graphics_include_bmp/grid_384.h"
 #include "graphics_include_bmp/grid_cursor_bottom_left.h"
@@ -23,6 +23,8 @@
 #include "graphics_include_bmp/tile_grasslands2.h"
 #include "graphics_include_bmp/tile_snowymountain.h"
 #include "graphics_include_bmp/logo_240.h"
+
+#if defined(THREEDS)
 #define logo_272_img NULL
 #define logo_272_img_len 0
 #define logo_480_img NULL
@@ -37,6 +39,15 @@
 #define logo_1440_img_len 0
 #define logo_2160_img NULL
 #define logo_2160_img_len 0
+#else
+#include "graphics_include_bmp/logo_272.h"
+#include "graphics_include_bmp/logo_480.h"
+#include "graphics_include_bmp/logo_544.h"
+#include "graphics_include_bmp/logo_720.h"
+#include "graphics_include_bmp/logo_1080.h"
+#include "graphics_include_bmp/logo_1440.h"
+#include "graphics_include_bmp/logo_2160.h"
+#endif
 
 #else
 
