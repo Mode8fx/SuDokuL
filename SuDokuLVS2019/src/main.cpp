@@ -328,6 +328,8 @@ int main(int argv, char** args) {
 	prepareSprite(game_grid_top, grid_384_top_img, grid_384_top_img_len, gridPosX, gridPosY, 1, true);
 	prepareSprite(game_grid_middle, grid_384_middle_img, grid_384_middle_img_len, gridPosX, gridPosY + game_grid_top.rect.h, 1, false);
 	prepareSprite(game_grid_bottom, grid_384_bottom_img, grid_384_bottom_img_len, gridPosX, gridPosY + game_grid_top.rect.h + game_grid_middle.rect.h, 1, true);
+	bg_max_x = game_grid_middle.rect.x + game_grid_middle.rect.w - tile->rect.w;
+	bg_max_y = game_grid_bottom.rect.y - tile->rect.h;
 #else
 	prepareSprite(game_grid, grid_384_img, grid_384_img_len, gridPosX, gridPosY, 1, true);
 #endif
@@ -652,7 +654,15 @@ int main(int argv, char** args) {
 		// SDL_RenderClear(renderer);
 
 		/* Draw Tile Background */
+#if defined(THREEDS)
+		if (programState == 9) {
+			renderBackgroundNotBehindGrid();
+		} else {
+			renderBackground();
+		}
+#else
 		renderBackground();
+#endif
 
 		switch (programState) {
 			/* 0 = Title Screen */

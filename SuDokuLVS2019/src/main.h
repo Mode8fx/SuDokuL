@@ -133,6 +133,8 @@ SpriteObject menuCursor;
 SpriteObject game_grid_top;
 SpriteObject game_grid_middle;
 SpriteObject game_grid_bottom;
+int bg_max_x;
+int bg_max_y;
 #else
 SpriteObject game_grid;
 #endif

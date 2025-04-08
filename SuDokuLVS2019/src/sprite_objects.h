@@ -37,6 +37,8 @@ extern SpriteObject menuCursor;
 extern SpriteObject game_grid_top;
 extern SpriteObject game_grid_middle;
 extern SpriteObject game_grid_bottom;
+extern int bg_max_x;
+extern int bg_max_y;
 #else
 extern SpriteObject game_grid;
 #endif

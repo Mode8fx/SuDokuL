@@ -81,4 +81,8 @@ void setSpriteScaleTile() {
   bgScroll.final_x = gameWidth + tile->rect.w;
   bgScroll.final_y = gameHeight + tile->rect.h;
 #endif
+#if defined(THREEDS)
+  bg_max_x = game_grid_middle.rect.x + game_grid_middle.rect.w - tile->rect.w;
+  bg_max_y = game_grid_bottom.rect.y - tile->rect.h;
+#endif
 }

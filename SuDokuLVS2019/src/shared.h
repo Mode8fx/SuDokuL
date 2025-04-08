@@ -220,6 +220,9 @@ extern void toggleDualScreen();
 extern void setScaling();
 extern void updateBorderRects();
 extern void renderBackground();
+#if defined(THREEDS)
+extern void renderBackgroundNotBehindGrid();
+#endif
 extern void renderBorderRects();
 extern void sdlDestroyAll();
 extern void closeController();

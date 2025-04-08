@@ -547,6 +547,27 @@ void renderBackground() {
 	}
 }
 
+#if defined(THREEDS)
+void renderBackgroundNotBehindGrid() {
+	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
+	bgScroll.speedStep_x_int = static_cast<int>(floor(bgScroll.speedStep_x)) % tile_rect_h;
+	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
+	bgScroll.speedStep_y_int = static_cast<int>(floor(bgScroll.speedStep_y)) % tile_rect_w;
+	int start_x = -tile_rect_w + bgScroll.speedStep_x_int;
+	int start_y = -tile_rect_h + bgScroll.speedStep_y_int;
+	for (int j = start_y; j <= bgScroll.final_y; j += tile_rect_h) {
+		for (int i = start_x; i <= bgScroll.final_x; i += tile_rect_w) {
+			if (i >= game_grid_middle.rect.x && i <= bg_max_x && j >= game_grid_middle.rect.y && j <= bg_max_y) {
+				continue;
+			}
+			tile->rect.x = i;
+			tile->rect.y = j;
+			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
+		}
+	}
+}
+#endif
+
 void renderBorderRects() {
 #if defined(SDL1)
 	SDL_FillRect(windowScreen, &topRect, 0);
