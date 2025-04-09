@@ -205,14 +205,14 @@ int main(int argv, char** args) {
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
-	prepareSprite(tile1, tile1_img, tile1_img_len, 0, 0, 1, false);
-	prepareSprite(tile2, tile2_img, tile2_img_len, 0, 0, 1, false);
-	prepareSprite(tile3, tile3_img, tile3_img_len, 0, 0, 1, false);
-	prepareSprite(tile_cave, tile_cave_img, tile_cave_img_len, 0, 0, 1, false);
-	prepareSprite(tile_desert, tile_desert_img, tile_desert_img_len, 0, 0, 1, false);
-	prepareSprite(tile_grasslands, tile_grasslands_img, tile_grasslands_img_len, 0, 0, 1, false);
-	prepareSprite(tile_grasslands2, tile_grasslands2_img, tile_grasslands2_img_len, 0, 0, 1, false);
-	prepareSprite(tile_snowymountain, tile_snowymountain_img, tile_snowymountain_img_len, 0, 0, 1, false);
+	prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, 1, false);
+	prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, 1, false);
+	prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, 1, false);
+	prepareSprite(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, 1, false);
+	prepareSprite(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, 1, false);
+	prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, 1, false);
+	prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, 1, false);
+	prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, 1, false);
 	setBGType();
 	setSpriteScaleTile();
 	setFrameRateByOptions(0);
@@ -301,21 +301,21 @@ int main(int argv, char** args) {
 
 	/* Set Textures */
 	if (gameHeight < 272) {
-		prepareSprite(logo, logo_240_img, logo_240_img_len, 0, 0, 480.0 / 240, true);
+		prepareSprite(logo, logo_240_png, logo_240_png_len, 0, 0, 480.0 / 240, true);
 	} else if (gameHeight < 480) {
-		prepareSprite(logo, logo_272_img, logo_272_img_len, 0, 0, 480.0 / 272, true);
+		prepareSprite(logo, logo_272_png, logo_272_png_len, 0, 0, 480.0 / 272, true);
 	} else if (gameHeight < 544) {
-		prepareSprite(logo, logo_480_img, logo_480_img_len, 0, 0, 1, true);
+		prepareSprite(logo, logo_480_png, logo_480_png_len, 0, 0, 1, true);
 	} else if (gameHeight < 720) {
-		prepareSprite(logo, logo_544_img, logo_544_img_len, 0, 0, 480.0 / 544, true);
+		prepareSprite(logo, logo_544_png, logo_544_png_len, 0, 0, 480.0 / 544, true);
 	} else if (gameHeight < 1080) {
-		prepareSprite(logo, logo_720_img, logo_720_img_len, 0, 0, 480.0 / 720, true);
+		prepareSprite(logo, logo_720_png, logo_720_png_len, 0, 0, 480.0 / 720, true);
 	} else if (gameHeight < 1440) {
-		prepareSprite(logo, logo_1080_img, logo_1080_img_len, 0, 0, 480.0 / 1080, true);
+		prepareSprite(logo, logo_1080_png, logo_1080_png_len, 0, 0, 480.0 / 1080, true);
 	} else if (gameHeight < 2160) {
-		prepareSprite(logo, logo_1440_img, logo_1440_img_len, 0, 0, 480.0 / 1440, true);
+		prepareSprite(logo, logo_1440_png, logo_1440_png_len, 0, 0, 480.0 / 1440, true);
 	} else {
-		prepareSprite(logo, logo_2160_img, logo_2160_img_len, 0, 0, 480.0 / 2160, true);
+		prepareSprite(logo, logo_2160_png, logo_2160_png_len, 0, 0, 480.0 / 2160, true);
 	}
 	logo.rect.x = (gameWidth / 2) - (logo.rect.w / 2);
 	logo.rect.y = gameHeight * 3 / 8 - (logo.rect.h / 2);
@@ -323,30 +323,28 @@ int main(int argv, char** args) {
 	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	prepareSprite(menuCursor, menu_cursor_img, menu_cursor_img_len, 0, 0, 1, true);
+	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, GRAPHICS_SCALE, true);
+	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, gridPosX, gridPosY, GRAPHICS_SCALE, true);
+	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, gridPosX, gridPosY + game_grid_1.rect.h, GRAPHICS_SCALE, false);
+	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, gridPosX, gridPosY + game_grid_1.rect.h + game_grid_2.rect.h, GRAPHICS_SCALE, true);
 #if defined(THREEDS)
-	prepareSprite(game_grid_top, grid_384_top_img, grid_384_top_img_len, gridPosX, gridPosY, 1, true);
-	prepareSprite(game_grid_middle, grid_384_middle_img, grid_384_middle_img_len, gridPosX, gridPosY + game_grid_top.rect.h, 1, false);
-	prepareSprite(game_grid_bottom, grid_384_bottom_img, grid_384_bottom_img_len, gridPosX, gridPosY + game_grid_top.rect.h + game_grid_middle.rect.h, 1, true);
-	bg_max_x = game_grid_middle.rect.x + game_grid_middle.rect.w - tile->rect.w;
-	bg_max_y = game_grid_bottom.rect.y - tile->rect.h;
-#else
-	prepareSprite(game_grid, grid_384_img, grid_384_img_len, gridPosX, gridPosY, 1, true);
+	bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
+	bg_max_y = game_grid_3.rect.y - tile->rect.h;
 #endif
-	prepareSpriteKeepScale(gridCursor_bottom_left, grid_cursor_bottom_left_img, grid_cursor_bottom_left_img_len, 0, 0, 1, true);
-	spriteEnforceIntMult(gridCursor_bottom_left, 1);
-	prepareSpriteKeepScale(gridCursor_bottom_right, grid_cursor_bottom_right_img, grid_cursor_bottom_right_img_len, 0, 0, 1, true);
-	spriteEnforceIntMult(gridCursor_bottom_right, 1);
-	prepareSpriteKeepScale(gridCursor_top_left, grid_cursor_top_left_img, grid_cursor_top_left_img_len, 0, 0, 1, true);
-	spriteEnforceIntMult(gridCursor_top_left, 1);
-	prepareSpriteKeepScale(gridCursor_top_right, grid_cursor_top_right_img, grid_cursor_top_right_img_len, 0, 0, 1, true);
-	spriteEnforceIntMult(gridCursor_top_right, 1);
+	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true);
+	spriteEnforceIntMult(gridCursor_bottom_left, GRAPHICS_SCALE);
+	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true);
+	spriteEnforceIntMult(gridCursor_bottom_right, GRAPHICS_SCALE);
+	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, GRAPHICS_SCALE, true);
+	spriteEnforceIntMult(gridCursor_top_left, GRAPHICS_SCALE);
+	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, GRAPHICS_SCALE, true);
+	spriteEnforceIntMult(gridCursor_top_right, GRAPHICS_SCALE);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	prepareSprite(game_sidebar_small, sidebar_small_img, sidebar_small_img_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 1, true);
-	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_img, grid_mini_bottom_left_img_len, 0, 0, 1, true);
-	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_img, grid_mini_bottom_right_img_len, 0, 0, 1, true);
-	prepareSprite(miniGrid_top_left, grid_mini_top_left_img, grid_mini_top_left_img_len, 0, 0, 1, true);
-	prepareSprite(miniGrid_top_right, grid_mini_top_right_img, grid_mini_top_right_img_len, 0, 0, 1, true);
+	prepareSprite(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, GRAPHICS_SCALE, true);
+	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true);
+	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true);
+	prepareSprite(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, GRAPHICS_SCALE, true);
+	prepareSprite(miniGrid_top_right, grid_mini_top_right_png, grid_mini_top_right_png_len, 0, 0, GRAPHICS_SCALE, true);
 
 	/* Set Rectangles */
 	//divider.w = gameWidth * 17 / 20;

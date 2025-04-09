@@ -22,10 +22,10 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	boot
 BUILD		:=	build_wii
-SOURCES		:=	src src/fonts_include src/graphics_include src/music_include src/sfx_include
+SOURCES		:=	src src/fonts_include src/graphics_include/all_res src/graphics_include/normal_res src/music_include src/sfx_include
 DATA		:=	
 TEXTURES	:=
-INCLUDES	:=	src src/fonts_include src/graphics_include src/music_include src/sfx_include
+INCLUDES	:=	src src/fonts_include src/graphics_include/all_res src/graphics_include/normal_res src/music_include src/sfx_include
 
 #---------------------------------------------------------------------------------
 # options for code generation

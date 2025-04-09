@@ -557,7 +557,7 @@ void renderBackgroundNotBehindGrid() {
 	int start_y = -tile_rect_h + bgScroll.speedStep_y_int;
 	for (int j = start_y; j <= bgScroll.final_y; j += tile_rect_h) {
 		for (int i = start_x; i <= bgScroll.final_x; i += tile_rect_w) {
-			if (i >= game_grid_middle.rect.x && i <= bg_max_x && j >= game_grid_middle.rect.y && j <= bg_max_y) {
+			if (i >= game_grid_2.rect.x && i <= bg_max_x && j >= game_grid_2.rect.y && j <= bg_max_y) {
 				continue;
 			}
 			tile->rect.x = i;
@@ -595,13 +595,9 @@ void sdlDestroyAll() {
 	SDL_DestroyTexture(tile_snowymountain.texture);
 	SDL_DestroyTexture(logo.texture);
 	SDL_DestroyTexture(menuCursor.texture);
-#if defined(THREEDS)
-	SDL_DestroyTexture(game_grid_top.texture);
-	SDL_DestroyTexture(game_grid_middle.texture);
-	SDL_DestroyTexture(game_grid_bottom.texture);
-#else
-	SDL_DestroyTexture(game_grid.texture);
-#endif
+	SDL_DestroyTexture(game_grid_1.texture);
+	SDL_DestroyTexture(game_grid_2.texture);
+	SDL_DestroyTexture(game_grid_3.texture);
 	SDL_DestroyTexture(gridCursor_bottom_left.texture);
 	SDL_DestroyTexture(gridCursor_bottom_right.texture);
 	SDL_DestroyTexture(gridCursor_top_left.texture);

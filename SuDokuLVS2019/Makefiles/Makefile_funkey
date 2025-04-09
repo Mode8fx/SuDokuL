@@ -2,8 +2,16 @@ OBJ_DIR = ./build_funkey
 EXE=sudokul
 
 SRC_DIR		= src
-EXCLUDED	= src/graphics_include_logo_272.h src/graphics_include_logo_480.h src/graphics_include_logo_544.h src/graphics_include_logo_720.h src/graphics_include_logo_1080.h src/graphics_include_logo_1440.h src/graphics_include_logo_2160.h
-SRCS		= $(filter-out $(EXCLUDED), $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/*.c))
+EXCLUDED	= 
+SRCS = $(filter-out $(EXCLUDED), \
+	$(wildcard $(SRC_DIR)/*.cpp) \
+	$(wildcard $(SRC_DIR)/fonts_include/*.cpp) \
+	$(wildcard $(SRC_DIR)/graphics_include/all_res/*.cpp) \
+	$(wildcard $(SRC_DIR)/graphics_include/low_res/*.cpp) \
+	$(wildcard $(SRC_DIR)/music_include/*.cpp) \
+	$(wildcard $(SRC_DIR)/sfx_include/*.cpp) \
+)
+
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
 
@@ -15,7 +23,7 @@ LDFLAGS ?= -lSDL_image -lSDL_ttf -lSDL_mixer -lmikmod
 CXX = /usr/local/FunKey-sdk-2.3.0/usr/bin/arm-linux-g++
 PREFIX = /usr/local/FunKey-sdk-2.3.0/arm-funkey-linux-musleabihf/sysroot/usr
 SDLCONFIG = $(PREFIX)/bin/sdl-config
-CXXFLAGS += -march=armv7-a+neon-vfpv4 -mtune=cortex-a7 -mfpu=neon-vfpv4 -DLINUX -DFUNKEY -DCONSOLE -DSDL1
+CXXFLAGS += -march=armv7-a+neon-vfpv4 -mtune=cortex-a7 -mfpu=neon-vfpv4 -DLINUX -DFUNKEY -DCONSOLE -DSDL1 -DLOW_RES
 
 CXXFLAGS += `$(SDLCONFIG) --cflags`
 LDFLAGS += `$(SDLCONFIG) --libs`

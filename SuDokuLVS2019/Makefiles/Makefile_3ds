@@ -36,9 +36,9 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET			:=	$(notdir $(CURDIR))
 BUILD			:=	build_3ds
-SOURCES			:=	src src/fonts_include src/graphics_include_bmp src/music_include src/sfx_include
+SOURCES			:=	src src/fonts_include src/graphics_include/all_res src/graphics_include/low_res src/music_include src/sfx_include
 DATA			:=	
-INCLUDES		:=	src src/fonts_include src/graphics_include_bmp src/music_include src/sfx_include
+INCLUDES		:=	src src/fonts_include src/graphics_include/all_res src/graphics_include/low_res src/music_include src/sfx_include
 GRAPHICS		:=	
 GFXBUILD		:=	
 #ROMFS			:=	romfs
@@ -57,7 +57,7 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			-ffunction-sections \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) `pkg-config --cflags sdl2 SDL2_ttf SDL2_mixer SDL2_image freetype2` -D__3DS__ -DTHREEDS -DCONSOLE -DMOUSE_INPUT -DUSE_BMP
+CFLAGS	+=	$(INCLUDE) `pkg-config --cflags sdl2 SDL2_ttf SDL2_mixer SDL2_image freetype2` -D__3DS__ -DTHREEDS -DCONSOLE -DMOUSE_INPUT -DLOW_RES
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++11
 

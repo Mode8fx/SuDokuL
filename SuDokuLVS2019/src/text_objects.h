@@ -397,11 +397,7 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define TEXT_GAME_NORMAL_Y                (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_HARD_Y                  (TEXT_GAME_EASY_Y)
 #define TEXT_GAME_VHARD_Y                 (TEXT_GAME_EASY_Y)
-#if defined(THREEDS)
-#define TEXT_YOU_WIN_Y                    ((game_grid_top.rect.y + game_grid_top.rect.h + game_grid_middle.rect.h + game_grid_bottom.rect.h + gameHeight - fontSize) / 2)
-#else
-#define TEXT_YOU_WIN_Y                    ((game_grid.rect.y + game_grid.rect.h + gameHeight - fontSize) / 2)
-#endif
+#define TEXT_YOU_WIN_Y                    ((game_grid_1.rect.y + game_grid_1.rect.h + game_grid_2.rect.h + game_grid_3.rect.h + gameHeight - fontSize) / 2)
 #define CONTROLS_MENU_ENDPOINT            (text_A_Confirm.rect.x + text_A_Confirm.rect.w)
 #define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (fontSize * 2))
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (fontSize * 3))

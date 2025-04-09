@@ -33,10 +33,10 @@ extern SpriteObject tile_grasslands2;
 extern SpriteObject tile_snowymountain;
 extern SpriteObject logo;
 extern SpriteObject menuCursor;
+extern SpriteObject game_grid_1;
+extern SpriteObject game_grid_2;
+extern SpriteObject game_grid_3;
 #if defined(THREEDS)
-extern SpriteObject game_grid_top;
-extern SpriteObject game_grid_middle;
-extern SpriteObject game_grid_bottom;
 extern int bg_max_x;
 extern int bg_max_y;
 #else
@@ -52,7 +52,6 @@ extern SDL_Rect gameSidebarSmall1Rect;
 extern SDL_Rect gameSidebarSmall2Rect;
 extern SDL_Rect gameSidebarSmall3Rect;
 #if defined(SDL1)
-extern SDL_Surface *scaledImage;
 extern Sint16 tileSizeScaled;
 #endif
 
@@ -63,20 +62,15 @@ extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
 extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool);
-extern void prepareSpriteKeepScale(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool);
 extern void setSpriteScale(SpriteObject &, double);
 extern void spriteEnforceIntMult(SpriteObject &, double);
 extern void setSpriteScaleTile();
 extern inline void renderGrid();
 
 inline void renderGrid() {
-#if defined(THREEDS)
-  SDL_RenderCopy(renderer, game_grid_top.texture, NULL, &game_grid_top.rect);
-  SDL_RenderCopy(renderer, game_grid_middle.texture, NULL, &game_grid_middle.rect);
-  SDL_RenderCopy(renderer, game_grid_bottom.texture, NULL, &game_grid_bottom.rect);
-#else
-  SDL_RenderCopy(renderer, game_grid.texture, NULL, &game_grid.rect);
-#endif
+  SDL_RenderCopy(renderer, game_grid_1.texture, NULL, &game_grid_1.rect);
+  SDL_RenderCopy(renderer, game_grid_2.texture, NULL, &game_grid_2.rect);
+  SDL_RenderCopy(renderer, game_grid_3.texture, NULL, &game_grid_3.rect);
 }
 
 #define OBJ_TO_MID_SCREEN_X(obj) \

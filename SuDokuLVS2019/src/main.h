@@ -129,10 +129,10 @@ SpriteObject tile_grasslands2;
 SpriteObject tile_snowymountain;
 SpriteObject logo;
 SpriteObject menuCursor;
+SpriteObject game_grid_1;
+SpriteObject game_grid_2;
+SpriteObject game_grid_3;
 #if defined(THREEDS)
-SpriteObject game_grid_top;
-SpriteObject game_grid_middle;
-SpriteObject game_grid_bottom;
 int bg_max_x;
 int bg_max_y;
 #else
@@ -148,7 +148,6 @@ SDL_Rect gameSidebarSmall1Rect;
 SDL_Rect gameSidebarSmall2Rect;
 SDL_Rect gameSidebarSmall3Rect;
 #if defined(SDL1)
-SDL_Surface *scaledImage;
 Sint16 tileSizeScaled;
 #endif
 
