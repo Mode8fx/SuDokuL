@@ -10,22 +10,22 @@
 #include "graphics_include/all_res/tile_grasslands2.h"
 #include "graphics_include/all_res/tile_snowymountain.h"
 #include "graphics_include/all_res/logo_240.h"
+#include "graphics_include/all_res/grid_384_1.h"
+#include "graphics_include/all_res/grid_384_2.h"
+#include "graphics_include/all_res/grid_384_3.h"
+#include "graphics_include/all_res/grid_cursor_bottom_left.h"
+#include "graphics_include/all_res/grid_cursor_bottom_right.h"
+#include "graphics_include/all_res/grid_cursor_top_left.h"
+#include "graphics_include/all_res/grid_cursor_top_right.h"
+#include "graphics_include/all_res/menu_cursor.h"
+#include "graphics_include/all_res/sidebar_small.h"
 
 #if defined(LOW_RES) // For devices that exclusively run at 240p (e.g. 3DS)
 #define GRAPHICS_SCALE 2.0
-#include "graphics_include/low_res/grid_384_1.h"
-#include "graphics_include/low_res/grid_384_2.h"
-#include "graphics_include/low_res/grid_384_3.h"
-#include "graphics_include/low_res/grid_cursor_bottom_left.h"
-#include "graphics_include/low_res/grid_cursor_bottom_right.h"
-#include "graphics_include/low_res/grid_cursor_top_left.h"
-#include "graphics_include/low_res/grid_cursor_top_right.h"
 #include "graphics_include/low_res/grid_mini_bottom_left.h"
 #include "graphics_include/low_res/grid_mini_bottom_right.h"
 #include "graphics_include/low_res/grid_mini_top_left.h"
 #include "graphics_include/low_res/grid_mini_top_right.h"
-#include "graphics_include/low_res/menu_cursor.h"
-#include "graphics_include/low_res/sidebar_small.h"
 #define logo_272_png NULL
 #define logo_272_png_len 0
 #define logo_480_png NULL
@@ -44,19 +44,10 @@
 #else
 
 #define GRAPHICS_SCALE 1.0
-#include "graphics_include/normal_res/grid_384_1.h"
-#include "graphics_include/normal_res/grid_384_2.h"
-#include "graphics_include/normal_res/grid_384_3.h"
-#include "graphics_include/normal_res/grid_cursor_bottom_left.h"
-#include "graphics_include/normal_res/grid_cursor_bottom_right.h"
-#include "graphics_include/normal_res/grid_cursor_top_left.h"
-#include "graphics_include/normal_res/grid_cursor_top_right.h"
 #include "graphics_include/normal_res/grid_mini_bottom_left.h"
 #include "graphics_include/normal_res/grid_mini_bottom_right.h"
 #include "graphics_include/normal_res/grid_mini_top_left.h"
 #include "graphics_include/normal_res/grid_mini_top_right.h"
-#include "graphics_include/normal_res/menu_cursor.h"
-#include "graphics_include/normal_res/sidebar_small.h"
 
 #include "graphics_include/normal_res/logo_272.h"
 

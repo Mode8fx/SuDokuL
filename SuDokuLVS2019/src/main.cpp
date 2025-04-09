@@ -205,14 +205,14 @@ int main(int argv, char** args) {
 
 	/* Set only things that are used on the initial loading screen */
 	/* Set Textures */
-	prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, 1, false);
-	prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, 1, false);
-	prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, 1, false);
-	prepareSprite(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, 1, false);
-	prepareSprite(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, 1, false);
-	prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, 1, false);
-	prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, 1, false);
-	prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, 1, false);
+	prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, 2, false);
+	prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, 2, false);
+	prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, 2, false);
+	prepareSprite(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, 2, false);
+	prepareSprite(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, 2, false);
+	prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, 2, false);
+	prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, 2, false);
+	prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, 2, false);
 	setBGType();
 	setSpriteScaleTile();
 	setFrameRateByOptions(0);
@@ -323,24 +323,24 @@ int main(int argv, char** args) {
 	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
-	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, GRAPHICS_SCALE, true);
-	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, gridPosX, gridPosY, GRAPHICS_SCALE, true);
-	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, gridPosX, gridPosY + game_grid_1.rect.h, GRAPHICS_SCALE, false);
-	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, gridPosX, gridPosY + game_grid_1.rect.h + game_grid_2.rect.h, GRAPHICS_SCALE, true);
+	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true);
+	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, gridPosX, gridPosY, 2, true);
+	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, gridPosX, gridPosY + game_grid_1.rect.h, 2, false);
+	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, gridPosX, gridPosY + game_grid_1.rect.h + game_grid_2.rect.h, 2, true);
 #if defined(THREEDS)
 	bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
 	bg_max_y = game_grid_3.rect.y - tile->rect.h;
 #endif
-	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true);
-	spriteEnforceIntMult(gridCursor_bottom_left, GRAPHICS_SCALE);
-	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true);
-	spriteEnforceIntMult(gridCursor_bottom_right, GRAPHICS_SCALE);
-	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, GRAPHICS_SCALE, true);
-	spriteEnforceIntMult(gridCursor_top_left, GRAPHICS_SCALE);
-	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, GRAPHICS_SCALE, true);
-	spriteEnforceIntMult(gridCursor_top_right, GRAPHICS_SCALE);
+	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 2, true);
+	spriteEnforceIntMult(gridCursor_bottom_left, 2);
+	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 2, true);
+	spriteEnforceIntMult(gridCursor_bottom_right, 2);
+	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 2, true);
+	spriteEnforceIntMult(gridCursor_top_left, 2);
+	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 2, true);
+	spriteEnforceIntMult(gridCursor_top_right, 2);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	prepareSprite(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, GRAPHICS_SCALE, true);
+	prepareSprite(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 2, true);
 	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true);
 	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true);
 	prepareSprite(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, GRAPHICS_SCALE, true);

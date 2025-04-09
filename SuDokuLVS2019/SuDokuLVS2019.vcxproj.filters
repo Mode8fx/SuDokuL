@@ -81,36 +81,6 @@
     <ClCompile Include="src\sprite_objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\logo_240.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile_cave.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile_desert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile_grasslands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile_grasslands2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile_snowymountain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\all_res\tile3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_384_1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics_include\normal_res\grid_384_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -166,6 +136,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics_include\normal_res\sidebar_small.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\logo_240.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile_cave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile_desert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile_grasslands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile_grasslands2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile_snowymountain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\tile3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -338,52 +335,25 @@
     <ClInclude Include="src\graphics_include\tile3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\logo_240.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_384_1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile_cave.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_384_2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile_desert.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_384_3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile_grasslands.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_cursor_bottom_left.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile_grasslands2.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_cursor_bottom_right.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile_snowymountain.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_cursor_top_left.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\tile3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_384_1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_384_2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_384_3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_cursor_bottom_left.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_cursor_bottom_right.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_cursor_top_left.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\grid_cursor_top_right.h">
+    <ClInclude Include="src\graphics_include\all_res\grid_cursor_top_right.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics_include\normal_res\grid_mini_bottom_left.h">
@@ -419,10 +389,37 @@
     <ClInclude Include="src\graphics_include\normal_res\logo_2160.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\menu_cursor.h">
+    <ClInclude Include="src\graphics_include\all_res\menu_cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\normal_res\sidebar_small.h">
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\logo_240.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile_cave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile_desert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile_grasslands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile_grasslands2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile_snowymountain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\tile3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
