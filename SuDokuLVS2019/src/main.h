@@ -158,9 +158,6 @@ SDL_Rect gameSidebarSmall3Rect;
 SDL_Rect gameSidebarSmall3Rect_1;
 SDL_Rect gameSidebarSmall3Rect_2;
 SDL_Rect gameSidebarSmall3Rect_3;
-#if defined(SDL1)
-Sint16 tileSizeScaled;
-#endif
 
 SpriteObject miniGrid_bottom_left;
 SpriteObject miniGrid_bottom_right;

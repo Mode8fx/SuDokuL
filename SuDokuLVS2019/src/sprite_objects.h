@@ -62,9 +62,6 @@ extern SDL_Rect gameSidebarSmall3Rect;
 extern SDL_Rect gameSidebarSmall3Rect_1;
 extern SDL_Rect gameSidebarSmall3Rect_2;
 extern SDL_Rect gameSidebarSmall3Rect_3;
-#if defined(SDL1)
-extern Sint16 tileSizeScaled;
-#endif
 
 extern SpriteObject miniGrid_bottom_left;
 extern SpriteObject miniGrid_bottom_right;

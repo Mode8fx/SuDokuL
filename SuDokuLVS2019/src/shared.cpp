@@ -15,13 +15,8 @@ FILE * __cdecl __iob_func(void) {
 }
 #endif
 
-#if defined(SDL1)
-#define tile_rect_w tileSizeScaled
-#define tile_rect_h tileSizeScaled
-#else
 #define tile_rect_w tile->rect.w
 #define tile_rect_h tile->rect.h
-#endif
 
 Sint64 seekPos;
 

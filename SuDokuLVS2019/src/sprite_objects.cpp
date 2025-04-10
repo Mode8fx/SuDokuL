@@ -17,6 +17,15 @@
  * 6. Set the position of the sprite object.
  */
 void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale, bool useAlpha) {
+  if (spriteObj.texture) {
+#if defined(SDL1)
+    SDL_FreeSurface(spriteObj.texture);
+#else
+    SDL_DestroyTexture(spriteObj.texture);
+#endif
+    spriteObj.texture = NULL;  // optional: clear the pointer to avoid dangling references
+  }
+
   SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
   if (!temp_surface_unformatted) {
     SDL_Log("Failed to load image: %s", IMG_GetError());
@@ -86,7 +95,6 @@ void spriteEnforceIntMult(SpriteObject &spriteObj, double scale) {
 
 void setSpriteScaleTile() {
   Sint8 tileSizeResMult = max(static_cast<Sint8>(std::floor(gameHeight / 480.0)), (Sint8)1);
-#if defined(SDL1)
   prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
   prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
   prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
@@ -95,15 +103,8 @@ void setSpriteScaleTile() {
   prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
   prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
   prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false);
-  tileSizeScaled = 32 * bgSettings.scale * gameHeightMult * tileSizeResMult;
-  bgScroll.final_x = gameWidth + tileSizeScaled;
-  bgScroll.final_y = gameHeight + tileSizeScaled;
-#else
-  tile->rect.w = tile->width * bgSettings.scale * tileSizeResMult;
-  tile->rect.h = tile->height * bgSettings.scale * tileSizeResMult;
   bgScroll.final_x = gameWidth + tile->rect.w;
   bgScroll.final_y = gameHeight + tile->rect.h;
-#endif
 #if defined(THREEDS)
   bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
   bg_max_y = game_grid_3.rect.y - tile->rect.h;
