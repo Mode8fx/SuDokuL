@@ -46,7 +46,7 @@ GFXBUILD		:=
 APP_TITLE		:=	SuDokuL
 APP_DESCRIPTION	:=	Sudoku made with SDL
 APP_AUTHOR		:=	Mode8fx
-ICON			:=	logo_icon_android_48.png
+ICON			:=	3ds/logo_icon_3ds_48.png
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -64,7 +64,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= `pkg-config --libs sdl2 SDL2_ttf SDL2_mixer SDL2_image freetype2` -lctru -lm
+LIBS	:= `pkg-config --libs sdl2 SDL2_ttf SDL2_mixer SDL2_image freetype2` -lxmp -lctru -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

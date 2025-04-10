@@ -3,8 +3,8 @@
 set "CURR_DIR=%CD%"
 
 :: Manual sleep amounts (because `start /wait` doesn't work...)
-set SLEEP_COMPILE=45
-set SLEEP_COMPILE_LONG=60
+set SLEEP_COMPILE=40
+set SLEEP_COMPILE_LONG=55
 set SLEEP_COMPILE_SHORT=5
 set SLEEP_CLEAN=2
 
@@ -32,7 +32,7 @@ set MAKEFILES_WSL=/mnt%MAKEFILES_DKP%
 :: Path: 3DS CIA Utilities
 set BANNERTOOL="D:/Utilities/3DS CIA Creation/bannertool"
 set MAKEROM="D:/Utilities/3DS CIA Creation/makerom-v0.18.3-win_x86_64/makerom.exe"
-set VERSION_3DS=306
+set VERSION_3DS=308
 
 
 
@@ -95,8 +95,6 @@ set OUTPUT_ANDROID_IDSIG=%OUTPUT_ANDROID_IDSIG:/=\%
 :: Running compilation commands...
 rem call :compile_windows_x64
 rem call :compile_windows_x86
-call :compile_3ds
-goto :eof
 call :compile_linux
 call :compile_gc
 call :compile_wii
@@ -215,7 +213,7 @@ sleep %SLEEP_COMPILE%
 echo 3DS: Moving compiled 3dsx to %OUTPUT_3DS%...
 mv %REPO%/SuDokuLVS2019.3dsx %OUTPUT_3DS%
 echo 3DS: Creating CIA in %OUTPUT_3DS_CIA%...
-%MAKEROM% -f cia -o %OUTPUT_3DS_CIA% -elf %REPO%/SuDokuLVS2019.elf -icon %RELEASE_RESOURCES%/icon_3ds.smdh -banner %RELEASE_RESOURCES%/banner_3ds.bnr -ver %VERSION_3DS% -rsf %RELEASE_RESOURCES%/app_3ds.rsf
+%MAKEROM% -f cia -o %OUTPUT_3DS_CIA% -elf %REPO%/SuDokuLVS2019.elf -icon %RELEASE_RESOURCES%/3ds/icon_3ds.smdh -banner %RELEASE_RESOURCES%/3ds/banner_3ds.bnr -ver %VERSION_3DS% -rsf %RELEASE_RESOURCES%/3ds/app_3ds.rsf
 echo 3DS: Cleaning up...
 start /wait "" %DEVKITPRO% /usr/bin/bash -lc "cd %REPO_DKP%; make clean"
 sleep %SLEEP_CLEAN%
