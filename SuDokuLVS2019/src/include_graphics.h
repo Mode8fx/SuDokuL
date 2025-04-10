@@ -18,7 +18,9 @@
 #include "graphics_include/all_res/grid_cursor_top_left.h"
 #include "graphics_include/all_res/grid_cursor_top_right.h"
 #include "graphics_include/all_res/menu_cursor.h"
-#include "graphics_include/all_res/sidebar_small.h"
+#include "graphics_include/all_res/sidebar_small_1.h"
+#include "graphics_include/all_res/sidebar_small_2.h"
+#include "graphics_include/all_res/sidebar_small_3.h"
 
 #if defined(LOW_RES) // For devices that exclusively run at 240p (e.g. 3DS)
 #define GRAPHICS_SCALE 2.0

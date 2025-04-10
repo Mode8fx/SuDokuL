@@ -81,24 +81,6 @@
     <ClCompile Include="src\sprite_objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_384_2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_384_3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_cursor_bottom_left.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_cursor_bottom_right.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_cursor_top_left.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\grid_cursor_top_right.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics_include\normal_res\grid_mini_bottom_left.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,12 +114,6 @@
     <ClCompile Include="src\graphics_include\normal_res\logo_2160.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\menu_cursor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics_include\normal_res\sidebar_small.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics_include\all_res\logo_240.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -163,6 +139,39 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics_include\all_res\tile3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_384_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_384_2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_384_3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_cursor_bottom_left.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_cursor_bottom_right.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_cursor_top_left.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_cursor_top_right.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\menu_cursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -392,9 +401,6 @@
     <ClInclude Include="src\graphics_include\all_res\menu_cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics_include\all_res\sidebar_small.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics_include\all_res\logo_240.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -420,6 +426,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics_include\all_res\tile3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

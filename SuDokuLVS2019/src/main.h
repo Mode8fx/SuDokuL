@@ -143,10 +143,21 @@ SpriteObject gridCursor_bottom_left;
 SpriteObject gridCursor_bottom_right;
 SpriteObject gridCursor_top_left;
 SpriteObject gridCursor_top_right;
-SpriteObject game_sidebar_small;
+SpriteObject game_sidebar_small_1;
+SpriteObject game_sidebar_small_2;
+SpriteObject game_sidebar_small_3;
 SDL_Rect gameSidebarSmall1Rect;
+SDL_Rect gameSidebarSmall1Rect_1; // sidebar rect number, top/middle/bottom
+SDL_Rect gameSidebarSmall1Rect_2;
+SDL_Rect gameSidebarSmall1Rect_3;
 SDL_Rect gameSidebarSmall2Rect;
+SDL_Rect gameSidebarSmall2Rect_1;
+SDL_Rect gameSidebarSmall2Rect_2;
+SDL_Rect gameSidebarSmall2Rect_3;
 SDL_Rect gameSidebarSmall3Rect;
+SDL_Rect gameSidebarSmall3Rect_1;
+SDL_Rect gameSidebarSmall3Rect_2;
+SDL_Rect gameSidebarSmall3Rect_3;
 #if defined(SDL1)
 Sint16 tileSizeScaled;
 #endif

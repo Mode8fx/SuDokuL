@@ -47,10 +47,21 @@ extern SpriteObject gridCursor_bottom_left;
 extern SpriteObject gridCursor_bottom_right;
 extern SpriteObject gridCursor_top_left;
 extern SpriteObject gridCursor_top_right;
-extern SpriteObject game_sidebar_small;
+extern SpriteObject game_sidebar_small_1;
+extern SpriteObject game_sidebar_small_2;
+extern SpriteObject game_sidebar_small_3;
 extern SDL_Rect gameSidebarSmall1Rect;
+extern SDL_Rect gameSidebarSmall1Rect_1; // sidebar rect number, top/middle/bottom
+extern SDL_Rect gameSidebarSmall1Rect_2;
+extern SDL_Rect gameSidebarSmall1Rect_3;
 extern SDL_Rect gameSidebarSmall2Rect;
+extern SDL_Rect gameSidebarSmall2Rect_1;
+extern SDL_Rect gameSidebarSmall2Rect_2;
+extern SDL_Rect gameSidebarSmall2Rect_3;
 extern SDL_Rect gameSidebarSmall3Rect;
+extern SDL_Rect gameSidebarSmall3Rect_1;
+extern SDL_Rect gameSidebarSmall3Rect_2;
+extern SDL_Rect gameSidebarSmall3Rect_3;
 #if defined(SDL1)
 extern Sint16 tileSizeScaled;
 #endif
@@ -65,6 +76,7 @@ extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, i
 extern void setSpriteScale(SpriteObject &, double);
 extern void spriteEnforceIntMult(SpriteObject &, double);
 extern void setSpriteScaleTile();
+extern void prepareSidebar();
 extern inline void renderGrid();
 
 inline void renderGrid() {

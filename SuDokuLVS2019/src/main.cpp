@@ -340,7 +340,7 @@ int main(int argv, char** args) {
 	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 2, true);
 	spriteEnforceIntMult(gridCursor_top_right, 2);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
-	prepareSprite(game_sidebar_small, sidebar_small_png, sidebar_small_png_len, gameSidebarSmall1Rect.x, gameSidebarSmall1Rect.y, 2, true);
+	prepareSidebar();
 	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true);
 	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true);
 	prepareSprite(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, GRAPHICS_SCALE, true);

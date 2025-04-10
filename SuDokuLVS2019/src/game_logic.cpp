@@ -410,11 +410,18 @@ void setGridCursorBySmallY() {
 }
 
 void drawSidebar() {
-    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall1Rect);
+  // TODO: SDL1 compact display (FunKey) will look wrong
+  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall1Rect_2);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
+  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall2Rect_2);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
+  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall3Rect_2);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
     renderText(&text_Time);
-    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall2Rect);
     renderText(&text_Empty);
-    SDL_RenderCopy(renderer, game_sidebar_small.texture, NULL, &gameSidebarSmall3Rect);
     Sint16 pos_x_left_s1 = gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1;
     Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
     Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;

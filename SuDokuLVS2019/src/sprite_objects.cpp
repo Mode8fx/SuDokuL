@@ -109,3 +109,64 @@ void setSpriteScaleTile() {
   bg_max_y = game_grid_3.rect.y - tile->rect.h;
 #endif
 }
+
+void prepareSidebar() {
+  prepareSprite(game_sidebar_small_1, sidebar_small_1_png, sidebar_small_1_png_len, 0, 0, 2, true);
+  prepareSprite(game_sidebar_small_2, sidebar_small_2_png, sidebar_small_2_png_len, 0, 0, 2, false);
+  prepareSprite(game_sidebar_small_3, sidebar_small_3_png, sidebar_small_3_png_len, 0, 0, 2, true);
+  if (!compactDisplay) {
+    gameSidebarSmall1Rect_1.x = (Sint16)(gridPosX - SIDEBAR_SMALL_SIZE_X - (gridSize / 12));
+    gameSidebarSmall1Rect_1.y = (Sint16)(gridPosY + (gridSize / 16));
+    gameSidebarSmall2Rect_1.x = gameSidebarSmall1Rect_1.x;
+    gameSidebarSmall2Rect_1.y = (Sint16)(gridPosY + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
+    gameSidebarSmall3Rect_1.x = gameSidebarSmall1Rect_1.x;
+    gameSidebarSmall3Rect_1.y = (Sint16)(gridPosY + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
+  }
+  else {
+    gameSidebarSmall1Rect_1.x = (Sint16)((gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
+    gameSidebarSmall1Rect_1.y = -(Sint16)(SIDEBAR_SMALL_SIZE_Y / 4);
+    gameSidebarSmall2Rect_1.x = (Sint16)((gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2));
+    gameSidebarSmall2Rect_1.y = gameSidebarSmall1Rect_1.y;
+    gameSidebarSmall3Rect_1.x = (Sint16)((gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
+    gameSidebarSmall3Rect_1.y = gameSidebarSmall1Rect_1.y;
+  }
+  gameSidebarSmall1Rect_1.w = game_sidebar_small_1.rect.w;
+  gameSidebarSmall1Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall1Rect_2.w = game_sidebar_small_2.rect.w;
+  gameSidebarSmall1Rect_2.h = game_sidebar_small_2.rect.h;
+  gameSidebarSmall1Rect_3.w = game_sidebar_small_3.rect.w;
+  gameSidebarSmall1Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall1Rect_2.x = gameSidebarSmall1Rect_1.x;
+  gameSidebarSmall1Rect_2.y = gameSidebarSmall1Rect_1.y + gameSidebarSmall1Rect_1.h;
+  gameSidebarSmall1Rect_3.x = gameSidebarSmall1Rect_1.x;
+  gameSidebarSmall1Rect_3.y = gameSidebarSmall1Rect_2.y + gameSidebarSmall1Rect_2.h;
+  gameSidebarSmall1Rect = gameSidebarSmall1Rect_1;
+  gameSidebarSmall1Rect.w = gameSidebarSmall1Rect_1.w;
+  gameSidebarSmall1Rect.h = gameSidebarSmall1Rect_1.h + gameSidebarSmall1Rect_2.h + gameSidebarSmall1Rect_3.h;
+  gameSidebarSmall2Rect_1.w = game_sidebar_small_1.rect.w;
+  gameSidebarSmall2Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall2Rect_2.w = game_sidebar_small_2.rect.w;
+  gameSidebarSmall2Rect_2.h = game_sidebar_small_2.rect.h;
+  gameSidebarSmall2Rect_3.w = game_sidebar_small_3.rect.w;
+  gameSidebarSmall2Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall2Rect_2.x = gameSidebarSmall2Rect_1.x;
+  gameSidebarSmall2Rect_2.y = gameSidebarSmall2Rect_1.y + gameSidebarSmall2Rect_1.h;
+  gameSidebarSmall2Rect_3.x = gameSidebarSmall2Rect_1.x;
+  gameSidebarSmall2Rect_3.y = gameSidebarSmall2Rect_2.y + gameSidebarSmall2Rect_2.h;
+  gameSidebarSmall2Rect = gameSidebarSmall2Rect_1;
+  gameSidebarSmall2Rect.w = gameSidebarSmall1Rect.w;
+  gameSidebarSmall2Rect.h = gameSidebarSmall1Rect.h;
+  gameSidebarSmall3Rect_1.w = game_sidebar_small_1.rect.w;
+  gameSidebarSmall3Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall3Rect_2.w = game_sidebar_small_2.rect.w;
+  gameSidebarSmall3Rect_2.h = game_sidebar_small_2.rect.h;
+  gameSidebarSmall3Rect_3.w = game_sidebar_small_3.rect.w;
+  gameSidebarSmall3Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall3Rect_2.x = gameSidebarSmall3Rect_1.x;
+  gameSidebarSmall3Rect_2.y = gameSidebarSmall3Rect_1.y + gameSidebarSmall3Rect_1.h;
+  gameSidebarSmall3Rect_3.x = gameSidebarSmall3Rect_1.x;
+  gameSidebarSmall3Rect_3.y = gameSidebarSmall3Rect_2.y + gameSidebarSmall3Rect_2.h;
+  gameSidebarSmall3Rect = gameSidebarSmall3Rect_1;
+  gameSidebarSmall3Rect.w = gameSidebarSmall1Rect.w;
+  gameSidebarSmall3Rect.h = gameSidebarSmall1Rect.h;
+}

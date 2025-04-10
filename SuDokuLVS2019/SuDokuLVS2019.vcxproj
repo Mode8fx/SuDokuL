@@ -227,6 +227,9 @@
     <ClCompile Include="src\fonts_include\Commodore_Pixelized_v1_2.cpp" />
     <ClCompile Include="src\game_logic.cpp" />
     <ClCompile Include="src\graphics_include\all_res\logo_240.cpp" />
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_1.cpp" />
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_2.cpp" />
+    <ClCompile Include="src\graphics_include\all_res\sidebar_small_3.cpp" />
     <ClCompile Include="src\graphics_include\all_res\tile1.cpp" />
     <ClCompile Include="src\graphics_include\all_res\tile2.cpp" />
     <ClCompile Include="src\graphics_include\all_res\tile3.cpp" />
@@ -254,7 +257,6 @@
     <ClCompile Include="src\graphics_include\normal_res\logo_544.cpp" />
     <ClCompile Include="src\graphics_include\normal_res\logo_720.cpp" />
     <ClCompile Include="src\graphics_include\all_res\menu_cursor.cpp" />
-    <ClCompile Include="src\graphics_include\all_res\sidebar_small.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\menu_logic.cpp" />
     <ClCompile Include="src\music_include\addicti.cpp" />
@@ -282,6 +284,9 @@
     <ClInclude Include="src\game_logic.h" />
     <ClInclude Include="src\general.h" />
     <ClInclude Include="src\graphics_include\all_res\logo_240.h" />
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_1.h" />
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_2.h" />
+    <ClInclude Include="src\graphics_include\all_res\sidebar_small_3.h" />
     <ClInclude Include="src\graphics_include\all_res\tile1.h" />
     <ClInclude Include="src\graphics_include\all_res\tile2.h" />
     <ClInclude Include="src\graphics_include\all_res\tile3.h" />
@@ -327,7 +332,6 @@
     <ClInclude Include="src\graphics_include\normal_res\logo_544.h" />
     <ClInclude Include="src\graphics_include\normal_res\logo_720.h" />
     <ClInclude Include="src\graphics_include\all_res\menu_cursor.h" />
-    <ClInclude Include="src\graphics_include\all_res\sidebar_small.h" />
     <ClInclude Include="src\graphics_include\sidebar_small.h" />
     <ClInclude Include="src\graphics_include\tile1.h" />
     <ClInclude Include="src\graphics_include\tile2.h" />

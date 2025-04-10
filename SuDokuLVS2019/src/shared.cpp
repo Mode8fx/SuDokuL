@@ -159,26 +159,12 @@ void initStartingSharedVariables() {
 	gridSizeD = (12 * gameHeightMult); // length of grid border
 	gridSizeA3 = (3 * gridSizeA);
 	gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
-	gameSidebarSmall1Rect.w = (Sint16)SIDEBAR_SMALL_SIZE_X;
-	gameSidebarSmall1Rect.h = (Sint16)SIDEBAR_SMALL_SIZE_Y;
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
 		gridPosY = (Uint16)((gameHeight - gridSize) / 2);
-		gameSidebarSmall1Rect.x = (Sint16)(gridPosX - SIDEBAR_SMALL_SIZE_X - (gridSize / 12));
-		gameSidebarSmall1Rect.y = (Sint16)(gridPosY + (gridSize / 16));
-		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall2Rect.y = (Sint16)(gridPosY + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
-		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall3Rect.y = (Sint16)(gridPosY + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
 	} else {
 		gridPosX = (Sint16)((gameWidth / 2) - (gridSize / 2));
 		gridPosY = (Sint16)((gameHeight - gridSize) * 875 / 1000);
-		gameSidebarSmall1Rect.x = (Sint16)((gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
-		gameSidebarSmall1Rect.y = -(Sint16)(SIDEBAR_SMALL_SIZE_Y / 4);
-		gameSidebarSmall2Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall2Rect.x = (Sint16)((gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2));
-		gameSidebarSmall3Rect = gameSidebarSmall1Rect;
-		gameSidebarSmall3Rect.x = (Sint16)((gameWidth * 4 / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
 	}
 	gridStartingPosX[0] = (Sint16)((gridPosX + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
 	gridStartingPosX[1] = (Sint16)((gridPosX + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
@@ -602,7 +588,9 @@ void sdlDestroyAll() {
 	SDL_DestroyTexture(gridCursor_bottom_right.texture);
 	SDL_DestroyTexture(gridCursor_top_left.texture);
 	SDL_DestroyTexture(gridCursor_top_right.texture);
-	SDL_DestroyTexture(game_sidebar_small.texture);
+	SDL_DestroyTexture(game_sidebar_small_1.texture);
+	SDL_DestroyTexture(game_sidebar_small_2.texture);
+	SDL_DestroyTexture(game_sidebar_small_3.texture);
 	SDL_DestroyTexture(miniGrid_bottom_left.texture);
 	SDL_DestroyTexture(miniGrid_bottom_right.texture);
 	SDL_DestroyTexture(miniGrid_top_left.texture);
