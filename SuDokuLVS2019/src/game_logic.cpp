@@ -410,28 +410,22 @@ void setGridCursorBySmallY() {
 }
 
 void drawSidebar() {
-  // TODO: SDL1 compact display (FunKey) will look wrong
-  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall1Rect_2);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
-  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall2Rect_2);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
-  SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &gameSidebarSmall3Rect_2);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
-    renderText(&text_Time);
-    renderText(&text_Empty);
     Sint16 pos_x_left_s1 = gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1;
     Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
     Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;
     Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
     // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
+    SDL_Rect tempRect = gameSidebarSmall1Rect_2;
+    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
+    tempRect = gameSidebarSmall2Rect_2;
+    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
+    tempRect = gameSidebarSmall3Rect_2;
+    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
 #if defined(SDL1)
     if (compactDisplay) {
-        gameSidebarSmall1Rect.y = game_sidebar_small.rect.y;
-        gameSidebarSmall2Rect.y = game_sidebar_small.rect.y;
-        gameSidebarSmall3Rect.y = game_sidebar_small.rect.y;
         i = 0;
         setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
         setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
@@ -442,6 +436,9 @@ void drawSidebar() {
         setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
         setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
     } else {
+      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
+      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
+      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
       i = 0;
       setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
       setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
@@ -453,6 +450,9 @@ void drawSidebar() {
       setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
     }
 #else
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
     i = 0;
     setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
     setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
@@ -463,6 +463,8 @@ void drawSidebar() {
     setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
     setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
 #endif
+    renderText(&text_Time);
+    renderText(&text_Empty);
     switch (menuCursorIndex_play) {
         case 0:
             renderText(&text_Game_Easy);
