@@ -152,7 +152,10 @@ void initStartingSharedVariables() {
 	gridSizeB = (4 * gameHeightMult);  // length of divider between cells in the same group of three rows/columns
 	gridSizeC = (6 * gameHeightMult);  // length of divider between groups of three rows/columns
 	gridSizeD = (12 * gameHeightMult); // length of grid border
+	gridSizeD3 = gridSizeD * 3;
 	gridSizeA3 = (3 * gridSizeA);
+	gridSizeA3_half = (Sint16)(gridSizeA3 / 2);
+	gridSizeA3B = gridSizeA3 + gridSizeB;
 	gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
@@ -161,24 +164,10 @@ void initStartingSharedVariables() {
 		gridPosX = (Sint16)((gameWidth / 2) - (gridSize / 2));
 		gridPosY = (Sint16)((gameHeight - gridSize) * 875 / 1000);
 	}
-	gridStartingPosX[0] = (Sint16)((gridPosX + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
-	gridStartingPosX[1] = (Sint16)((gridPosX + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
-	gridStartingPosX[2] = (Sint16)((gridPosX + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
-	gridStartingPosX[3] = (Sint16)((gridPosX + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
-	gridStartingPosX[4] = (Sint16)((gridPosX + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
-	gridStartingPosX[5] = (Sint16)((gridPosX + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
-	gridStartingPosX[6] = (Sint16)((gridPosX + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
-	gridStartingPosX[7] = (Sint16)((gridPosX + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
-	gridStartingPosX[8] = (Sint16)((gridPosX + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
-	gridStartingPosY[0] = (Sint16)((gridPosY + gridSizeD) + (0 * gridSizeA3) + (0 * gridSizeB) + ((gridSizeC - gridSizeB) * 0 / 3));
-	gridStartingPosY[1] = (Sint16)((gridPosY + gridSizeD) + (1 * gridSizeA3) + (1 * gridSizeB) + ((gridSizeC - gridSizeB) * 1 / 3));
-	gridStartingPosY[2] = (Sint16)((gridPosY + gridSizeD) + (2 * gridSizeA3) + (2 * gridSizeB) + ((gridSizeC - gridSizeB) * 2 / 3));
-	gridStartingPosY[3] = (Sint16)((gridPosY + gridSizeD) + (3 * gridSizeA3) + (3 * gridSizeB) + ((gridSizeC - gridSizeB) * 3 / 3));
-	gridStartingPosY[4] = (Sint16)((gridPosY + gridSizeD) + (4 * gridSizeA3) + (4 * gridSizeB) + ((gridSizeC - gridSizeB) * 4 / 3));
-	gridStartingPosY[5] = (Sint16)((gridPosY + gridSizeD) + (5 * gridSizeA3) + (5 * gridSizeB) + ((gridSizeC - gridSizeB) * 5 / 3));
-	gridStartingPosY[6] = (Sint16)((gridPosY + gridSizeD) + (6 * gridSizeA3) + (6 * gridSizeB) + ((gridSizeC - gridSizeB) * 6 / 3));
-	gridStartingPosY[7] = (Sint16)((gridPosY + gridSizeD) + (7 * gridSizeA3) + (7 * gridSizeB) + ((gridSizeC - gridSizeB) * 7 / 3));
-	gridStartingPosY[8] = (Sint16)((gridPosY + gridSizeD) + (8 * gridSizeA3) + (8 * gridSizeB) + ((gridSizeC - gridSizeB) * 8 / 3));
+	for (int i = 0; i < 9; i++) {
+		gridStartingPosX[i] = (Sint16)((gridPosX + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
+		gridStartingPosY[i] = (Sint16)((gridPosY + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
+	}
 	initNumOffsets();
 }
 

@@ -256,8 +256,8 @@ void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
 	Sint8 k = index / 9;
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + numOffset_large_x[k]);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + numOffset_large_y[k]);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + gridSizeA3_half - (textNumsObj[num].charWidth / 2) + numOffset_large_x[k]);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + gridSizeA3_half - (textNumsObj[num].charHeight / 2) + numOffset_large_y[k]);
 	renderTextChar(&textNumsObj[num]);
 }
 
@@ -270,14 +270,14 @@ void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 i
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
 	Sint8 k = (num - 1) / 3;
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + numOffset_large_x[k]));
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + numOffset_large_y[k]));
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA3_half - (textNumsObj[num].charWidth / 2) + numOffset_large_x[k]));
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + k * gridSizeA3B + gridSizeA3_half - (textNumsObj[num].charHeight / 2) + numOffset_large_y[k]));
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA));
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA));
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA));
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + gridSizeA));
 	renderTextChar(&textNumsObj[num]);
 }
 
