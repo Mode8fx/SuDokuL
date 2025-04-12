@@ -36,13 +36,16 @@ struct TextRect {
 /* Single Characters */
 struct TextCharObject {
 #if !defined(SDL1)
-    SDL_Surface *surface, *outline_surface;
-    SDL_Texture *texture, *outline_texture;
+    SDL_Surface *surface;
+    SDL_Texture *texture;
 #else
-    SDL_Surface *texture, *outline_texture;
+    SDL_Surface *texture;
 #endif
-    SDL_Rect rect, outline_rect;
-    Sint8 outlineOffset_x, outlineOffset_y;
+    SDL_Rect rect;
+    Uint8 charWidth; // ignoring outline
+    Uint8 charHeight;
+    Sint8 outlineOffset_x;
+    Sint8 outlineOffset_y;
 };
 
 /* Full Words/Phrases (can be animated) */
@@ -405,11 +408,10 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 extern void initStartingTextVariables();
 extern void initTextObjectVals(TextObject *);
 extern void initMenuOptionPositions(TextObject *);
-extern void adjustCharOutlineOffset(TextCharObject *, Uint8, float, float);
 extern void renderText(TextObject *);
 extern void renderTextLarge(TextObject *);
-extern void setTextPosX(TextCharObject *, Sint16, Sint8);
-extern void setTextPosY(TextCharObject *, Sint16, Sint8);
+extern void setTextPosX(TextCharObject *, Sint16);
+extern void setTextPosY(TextCharObject *, Sint16);
 extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *, Uint8);
 extern void setFontOutline(TTF_Font *, TextCharObject *, Uint8);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
@@ -455,14 +457,14 @@ extern inline void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
 extern inline void setAndRenderColon(Sint16, Sint16);
 
 inline void renderTextChar(TextCharObject *textObj) {
-  SDL_RenderCopy(renderer, textObj->outline_texture, NULL, &textObj->outline_rect);
-  SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
+  SDL_Rect destRect = { textObj->rect.x + textObj->outlineOffset_x, textObj->rect.y + textObj->outlineOffset_y, textObj->rect.w, textObj->rect.h };
+  SDL_RenderCopy(renderer, textObj->texture, NULL, &destRect);
 }
 
 inline void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {
-  setTextPosX(&textChars[(digit + 48)], (Sint16)(pos_x_left + ((i + i_offset) * fontSize)), textChars[digit + 48].outlineOffset_x);
+  setTextPosX(&textChars[(digit + 48)], (Sint16)(pos_x_left + ((i + i_offset) * fontSize)));
   i++;
-  setTextPosY(&textChars[(digit + 48)], pos_y, textChars[digit + 48].outlineOffset_y);
+  setTextPosY(&textChars[(digit + 48)], pos_y);
   renderTextChar(&textChars[(digit + 48)]);
 }
 
@@ -494,8 +496,8 @@ inline void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
     textObj.str = text;                                                                        \
     STRCPY(tempCharArray, textObj.str.c_str());                                                \
     for (Uint32 uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                         \
-        textObj.rect.w += textChars[tempCharArray[uint_i]].rect.w;                             \
-        textObj.rect.h = max(textObj.rect.h, (Sint16)textChars[tempCharArray[uint_i]].rect.h); \
+        textObj.rect.w += textChars[tempCharArray[uint_i]].charWidth;                             \
+        textObj.rect.h = max(textObj.rect.h, (Sint16)textChars[tempCharArray[uint_i]].charHeight); \
     }                                                                                          \
     textObj.rect.x = (Sint16)(pos_x);                                                          \
     textObj.rect.y = (Sint16)(pos_y);
@@ -504,8 +506,8 @@ inline void setAndRenderColon(Sint16 pos_x_left, Sint16 pos_y) {
     textObj.str = text;                                                                              \
     STRCPY(tempCharArray, textObj.str.c_str());                                                      \
     for (Uint32 uint_i = 0; uint_i < textObj.str.length(); uint_i++) {                               \
-        textObj.rect.w += textChars_large[tempCharArray[uint_i]].rect.w;                             \
-        textObj.rect.h = max(textObj.rect.h, (Sint16)textChars_large[tempCharArray[uint_i]].rect.h); \
+        textObj.rect.w += textChars_large[tempCharArray[uint_i]].charWidth;                             \
+        textObj.rect.h = max(textObj.rect.h, (Sint16)textChars_large[tempCharArray[uint_i]].charHeight); \
     }                                                                                                \
     textObj.rect.x = (Sint16)(pos_x);                                                                \
     textObj.rect.y = (Sint16)(pos_y);

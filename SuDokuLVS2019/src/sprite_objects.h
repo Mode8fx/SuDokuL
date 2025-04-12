@@ -39,8 +39,6 @@ extern SpriteObject game_grid_3;
 #if defined(THREEDS)
 extern int bg_max_x;
 extern int bg_max_y;
-#else
-extern SpriteObject game_grid;
 #endif
 //extern SpriteObject gridCursor;
 extern SpriteObject gridCursor_bottom_left;

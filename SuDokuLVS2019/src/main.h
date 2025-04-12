@@ -135,8 +135,6 @@ SpriteObject game_grid_3;
 #if defined(THREEDS)
 int bg_max_x;
 int bg_max_y;
-#else
-SpriteObject game_grid;
 #endif
 //SpriteObject gridCursor;
 SpriteObject gridCursor_bottom_left;

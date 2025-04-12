@@ -48,27 +48,14 @@ void initMenuOptionPositions(TextObject *textObj) {
 	textObj->endPos_y = textObj->startPos_y - (gameWidth * 3 / 4);
 }
 
-void adjustCharOutlineOffset(TextCharObject *arr, Uint8 c, float x, float y) {
-    if (x > 0) {
-        arr[c].outlineOffset_x += max((int)(x * gameHeightMult * arr[c].rect.h / fontSize), 1);
-    } else if (x < 0) {
-        arr[c].outlineOffset_x += min((int)(x * gameHeightMult * arr[c].rect.h / fontSize), -1);
-    }
-    if (y > 0) {
-        arr[c].outlineOffset_y += max((int)(y * gameHeightMult * arr[c].rect.h / fontSize), 1);
-    } else if (y < 0) {
-        arr[c].outlineOffset_y += min((int)(y * gameHeightMult * arr[c].rect.h / fontSize), -1);
-    }
-}
-
 void renderText(TextObject *textObj) {
 	STRCPY(tempCharArray, textObj->str.c_str());
 	Uint16 charWidthCounter = 0;
 	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		setTextPosX(&CHAR_AT_INDEX(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX(charCounter).outlineOffset_x);
-		setTextPosY(&CHAR_AT_INDEX(charCounter), textObj->rect.y, CHAR_AT_INDEX(charCounter).outlineOffset_y);
+		setTextPosX(&CHAR_AT_INDEX(charCounter), (textObj->rect.x + charWidthCounter));
+		setTextPosY(&CHAR_AT_INDEX(charCounter), textObj->rect.y);
 		renderTextChar(&textChars[tempCharArray[charCounter]]);
-		charWidthCounter += CHAR_AT_INDEX(charCounter).rect.w;
+		charWidthCounter += CHAR_AT_INDEX(charCounter).charWidth;
 	}
 }
 
@@ -76,21 +63,19 @@ void renderTextLarge(TextObject *textObj) {
 	STRCPY(tempCharArray, textObj->str.c_str());
 	Uint16 charWidthCounter = 0;
 	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		setTextPosX(&CHAR_AT_INDEX_LARGE(charCounter), (textObj->rect.x + charWidthCounter), CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_x);
-		setTextPosY(&CHAR_AT_INDEX_LARGE(charCounter), textObj->rect.y, CHAR_AT_INDEX_LARGE(charCounter).outlineOffset_y);
+		setTextPosX(&CHAR_AT_INDEX_LARGE(charCounter), (textObj->rect.x + charWidthCounter));
+		setTextPosY(&CHAR_AT_INDEX_LARGE(charCounter), textObj->rect.y);
 		renderTextChar(&textChars_large[tempCharArray[charCounter]]);
-		charWidthCounter += CHAR_AT_INDEX_LARGE(charCounter).rect.w;
+		charWidthCounter += CHAR_AT_INDEX_LARGE(charCounter).charWidth;
 	}
 }
 
-void setTextPosX(TextCharObject *textObj, Sint16 pos_x, Sint8 offset) {
-    textObj->rect.x = (pos_x);
-    textObj->outline_rect.x = (pos_x) + (offset);
+void setTextPosX(TextCharObject *textObj, Sint16 pos_x) {
+    textObj->rect.x = pos_x;
 }
 
-void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
-    textObj->rect.y = (pos_y);
-    textObj->outline_rect.y = (pos_y) + (offset);
+void setTextPosY(TextCharObject*textObj, Sint16 pos_y) {
+    textObj->rect.y = pos_y;
 }
 
 #if defined(PSP)
@@ -100,29 +85,43 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y, Sint8 offset) {
 #endif
 
 void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj, Uint8 minOutlineSize) {
+	SDL_Surface *text_surface = TTF_RENDERTEXT(font, text, text_color);
+	textObj->charWidth = text_surface->w;
+	textObj->charHeight = text_surface->h;
+
+	setFontOutline(font, textObj, minOutlineSize);
+	SDL_Surface *outline_surface = TTF_RENDERTEXT(font, text, outline_color);
+	textObj->outlineOffset_x = (Sint8)(-1 * gameHeightMult * outline_surface->h / fontSize);
+	textObj->outlineOffset_y = (Sint8)(-1.5 * gameHeightMult * outline_surface->h / fontSize);
+	TTF_SetFontOutline(font, 0);
+
 #if !defined(SDL1)
-	textObj->surface = TTF_RENDERTEXT(font, text, text_color);
-	textObj->texture = SDL_CreateTextureFromSurface(renderer, textObj->surface);
-	TTF_SizeText(font, text, &textObj->rect.w, &textObj->rect.h);
-	setFontOutline(font, textObj, minOutlineSize);
-	textObj->outline_surface = TTF_RENDERTEXT(font, text, outline_color);
-	textObj->outline_texture = SDL_CreateTextureFromSurface(renderer, textObj->outline_surface);
-	TTF_SizeText(font, text, &textObj->outline_rect.w, &textObj->outline_rect.h);
-	TTF_SetFontOutline(font, 0);
-	SDL_FreeSurface(textObj->surface);
-	SDL_FreeSurface(textObj->outline_surface);
+	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
+	SDL_FreeSurface(outline_surface);
+	outline_surface = outline_rgba;
+
+	SDL_Rect dstRect = { -textObj->outlineOffset_x, -textObj->outlineOffset_y, text_surface->w, text_surface->h };
+	SDL_BlitSurface(text_surface, NULL, outline_surface, &dstRect);
+
+	textObj->texture = SDL_CreateTextureFromSurface(renderer, outline_surface);
+	textObj->rect.w = outline_surface->w;
+	textObj->rect.h = outline_surface->h;
 #else
-	textObj->texture = TTF_RENDERTEXT(font, text, text_color);
-	TTF_SizeText(font, text, (int *)&textObj->rect.w, (int*)&textObj->rect.h);
-	setFontOutline(font, textObj, minOutlineSize);
-	textObj->outline_texture = TTF_RENDERTEXT(font, text, outline_color);
-	TTF_SizeText(font, text, (int*)&textObj->outline_rect.w, (int*)&textObj->outline_rect.h);
-	TTF_SetFontOutline(font, 0);
+	SDL_Surface *combined = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
+	SDL_BlitSurface(text_surface, NULL, combined, &(SDL_Rect){
+		-textObj->outlineOffset_x, -textObj->outlineOffset_y, 0, 0
+	});
+	textObj->texture = combined;
+	textObj->rect.w = combined->w;
+	textObj->rect.h = combined->h;
 #endif
+
+	SDL_FreeSurface(outline_surface);
+	SDL_FreeSurface(text_surface);
 }
 
 void setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
-	TTF_SetFontOutline(font, max((textObj->rect.h / 10), max(int(ceil(gameHeightMult)), (int)minSize)));
+	TTF_SetFontOutline(font, max((textObj->charHeight / 10), max(int(ceil(gameHeightMult)), (int)minSize)));
 }
 
 void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16 pos_y) {
@@ -257,28 +256,28 @@ void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
 	Sint8 k = index / 9;
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k], textNumsObj[num].outlineOffset_x);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k], textNumsObj[num].outlineOffset_y);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + numOffset_large_x[k]);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + numOffset_large_y[k]);
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
 	Sint8 k = index / 9;
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1 + numOffset_small_x[k], textNumsObj[num].outlineOffset_x);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)(((num - 1) / 3) * gridSizeA) + numOffset_small_y[k], textNumsObj[num].outlineOffset_y);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1 + numOffset_small_x[k]);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)(((num - 1) / 3) * gridSizeA) + numOffset_small_y[k]);
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
 	Sint8 k = (num - 1) / 3;
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.w) / 2) + numOffset_large_x[k]), textNumsObj[num].outlineOffset_x);
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + ((gridSizeA3 - textNumsObj[num].outline_rect.h) / 2) + numOffset_large_y[k]), textNumsObj[num].outlineOffset_y);
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + numOffset_large_x[k]));
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + k * ((gridSizeA3) + (gridSizeB)) + numOffset_large_y[k]));
 	renderTextChar(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_x);
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA), textNumsObj[num].outlineOffset_y);
+	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)((gridSizeD * 3) + (((num - 1) % 3) + 1) * ((gridSizeA3) + (gridSizeB)) + gridSizeA));
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)((gridSizeD * 3) + ((num - 1) / 3) * ((gridSizeA3) + (gridSizeB)) + gridSizeA));
 	renderTextChar(&textNumsObj[num]);
 }
 
@@ -301,10 +300,8 @@ void menuMoveTextDown(TextObject *textObj, double timer) {
 void destroyTextObjectTexture(TextCharObject *textObj) {
 #if !defined(SDL1)
 	SDL_DestroyTexture(textObj->texture);
-	SDL_DestroyTexture(textObj->outline_texture);
 #else
 	SDL_FreeSurface(textObj->texture);
-	SDL_FreeSurface(textObj->outline_texture);
 #endif
 }
 

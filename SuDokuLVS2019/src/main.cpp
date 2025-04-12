@@ -226,7 +226,6 @@ int main(int argv, char** args) {
 	for (Sint8 k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1);
-		adjustCharOutlineOffset(textChars, k, -1, -1.5);
 	}
 	/* Loading Screen */
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
@@ -361,23 +360,19 @@ int main(int argv, char** args) {
 	for (Sint8 k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
 		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2);
-		adjustCharOutlineOffset(textChars_large, k, -1, -1.5);
 	}
 	/* Grid Player Numbers */
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2);
-		adjustCharOutlineOffset(gridNums_black, k, -1, -1.5);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2);
-		adjustCharOutlineOffset(gridNums_blue, k, -1, -1.5);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
 		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1);
-		adjustCharOutlineOffset(gridNums_blue_mini, k, -1, -1.5);
 	}
 	/* Test Strings */
 	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), fontSize * 1);
