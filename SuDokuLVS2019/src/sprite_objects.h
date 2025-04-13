@@ -9,6 +9,10 @@
 #define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
 #endif
 
+#define NO_ROUND 0
+#define ROUND_DOWN 1
+#define ROUND_UP 2
+
 struct SpriteObject {
 #if !defined(SDL1)
     SDL_Texture *texture;
@@ -69,9 +73,9 @@ extern SpriteObject miniGrid_top_left;
 extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
-extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool);
+extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool, Sint8);
 extern void setSpriteScale(SpriteObject &, double);
-extern void spriteEnforceIntMult(SpriteObject &, double);
+extern void setSpriteScale_EnforceIntMult(SpriteObject &, double, bool);
 extern void setSpriteScaleTile();
 extern void prepareLogo();
 extern void prepareSidebar();
