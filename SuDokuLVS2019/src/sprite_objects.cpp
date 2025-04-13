@@ -111,6 +111,69 @@ void setSpriteScaleTile() {
 #endif
 }
 
+void prepareLogo() {
+  if (gameHeight < 272) {
+    double logoScale = 480.0 / 240;
+    prepareSprite(logo_1, logo_240_1_png, logo_240_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_240_2_png, logo_240_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_240_3_png, logo_240_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 480) {
+    double logoScale = 480.0 / 272;
+    prepareSprite(logo_1, logo_272_1_png, logo_272_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_272_2_png, logo_272_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_272_3_png, logo_272_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 544) {
+    double logoScale = 480.0 / 480;
+    prepareSprite(logo_1, logo_480_1_png, logo_480_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_480_2_png, logo_480_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_480_3_png, logo_480_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 720) {
+    double logoScale = 480.0 / 544;
+    prepareSprite(logo_1, logo_544_1_png, logo_544_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_544_2_png, logo_544_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_544_3_png, logo_544_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 1080) {
+    double logoScale = 480.0 / 720;
+    prepareSprite(logo_1, logo_720_1_png, logo_720_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_720_2_png, logo_720_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_720_3_png, logo_720_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 1440) {
+    double logoScale = 480.0 / 1080;
+    prepareSprite(logo_1, logo_1080_1_png, logo_1080_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_1080_2_png, logo_1080_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_1080_3_png, logo_1080_3_png_len, 0, 0, logoScale, true);
+  } else if (gameHeight < 2160) {
+    double logoScale = 480.0 / 1440;
+    prepareSprite(logo_1, logo_1440_1_png, logo_1440_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_1440_2_png, logo_1440_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_1440_3_png, logo_1440_3_png_len, 0, 0, logoScale, true);
+  } else {
+    double logoScale = 480.0 / 2160;
+    prepareSprite(logo_1, logo_2160_1_png, logo_2160_1_png_len, 0, 0, logoScale, true);
+    prepareSprite(logo_2, logo_2160_2_png, logo_2160_2_png_len, 0, 0, logoScale, false);
+    prepareSprite(logo_3, logo_2160_3_png, logo_2160_3_png_len, 0, 0, logoScale, true);
+  }
+  Uint16 logoHeight = (logo_1.rect.h + logo_2.rect.h + logo_3.rect.h);
+  logo_1.rect.x = (gameWidth / 2) - (logo_1.rect.w / 2);
+  logo_1.rect.y = gameHeight * 3 / 8 - (logoHeight / 2);
+  logo_1.startPos_y = logo_1.rect.y;
+  logo_1.endPos_y = (gameHeight * 3 / 16 - (logoHeight / 2));
+  logo_1.startPos_x = logo_1.endPos_y; /* functionally, this is a second startPos_y, not x */
+  logo_1.endPos_x = logo_1.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
+  logo_2.rect.x = logo_1.rect.x;
+  logo_2.rect.y = logo_1.rect.y + logo_1.rect.h;
+  logo_2.startPos_y = logo_2.rect.y;
+  logo_2.endPos_y = logo_1.endPos_y + logo_1.rect.h;
+  logo_2.startPos_x = logo_2.endPos_y;
+  logo_2.endPos_x = logo_2.endPos_y - (gameHeight * 3 / 4);
+  logo_3.rect.x = logo_1.rect.x;
+  logo_3.rect.y = logo_1.rect.y + logo_1.rect.h + logo_2.rect.h;
+  logo_3.startPos_y = logo_3.rect.y;
+  logo_3.endPos_y = logo_2.endPos_y + logo_2.rect.h;
+  logo_3.startPos_x = logo_3.endPos_y;
+  logo_3.endPos_x = logo_3.endPos_y - (gameHeight * 3 / 4);
+}
+
 void prepareSidebar() {
   prepareSprite(game_sidebar_small_1, sidebar_small_1_png, sidebar_small_1_png_len, 0, 0, 2, true);
   prepareSprite(game_sidebar_small_2, sidebar_small_2_png, sidebar_small_2_png_len, 0, 0, 2, false);

@@ -273,29 +273,7 @@ int main(int argv, char** args) {
 	//bgSettings.scale = max(min((int)min(gameWidthMult, gameHeightMult), 5), 1);
 
 	/* Set Textures */
-	if (gameHeight < 272) {
-		prepareSprite(logo, logo_240_png, logo_240_png_len, 0, 0, 480.0 / 240, true);
-	} else if (gameHeight < 480) {
-		prepareSprite(logo, logo_272_png, logo_272_png_len, 0, 0, 480.0 / 272, true);
-	} else if (gameHeight < 544) {
-		prepareSprite(logo, logo_480_png, logo_480_png_len, 0, 0, 1, true);
-	} else if (gameHeight < 720) {
-		prepareSprite(logo, logo_544_png, logo_544_png_len, 0, 0, 480.0 / 544, true);
-	} else if (gameHeight < 1080) {
-		prepareSprite(logo, logo_720_png, logo_720_png_len, 0, 0, 480.0 / 720, true);
-	} else if (gameHeight < 1440) {
-		prepareSprite(logo, logo_1080_png, logo_1080_png_len, 0, 0, 480.0 / 1080, true);
-	} else if (gameHeight < 2160) {
-		prepareSprite(logo, logo_1440_png, logo_1440_png_len, 0, 0, 480.0 / 1440, true);
-	} else {
-		prepareSprite(logo, logo_2160_png, logo_2160_png_len, 0, 0, 480.0 / 2160, true);
-	}
-	logo.rect.x = (gameWidth / 2) - (logo.rect.w / 2);
-	logo.rect.y = gameHeight * 3 / 8 - (logo.rect.h / 2);
-	logo.startPos_y = logo.rect.y;
-	logo.endPos_y = (gameHeight * 3 / 16 - (logo.rect.h / 2));
-	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
-	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
+	prepareLogo();
 	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true);
 	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, 0, 0, 2, true);
 	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, 0, 0, 2, false);
@@ -667,7 +645,7 @@ int main(int argv, char** args) {
 				/* Animate Text */
 				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				renderText(&text_PressStart);
 				renderText(&text_Version_Number);
 				break;
@@ -751,7 +729,7 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Play);
 				renderText(&text_Controls);
@@ -793,7 +771,7 @@ int main(int argv, char** args) {
 					changedProgramState = true;
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Continue);
 				renderText(&text_New_Game);
@@ -824,7 +802,7 @@ int main(int argv, char** args) {
 					programState = 8;
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Easy);
 				renderText(&text_Normal);
@@ -1098,7 +1076,7 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controls_Menu);
 				renderText(&text_Video);
@@ -1311,7 +1289,7 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Frame_Rate);
 				renderFrameRateChoice();
@@ -1423,7 +1401,7 @@ int main(int argv, char** args) {
 				setAndRenderNumThreeDigitCentered(soundSettings.bgmVolume, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_VOLUME_Y);
 				setAndRenderNumThreeDigitCentered(soundSettings.sfxVolume, SOUND_MENU_NUM_POSITION_X, TEXT_SFX_VOLUME_Y);
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Music);
 				renderText(&text_Music_Volume);
@@ -1514,7 +1492,7 @@ int main(int argv, char** args) {
 				setAndRenderNumThreeDigitCentered((bgSettings.scrollDir * 5), BACKGROUND_MENU_NUM_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
 				setAndRenderNumThreeDigitCentered(bgSettings.scale, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_SIZE_Y);
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Background_Type);
 				renderText(&text_Background_Size);
@@ -1585,7 +1563,7 @@ int main(int argv, char** args) {
 					}
 				}
 				/* Draw Logo and Text */
-				SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+				renderLogo();
 				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
 				renderText(&text_Controller_Input);
 				renderText(&text_Touch_Screen_Input);

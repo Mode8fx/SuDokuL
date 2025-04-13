@@ -7,33 +7,41 @@
 
 void transitionGraphicsFromTitleScreen() {
     /* Animate Logo and Text */
-    logo.rect.y = logo.endPos_y + (Sint16)MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
+    logo_1.rect.y = logo_1.endPos_y + (Sint16)MOVE_FAST_THEN_DECELERATE(logo_1.startPos_y - logo_1.endPos_y, 1, time_anim1);
+    logo_2.rect.y = logo_2.endPos_y + (Sint16)MOVE_FAST_THEN_DECELERATE(logo_2.startPos_y - logo_2.endPos_y, 1, time_anim1);
+    logo_3.rect.y = logo_3.endPos_y + (Sint16)MOVE_FAST_THEN_DECELERATE(logo_3.startPos_y - logo_3.endPos_y, 1, time_anim1);
     menuMoveTextRight(&text_PressStart, time_anim1);
     menuMoveTextRight(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */
     if (time_anim1 >= 1) {
-        logo.rect.y = logo.endPos_y;
+        logo_1.rect.y = logo_1.endPos_y;
+        logo_2.rect.y = logo_2.endPos_y;
+        logo_3.rect.y = logo_3.endPos_y;
         updateMainMenuCursorPositionX();
         updateMenuCursorPositionY(menuCursorIndex_main);
     }
     /* Draw Logo and Text */
-    SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+    renderLogo();
     renderText(&text_PressStart);
     renderText(&text_Version_Number);
 }
 
 void transitionGraphicsToTitleScreen() {
     /* Animate Logo and Text */
-    logo.rect.y = logo.startPos_y - (Sint16)MOVE_FAST_THEN_DECELERATE(logo.startPos_y - logo.endPos_y, 1, time_anim1);
+    logo_1.rect.y = logo_1.startPos_y - (Sint16)MOVE_FAST_THEN_DECELERATE(logo_1.startPos_y - logo_1.endPos_y, 1, time_anim1);
+    logo_2.rect.y = logo_2.startPos_y - (Sint16)MOVE_FAST_THEN_DECELERATE(logo_2.startPos_y - logo_2.endPos_y, 1, time_anim1);
+    logo_3.rect.y = logo_3.startPos_y - (Sint16)MOVE_FAST_THEN_DECELERATE(logo_3.startPos_y - logo_3.endPos_y, 1, time_anim1);
     menuMoveTextLeft(&text_PressStart, time_anim1);
     menuMoveTextLeft(&text_Version_Number, time_anim1);
     /* Check For Finished Animation */
     if (time_anim1 >= 1) {
-        logo.rect.y = logo.startPos_y;
+        logo_1.rect.y = logo_1.startPos_y;
+        logo_2.rect.y = logo_2.startPos_y;
+        logo_3.rect.y = logo_3.startPos_y;
         text_PressStart.rect.y = text_PressStart.startPos_y;
     }
     /* Draw Logo and Text */
-    SDL_RenderCopy(renderer, logo.texture, NULL, &logo.rect);
+    renderLogo();
     renderText(&text_PressStart);
     renderText(&text_Version_Number);
 }

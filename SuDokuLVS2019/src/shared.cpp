@@ -486,7 +486,9 @@ void sdlDestroyAll() {
 	SDL_DestroyTexture(tile_grasslands.texture);
 	SDL_DestroyTexture(tile_grasslands2.texture);
 	SDL_DestroyTexture(tile_snowymountain.texture);
-	SDL_DestroyTexture(logo.texture);
+	SDL_DestroyTexture(logo_1.texture);
+	SDL_DestroyTexture(logo_2.texture);
+	SDL_DestroyTexture(logo_3.texture);
 	SDL_DestroyTexture(menuCursor.texture);
 	SDL_DestroyTexture(game_grid_1.texture);
 	SDL_DestroyTexture(game_grid_2.texture);

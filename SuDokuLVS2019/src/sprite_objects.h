@@ -31,7 +31,9 @@ extern SpriteObject tile_desert;
 extern SpriteObject tile_grasslands;
 extern SpriteObject tile_grasslands2;
 extern SpriteObject tile_snowymountain;
-extern SpriteObject logo;
+extern SpriteObject logo_1;
+extern SpriteObject logo_2;
+extern SpriteObject logo_3;
 extern SpriteObject menuCursor;
 extern SpriteObject game_grid_1;
 extern SpriteObject game_grid_2;
@@ -71,13 +73,21 @@ extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, i
 extern void setSpriteScale(SpriteObject &, double);
 extern void spriteEnforceIntMult(SpriteObject &, double);
 extern void setSpriteScaleTile();
+extern void prepareLogo();
 extern void prepareSidebar();
 extern inline void renderGrid();
+extern inline void renderLogo();
 
 inline void renderGrid() {
   SDL_RenderCopy(renderer, game_grid_1.texture, NULL, &game_grid_1.rect);
   SDL_RenderCopy(renderer, game_grid_2.texture, NULL, &game_grid_2.rect);
   SDL_RenderCopy(renderer, game_grid_3.texture, NULL, &game_grid_3.rect);
+}
+
+inline void renderLogo() {
+  SDL_RenderCopy(renderer, logo_1.texture, NULL, &logo_1.rect);
+  SDL_RenderCopy(renderer, logo_2.texture, NULL, &logo_2.rect);
+  SDL_RenderCopy(renderer, logo_3.texture, NULL, &logo_3.rect);
 }
 
 #define OBJ_TO_MID_SCREEN_X(obj) \
