@@ -398,7 +398,7 @@ void renderTestText() {
 }
 
 void setControlsText() {
-#if defined(WII_U)
+#if defined(WII_U) || defined(THREEDS)
 	SET_LARGE_TEXT_WITH_OUTLINE("MENU + GAME",     text_Controls_1,   OBJ_TO_MID_SCREEN_X(text_Controls_1),              (fontSize * (CONTROLS_STEP *  1))                  );
 	SET_TEXT_WITH_OUTLINE("D-Pad",                 text_Controls_2a,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2a, 0.3),  (fontSize * (CONTROLS_STEP *  3)) - CONTROLS_SPACER);
 	SET_TEXT_WITH_OUTLINE("Touch Screen",          text_Controls_2b,  OBJ_TO_SCREEN_AT_FRACTION(text_Controls_2b, 0.3),  (fontSize * (CONTROLS_STEP *  3)) + CONTROLS_SPACER);
