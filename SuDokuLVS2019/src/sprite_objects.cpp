@@ -3,10 +3,6 @@
 #include "window.h"
 #include "menu_logic.h"
 
-#if !defined(SDL1)
-#define SDL_SRCCOLORKEY SDL_TRUE
-#endif
-
 /*
  * Prepares a sprite object from a 3-byte (no alpha) PNG and applies scaling+transparency only as needed. Scaling and transparency both add performance overhead when rendering.
  * Sprite loading roughly works as follows:
@@ -19,12 +15,8 @@
  */
 void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale, bool useAlpha, Sint8 scaleType) {
   if (spriteObj.texture) {
-#if defined(SDL1)
-    SDL_FreeSurface(spriteObj.texture);
-#else
     SDL_DestroyTexture(spriteObj.texture);
-#endif
-    spriteObj.texture = NULL;  // optional: clear the pointer to avoid dangling references
+    spriteObj.texture = NULL;
   }
 
   SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
@@ -69,11 +61,10 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
     SDL_SetColorKey(scaledImage, SDL_SRCCOLORKEY, SDL_MapRGB(scaledImage->format, 0xFF, 0x00, 0xFF));
   }
 
+  SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
 #if defined(SDL1)
-  SDL_SoftStretch(temp_surface, NULL, scaledImage, NULL);
   spriteObj.texture = scaledImage; // Used as-is for SDL1
 #else
-  SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
   spriteObj.texture = SDL_CreateTextureFromSurface(renderer, scaledImage);
   SDL_FreeSurface(scaledImage);
 #endif
@@ -82,6 +73,53 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
 
   spriteObj.rect.x = pos_x;
   spriteObj.rect.y = pos_y;
+}
+
+SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y) {
+  if (spriteObj.texture) {
+    SDL_DestroyTexture(spriteObj.texture);
+    spriteObj.texture = NULL;
+  }
+
+  SDL_Surface* temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
+  if (!temp_surface_unformatted) {
+    SDL_Log("Failed to load image: %s", IMG_GetError());
+    return NULL;
+  }
+  SDL_Surface *temp_surface = SDL_ConvertSurfaceFormat(temp_surface_unformatted, SDL_PIXELFORMAT_RGB24, 0);
+  SDL_FreeSurface(temp_surface_unformatted);
+
+  spriteObj.width = temp_surface->w;
+  spriteObj.height = temp_surface->h;
+  setSpriteScale(spriteObj, 2, NO_ROUND);
+  bool scaleIsUnchanged = spriteObj.rect.h == spriteObj.height;
+
+  if (scaleIsUnchanged) {
+    spriteObj.rect.x = pos_x;
+    spriteObj.rect.y = pos_y;
+    return temp_surface;
+  }
+
+  SDL_Surface *scaledImage = nullptr;
+  // Convert or scale with optional colorkey
+  if (scaleIsUnchanged) {
+    scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
+  }
+  else {
+    scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
+  }
+  if (!scaledImage) {
+    SDL_Log("Failed to create scaled surface: %s", SDL_GetError());
+    SDL_FreeSurface(temp_surface);
+    return NULL;
+  }
+
+  SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
+  SDL_FreeSurface(temp_surface);
+
+  spriteObj.rect.x = pos_x;
+  spriteObj.rect.y = pos_y;
+  return scaledImage;
 }
 
 void setSpriteScale(SpriteObject& spriteObj, double scale, Sint8 scaleType) {

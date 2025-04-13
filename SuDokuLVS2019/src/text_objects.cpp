@@ -83,7 +83,7 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y) {
 #define TTF_RENDERTEXT TTF_RenderText_Solid
 #endif
 
-void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj, Uint8 minOutlineSize, bool trim) {
+void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj, Uint8 minOutlineSize, bool trim, bool keepSurface) {
 	SDL_Surface *text_surface = TTF_RENDERTEXT(font, text, text_color);
 	textObj->charWidth = text_surface->w;
 	textObj->charHeight = text_surface->h;
@@ -129,8 +129,12 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 
 	textObj->charOffset_x = (Sint8)(gridSizeA3 - textObj->rect.w) / 2;
 	textObj->charOffset_y = (Sint8)(gridSizeA3 - textObj->rect.h) / 2;
-	SDL_FreeSurface(outline_surface);
 	SDL_FreeSurface(text_surface);
+	if (keepSurface) {
+		textObj->surface = outline_surface;
+	} else {
+		SDL_FreeSurface(outline_surface);
+	}
 }
 
 int setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
@@ -335,23 +339,20 @@ void setAndRenderNumAspectRatio1_1(Sint16 pos_x_left, Sint16 pos_y) {
 }
 
 void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-	Sint8 k = index / 9;
 	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + textNumsObj[num].charOffset_x);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + textNumsObj[num].charOffset_y);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + textNumsObj[num].charOffset_y);
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-	Sint8 k = index / 9;
 	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(k) + (Sint16)(((num - 1) / 3) * gridSizeA) + 1);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (Sint16)(((num - 1) / 3) * gridSizeA) + 1);
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
-	Sint8 k = (num - 1) / 3;
 	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + k * gridSizeA3B + textNumsObj[num].charOffset_y));
+	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 

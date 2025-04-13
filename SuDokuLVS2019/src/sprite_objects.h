@@ -7,6 +7,9 @@
 #if defined(SDL1)
 #define SDL_RenderCopy(renderer, currSprite, srcrect, outputRect) SDL_BlitSurface(currSprite, srcrect, windowScreen, outputRect)
 #define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
+#define SDL_BlitScaled(src, srcrect, dst, dstrect) SDL_SoftStretch(src, srcrect, dst, dstrect)
+#else
+#define SDL_SRCCOLORKEY SDL_TRUE
 #endif
 
 #define NO_ROUND 0
@@ -43,6 +46,7 @@ extern SpriteObject menuCursor;
 extern SpriteObject game_grid_1;
 extern SpriteObject game_grid_2;
 extern SpriteObject game_grid_3;
+extern SpriteObject game_grid_blit;
 #if defined(THREEDS)
 extern int bg_max_x;
 extern int bg_max_y;
@@ -75,6 +79,7 @@ extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
 extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool, Sint8);
+SDL_Surface* prepareGridSurface(SpriteObject &, const unsigned char *, unsigned int, int, int);
 extern void setSpriteScale(SpriteObject &, double, Sint8);
 extern void setSpriteScaleTile();
 extern void prepareLogo();

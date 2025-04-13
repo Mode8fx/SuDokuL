@@ -202,7 +202,6 @@ extern void initDefaultFrameRate();
 extern void initDefaultWindowedSetting();
 extern void initStartingWidthHeightMults();
 extern void initStartingSharedVariables();
-extern void initNumOffsets();
 extern void updateGlobalTimer();
 extern void preparePauseTimer();
 extern void updatePauseTimer();

@@ -190,7 +190,7 @@ int main(int argv, char** args) {
 	/* General */
 	for (Sint8 k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1, false);
+		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1, false, false);
 	}
 	/* Loading Screen */
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
@@ -267,7 +267,8 @@ int main(int argv, char** args) {
 	prepareLogo();
 	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true, NO_ROUND);
 	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, 0, 0, 2, true, NO_ROUND);
-	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, 0, 0, 2, false, NO_ROUND);
+	SDL_Surface *game_grid_2_clean = prepareGridSurface(game_grid_2, grid_384_2_png, grid_384_2_png_len, 0, 0);
+	SDL_Surface *game_grid_2_blit;
 	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, 0, 0, 2, true, NO_ROUND);
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (game_grid_2.rect.w / 2) + (game_grid_2.rect.w * 5 / 24));
@@ -312,20 +313,20 @@ int main(int argv, char** args) {
 	/* General (Large) */
 	for (Sint8 k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2, false);
+		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2, false, false);
 	}
 	/* Grid Player Numbers */
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2, true);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2, true, true);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2, true);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2, true, false);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1, true);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1, true, false);
 	}
 	/* Test Strings */
 	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), fontSize * 1);
@@ -864,6 +865,24 @@ int main(int argv, char** args) {
 							break;
 					}
 				}
+				if (game_grid_2.texture) {
+					SDL_DestroyTexture(game_grid_2.texture);
+					game_grid_2.texture = NULL;
+				}
+				game_grid_2_blit = SDL_ConvertSurface(game_grid_2_clean, game_grid_2_clean->format, 0);
+				for (i = 0; i < 81; i++) {
+					if (originalGrid[i]) {
+						setTextPosX(&gridNums_black[int(originalGrid[i])], GRID_X_AT_COL(i % 9) + gridNums_black[int(originalGrid[i])].charOffset_x - gridPosX);
+						setTextPosY(&gridNums_black[int(originalGrid[i])], GRID_Y_AT_ROW(i / 9) + gridNums_black[int(originalGrid[i])].charOffset_y - gridPosY - game_grid_1.rect.h);
+						SDL_BlitScaled(gridNums_black[int(originalGrid[i])].surface, NULL, game_grid_2_blit, &gridNums_black[int(originalGrid[i])].rect);
+					}
+				}
+#if defined(SDL1)
+				game_grid_2.texture = game_grid_2_blit;
+#else
+				game_grid_2.texture = SDL_CreateTextureFromSurface(renderer, game_grid_2_blit);
+				SDL_FreeSurface(game_grid_2_blit);
+#endif
 				updatePauseTimer();
 				gridCursorIndex_x = 0;
 				gridCursorIndex_y = 0;
@@ -898,7 +917,7 @@ int main(int argv, char** args) {
 				renderGrid();
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
-						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
+						//setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
 					} else if (grid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
