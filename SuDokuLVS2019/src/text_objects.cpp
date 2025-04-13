@@ -5,7 +5,7 @@
 #include "sprite_objects.h"
 
 void initStartingTextVariables() {
-    fontSize = (max(gameHeight / 24, 8));
+	fontSize = (max(gameHeight / 24, 8));
 	if (fontSize == 11) {
 		fontSize = 10; // for PSP; 11 looks kinda jagged and weird compared to 10
 		fontForceOffset1 = 3;
@@ -14,16 +14,6 @@ void initStartingTextVariables() {
 		fontForceOffset1 = 0;
 		fontForceOffset2 = 0;
 	}
-    gridNumSize = (Uint16)(gridSizeA * 3);
-    text_pressStartAmplitude = (fontSize / 2);
-    text_standardAmplitude = (fontSize / 10);
-    text_menuChoice3 = (gameHeight * 5 / 8);
-    text_menuChoice1 = (TEXT_PRESS_START_Y - (fontSize * 4));
-    text_menuChoice2 = (TEXT_PRESS_START_Y - (fontSize * 2));
-    text_menuChoice4 = (TEXT_PRESS_START_Y + (fontSize * 2));
-    text_menuChoice5 = (TEXT_PRESS_START_Y + (fontSize * 4));
-    text_midScreen_Y = ((gameHeight - fontSize) / 2);
-    text_quitToMenu_Y = (Uint16)(TEXT_PAUSED_Y + (fontSize * 2.5));
 	deepMenuCursorPosition_X = (gameWidth / 6);
 	if (!compactDisplay) {
 		controlsMenuCursorPosition_X = (gameWidth / 8);
@@ -32,6 +22,15 @@ void initStartingTextVariables() {
 	}
 	videoMenuNumPosition_X = (gameWidth * 3 / 5);
 	backgroundMenuNumPosition_X = (gameWidth * 2 / 3);
+	text_pressStartAmplitude = (fontSize / 2);
+	text_standardAmplitude = (fontSize / 10);
+	text_menuChoice3 = (gameHeight * 5 / 8);
+	text_menuChoice1 = (TEXT_PRESS_START_Y - (fontSize * 4));
+	text_menuChoice2 = (TEXT_PRESS_START_Y - (fontSize * 2));
+	text_menuChoice4 = (TEXT_PRESS_START_Y + (fontSize * 2));
+	text_menuChoice5 = (TEXT_PRESS_START_Y + (fontSize * 4));
+	text_midScreen_Y = ((gameHeight - fontSize) / 2);
+	text_quitToMenu_Y = (Uint16)(TEXT_PAUSED_Y + (fontSize * 2.5));
 }
 
 void initTextObjectVals(TextObject *textObj) {

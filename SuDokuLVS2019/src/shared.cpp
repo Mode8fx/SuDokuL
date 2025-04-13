@@ -148,26 +148,22 @@ void initStartingWidthHeightMults() {
 }
 
 void initStartingSharedVariables() {
-	gridSizeA = (12 * gameHeightMult); // length of 1/3 of a cell (one mini-cell)
-	gridSizeB = (4 * gameHeightMult);  // length of divider between cells in the same group of three rows/columns
-	gridSizeC = (6 * gameHeightMult);  // length of divider between groups of three rows/columns
-	gridSizeD = (12 * gameHeightMult); // length of grid border
-	gridSizeD3 = gridSizeD * 3;
+	double gameGridMult = game_grid_2.rect.w / 192.0; // should be the same as gameHeightMult*2, but just in case
+	gridSizeA = (6 * gameGridMult); // length of 1/3 of a cell (one mini-cell)
+	gridSizeB = (2 * gameGridMult);  // length of divider between cells in the same group of three rows/columns
+	gridSizeC = (3 * gameGridMult);  // length of divider between groups of three rows/columns
+	gridSizeD = (6 * gameGridMult); // length of grid border
 	gridSizeA3 = (3 * gridSizeA);
-	gridSizeA3_half = (Sint16)(gridSizeA3 / 2);
-	gridSizeA3B = gridSizeA3 + gridSizeB;
-	gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
-	if (!compactDisplay) {
-		gridPosX = (Uint16)((gameWidth / 2) - (gridSize / 2) + (gridSize * 5 / 24));
-		gridPosY = (Uint16)((gameHeight - gridSize) / 2);
-	} else {
-		gridPosX = (Sint16)((gameWidth / 2) - (gridSize / 2));
-		gridPosY = (Sint16)((gameHeight - gridSize) * 875 / 1000);
-	}
 	for (int i = 0; i < 9; i++) {
 		gridStartingPosX[i] = (Sint16)((gridPosX + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
 		gridStartingPosY[i] = (Sint16)((gridPosY + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
 	}
+	//gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
+	gridSize = game_grid_2.rect.w;
+	gridSizeD3 = gridSizeD * 3;
+	gridSizeA3_half = (Sint16)(gridSizeA3 / 2);
+	gridSizeA3B = gridSizeA3 + gridSizeB;
+	gridNumSize = (Uint16)(gridSizeA * 3);
 	initNumOffsets();
 }
 

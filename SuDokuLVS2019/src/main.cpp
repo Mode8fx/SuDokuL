@@ -145,7 +145,6 @@ int main(int argv, char** args) {
 	compactDisplay = (gameHeight * 4 / 3) - 2 > gameWidth;
 
 	initStartingWidthHeightMults();
-	initStartingSharedVariables();
 	initStartingTextVariables();
 	setBGScrollSpeed();
 
@@ -301,6 +300,20 @@ int main(int argv, char** args) {
 	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, gridPosX, gridPosY, 2, true);
 	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, gridPosX, gridPosY + game_grid_1.rect.h, 2, false);
 	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, gridPosX, gridPosY + game_grid_1.rect.h + game_grid_2.rect.h, 2, true);
+	if (!compactDisplay) {
+		gridPosX = (Uint16)((gameWidth / 2) - (game_grid_2.rect.w / 2) + (game_grid_2.rect.w * 5 / 24));
+		gridPosY = (Uint16)((gameHeight - game_grid_2.rect.w) / 2);
+	} else {
+		gridPosX = (Sint16)((gameWidth / 2) - (game_grid_2.rect.w / 2));
+		gridPosY = (Sint16)((gameHeight - game_grid_2.rect.w) * 875 / 1000);
+	}
+	game_grid_1.rect.x = gridPosX;
+	game_grid_1.rect.y = gridPosY;
+	game_grid_2.rect.x = gridPosX;
+	game_grid_2.rect.y = gridPosY + game_grid_1.rect.h;
+	game_grid_3.rect.x = gridPosX;
+	game_grid_3.rect.y = gridPosY + game_grid_1.rect.h + game_grid_2.rect.h;
+	initStartingSharedVariables();
 #if defined(THREEDS)
 	bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
 	bg_max_y = game_grid_3.rect.y - tile->rect.h;
