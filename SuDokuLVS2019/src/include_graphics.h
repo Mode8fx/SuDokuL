@@ -30,20 +30,48 @@
 #include "graphics_include/low_res/grid_mini_bottom_right.h"
 #include "graphics_include/low_res/grid_mini_top_left.h"
 #include "graphics_include/low_res/grid_mini_top_right.h"
-#define logo_272_png NULL
-#define logo_272_png_len 0
-#define logo_480_png NULL
-#define logo_480_png_len 0
-#define logo_544_png NULL
-#define logo_544_png_len 0
-#define logo_720_png NULL
-#define logo_720_png_len 0
-#define logo_1080_png NULL
-#define logo_1080_png_len 0
-#define logo_1440_png NULL
-#define logo_1440_png_len 0
-#define logo_2160_png NULL
-#define logo_2160_png_len 0
+#define logo_272_1_png NULL
+#define logo_272_1_png_len 0
+#define logo_272_2_png NULL
+#define logo_272_2_png_len 0
+#define logo_272_3_png NULL
+#define logo_272_3_png_len 0
+#define logo_480_1_png NULL
+#define logo_480_1_png_len 0
+#define logo_480_2_png NULL
+#define logo_480_2_png_len 0
+#define logo_480_3_png NULL
+#define logo_480_3_png_len 0
+#define logo_544_1_png NULL
+#define logo_544_1_png_len 0
+#define logo_544_2_png NULL
+#define logo_544_2_png_len 0
+#define logo_544_3_png NULL
+#define logo_544_3_png_len 0
+#define logo_720_1_png NULL
+#define logo_720_1_png_len 0
+#define logo_720_2_png NULL
+#define logo_720_2_png_len 0
+#define logo_720_3_png NULL
+#define logo_720_3_png_len 0
+#define logo_1080_1_png NULL
+#define logo_1080_1_png_len 0
+#define logo_1080_2_png NULL
+#define logo_1080_2_png_len 0
+#define logo_1080_3_png NULL
+#define logo_1080_3_png_len 0
+#define logo_1440_1_png NULL
+#define logo_1440_1_png_len 0
+#define logo_1440_2_png NULL
+#define logo_1440_2_png_len 0
+#define logo_1440_3_png NULL
+#define logo_1440_3_png_len 0
+#define logo_2160_1_png NULL
+#define logo_2160_1_png_len 0
+#define logo_2160_2_png NULL
+#define logo_2160_2_png_len 0
+#define logo_2160_3_png NULL
+#define logo_2160_3_png_len 0
 
 #else
 
