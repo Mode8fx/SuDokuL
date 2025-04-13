@@ -13,33 +13,8 @@
 #include "include_music.h"
 #include "include_sfx.h"
 
-//Uint64 fps_lastTime = 0;
-//double fps_freq;
-//int fps_frameCount = 0;
-//int fps_frameCountLastSecond = 0;
-//
-//void printFPS() {
-//	fps_frameCount++;
-//	Uint64 currentTime = SDL_GetPerformanceCounter();
-//	if (fps_lastTime == 0) {
-//		fps_lastTime = currentTime;
-//		fps_freq = (double)SDL_GetPerformanceFrequency();
-//	}
-//
-//	double elapsed = (double)(currentTime - fps_lastTime) / fps_freq;
-//	if (elapsed >= 1.0) {
-//		fps_frameCountLastSecond = fps_frameCount;
-//		fps_frameCount = 0;
-//		fps_lastTime = currentTime;
-//	}
-//	Sint16 fps_counterX = gameWidth / 2;
-//	Sint16 fps_counterY = gameHeight * 7 / 8;
-//	i = 0;
-//	setAndRenderNumHelper(int(fps_frameCountLastSecond) / 10, fps_counterX, fps_counterY, 0);
-//	setAndRenderNumHelper(int(fps_frameCountLastSecond) % 10, fps_counterX + 20, fps_counterY, 0);
-//}
-
 bool isContinue = false;
+bool showFPS = false;
 
 #if defined(EMSCRIPTEN)
 void mainloop() {
@@ -690,6 +665,9 @@ int main(int argv, char** args) {
 				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
 				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
+				if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SELECT)) {
+					showFPS = !showFPS;
+				}
 				break;
 			/* 2 = Main Menu */
 			case 2:
@@ -1648,7 +1626,9 @@ int main(int argv, char** args) {
 
 		/* Update Screen */
 #if !defined(SDL1)
-		//printFPS();
+		if (showFPS) {
+			printFPS();
+		}
 		SDL_RenderPresent(renderer);
 #else
 		SDL_Flip(windowScreen);

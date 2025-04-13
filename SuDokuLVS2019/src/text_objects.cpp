@@ -89,10 +89,10 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->charWidth = text_surface->w;
 	textObj->charHeight = text_surface->h;
 
-	setFontOutline(font, textObj, minOutlineSize);
+	int outline_size = setFontOutline(font, textObj, minOutlineSize);
 	SDL_Surface *outline_surface = TTF_RENDERTEXT(font, text, outline_color);
-	textObj->outlineOffset_x = (Sint8)(-1 * gameHeightMult * outline_surface->h / fontSize);
-	textObj->outlineOffset_y = (Sint8)(-1.5 * gameHeightMult * outline_surface->h / fontSize);
+	textObj->outlineOffset_x = (Sint8)max((int)(outline_size * 0.5), 1);
+	textObj->outlineOffset_y = (Sint8)max((int)(outline_size * 0.9), 1);
 	TTF_SetFontOutline(font, 0);
 
 #if !defined(SDL1)
@@ -100,7 +100,7 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	SDL_FreeSurface(outline_surface);
 	outline_surface = outline_rgba;
 
-	SDL_Rect dstRect = { -textObj->outlineOffset_x, -textObj->outlineOffset_y, text_surface->w, text_surface->h };
+	SDL_Rect dstRect = { textObj->outlineOffset_x, textObj->outlineOffset_y, text_surface->w, text_surface->h };
 	SDL_BlitSurface(text_surface, NULL, outline_surface, &dstRect);
 
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, outline_surface);
@@ -109,7 +109,7 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 #else
 	SDL_Surface *combined = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
 	SDL_BlitSurface(text_surface, NULL, combined, &(SDL_Rect){
-		-textObj->outlineOffset_x, -textObj->outlineOffset_y, 0, 0
+		textObj->outlineOffset_x, textObj->outlineOffset_y, 0, 0
 	});
 	textObj->texture = combined;
 	textObj->rect.w = combined->w;
@@ -120,8 +120,10 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	SDL_FreeSurface(text_surface);
 }
 
-void setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
-	TTF_SetFontOutline(font, max((textObj->charHeight / 10), max(int(ceil(gameHeightMult)), (int)minSize)));
+int setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
+	int size = max((textObj->charHeight / 10), max(int(ceil(gameHeightMult)), (int)minSize));
+	TTF_SetFontOutline(font, size);
+	return size;
 }
 
 void setAndRenderNumThreeDigitCentered(Sint16 num, Sint16 pos_x_centered, Sint16 pos_y) {
@@ -1187,4 +1189,30 @@ void controlsSetConfirmBackPos() {
         text_Controls_4a.rect.y = (Sint16)(fontSize * (CONTROLS_STEP * 5));
     }
 #endif
+}
+
+Uint64 fps_lastTime = 0;
+double fps_freq;
+Uint8 fps_frameCount = 0;
+Uint8 fps_frameCountLastSecond = 0;
+
+void printFPS() {
+	fps_frameCount++;
+	Uint64 currentTime = SDL_GetPerformanceCounter();
+	if (fps_lastTime == 0) {
+		fps_lastTime = currentTime;
+		fps_freq = (double)SDL_GetPerformanceFrequency();
+	}
+
+	double elapsed = (double)(currentTime - fps_lastTime) / fps_freq;
+	if (elapsed >= 1.0) {
+		fps_frameCountLastSecond = fps_frameCount;
+		fps_frameCount = 0;
+		fps_lastTime = currentTime;
+	}
+	Sint16 fps_counterX = gameWidth / 2;
+	Sint16 fps_counterY = gameHeight * 7 / 8;
+	i = 0;
+	setAndRenderNumHelper(int(fps_frameCountLastSecond) / 10, fps_counterX, fps_counterY, 0);
+	setAndRenderNumHelper(int(fps_frameCountLastSecond) % 10, fps_counterX + 20, fps_counterY, 0);
 }

@@ -413,7 +413,7 @@ extern void renderTextLarge(TextObject *);
 extern void setTextPosX(TextCharObject *, Sint16);
 extern void setTextPosY(TextCharObject *, Sint16);
 extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *, Uint8);
-extern void setFontOutline(TTF_Font *, TextCharObject *, Uint8);
+extern int  setFontOutline(TTF_Font *, TextCharObject *, Uint8);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
 extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
 extern void renderAspectRatioChoice();
@@ -452,12 +452,13 @@ extern void renderCreditsTextPage7();
 extern void renderCreditsTextPage8();
 extern void renderCreditsTextPage9();
 extern void controlsSetConfirmBackPos();
+extern void printFPS();
 extern inline void renderTextChar(TextCharObject *);
 extern inline void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
 extern inline void setAndRenderColon(Sint16, Sint16);
 
 inline void renderTextChar(TextCharObject *textObj) {
-  SDL_Rect destRect = { textObj->rect.x + textObj->outlineOffset_x, textObj->rect.y + textObj->outlineOffset_y, textObj->rect.w, textObj->rect.h };
+  SDL_Rect destRect = { textObj->rect.x - textObj->outlineOffset_x, textObj->rect.y - textObj->outlineOffset_y, textObj->rect.w, textObj->rect.h };
   SDL_RenderCopy(renderer, textObj->texture, NULL, &destRect);
 }
 
