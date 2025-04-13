@@ -45,6 +45,8 @@ void reloadVideoSettings() {
 	if (settingsFile != NULL) {
 		seekPos = SDL_RWseek(settingsFile, sizeof(ControlSettings), RW_SEEK_SET);
 		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
+		seekPos = SDL_RWseek(settingsFile, sizeof(SoundSettings) + sizeof(BackgroundSettings) + sizeof(Addon131Settings), RW_SEEK_SET);
+		SDL_RWread(settingsFile, &addon134Settings, sizeof(Addon134Settings), 1);
 		SDL_RWclose(settingsFile);
 	}
 }
@@ -425,9 +427,10 @@ void updateBorderRects() {
 }
 
 void renderBackground() {
-	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
+	double speedStep = bgSettings.speedMult * deltaTime;
+	bgScroll.speedStep_x += speedStep * bgScroll.speed_x;
 	bgScroll.speedStep_x_int = static_cast<int>(floor(bgScroll.speedStep_x)) % tile_rect_h;
-	bgScroll.speedStep_y += bgSettings.speedMult * bgScroll.speed_y * deltaTime;
+	bgScroll.speedStep_y += speedStep * bgScroll.speed_y;
 	bgScroll.speedStep_y_int = static_cast<int>(floor(bgScroll.speedStep_y)) % tile_rect_w;
 	int start_x = -tile_rect_w + bgScroll.speedStep_x_int;
 	int start_y = -tile_rect_h + bgScroll.speedStep_y_int;

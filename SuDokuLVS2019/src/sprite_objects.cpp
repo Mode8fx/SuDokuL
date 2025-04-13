@@ -1,6 +1,7 @@
 #include "include_graphics.h"
 #include "sprite_objects.h"
 #include "window.h"
+#include "menu_logic.h"
 
 #if !defined(SDL1)
 #define SDL_SRCCOLORKEY SDL_TRUE
@@ -16,7 +17,7 @@
  * 5. Scale the sprite and apply color key (color #FF00FF is transparent) as needed.
  * 6. Set the position of the sprite object.
  */
-void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale, bool useAlpha, Sint8 intScaleType) {
+void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale, bool useAlpha, Sint8 scaleType) {
   if (spriteObj.texture) {
 #if defined(SDL1)
     SDL_FreeSurface(spriteObj.texture);
@@ -36,11 +37,7 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
 
   spriteObj.width = temp_surface->w;
   spriteObj.height = temp_surface->h;
-  if (intScaleType) {
-    setSpriteScale_EnforceIntMult(spriteObj, scale, (bool)(intScaleType - 1));
-  } else {
-    setSpriteScale(spriteObj, scale);
-  }
+  setSpriteScale(spriteObj, scale, scaleType);
   bool scaleIsUnchanged = spriteObj.rect.h == spriteObj.height;
 
   if (scaleIsUnchanged && !useAlpha) {
@@ -87,33 +84,48 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
   spriteObj.rect.y = pos_y;
 }
 
-void setSpriteScale(SpriteObject &spriteObj, double scale) {
-  spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * gameHeightMult * scale);
-  spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * gameHeightMult * scale);
-}
-
-void setSpriteScale_EnforceIntMult(SpriteObject &spriteObj, double scale, bool roundUp) {
-	Uint16 roundedMult = roundUp ? static_cast<Uint16>(ceil(gameHeightMult)) : static_cast<Uint16>(floor(gameHeightMult));
-  spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * roundedMult * scale);
-  spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * roundedMult * scale);
+void setSpriteScale(SpriteObject& spriteObj, double scale, Sint8 scaleType) {
+  switch (scaleType) {
+  case NO_ROUND:
+    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * gameHeightMult * scale);
+    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * gameHeightMult * scale);
+    break;
+  case ROUND_DOWN:
+    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * static_cast<Uint16>(floor(gameHeightMult)) * scale);
+    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * static_cast<Uint16>(floor(gameHeightMult)) * scale);
+    break;
+  case ROUND_UP:
+    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * static_cast<Uint16>(ceil(gameHeightMult)) * scale);
+    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * static_cast<Uint16>(ceil(gameHeightMult)) * scale);
+    break;
+  case ROUND_DOWN_IGNORE_HEIGHT_MULT:
+    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * scale);
+    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * scale);
+    break;
+  default: // NO_ROUND
+    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * gameHeightMult * scale);
+    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * gameHeightMult * scale);
+    break;
+  }
 }
 
 void setSpriteScaleTile() {
-  Sint8 tileSizeResMult = gameHeight < 960 ? 1 : 2;
-  prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
-  prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, bgSettings.scale * 2 * tileSizeResMult, false, ROUND_DOWN);
+  Sint8 tileSizeResMult = max(static_cast<Sint8>(std::floor(gameHeight / 480.0)), (Sint8)1);
+  prepareSprite(tile1, tile1_png, tile1_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile2, tile2_png, tile2_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile3, tile3_png, tile3_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile_cave, tile_cave_png, tile_cave_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile_desert, tile_desert_png, tile_desert_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile_grasslands, tile_grasslands_png, tile_grasslands_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile_grasslands2, tile_grasslands2_png, tile_grasslands2_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
+  prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
   bgScroll.final_x = gameWidth + tile->rect.w;
   bgScroll.final_y = gameHeight + tile->rect.h;
 #if defined(THREEDS)
   bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
   bg_max_y = game_grid_3.rect.y - tile->rect.h;
 #endif
+  setBGScrollSpeed();
 }
 
 void prepareLogo() {

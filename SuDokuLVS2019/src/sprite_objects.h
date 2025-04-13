@@ -12,6 +12,7 @@
 #define NO_ROUND 0
 #define ROUND_DOWN 1
 #define ROUND_UP 2
+#define ROUND_DOWN_IGNORE_HEIGHT_MULT 3
 
 struct SpriteObject {
 #if !defined(SDL1)
@@ -74,8 +75,7 @@ extern SpriteObject miniGrid_top_right;
 extern SpriteObject *currMiniGrid;
 
 extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool, Sint8);
-extern void setSpriteScale(SpriteObject &, double);
-extern void setSpriteScale_EnforceIntMult(SpriteObject &, double, bool);
+extern void setSpriteScale(SpriteObject &, double, Sint8);
 extern void setSpriteScaleTile();
 extern void prepareLogo();
 extern void prepareSidebar();

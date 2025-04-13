@@ -189,7 +189,6 @@ void controlsMenuHandleVertCursorMovementMouse(TextObject textObj, Sint8 index) 
 void resetBGToDefault() {
     bgSettings.type = 1;
     bgSettings.scrollDir = 22;
-    setBGScrollSpeed();
     bgSettings.speedMult = 15;
     //bgSettings.scale = max(min((int)min(gameWidthMult, gameHeightMult), 5), 1);
     bgSettings.scale = defaultBGScale;
@@ -227,16 +226,17 @@ void setBGType() {
 }
 
 void setBGScrollSpeed() {
+  Sint8 tileSizeResMult = max(static_cast<Sint8>(std::floor(gameHeight / 480.0)), (Sint8)1);
 #if defined(FUNKEY) // FunKey just doesn't handle cos and sin properly
   if (bgSettings.scrollDir == 18 || bgSettings.scrollDir == 36 || bgSettings.scrollDir == 54) {
-    bgScroll.speed_x = cos(((double)bgSettings.scrollDir + 18) * 5 * PI / 180);
-    bgScroll.speed_y = sin(((double)bgSettings.scrollDir + 18) * 5 * PI / 180);
+    bgScroll.speed_x = cos(((double)bgSettings.scrollDir + 18) * 5 * PI / 180) * tileSizeResMult;
+    bgScroll.speed_y = sin(((double)bgSettings.scrollDir + 18) * 5 * PI / 180) * tileSizeResMult;
   } else {
-    bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);
-    bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
+    bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180) * tileSizeResMult;
+    bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180) * tileSizeResMult;
   }
 #else
-    bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180);
-    bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180);
+    bgScroll.speed_x = cos(((double)bgSettings.scrollDir) * 5 * PI / 180) * tileSizeResMult;
+    bgScroll.speed_y = sin(((double)bgSettings.scrollDir) * 5 * PI / 180) * tileSizeResMult;
 #endif
 }
