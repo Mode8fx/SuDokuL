@@ -93,10 +93,6 @@ extern Sint16 gridPosX;
 extern Sint16 gridPosY;
 extern Sint16 gridStartingPosX[9];
 extern Sint16 gridStartingPosY[9];
-extern Sint8 numOffset_large_x[9];
-extern Sint8 numOffset_large_y[9];
-extern Sint8 numOffset_small_x[9];
-extern Sint8 numOffset_small_y[9];
 
 /* Settings */
 extern SDL_RWops *settingsFile;

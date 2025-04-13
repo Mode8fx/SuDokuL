@@ -86,10 +86,6 @@ Sint16 gridPosX;
 Sint16 gridPosY;
 Sint16 gridStartingPosX[9];
 Sint16 gridStartingPosY[9];
-Sint8 numOffset_large_x[9];
-Sint8 numOffset_large_y[9];
-Sint8 numOffset_small_x[9];
-Sint8 numOffset_small_y[9];
 
 /* General Input */
 Sint16 controllerAxis_leftStickX;

@@ -44,6 +44,8 @@ struct TextCharObject {
     SDL_Rect rect;
     Uint8 charWidth; // ignoring outline
     Uint8 charHeight;
+    Sint8 charOffset_x; // only used for grid number rendering
+    Sint8 charOffset_y;
     Sint8 outlineOffset_x;
     Sint8 outlineOffset_y;
 };
@@ -412,8 +414,9 @@ extern void renderText(TextObject *);
 extern void renderTextLarge(TextObject *);
 extern void setTextPosX(TextCharObject *, Sint16);
 extern void setTextPosY(TextCharObject *, Sint16);
-extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *, Uint8);
+extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color text_color, SDL_Color outline_color, TextCharObject *, Uint8, bool);
 extern int  setFontOutline(TTF_Font *, TextCharObject *, Uint8);
+extern SDL_Surface* trimTransparentEdges(SDL_Surface *);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
 extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
 extern void renderAspectRatioChoice();
@@ -454,12 +457,17 @@ extern void renderCreditsTextPage9();
 extern void controlsSetConfirmBackPos();
 extern void printFPS();
 extern inline void renderTextChar(TextCharObject *);
+extern inline void renderTextCharIgnoreOffset(TextCharObject *);
 extern inline void setAndRenderNumHelper(Uint8, Sint16, Sint16, float);
 extern inline void setAndRenderColon(Sint16, Sint16);
 
 inline void renderTextChar(TextCharObject *textObj) {
   SDL_Rect destRect = { textObj->rect.x - textObj->outlineOffset_x, textObj->rect.y - textObj->outlineOffset_y, textObj->rect.w, textObj->rect.h };
   SDL_RenderCopy(renderer, textObj->texture, NULL, &destRect);
+}
+
+inline void renderTextCharIgnoreOffset(TextCharObject *textObj) {
+  SDL_RenderCopy(renderer, textObj->texture, NULL, &textObj->rect);
 }
 
 inline void setAndRenderNumHelper(Uint8 digit, Sint16 pos_x_left, Sint16 pos_y, float i_offset) {

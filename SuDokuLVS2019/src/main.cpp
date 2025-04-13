@@ -199,7 +199,7 @@ int main(int argv, char** args) {
 	/* General */
 	for (Sint8 k = 32; k < LEN(textChars); k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1);
+		setTextCharWithOutline(tempCharArr, pixelFont, color_white, color_black, &textChars[k], 1, false);
 	}
 	/* Loading Screen */
 	SET_TEXT_WITH_OUTLINE("Loading...", text_Loading, OBJ_TO_MID_SCREEN_X(text_Loading), TEXT_LOADING_Y);
@@ -297,9 +297,9 @@ int main(int argv, char** args) {
 	logo.startPos_x = logo.endPos_y; /* functionally, this is a second startPos_y, not x */
 	logo.endPos_x = logo.endPos_y - (gameHeight * 3 / 4); /* functionally, this is a second endPos_y, not x */
 	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true);
-	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, gridPosX, gridPosY, 2, true);
-	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, gridPosX, gridPosY + game_grid_1.rect.h, 2, false);
-	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, gridPosX, gridPosY + game_grid_1.rect.h + game_grid_2.rect.h, 2, true);
+	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, 0, 0, 2, true);
+	prepareSprite(game_grid_2, grid_384_2_png, grid_384_2_png_len, 0, 0, 2, false);
+	prepareSprite(game_grid_3, grid_384_3_png, grid_384_3_png_len, 0, 0, 2, true);
 	if (!compactDisplay) {
 		gridPosX = (Uint16)((gameWidth / 2) - (game_grid_2.rect.w / 2) + (game_grid_2.rect.w * 5 / 24));
 		gridPosY = (Uint16)((gameHeight - game_grid_2.rect.w) / 2);
@@ -347,20 +347,20 @@ int main(int argv, char** args) {
 	/* General (Large) */
 	for (Sint8 k = 32; k < 91; k++) {
 		tempCharArr[0] = k;
-		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2);
+		setTextCharWithOutline(tempCharArr, pixelFont_large, color_light_blue, color_blue, &textChars_large[k], 2, false);
 	}
 	/* Grid Player Numbers */
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_gray_240, color_black, &gridNums_black[k], 2, true);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid, color_light_blue, color_blue, &gridNums_blue[k], 2, true);
 	}
 	for (Sint8 k = 0; k < 10; k++) {
 		tempCharArr[0] = k + 48;
-		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1);
+		setTextCharWithOutline(tempCharArr, pixelFont_grid_mini, color_light_blue, color_blue, &gridNums_blue_mini[k], 1, true);
 	}
 	/* Test Strings */
 	//SET_TEXT_WITH_OUTLINE("A B C D E F G H I J K L M", text_test_1, OBJ_TO_MID_SCREEN_X(text_test_1), fontSize * 1);

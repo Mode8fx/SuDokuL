@@ -150,8 +150,8 @@ void initStartingWidthHeightMults() {
 void initStartingSharedVariables() {
 	double gameGridMult = game_grid_2.rect.w / 192.0; // should be the same as gameHeightMult*2, but just in case
 	gridSizeA = (6 * gameGridMult); // length of 1/3 of a cell (one mini-cell)
-	gridSizeB = (2 * gameGridMult);  // length of divider between cells in the same group of three rows/columns
-	gridSizeC = (3 * gameGridMult);  // length of divider between groups of three rows/columns
+	gridSizeB = (2 * gameGridMult); // length of divider between cells in the same group of three rows/columns
+	gridSizeC = (3 * gameGridMult); // length of divider between groups of three rows/columns
 	gridSizeD = (6 * gameGridMult); // length of grid border
 	gridSizeA3 = (3 * gridSizeA);
 	for (int i = 0; i < 9; i++) {
@@ -164,79 +164,6 @@ void initStartingSharedVariables() {
 	gridSizeA3_half = (Sint16)(gridSizeA3 / 2);
 	gridSizeA3B = gridSizeA3 + gridSizeB;
 	gridNumSize = (Uint16)(gridSizeA * 3);
-	initNumOffsets();
-}
-
-static void initNumOffsets_544() {
-	//d = (double)gameHeight / SCALING_HEIGHT;
-	double d = 1.0;
-	for (i = 0; i < 9; i++) {
-		numOffset_large_x[i] = (Sint8)(2 * d);
-		numOffset_large_y[i] = (Sint8)(d);
-		numOffset_small_x[i] = 0;
-		numOffset_small_y[i] = (Sint8)(-d);
-	}
-	numOffset_large_y[2] = 0;
-	numOffset_large_y[5] = 0;
-	numOffset_large_y[6] = 0;
-	numOffset_large_y[7] = 0;
-	numOffset_small_y[1] = 0;
-	numOffset_small_y[3] = 0;
-	if (gameHeight <= 240) {
-		for (i = 0; i < 9; i++) numOffset_small_y[i] -= 1;
-	}
-}
-
-static void initNumOffsets_272() {
-	//d = (double)gameHeight / SCALING_HEIGHT;
-	double d = 1.0;
-	for (i = 0; i < 9; i++) {
-		numOffset_large_x[i] = (Sint8)(d);
-		numOffset_large_y[i] = 0;
-		numOffset_small_x[i] = (Sint8)(d);
-		numOffset_small_y[i] = (Sint8)(d);
-	}
-	numOffset_large_y[2] = (Sint8)(-d);
-	numOffset_large_y[5] = (Sint8)(-d);
-	numOffset_large_y[6] = (Sint8)(-d);
-	numOffset_large_y[8] = (Sint8)(-d);
-	numOffset_small_y[2] = 0;
-	numOffset_small_y[5] = 0;
-	numOffset_small_y[8] = 0;
-}
-
-static void initNumOffsets_240() {
-	//d = (double)gameHeight / SCALING_HEIGHT;
-	double d = 1.0;
-	for (i = 0; i < 9; i++) {
-		numOffset_large_x[i] = (Sint8)(d);
-		numOffset_large_y[i] = 0;
-		numOffset_small_x[i] = 0;
-		numOffset_small_y[i] = 0;
-	}
-}
-
-static void initNumOffsets_Standard() {
-	for (i = 0; i < 9; i++) {
-		numOffset_large_x[i] = 0;
-		numOffset_large_y[i] = 0;
-		numOffset_small_x[i] = 0;
-		numOffset_small_y[i] = 0;
-	}
-}
-
-void initNumOffsets() {
-	if (gameHeight == 272) {
-		initNumOffsets_272();
-#if defined(SDL1)
-	} else if (gameHeight == 240) {
-		initNumOffsets_240();
-#endif
-	} else if (gameHeight == 544) {
-		initNumOffsets_544();
-	} else {
-		initNumOffsets_Standard();
-	}
 }
 
 void updateGlobalTimer() {
