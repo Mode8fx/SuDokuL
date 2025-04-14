@@ -15,6 +15,9 @@
 
 bool isContinue = false;
 bool showFPS = false;
+#if defined(THREEDS)
+bool useNew3DSClockSpeed = true;
+#endif
 
 #if defined(EMSCRIPTEN)
 void mainloop() {
@@ -67,7 +70,7 @@ int main(int argv, char** args) {
 
 	/* [3DS] Enable New 3DS clock speed*/
 #if defined(THREEDS)
-	osSetSpeedupEnable(true);
+	osSetSpeedupEnable(useNew3DSClockSpeed);
 #endif
 
 	TTF_Init();
@@ -648,6 +651,12 @@ int main(int argv, char** args) {
 				if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SELECT)) {
 					showFPS = !showFPS;
 				}
+#if defined(THREEDS)
+				if (buttonHeld(INPUT_DOWN) && buttonHeld(INPUT_RIGHT) && keyPressed(INPUT_SWAP)) {
+					useNew3DSClockSpeed = !useNew3DSClockSpeed;
+					osSetSpeedupEnable(useNew3DSClockSpeed);
+				}
+#endif
 				break;
 			/* 2 = Main Menu */
 			case 2:

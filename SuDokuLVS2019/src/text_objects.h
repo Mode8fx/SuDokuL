@@ -24,7 +24,7 @@
 #define CONTROLS_STEP 1.6
 #endif
 
-#define CONTROLS_SPACER (fontSize * 0.75)
+#define CONTROLS_SPACER (fontSize * 0.85)
 
 struct TextRect {
     Sint16 x;
