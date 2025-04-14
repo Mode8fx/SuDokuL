@@ -32,7 +32,7 @@ void gameHandleMainGridNavigation() {
             if (gridCursorIndex_x < 4) {
                  if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_left;
-										currMiniGridNum = 2;
+                    currMiniGridNum = 2;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                  } else {
@@ -44,12 +44,12 @@ void gameHandleMainGridNavigation() {
             } else {
                 if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_right;
-										currMiniGridNum = 3;
+                    currMiniGridNum = 3;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                 } else {
                     currMiniGrid = &miniGrid_bottom_right;
-										currMiniGridNum = 1;
+                    currMiniGridNum = 1;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
                 }

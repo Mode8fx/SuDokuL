@@ -414,7 +414,7 @@ extern void renderText(TextObject *);
 extern void renderTextLarge(TextObject *);
 extern void setTextPosX(TextCharObject *, Sint16);
 extern void setTextPosY(TextCharObject *, Sint16);
-extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color, SDL_Color, TextCharObject *, Uint8, bool, bool);
+extern void setTextCharWithOutline(const char *, TTF_Font *, SDL_Color, SDL_Color, TextCharObject *, Uint8, Sint8, Sint8, bool, bool);
 extern int  setFontOutline(TTF_Font *, TextCharObject *, Uint8);
 extern SDL_Surface* trimTransparentEdges(SDL_Surface *);
 extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);

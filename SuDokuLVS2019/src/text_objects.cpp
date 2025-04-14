@@ -83,16 +83,17 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y) {
 #define TTF_RENDERTEXT TTF_RenderText_Solid
 #endif
 
-void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj, Uint8 minOutlineSize, bool trim, bool keepSurface) {
+void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj,
+	Uint8 minOutlineSize, Sint8 outlineAddX, Sint8 outlineAddY, bool trim, bool keepSurface) {
 	SDL_Surface *text_surface = TTF_RENDERTEXT(font, text, text_color);
 	textObj->charWidth = text_surface->w;
 	textObj->charHeight = text_surface->h;
 
 	int outline_size = setFontOutline(font, textObj, minOutlineSize);
 	SDL_Surface *outline_surface = TTF_RENDERTEXT(font, text, outline_color);
-	textObj->outlineOffset_x = (Sint8)max((int)(outline_size * 0.5), 1);
-	textObj->outlineOffset_y = (Sint8)max((int)(outline_size * 0.9), 1);
 	TTF_SetFontOutline(font, 0);
+	textObj->outlineOffset_x = (Sint8)max((int)(outline_size * 0.5), 1) + outlineAddX;
+	textObj->outlineOffset_y = (Sint8)max((int)(outline_size * 0.9), 1) + outlineAddY;
 
 #if !defined(SDL1)
 	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
@@ -345,8 +346,8 @@ void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + 1);
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (Sint16)(((num - 1) / 3) * gridSizeA) + 1);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + static_cast<int>(gameHeightMult));
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (Sint16)(((num - 1) / 3) * gridSizeA) + static_cast<int>(gameHeightMult));
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
