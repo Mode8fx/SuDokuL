@@ -45,7 +45,7 @@ void reloadVideoSettings() {
 	if (settingsFile != NULL) {
 		seekPos = SDL_RWseek(settingsFile, sizeof(ControlSettings), RW_SEEK_SET);
 		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
-		seekPos = SDL_RWseek(settingsFile, sizeof(SoundSettings) + sizeof(BackgroundSettings) + sizeof(Addon131Settings), RW_SEEK_SET);
+		seekPos = SDL_RWseek(settingsFile, sizeof(ControlSettings) + sizeof(VideoSettings) + sizeof(SoundSettings) + sizeof(BackgroundSettings) + sizeof(Addon131Settings), RW_SEEK_SET);
 		SDL_RWread(settingsFile, &addon134Settings, sizeof(Addon134Settings), 1);
 		SDL_RWclose(settingsFile);
 	}
@@ -137,11 +137,7 @@ void initDefaultFrameRate() {
 }
 
 void initDefaultWindowedSetting() {
-#if defined(THREEDS)
-	defaultWindowedSetting = 0;
-#else
 	defaultWindowedSetting = 1;
-#endif
 }
 
 void initStartingWidthHeightMults() {

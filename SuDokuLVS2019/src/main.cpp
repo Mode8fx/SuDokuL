@@ -1170,7 +1170,6 @@ int main(int argv, char** args) {
 				}
 #endif
 				updateVideoMenuCursorPositionX();
-				menuHandleBackButtonWithSettings(13);
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_video) {
 #if defined(FUNKEY)
@@ -1321,6 +1320,7 @@ int main(int argv, char** args) {
 				renderAspectRatioChoice();
 				renderText(&text_Apply);
 #endif
+				menuHandleBackButtonWithSettings(13);
 				break;
 			/* 22 = Sound Menu */
 			case 22:

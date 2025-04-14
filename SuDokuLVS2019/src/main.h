@@ -159,11 +159,12 @@ SDL_Rect gameSidebarSmall3Rect_1;
 SDL_Rect gameSidebarSmall3Rect_2;
 SDL_Rect gameSidebarSmall3Rect_3;
 
-SpriteObject miniGrid_bottom_left;
-SpriteObject miniGrid_bottom_right;
-SpriteObject miniGrid_top_left;
-SpriteObject miniGrid_top_right;
+SpriteObject miniGrid_bottom_left;  // 0
+SpriteObject miniGrid_bottom_right; // 1
+SpriteObject miniGrid_top_left;     // 2
+SpriteObject miniGrid_top_right;    // 3
 SpriteObject *currMiniGrid;
+Sint8 currMiniGridNum;
 
 /* Fonts */
 TTF_Font *pixelFont;

@@ -32,20 +32,24 @@ void gameHandleMainGridNavigation() {
             if (gridCursorIndex_x < 4) {
                  if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_left;
+										currMiniGridNum = 2;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                  } else {
                     currMiniGrid = &miniGrid_bottom_left;
+                    currMiniGridNum = 0;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
                  }
             } else {
                 if (gridCursorIndex_y < 4) {
                     currMiniGrid = &miniGrid_top_right;
+										currMiniGridNum = 3;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
                 } else {
                     currMiniGrid = &miniGrid_bottom_right;
+										currMiniGridNum = 1;
                     currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
                     currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
                 }
@@ -388,11 +392,37 @@ void gameHandleChangeSong() {
 }
 
 inline Sint16 xAtMiniGridIndex(Sint8 index) {
-    return (Sint16)(currMiniGrid->rect.x + (gridSizeD * 3) + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+  switch (currMiniGridNum) {
+  case 0:
+    return (Sint16)(currMiniGrid->rect.x + gridSizeD3 + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+    break;
+  case 1:
+    return (Sint16)(currMiniGrid->rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+    break;
+  case 2:
+    return (Sint16)(currMiniGrid->rect.x + gridSizeD3 + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+    break;
+  case 3:
+    return (Sint16)(currMiniGrid->rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
+    break;
+  }
 }
 
 inline Sint16 yAtMiniGridIndex(Sint8 index) {
-    return (Sint16)(currMiniGrid->rect.y + (gridSizeD * 3) + (index * gridSizeA3) + (index * gridSizeB));
+  switch (currMiniGridNum) {
+  case 0:
+    return (Sint16)(currMiniGrid->rect.y + gridSizeD + (index * gridSizeA3) + (index * gridSizeB));
+    break;
+  case 1:
+    return (Sint16)(currMiniGrid->rect.y + gridSizeD + (index * gridSizeA3) + (index * gridSizeB));
+    break;
+  case 2:
+    return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
+    break;
+  case 3:
+    return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
+    break;
+  }
 }
 
 void setGridCursorBySmallX() {

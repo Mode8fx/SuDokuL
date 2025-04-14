@@ -351,14 +351,46 @@ void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 i
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+	switch (currMiniGridNum) {
+	case 0: // bottom left
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+		break;
+	case 1: // bottom right
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+		break;
+	case 2: // top left
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+		break;
+	case 3: // top right
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+		break;
+	}
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
-	setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+	switch (currMiniGridNum) {
+	case 0: // bottom left
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+		break;
+	case 1: // bottom right
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+		break;
+	case 2: // top left
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD3 + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+		break;
+	case 3: // top right
+		setTextPosX(&textNumsObj[num], currMiniGrid->rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
+		setTextPosY(&textNumsObj[num], currMiniGrid->rect.y + (Sint16)(gridSizeD3 + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+		break;
+	}
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
