@@ -125,24 +125,24 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
 void setSpriteScale(SpriteObject& spriteObj, double scale, Sint8 scaleType) {
   switch (scaleType) {
   case NO_ROUND:
-    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * gameHeightMult * scale);
-    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * gameHeightMult * scale);
+    spriteObj.rect.w = static_cast<int>(spriteObj.width * gameHeightMult * scale);
+    spriteObj.rect.h = static_cast<int>(spriteObj.height * gameHeightMult * scale);
     break;
   case ROUND_DOWN:
-    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * static_cast<Uint16>(floor(gameHeightMult)) * scale);
-    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * static_cast<Uint16>(floor(gameHeightMult)) * scale);
+    spriteObj.rect.w = static_cast<int>(spriteObj.width * floor(gameHeightMult * scale));
+    spriteObj.rect.h = static_cast<int>(spriteObj.height * floor(gameHeightMult * scale));
     break;
   case ROUND_UP:
-    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * static_cast<Uint16>(ceil(gameHeightMult)) * scale);
-    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * static_cast<Uint16>(ceil(gameHeightMult)) * scale);
+    spriteObj.rect.w = static_cast<int>(spriteObj.width * ceil(gameHeightMult * scale));
+    spriteObj.rect.h = static_cast<int>(spriteObj.height * ceil(gameHeightMult * scale));
     break;
   case ROUND_DOWN_IGNORE_HEIGHT_MULT:
-    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * scale);
-    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * scale);
+    spriteObj.rect.w = static_cast<int>(spriteObj.width * scale);
+    spriteObj.rect.h = static_cast<int>(spriteObj.height * scale);
     break;
   default: // NO_ROUND
-    spriteObj.rect.w = static_cast<Uint16>(spriteObj.width * gameHeightMult * scale);
-    spriteObj.rect.h = static_cast<Uint16>(spriteObj.height * gameHeightMult * scale);
+    spriteObj.rect.w = static_cast<int>(spriteObj.width * gameHeightMult * scale);
+    spriteObj.rect.h = static_cast<int>(spriteObj.height * gameHeightMult * scale);
     break;
   }
 }

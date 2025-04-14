@@ -288,10 +288,10 @@ int main(int argv, char** args) {
 	bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
 	bg_max_y = game_grid_3.rect.y - tile->rect.h;
 #endif
-	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 2, true, ROUND_UP);
-	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 2, true, ROUND_UP);
-	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 2, true, ROUND_UP);
-	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 2, true, ROUND_UP);
+	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 3, true, ROUND_UP);
+	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 3, true, ROUND_UP);
+	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 3, true, ROUND_UP);
+	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 3, true, ROUND_UP);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
 	prepareSidebar();
 	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);

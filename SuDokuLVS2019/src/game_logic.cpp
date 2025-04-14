@@ -402,7 +402,7 @@ inline Sint16 xAtMiniGridIndex(Sint8 index) {
   case 2:
     return (Sint16)(currMiniGrid->rect.x + gridSizeD3 + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
     break;
-  case 3:
+  default:
     return (Sint16)(currMiniGrid->rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
     break;
   }
@@ -419,7 +419,7 @@ inline Sint16 yAtMiniGridIndex(Sint8 index) {
   case 2:
     return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
     break;
-  case 3:
+  default:
     return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
     break;
   }
