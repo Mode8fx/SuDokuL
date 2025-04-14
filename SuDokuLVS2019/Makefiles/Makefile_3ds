@@ -44,7 +44,7 @@ GFXBUILD		:=
 #ROMFS			:=	romfs
 #GFXBUILD		:=	$(ROMFS)/gfx
 APP_TITLE		:=	SuDokuL
-APP_DESCRIPTION	:=	Sudoku made with SDL
+APP_DESCRIPTION	:=	Sudoku made with SDL2
 APP_AUTHOR		:=	Mode8fx
 ICON			:=	3ds/logo_icon_3ds_48.png
 
