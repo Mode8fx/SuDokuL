@@ -1632,10 +1632,10 @@ int main(int argv, char** args) {
 #endif
 
 		/* Update Screen */
-#if !defined(SDL1)
 		if (showFPS) {
 			printFPS();
 		}
+#if !defined(SDL1)
 		SDL_RenderPresent(renderer);
 #else
 		SDL_Flip(windowScreen);

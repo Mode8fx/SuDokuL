@@ -1310,6 +1310,7 @@ Uint8 fps_frameCountLastSecond = 0;
 
 void printFPS() {
 	fps_frameCount++;
+#if !defined(SDL1)
 	Uint64 currentTime = SDL_GetPerformanceCounter();
 	if (fps_lastTime == 0) {
 		fps_lastTime = currentTime;
@@ -1322,6 +1323,15 @@ void printFPS() {
 		fps_frameCount = 0;
 		fps_lastTime = currentTime;
 	}
+#else
+	Uint64 currentTime = SDL_GetTicks();
+
+	if (currentTime > fps_lastTime + 1000) {
+		fps_frameCountLastSecond = fps_frameCount;
+		fps_frameCount = 0;
+		fps_lastTime = currentTime;
+	}
+#endif
 	Sint16 fps_counterX = gameWidth / 2;
 	Sint16 fps_counterY = gameHeight * 7 / 8;
 	i = 0;
