@@ -439,7 +439,6 @@ void renderBackground() {
 	}
 }
 
-#if defined(THREEDS)
 void renderBackgroundNotBehindGrid() {
 	bgScroll.speedStep_x += bgSettings.speedMult * bgScroll.speed_x * deltaTime;
 	bgScroll.speedStep_x_int = static_cast<int>(floor(bgScroll.speedStep_x)) % tile_rect_h;
@@ -458,7 +457,6 @@ void renderBackgroundNotBehindGrid() {
 		}
 	}
 }
-#endif
 
 void renderBorderRects() {
 #if defined(SDL1)

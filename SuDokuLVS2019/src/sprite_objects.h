@@ -47,10 +47,8 @@ extern SpriteObject game_grid_1;
 extern SpriteObject game_grid_2;
 extern SpriteObject game_grid_3;
 extern SpriteObject game_grid_blit;
-#if defined(THREEDS)
 extern int bg_max_x;
 extern int bg_max_y;
-#endif
 //extern SpriteObject gridCursor;
 extern SpriteObject gridCursor_bottom_left;
 extern SpriteObject gridCursor_bottom_right;

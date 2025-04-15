@@ -134,10 +134,8 @@ SpriteObject game_grid_1;
 SpriteObject game_grid_2;
 SpriteObject game_grid_3;
 SpriteObject game_grid_blit;
-#if defined(THREEDS)
 int bg_max_x;
 int bg_max_y;
-#endif
 //SpriteObject gridCursor;
 SpriteObject gridCursor_bottom_left;
 SpriteObject gridCursor_bottom_right;

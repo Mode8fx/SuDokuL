@@ -159,10 +159,8 @@ void setSpriteScaleTile() {
   prepareSprite(tile_snowymountain, tile_snowymountain_png, tile_snowymountain_png_len, 0, 0, bgSettings.scale * tileSizeResMult, false, ROUND_DOWN_IGNORE_HEIGHT_MULT);
   bgScroll.final_x = gameWidth + tile->rect.w;
   bgScroll.final_y = gameHeight + tile->rect.h;
-#if defined(THREEDS)
   bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
   bg_max_y = game_grid_3.rect.y - tile->rect.h;
-#endif
   setBGScrollSpeed();
 }
 

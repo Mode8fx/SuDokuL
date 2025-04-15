@@ -287,10 +287,8 @@ int main(int argv, char** args) {
 	game_grid_3.rect.x = gridPosX;
 	game_grid_3.rect.y = gridPosY + game_grid_1.rect.h + game_grid_2.rect.h;
 	initStartingSharedVariables();
-#if defined(THREEDS)
 	bg_max_x = game_grid_2.rect.x + game_grid_2.rect.w - tile->rect.w;
 	bg_max_y = game_grid_3.rect.y - tile->rect.h;
-#endif
 	prepareSprite(gridCursor_bottom_left, grid_cursor_bottom_left_png, grid_cursor_bottom_left_png_len, 0, 0, 3, true, ROUND_UP);
 	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 3, true, ROUND_UP);
 	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 3, true, ROUND_UP);
@@ -605,15 +603,11 @@ int main(int argv, char** args) {
 		// SDL_RenderClear(renderer);
 
 		/* Draw Tile Background */
-#if defined(THREEDS)
-		if (programState == 9) {
+		if (programState == 9 || programState == 11) {
 			renderBackgroundNotBehindGrid();
 		} else {
 			renderBackground();
 		}
-#else
-		renderBackground();
-#endif
 
 		switch (programState) {
 			/* 0 = Title Screen */
@@ -925,28 +919,31 @@ int main(int argv, char** args) {
 				lastMiniGridState = miniGridState;
 				/* Draw Grid */
 				renderGrid();
-				for (i = 0; i < 81; i++) {
-					if (originalGrid[i]) {
-						//setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
-					} else if (grid[i]) {
-						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
-					} else {
-						for (Sint8 j = 1; j < 10; j++) {
-							if (miniGrid[i] & (1<<j)) {
-								setAndRenderNumGridMainMini(gridNums_blue_mini, int(j), i);
+				for (Sint8 col = 0; col < 9; col++) {
+					for (Sint8 row = 0; row < 9; row++) {
+						Sint8 cell = (row * 9) + col;
+						if (originalGrid[cell]) {
+							//setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[cell]), cell);
+						} else if (grid[cell]) {
+							setAndRenderNumGridMainNormal(gridNums_blue, int(grid[cell]), cell);
+						} else {
+							for (Sint8 num = 1; num < 10; num++) {
+								if (miniGrid[cell] & (1 << num)) {
+									setAndRenderNumGridMainMini(gridNums_blue_mini, int(num), cell);
+								}
 							}
 						}
 					}
 				}
 				if (miniGridState == 1) {
 					SDL_RenderCopy(renderer, currMiniGrid->texture, NULL, &currMiniGrid->rect);
-					for (i = 1; i < 10; i++) {
-						setAndRenderNumGridSubNormal(gridNums_blue, int(i));
+					for (Sint8 num = 1; num < 10; num++) {
+						setAndRenderNumGridSubNormal(gridNums_blue, int(num));
 					}
 				} else if (miniGridState == 2) {
 					SDL_RenderCopy(renderer, currMiniGrid->texture, NULL, &currMiniGrid->rect);
-					for (i = 1; i < 10; i++) {
-						setAndRenderNumGridSubMini(gridNums_blue_mini, int(i));
+					for (Sint8 num = 1; num < 10; num++) {
+						setAndRenderNumGridSubMini(gridNums_blue_mini, int(num));
 					}
 				}
 				/* Draw Cursor */
@@ -985,7 +982,7 @@ int main(int argv, char** args) {
 				renderGrid();
 				for (i = 0; i < 81; i++) {
 					if (originalGrid[i]) {
-						setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
+						//setAndRenderNumGridMainNormal(gridNums_black, int(originalGrid[i]), i);
 					} else if (grid[i]) {
 						setAndRenderNumGridMainNormal(gridNums_blue, int(grid[i]), i);
 					} else {
