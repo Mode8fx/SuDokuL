@@ -95,8 +95,7 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
   // Convert or scale with optional colorkey
   if (scaleIsUnchanged) {
     scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
-  }
-  else {
+  } else {
     scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
   }
 
@@ -107,6 +106,39 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
   spriteObj.rect.y = pos_y;
   return scaledImage;
 }
+
+#if defined(SDL1)
+void blitRGBAontoRGB24(SDL_Surface *src, SDL_Surface *dst, int dx, int dy) {
+  if (!src || !dst) return;
+  if (src->format->BytesPerPixel != 4 || dst->format->BytesPerPixel != 3) return;
+
+  if (SDL_MUSTLOCK(src)) SDL_LockSurface(src);
+  if (SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
+
+  for (int y = 0; y < src->h; ++y) {
+    Uint8* srcRow = (Uint8*)src->pixels + y * src->pitch;
+    Uint8* dstRow = (Uint8*)dst->pixels + (y + dy) * dst->pitch + dx * 3;
+
+    for (int x = 0; x < src->w; ++x) {
+      Uint8 r = srcRow[x * 4 + 0];
+      Uint8 g = srcRow[x * 4 + 1];
+      Uint8 b = srcRow[x * 4 + 2];
+      Uint8 a = srcRow[x * 4 + 3];
+
+      if (a == 0) continue; // fully transparent
+      float alpha = a / 255.0f;
+
+      // Blend over destination
+      dstRow[x * 3 + 0] = (Uint8)(r * alpha + dstRow[x * 3 + 0] * (1.0f - alpha));
+      dstRow[x * 3 + 1] = (Uint8)(g * alpha + dstRow[x * 3 + 1] * (1.0f - alpha));
+      dstRow[x * 3 + 2] = (Uint8)(b * alpha + dstRow[x * 3 + 2] * (1.0f - alpha));
+    }
+  }
+
+  if (SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
+  if (SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
+}
+#endif
 
 void setSpriteScale(SpriteObject& spriteObj, double scale, Sint8 scaleType) {
   switch (scaleType) {

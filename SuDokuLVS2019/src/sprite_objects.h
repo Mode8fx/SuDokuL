@@ -79,6 +79,9 @@ extern Sint8 currMiniGridNum;
 
 extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool, Sint8);
 SDL_Surface* prepareGridSurface(SpriteObject &, const unsigned char *, unsigned int, int, int);
+#if defined(SDL1)
+extern void blitRGBAontoRGB24(SDL_Surface *src, SDL_Surface *dst, int dx, int dy);
+#endif
 extern void setSpriteScale(SpriteObject &, double, Sint8);
 extern void setSpriteScaleTile();
 extern void prepareLogo();
