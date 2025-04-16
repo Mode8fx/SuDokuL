@@ -95,12 +95,12 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->outlineOffset_x = (Sint8)max((int)(outline_size * 0.5), 1) + outlineAddX;
 	textObj->outlineOffset_y = (Sint8)max((int)(outline_size * 0.9), 1) + outlineAddY;
 
+	SDL_Rect dstRect = { textObj->outlineOffset_x, textObj->outlineOffset_y, text_surface->w, text_surface->h };
 #if !defined(SDL1)
 	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
 	SDL_FreeSurface(outline_surface);
 	outline_surface = outline_rgba;
 
-	SDL_Rect dstRect = { textObj->outlineOffset_x, textObj->outlineOffset_y, text_surface->w, text_surface->h };
 	SDL_BlitSurface(text_surface, NULL, outline_surface, &dstRect);
 	if (trim) {
 		SDL_Surface *cropped = trimTransparentEdges(outline_surface);
@@ -113,10 +113,11 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->rect.w = outline_surface->w;
 	textObj->rect.h = outline_surface->h;
 #else
-	SDL_Surface *combined = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
-	SDL_BlitSurface(text_surface, NULL, combined, &(SDL_Rect){
-		textObj->outlineOffset_x, textObj->outlineOffset_y, 0, 0
-	});
+	SDL_Surface *combined = SDL_CreateRGBSurface(0, outline_surface->w, outline_surface->h,
+		32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+
+	SDL_BlitSurface(text_surface, NULL, combined, &dstRect);
+
 	if (trim) {
 		SDL_Surface *cropped = trimTransparentEdges(combined);
 		SDL_FreeSurface(combined);
@@ -132,7 +133,11 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->charOffset_y = (Sint8)(gridSizeA3 - textObj->rect.h) / 2;
 	SDL_FreeSurface(text_surface);
 	if (keepSurface) {
+#if defined(SDL1)
+		textObj->texture = outline_surface;
+#else
 		textObj->surface = outline_surface;
+#endif
 	} else {
 		SDL_FreeSurface(outline_surface);
 	}
@@ -200,8 +205,9 @@ foundRight:
 	int new_w = right - left + 1;
 	int new_h = bottom - top + 1;
 
-	SDL_Rect crop = { left, top, new_w, new_h };
-	SDL_Surface *trimmed = SDL_CreateRGBSurfaceWithFormat(0, new_w, new_h, src->format->BitsPerPixel, src->format->format);
+	SDL_Rect crop = { left, top, new_w, new_h };	
+	SDL_Surface *trimmed = SDL_CreateRGBSurface(0, new_w, new_h,
+		32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 	SDL_BlitSurface(src, &crop, trimmed, NULL);
 
 	return trimmed;

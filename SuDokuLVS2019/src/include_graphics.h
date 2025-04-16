@@ -86,10 +86,18 @@
 #include "graphics_include/normal_res/logo_272_3.h"
 
 #if defined(PSP)
-#define logo_480_png NULL
-#define logo_480_png_len 0
-#define logo_544_png NULL
-#define logo_544_png_len 0
+#define logo_480_1_png NULL
+#define logo_480_1_png_len 0
+#define logo_480_2_png NULL
+#define logo_480_2_png_len 0
+#define logo_480_3_png NULL
+#define logo_480_3_png_len 0
+#define logo_544_1_png NULL
+#define logo_544_1_png_len 0
+#define logo_544_2_png NULL
+#define logo_544_2_png_len 0
+#define logo_544_3_png NULL
+#define logo_544_3_png_len 0
 #else
 #include "graphics_include/normal_res/logo_480_1.h"
 #include "graphics_include/normal_res/logo_480_2.h"
@@ -100,8 +108,12 @@
 #endif
 
 #if defined(PSP) || defined(VITA) || defined(WII) || defined(GAMECUBE)
-#define logo_720_png NULL
-#define logo_720_png_len 0
+#define logo_720_1_png NULL
+#define logo_720_1_png_len 0
+#define logo_720_2_png NULL
+#define logo_720_2_png_len 0
+#define logo_720_3_png NULL
+#define logo_720_3_png_len 0
 #else
 #include "graphics_include/normal_res/logo_720_1.h"
 #include "graphics_include/normal_res/logo_720_2.h"
@@ -109,8 +121,12 @@
 #endif
 
 #if defined(PSP) || defined(VITA) || defined(WII) || defined(GAMECUBE)
-#define logo_1080_png NULL
-#define logo_1080_png_len 0
+#define logo_1080_1_png NULL
+#define logo_1080_1_png_len 0
+#define logo_1080_2_png NULL
+#define logo_1080_2_png_len 0
+#define logo_1080_3_png NULL
+#define logo_1080_3_png_len 0
 #else
 #include "graphics_include/normal_res/logo_1080_1.h"
 #include "graphics_include/normal_res/logo_1080_2.h"
@@ -118,10 +134,18 @@
 #endif
 
 #if defined(PSP) || defined(VITA) || defined(WII_U) || defined(SWITCH) || defined(WII) || defined(GAMECUBE)
-#define logo_1440_png NULL
-#define logo_1440_png_len 0
-#define logo_2160_png NULL
-#define logo_2160_png_len 0
+#define logo_1440_1_png NULL
+#define logo_1440_1_png_len 0
+#define logo_1440_2_png NULL
+#define logo_1440_2_png_len 0
+#define logo_1440_3_png NULL
+#define logo_1440_3_png_len 0
+#define logo_2160_1_png NULL
+#define logo_2160_1_png_len 0
+#define logo_2160_2_png NULL
+#define logo_2160_2_png_len 0
+#define logo_2160_3_png NULL
+#define logo_2160_3_png_len 0
 #else
 #include "graphics_include/normal_res/logo_1440_1.h"
 #include "graphics_include/normal_res/logo_1440_2.h"

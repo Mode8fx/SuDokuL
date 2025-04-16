@@ -8,7 +8,6 @@ SRCS = $(filter-out $(EXCLUDED), \
 	$(wildcard $(SRC_DIR)/fonts_include/*.cpp) \
 	$(wildcard $(SRC_DIR)/graphics_include/all_res/*.cpp) \
 	$(wildcard $(SRC_DIR)/graphics_include/normal_res/*.cpp) \
-	$(wildcard $(SRC_DIR)/graphics_include/low_res/*.cpp) \
 	$(wildcard $(SRC_DIR)/music_include/*.cpp) \
 	$(wildcard $(SRC_DIR)/sfx_include/*.cpp) \
 )

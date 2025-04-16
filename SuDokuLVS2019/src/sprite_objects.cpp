@@ -20,12 +20,10 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
   }
 
   SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
-  if (!temp_surface_unformatted) {
-    SDL_Log("Failed to load image: %s", IMG_GetError());
-    return;
-  }
-  SDL_Surface *temp_surface = SDL_ConvertSurfaceFormat(temp_surface_unformatted, SDL_PIXELFORMAT_RGB24, 0);
-	SDL_FreeSurface(temp_surface_unformatted);
+  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, temp_surface_unformatted->w, temp_surface_unformatted->h,
+    24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, NULL);
+  SDL_FreeSurface(temp_surface_unformatted);
 
   spriteObj.width = temp_surface->w;
   spriteObj.height = temp_surface->h;
@@ -50,11 +48,6 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
     scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
   } else {
     scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
-  }
-  if (!scaledImage) {
-    SDL_Log("Failed to create scaled surface: %s", SDL_GetError());
-    SDL_FreeSurface(temp_surface);
-    return;
   }
 
   if (useAlpha) {
@@ -81,12 +74,10 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
     spriteObj.texture = NULL;
   }
 
-  SDL_Surface* temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
-  if (!temp_surface_unformatted) {
-    SDL_Log("Failed to load image: %s", IMG_GetError());
-    return NULL;
-  }
-  SDL_Surface *temp_surface = SDL_ConvertSurfaceFormat(temp_surface_unformatted, SDL_PIXELFORMAT_RGB24, 0);
+  SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
+  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, temp_surface_unformatted->w, temp_surface_unformatted->h,
+    24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, NULL);
   SDL_FreeSurface(temp_surface_unformatted);
 
   spriteObj.width = temp_surface->w;
@@ -107,11 +98,6 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
   }
   else {
     scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
-  }
-  if (!scaledImage) {
-    SDL_Log("Failed to create scaled surface: %s", SDL_GetError());
-    SDL_FreeSurface(temp_surface);
-    return NULL;
   }
 
   SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);

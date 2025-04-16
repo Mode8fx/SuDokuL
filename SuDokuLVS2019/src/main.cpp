@@ -878,7 +878,11 @@ int main(int argv, char** args) {
 					if (originalGrid[i]) {
 						setTextPosX(&gridNums_black[int(originalGrid[i])], GRID_X_AT_COL(i % 9) + gridNums_black[int(originalGrid[i])].charOffset_x - gridPosX);
 						setTextPosY(&gridNums_black[int(originalGrid[i])], GRID_Y_AT_ROW(i / 9) + gridNums_black[int(originalGrid[i])].charOffset_y - gridPosY - game_grid_1.rect.h);
+#if defined(SDL1)
+						SDL_BlitScaled(gridNums_black[int(originalGrid[i])].texture, NULL, game_grid_2_blit, &gridNums_black[int(originalGrid[i])].rect);
+#else
 						SDL_BlitScaled(gridNums_black[int(originalGrid[i])].surface, NULL, game_grid_2_blit, &gridNums_black[int(originalGrid[i])].rect);
+#endif
 					}
 				}
 #if defined(SDL1)
