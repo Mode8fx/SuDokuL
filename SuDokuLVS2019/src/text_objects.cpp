@@ -112,13 +112,21 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, outline_surface);
 	textObj->rect.w = outline_surface->w;
 	textObj->rect.h = outline_surface->h;
+
+	if (keepSurface) {
+		textObj->surface = outline_surface;
+	} else {
+		SDL_FreeSurface(outline_surface);
+	}
 #else
 	SDL_Surface *combined = SDL_CreateRGBSurface(0, outline_surface->w, outline_surface->h,
 		32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
+	SDL_BlitSurface(outline_surface, NULL, combined, NULL);
 	SDL_BlitSurface(text_surface, NULL, combined, &dstRect);
 
 	if (trim) {
+		SDL_SetAlpha(combined, 0, 0);
 		SDL_Surface *cropped = trimTransparentEdges(combined);
 		SDL_FreeSurface(combined);
 		combined = cropped;
@@ -127,20 +135,13 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->texture = combined;
 	textObj->rect.w = combined->w;
 	textObj->rect.h = combined->h;
+
+	SDL_FreeSurface(outline_surface);
 #endif
 
 	textObj->charOffset_x = (Sint8)(gridSizeA3 - textObj->rect.w) / 2;
 	textObj->charOffset_y = (Sint8)(gridSizeA3 - textObj->rect.h) / 2;
 	SDL_FreeSurface(text_surface);
-	if (keepSurface) {
-#if defined(SDL1)
-		textObj->texture = outline_surface;
-#else
-		textObj->surface = outline_surface;
-#endif
-	} else {
-		SDL_FreeSurface(outline_surface);
-	}
 }
 
 int setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
@@ -205,9 +206,9 @@ foundRight:
 	int new_w = right - left + 1;
 	int new_h = bottom - top + 1;
 
-	SDL_Rect crop = { left, top, new_w, new_h };	
+	SDL_Rect crop = { left, top, new_w, new_h };
 	SDL_Surface *trimmed = SDL_CreateRGBSurface(0, new_w, new_h,
-		32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+		src->format->BitsPerPixel, src->format->Rmask, src->format->Gmask, src->format->Bmask, src->format->Amask);
 	SDL_BlitSurface(src, &crop, trimmed, NULL);
 
 	return trimmed;
