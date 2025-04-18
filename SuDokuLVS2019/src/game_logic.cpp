@@ -428,12 +428,12 @@ inline Sint16 yAtMiniGridIndex(Sint8 index) {
 void setGridCursorBySmallX() {
     gridCursor_bottom_left.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = xAtMiniGridIndex(miniGridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 2);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorBySmallY() {
-    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 2);
     gridCursor_top_left.rect.y = yAtMiniGridIndex(miniGridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;

@@ -76,7 +76,7 @@ set OUTPUT_PSP=%OUTPUT_DIR%-psp/PSP/GAME/SuDokuL/EBOOT.PBP
 
 :: Makefile: Vita
 set MAKEFILE_WSL_VITA=%MAKEFILES_WSL%/make_vita.sh
-set OUTPUT_VITA=%OUTPUT_DIR%-vita/VPK/SuDokuL.vpk
+set OUTPUT_VITA=%OUTPUT_DIR%-vita.vpk
 
 :: Makefile: Xbox (original)
 set MAKEFILE_WSL_XBOX=%MAKEFILES_WSL%/Makefile_xbox
@@ -184,6 +184,7 @@ mv %REPO%/build_wii_u/sudokul.rpx %OUTPUT_WII_U%
 echo Wii U WHUB: Creating WUHB in %OUTPUT_WII_U_WUHB%...
 start /wait "" %DEVKITPRO% /usr/bin/bash -lc "wuhbtool %REPO%/build_wii_u_whub/sudokul.rpx %OUTPUT_WII_U_WUHB% --name=\"SuDokuL\" --short-name=\"SuDokuL\" --author=Mode8fx --icon=%RELEASE_RESOURCES%/sce_sys/icon0.png --tv-image=%RELEASE_RESOURCES%/splash_screen_wiiu_tv.png --drc-image=%RELEASE_RESOURCES%/splash_screen_wiiu_gamepad.png"
 sleep %SLEEP_COMPILE_SHORT%
+sleep 10
 echo Wii U: Cleaning up...
 rm -r %REPO%/build_wii_u
 sleep %SLEEP_CLEAN%
