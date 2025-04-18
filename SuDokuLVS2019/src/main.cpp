@@ -293,7 +293,7 @@ int main(int argv, char** args) {
 	prepareSprite(gridCursor_bottom_right, grid_cursor_bottom_right_png, grid_cursor_bottom_right_png_len, 0, 0, 2, true, ROUND_UP);
 	prepareSprite(gridCursor_top_left, grid_cursor_top_left_png, grid_cursor_top_left_png_len, 0, 0, 2, true, ROUND_UP);
 	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 2, true, ROUND_UP);
-	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 4;
+	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 3;
 	prepareSidebar();
 	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);
 	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);

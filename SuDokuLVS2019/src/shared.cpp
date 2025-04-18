@@ -150,8 +150,8 @@ void initStartingSharedVariables() {
 	gridSizeD = (6 * gameGridMult); // length of grid border
 	gridSizeA3 = (3 * gridSizeA);
 	for (int i = 0; i < 9; i++) {
-		gridStartingPosX[i] = (Sint16)((gridPosX + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
-		gridStartingPosY[i] = (Sint16)((gridPosY + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * i / 3));
+		gridStartingPosX[i] = (Sint16)((gridPosX + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * (i / 3)));
+		gridStartingPosY[i] = (Sint16)((gridPosY + gridSizeD) + (i * gridSizeA3) + (i * gridSizeB) + ((gridSizeC - gridSizeB) * (i / 3)));
 	}
 	//gridSize = (27 * gridSizeA + 6 * gridSizeB + 2 * gridSizeC + 2 * gridSizeD);
 	gridSize = game_grid_2.rect.w;

@@ -326,12 +326,12 @@ inline void setGridMiniNum(Sint8 index, Sint8 num) {
 void setGridCursorByLargeX() {
     gridCursor_bottom_left.rect.x = GRID_X_AT_COL(gridCursorIndex_x) - gridCursorCornerStep;
     gridCursor_top_left.rect.x = gridCursor_bottom_left.rect.x;
-    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_right.rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 2);
     gridCursor_top_right.rect.x = gridCursor_bottom_right.rect.x;
 }
 
 void setGridCursorByLargeY() {
-    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 3);
+    gridCursor_bottom_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)gridSizeA3 - (gridCursorCornerStep * 2);
     gridCursor_top_left.rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) - gridCursorCornerStep;
     gridCursor_bottom_right.rect.y = gridCursor_bottom_left.rect.y;
     gridCursor_top_right.rect.y = gridCursor_top_left.rect.y;
@@ -440,75 +440,50 @@ void setGridCursorBySmallY() {
 }
 
 void drawSidebar() {
-    Sint16 pos_x_left_s1 = gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1;
-    Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
-    Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;
-    Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
-    // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
-    SDL_Rect tempRect = gameSidebarSmall1Rect_2;
-    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
-    tempRect = gameSidebarSmall2Rect_2;
-    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
-    tempRect = gameSidebarSmall3Rect_2;
-    SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-    SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
-#if defined(SDL1)
-    if (compactDisplay) {
-        i = 0;
-        setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
-        setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
-        setAndRenderColon(pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize);
-        setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
-        setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, text_Time.rect.y * 2 + (gameSidebarSmall1Rect.h / 2) - fontSize, 0);
-        i = 0;
-        setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
-        setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, text_Empty.rect.y * 2 + (gameSidebarSmall2Rect.h / 2) - fontSize, 0);
-    } else {
-      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
-      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
-      SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
-      i = 0;
-      setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
-      setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
-      setAndRenderColon(pos_x_left_s1, pos_y_s1);
-      setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
-      setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
-      i = 0;
-      setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
-      setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
-    }
-#else
+  Sint16 pos_x_left_s1 = gameSidebarSmall1Rect.x + (gameSidebarSmall1Rect.w / 8) + fontForceOffset1;
+  Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
+  Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;
+  Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
+  // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
+  SDL_Rect tempRect = gameSidebarSmall1Rect_2;
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
+  tempRect = gameSidebarSmall2Rect_2;
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
+  tempRect = gameSidebarSmall3Rect_2;
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
+  if (!compactDisplay) {
     SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
     SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
     SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
-    i = 0;
-    setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
-    setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
-    setAndRenderColon(pos_x_left_s1, pos_y_s1);
-    setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
-    setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
-    i = 0;
-    setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
-    setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
-#endif
-    renderText(&text_Time);
-    renderText(&text_Empty);
-    switch (menuCursorIndex_play) {
-        case 0:
-            renderText(&text_Game_Easy);
-            break;
-        case 1:
-            renderText(&text_Game_Normal);
-            break;
-        case 2:
-            renderText(&text_Game_Hard);
-            break;
-        case 3:
-            renderText(&text_Game_VHard);
-            break;
-        default:
-            break;
-    }
+  }
+  i = 0;
+  setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderColon(pos_x_left_s1, pos_y_s1);
+  setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
+  i = 0;
+  setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
+  setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
+  renderText(&text_Time);
+  renderText(&text_Empty);
+  switch (menuCursorIndex_play) {
+  case 0:
+    renderText(&text_Game_Easy);
+    break;
+  case 1:
+    renderText(&text_Game_Normal);
+    break;
+  case 2:
+    renderText(&text_Game_Hard);
+    break;
+  case 3:
+    renderText(&text_Game_VHard);
+    break;
+  default:
+    break;
+  }
 }
