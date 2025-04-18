@@ -642,7 +642,7 @@ int main(int argv, char** args) {
 				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
 				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
-				if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SELECT)) {
+				if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SWAP)) {
 					showFPS = !showFPS;
 				}
 #if defined(THREEDS)
