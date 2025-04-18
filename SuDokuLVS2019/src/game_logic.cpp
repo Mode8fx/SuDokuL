@@ -460,16 +460,16 @@ void drawSidebar() {
     SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
   }
   i = 0;
+  renderText(&text_Time);
   setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
   setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
   setAndRenderColon(pos_x_left_s1, pos_y_s1);
   setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
   setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
   i = 0;
+  renderText(&text_Empty);
   setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
   setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
-  renderText(&text_Time);
-  renderText(&text_Empty);
   switch (menuCursorIndex_play) {
   case 0:
     renderText(&text_Game_Easy);
