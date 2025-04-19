@@ -3,7 +3,24 @@ PSP_LARGE_MEMORY=1
 TARGET		=	sudokul
 BUILD		=	build_psp
 SRC_DIR		=	src
-EXCLUDED	=	src/graphics_include_logo_480.h src/graphics_include_logo_544.h src/graphics_include_logo_720.h src/graphics_include_logo_1080.h src/graphics_include_logo_1440.h src/graphics_include_logo_2160.h
+EXCLUDED	=	src/graphics_include/normal_res/logo_480_1.cpp \
+				src/graphics_include/normal_res/logo_480_2.cpp \
+				src/graphics_include/normal_res/logo_480_3.cpp \
+				src/graphics_include/normal_res/logo_544_1.cpp \
+				src/graphics_include/normal_res/logo_544_2.cpp \
+				src/graphics_include/normal_res/logo_544_3.cpp \
+				src/graphics_include/normal_res/logo_720_1.cpp \
+				src/graphics_include/normal_res/logo_720_2.cpp \
+				src/graphics_include/normal_res/logo_720_3.cpp \
+				src/graphics_include/normal_res/logo_1080_1.cpp \
+				src/graphics_include/normal_res/logo_1080_2.cpp \
+				src/graphics_include/normal_res/logo_1080_3.cpp \
+				src/graphics_include/normal_res/logo_1440_1.cpp \
+				src/graphics_include/normal_res/logo_1440_2.cpp \
+				src/graphics_include/normal_res/logo_1440_3.cpp \
+				src/graphics_include/normal_res/logo_2160_1.cpp \
+				src/graphics_include/normal_res/logo_2160_2.cpp \
+				src/graphics_include/normal_res/logo_2160_3.cpp
 SRCS = $(filter-out $(EXCLUDED), \
 	$(wildcard $(SRC_DIR)/*.cpp) \
 	$(wildcard $(SRC_DIR)/fonts_include/*.cpp) \
