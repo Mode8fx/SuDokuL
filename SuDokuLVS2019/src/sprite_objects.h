@@ -91,7 +91,7 @@ extern void prepareLogo();
 extern void prepareSidebar();
 extern inline void renderGrid();
 extern inline void renderLogo();
-extern inline void renderMiniGrid();
+extern void renderMiniGrid();
 
 inline void renderGrid() {
   SDL_RenderCopy(renderer, game_grid_1.texture, NULL, &game_grid_1.rect);
