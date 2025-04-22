@@ -2,6 +2,8 @@
 #include "sprite_objects.h"
 #include "window.h"
 #include "menu_logic.h"
+#include "text_objects.h"
+#include "game_logic.h"
 
 /*
  * Prepares a sprite object from a 3-byte (no alpha) PNG and applies scaling+transparency only as needed. Scaling and transparency both add performance overhead when rendering.
@@ -304,4 +306,24 @@ void prepareSidebar() {
   gameSidebarSmall3Rect = gameSidebarSmall3Rect_1;
   gameSidebarSmall3Rect.w = gameSidebarSmall1Rect.w;
   gameSidebarSmall3Rect.h = gameSidebarSmall1Rect.h;
+}
+
+void renderMiniGrid() {
+  if (miniGridState == 1) {
+    SDL_RenderCopy(renderer, miniGrid_shared_1.texture, NULL, &miniGrid_shared_1.rect);
+    SDL_RenderCopy(renderer, miniGrid_shared_2.texture, NULL, &miniGrid_shared_2.rect);
+    SDL_RenderCopy(renderer, miniGrid_shared_3.texture, NULL, &miniGrid_shared_3.rect);
+    SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
+    for (Sint8 num = 1; num < 10; num++) {
+      setAndRenderNumGridSubNormal(gridNums_blue, int(num));
+    }
+  } else if (miniGridState == 2) {
+    SDL_RenderCopy(renderer, miniGrid_shared_1.texture, NULL, &miniGrid_shared_1.rect);
+    SDL_RenderCopy(renderer, miniGrid_shared_2.texture, NULL, &miniGrid_shared_2.rect);
+    SDL_RenderCopy(renderer, miniGrid_shared_3.texture, NULL, &miniGrid_shared_3.rect);
+    SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
+    for (Sint8 num = 1; num < 10; num++) {
+      setAndRenderNumGridSubMini(gridNums_blue_mini, int(num));
+    }
+  }
 }

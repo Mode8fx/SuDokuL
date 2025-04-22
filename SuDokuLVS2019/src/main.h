@@ -157,7 +157,9 @@ SDL_Rect gameSidebarSmall3Rect_1;
 SDL_Rect gameSidebarSmall3Rect_2;
 SDL_Rect gameSidebarSmall3Rect_3;
 
-SpriteObject miniGrid_shared;
+SpriteObject miniGrid_shared_1;
+SpriteObject miniGrid_shared_2;
+SpriteObject miniGrid_shared_3;
 SpriteObject miniGrid_bottom_left;  // 0
 SpriteObject miniGrid_bottom_right; // 1
 SpriteObject miniGrid_top_left;     // 2

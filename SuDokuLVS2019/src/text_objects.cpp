@@ -359,14 +359,14 @@ void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 i
 }
 
 void setAndRenderNumGridSubNormal(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], miniGrid_shared.rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
-	setTextPosY(&textNumsObj[num], miniGrid_shared.rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
+	setTextPosX(&textNumsObj[num], miniGrid_shared_2.rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + textNumsObj[num].charOffset_x));
+	setTextPosY(&textNumsObj[num], miniGrid_shared_2.rect.y + (Sint16)(((num - 1) / 3) * gridSizeA3B + textNumsObj[num].charOffset_y));
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
 void setAndRenderNumGridSubMini(TextCharObject *textNumsObj, Uint8 num) {
-	setTextPosX(&textNumsObj[num], miniGrid_shared.rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
-	setTextPosY(&textNumsObj[num], miniGrid_shared.rect.y + (Sint16)(gridSizeD + ((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
+	setTextPosX(&textNumsObj[num], miniGrid_shared_2.rect.x + (Sint16)(gridSizeD + (((num - 1) % 3) + 1) * gridSizeA3B + gridSizeA) + 1);
+	setTextPosY(&textNumsObj[num], miniGrid_shared_2.rect.y + (Sint16)(((num - 1) / 3) * gridSizeA3B + gridSizeA) + 1);
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 

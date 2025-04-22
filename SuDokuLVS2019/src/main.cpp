@@ -295,7 +295,9 @@ int main(int argv, char** args) {
 	prepareSprite(gridCursor_top_right, grid_cursor_top_right_png, grid_cursor_top_right_png_len, 0, 0, 2, true, ROUND_UP);
 	gridCursorCornerStep = gridCursor_bottom_left.rect.w / 3;
 	prepareSidebar();
-	prepareSprite(miniGrid_shared, grid_mini_png, grid_mini_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);
+	prepareSprite(miniGrid_shared_1, grid_mini_1_png, grid_mini_1_png_len, 0, 0, 2, true, NO_ROUND);
+	prepareSprite(miniGrid_shared_2, grid_mini_2_png, grid_mini_2_png_len, 0, 0, GRAPHICS_SCALE, false, NO_ROUND);
+	prepareSprite(miniGrid_shared_3, grid_mini_3_png, grid_mini_3_png_len, 0, 0, 2, true, NO_ROUND);
 	prepareSprite(miniGrid_bottom_left, grid_mini_bottom_left_png, grid_mini_bottom_left_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);
 	prepareSprite(miniGrid_bottom_right, grid_mini_bottom_right_png, grid_mini_bottom_right_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);
 	prepareSprite(miniGrid_top_left, grid_mini_top_left_png, grid_mini_top_left_png_len, 0, 0, GRAPHICS_SCALE, true, NO_ROUND);
@@ -940,19 +942,7 @@ int main(int argv, char** args) {
 						}
 					}
 				}
-				if (miniGridState == 1) {
-					SDL_RenderCopy(renderer, miniGrid_shared.texture, NULL, &miniGrid_shared.rect);
-					SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
-					for (Sint8 num = 1; num < 10; num++) {
-						setAndRenderNumGridSubNormal(gridNums_blue, int(num));
-					}
-				} else if (miniGridState == 2) {
-					SDL_RenderCopy(renderer, miniGrid_shared.texture, NULL, &miniGrid_shared.rect);
-					SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
-					for (Sint8 num = 1; num < 10; num++) {
-						setAndRenderNumGridSubMini(gridNums_blue_mini, int(num));
-					}
-				}
+				renderMiniGrid();
 				/* Draw Cursor */
 				SDL_RenderCopy(renderer, gridCursor_bottom_left.texture, NULL, &gridCursor_bottom_left.rect);
 				SDL_RenderCopy(renderer, gridCursor_bottom_right.texture, NULL, &gridCursor_bottom_right.rect);

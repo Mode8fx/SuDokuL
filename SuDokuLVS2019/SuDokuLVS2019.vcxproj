@@ -226,6 +226,8 @@
     <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\fonts_include\Commodore_Pixelized_v1_2.cpp" />
     <ClCompile Include="src\game_logic.cpp" />
+    <ClCompile Include="src\graphics_include\all_res\grid_mini_1.cpp" />
+    <ClCompile Include="src\graphics_include\all_res\grid_mini_3.cpp" />
     <ClCompile Include="src\graphics_include\all_res\logo_240_1.cpp" />
     <ClCompile Include="src\graphics_include\all_res\logo_240_2.cpp" />
     <ClCompile Include="src\graphics_include\all_res\logo_240_3.cpp" />
@@ -247,7 +249,7 @@
     <ClCompile Include="src\graphics_include\all_res\grid_cursor_bottom_right.cpp" />
     <ClCompile Include="src\graphics_include\all_res\grid_cursor_top_left.cpp" />
     <ClCompile Include="src\graphics_include\all_res\grid_cursor_top_right.cpp" />
-    <ClCompile Include="src\graphics_include\normal_res\grid_mini.cpp" />
+    <ClCompile Include="src\graphics_include\normal_res\grid_mini_2.cpp" />
     <ClCompile Include="src\graphics_include\normal_res\grid_mini_bottom_left.cpp" />
     <ClCompile Include="src\graphics_include\normal_res\grid_mini_bottom_right.cpp" />
     <ClCompile Include="src\graphics_include\normal_res\grid_mini_top_left.cpp" />
@@ -300,6 +302,8 @@
     <ClInclude Include="src\fonts_include\Commodore_Pixelized_v1_2.h" />
     <ClInclude Include="src\game_logic.h" />
     <ClInclude Include="src\general.h" />
+    <ClInclude Include="src\graphics_include\all_res\grid_mini_1.h" />
+    <ClInclude Include="src\graphics_include\all_res\grid_mini_3.h" />
     <ClInclude Include="src\graphics_include\all_res\logo_240_1.h" />
     <ClInclude Include="src\graphics_include\all_res\logo_240_2.h" />
     <ClInclude Include="src\graphics_include\all_res\logo_240_3.h" />
@@ -339,7 +343,7 @@
     <ClInclude Include="src\graphics_include\all_res\grid_cursor_bottom_right.h" />
     <ClInclude Include="src\graphics_include\all_res\grid_cursor_top_left.h" />
     <ClInclude Include="src\graphics_include\all_res\grid_cursor_top_right.h" />
-    <ClInclude Include="src\graphics_include\normal_res\grid_mini.h" />
+    <ClInclude Include="src\graphics_include\normal_res\grid_mini_2.h" />
     <ClInclude Include="src\graphics_include\normal_res\grid_mini_bottom_left.h" />
     <ClInclude Include="src\graphics_include\normal_res\grid_mini_bottom_right.h" />
     <ClInclude Include="src\graphics_include\normal_res\grid_mini_top_left.h" />

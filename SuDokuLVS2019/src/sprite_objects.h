@@ -70,7 +70,9 @@ extern SDL_Rect gameSidebarSmall3Rect_1;
 extern SDL_Rect gameSidebarSmall3Rect_2;
 extern SDL_Rect gameSidebarSmall3Rect_3;
 
-extern SpriteObject miniGrid_shared;
+extern SpriteObject miniGrid_shared_1;
+extern SpriteObject miniGrid_shared_2;
+extern SpriteObject miniGrid_shared_3;
 extern SpriteObject miniGrid_bottom_left;  // 0
 extern SpriteObject miniGrid_bottom_right; // 1
 extern SpriteObject miniGrid_top_left;     // 2
@@ -89,6 +91,7 @@ extern void prepareLogo();
 extern void prepareSidebar();
 extern inline void renderGrid();
 extern inline void renderLogo();
+extern inline void renderMiniGrid();
 
 inline void renderGrid() {
   SDL_RenderCopy(renderer, game_grid_1.texture, NULL, &game_grid_1.rect);

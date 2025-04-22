@@ -23,10 +23,12 @@
 #include "graphics_include/all_res/sidebar_small_1.h"
 #include "graphics_include/all_res/sidebar_small_2.h"
 #include "graphics_include/all_res/sidebar_small_3.h"
+#include "graphics_include/all_res/grid_mini_1.h"
+#include "graphics_include/all_res/grid_mini_3.h"
 
 #if defined(LOW_RES) // For devices that exclusively run at 240p (e.g. 3DS)
 #define GRAPHICS_SCALE 2.0
-#include "graphics_include/low_res/grid_mini.h"
+#include "graphics_include/low_res/grid_mini_2.h"
 #include "graphics_include/low_res/grid_mini_bottom_left.h"
 #include "graphics_include/low_res/grid_mini_bottom_right.h"
 #include "graphics_include/low_res/grid_mini_top_left.h"
@@ -77,7 +79,7 @@
 #else
 
 #define GRAPHICS_SCALE 1.0
-#include "graphics_include/normal_res/grid_mini.h"
+#include "graphics_include/normal_res/grid_mini_2.h"
 #include "graphics_include/normal_res/grid_mini_bottom_left.h"
 #include "graphics_include/normal_res/grid_mini_bottom_right.h"
 #include "graphics_include/normal_res/grid_mini_top_left.h"

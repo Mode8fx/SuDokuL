@@ -222,6 +222,15 @@
     <ClCompile Include="src\graphics_include\normal_res\logo_2160_3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics_include\normal_res\grid_mini_2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_mini_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_include\all_res\grid_mini_3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
@@ -531,6 +540,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics_include\normal_res\logo_2160_3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\normal_res\grid_mini_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\grid_mini_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_include\all_res\grid_mini_3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
