@@ -29,36 +29,47 @@ void gameHandleMainGridNavigation() {
         }
         i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
         if ((keyPressed(INPUT_CONFIRM) || clickedWithinGrid()) && originalGrid[i] == 0) {
-            if (gridCursorIndex_x < 4) {
-                 if (gridCursorIndex_y < 4) {
-                    currMiniGrid = &miniGrid_top_left;
-                    currMiniGridNum = 2;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
-                 } else {
-                    currMiniGrid = &miniGrid_bottom_left;
-                    currMiniGridNum = 0;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
-                 }
+          Sint16 start_x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5);
+          Sint16 start_y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
+          if (gridCursorIndex_x < 4) {
+            if (gridCursorIndex_y < 4) {
+              currMiniGridCursor = &miniGrid_top_left;
+              currMiniGridNum = 2;
+              currMiniGridCursor->rect.x = start_x;
+              currMiniGridCursor->rect.y = start_y;
+              miniGrid_shared.rect.x = currMiniGridCursor->rect.x + (Sint16)(gridSizeD * 2);
+              miniGrid_shared.rect.y = currMiniGridCursor->rect.y + (Sint16)(gridSizeD * 2);
             } else {
-                if (gridCursorIndex_y < 4) {
-                    currMiniGrid = &miniGrid_top_right;
-                    currMiniGridNum = 3;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 2.5);
-                } else {
-                    currMiniGrid = &miniGrid_bottom_right;
-                    currMiniGridNum = 1;
-                    currMiniGrid->rect.x = GRID_X_AT_COL(gridCursorIndex_x) + (Sint16)(gridSizeA * 1.5) - currMiniGrid->rect.w;
-                    currMiniGrid->rect.y = GRID_Y_AT_ROW(gridCursorIndex_y) + (Sint16)(gridSizeA * 0.5) - currMiniGrid->rect.h;
-                }
+              currMiniGridCursor = &miniGrid_bottom_left;
+              currMiniGridNum = 0;
+              currMiniGridCursor->rect.x = start_x;
+              miniGrid_shared.rect.y = start_y - miniGrid_shared.rect.h - (Sint16)(gridSizeD * 4);
+              miniGrid_shared.rect.x = currMiniGridCursor->rect.x + (Sint16)(gridSizeD * 2);
+              currMiniGridCursor->rect.y = miniGrid_shared.rect.y + miniGrid_shared.rect.h - (Sint16)(gridSizeD * 2);
             }
-            miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);
-            miniGridCursorIndex_y = (grid[i] - 1) / 3;
-            miniGridState = 1;
-            setGridCursorBySmallX();
-            setGridCursorBySmallY();
+          } else {
+            Sint16 size_x = miniGrid_shared.rect.w + (Sint16)(gridSizeD * 2);
+            if (gridCursorIndex_y < 4) {
+              currMiniGridCursor = &miniGrid_top_right;
+              currMiniGridNum = 3;
+              miniGrid_shared.rect.x = start_x - size_x;
+              currMiniGridCursor->rect.y = start_y;
+              currMiniGridCursor->rect.x = miniGrid_shared.rect.x + miniGrid_shared.rect.w - (Sint16)(gridSizeD * 2);
+              miniGrid_shared.rect.y = currMiniGridCursor->rect.y + (Sint16)(gridSizeD * 2);
+            } else {
+              currMiniGridCursor = &miniGrid_bottom_right;
+              currMiniGridNum = 1;
+              miniGrid_shared.rect.x = start_x - size_x;
+              miniGrid_shared.rect.y = start_y - miniGrid_shared.rect.h - (Sint16)(gridSizeD * 4);
+              currMiniGridCursor->rect.x = miniGrid_shared.rect.x + miniGrid_shared.rect.w - (Sint16)(gridSizeD * 2);
+              currMiniGridCursor->rect.y = miniGrid_shared.rect.y + miniGrid_shared.rect.h - (Sint16)(gridSizeD * 2);
+            }
+          }
+          miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);
+          miniGridCursorIndex_y = (grid[i] - 1) / 3;
+          miniGridState = 1;
+          setGridCursorBySmallX();
+          setGridCursorBySmallY();
         }
     }
 }
@@ -392,37 +403,11 @@ void gameHandleChangeSong() {
 }
 
 inline Sint16 xAtMiniGridIndex(Sint8 index) {
-  switch (currMiniGridNum) {
-  case 0:
-    return (Sint16)(currMiniGrid->rect.x + gridSizeD3 + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
-    break;
-  case 1:
-    return (Sint16)(currMiniGrid->rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
-    break;
-  case 2:
-    return (Sint16)(currMiniGrid->rect.x + gridSizeD3 + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
-    break;
-  default:
-    return (Sint16)(currMiniGrid->rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
-    break;
-  }
+  return (Sint16)(miniGrid_shared.rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
 }
 
 inline Sint16 yAtMiniGridIndex(Sint8 index) {
-  switch (currMiniGridNum) {
-  case 0:
-    return (Sint16)(currMiniGrid->rect.y + gridSizeD + (index * gridSizeA3) + (index * gridSizeB));
-    break;
-  case 1:
-    return (Sint16)(currMiniGrid->rect.y + gridSizeD + (index * gridSizeA3) + (index * gridSizeB));
-    break;
-  case 2:
-    return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
-    break;
-  default:
-    return (Sint16)(currMiniGrid->rect.y + gridSizeD3 + (index * gridSizeA3) + (index * gridSizeB));
-    break;
-  }
+  return (Sint16)(miniGrid_shared.rect.y + gridSizeD + (index * gridSizeA3) + (index * gridSizeB));
 }
 
 void setGridCursorBySmallX() {

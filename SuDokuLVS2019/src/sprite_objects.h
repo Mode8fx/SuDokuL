@@ -70,11 +70,12 @@ extern SDL_Rect gameSidebarSmall3Rect_1;
 extern SDL_Rect gameSidebarSmall3Rect_2;
 extern SDL_Rect gameSidebarSmall3Rect_3;
 
+extern SpriteObject miniGrid_shared;
 extern SpriteObject miniGrid_bottom_left;  // 0
 extern SpriteObject miniGrid_bottom_right; // 1
 extern SpriteObject miniGrid_top_left;     // 2
 extern SpriteObject miniGrid_top_right;    // 3
-extern SpriteObject *currMiniGrid;
+extern SpriteObject *currMiniGridCursor;
 extern Sint8 currMiniGridNum;
 
 extern void prepareSprite(SpriteObject &, const unsigned char *, unsigned int, int, int, double, bool, Sint8);
