@@ -5,6 +5,55 @@
 #include "text_objects.h"
 #include "game_logic.h"
 
+SDL_Rect getTrimmedRect(SDL_Surface *surface) {
+  SDL_Rect bounds = { 0, 0, 0, 0 };
+
+  if (!surface || surface->format->BytesPerPixel != 3) {
+    return bounds; // unsupported format or null
+  }
+
+  // Assume color key is magenta: RGB(255, 0, 255)
+  Uint8 key_r = 255, key_g = 0, key_b = 255;
+
+  Uint8 *pixels = static_cast<Uint8*>(surface->pixels);
+  int pitch = surface->pitch;
+  int w = surface->w;
+  int h = surface->h;
+
+  int top = h, left = w, bottom = 0, right = 0;
+  bool found = false;
+
+  for (int y = 0; y < h; ++y) {
+    Uint8 *row = pixels + y * pitch;
+    for (int x = 0; x < w; ++x) {
+      Uint8 *pixel = row + x * 3;
+
+      Uint8 r = pixel[0];
+      Uint8 g = pixel[1];
+      Uint8 b = pixel[2];
+
+      if (!(r == key_r && g == key_g && b == key_b)) {
+        if (x < left) left = x;
+        if (x > right) right = x;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+        found = true;
+      }
+    }
+  }
+
+  if (!found) {
+    return { 0, 0, 0, 0 }; // fully transparent
+  }
+
+  bounds.x = left;
+  bounds.y = top;
+  bounds.w = right - left + 1;
+  bounds.h = bottom - top + 1;
+  return bounds;
+}
+
+
 /*
  * Prepares a sprite object from a 3-byte (no alpha) PNG and applies scaling+transparency only as needed. Scaling and transparency both add performance overhead when rendering.
  * Sprite loading roughly works as follows:
@@ -22,17 +71,28 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
   }
 
   SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
-  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, temp_surface_unformatted->w, temp_surface_unformatted->h,
-    24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
-  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, NULL);
+
+  int original_w = temp_surface_unformatted->w;
+  int original_h = temp_surface_unformatted->h;
+  int padded_w = (original_w < 8) ? 8 : original_w;
+  int padded_h = (original_h < 8) ? 8 : original_h;
+
+  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, padded_w, padded_h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+
+  SDL_FillRect(temp_surface, NULL, SDL_MapRGB(temp_surface->format, 255, 0, 255));
+  SDL_Rect original_rect = { 0, 0, original_w, original_h };
+  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, &original_rect);
   SDL_FreeSurface(temp_surface_unformatted);
 
-  spriteObj.width = temp_surface->w;
-  spriteObj.height = temp_surface->h;
+  spriteObj.width = original_w;
+  spriteObj.height = original_h;
   setSpriteScale(spriteObj, scale, scaleType);
   bool scaleIsUnchanged = spriteObj.rect.h == spriteObj.height;
 
   if (scaleIsUnchanged && !useAlpha) {
+    spriteObj.srcRect = getTrimmedRect(temp_surface);
+    spriteObj.srcRect.x = 0;
+    spriteObj.srcRect.w = spriteObj.rect.w;
 #if defined(SDL1)
     spriteObj.texture = SDL_DisplayFormat(temp_surface);
 #else
@@ -45,7 +105,6 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
   }
 
   SDL_Surface *scaledImage = nullptr;
-  // Convert or scale with optional colorkey
   if (scaleIsUnchanged) {
     scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
   } else {
@@ -57,6 +116,9 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
   }
 
   SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
+  spriteObj.srcRect = getTrimmedRect(scaledImage);
+  spriteObj.srcRect.x = 0;
+  spriteObj.srcRect.w = spriteObj.rect.w;
 #if defined(SDL1)
   spriteObj.texture = scaledImage; // Used as-is for SDL1
 #else
@@ -88,6 +150,7 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
   bool scaleIsUnchanged = spriteObj.rect.h == spriteObj.height;
 
   if (scaleIsUnchanged) {
+    spriteObj.srcRect = { 0, 0, temp_surface->w, temp_surface->h };
     spriteObj.rect.x = pos_x;
     spriteObj.rect.y = pos_y;
     return temp_surface;
@@ -104,6 +167,7 @@ SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *sp
   SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
   SDL_FreeSurface(temp_surface);
 
+  spriteObj.srcRect = { 0, 0, scaledImage->w, scaledImage->h };
   spriteObj.rect.x = pos_x;
   spriteObj.rect.y = pos_y;
   return scaledImage;
@@ -258,8 +322,7 @@ void prepareSidebar() {
     gameSidebarSmall2Rect_1.y = (Sint16)(gridPosY + SIDEBAR_SMALL_SIZE_Y + (gridSize / 8));
     gameSidebarSmall3Rect_1.x = gameSidebarSmall1Rect_1.x;
     gameSidebarSmall3Rect_1.y = (Sint16)(gridPosY + (2 * SIDEBAR_SMALL_SIZE_Y) + (gridSize * 3 / 16));
-  }
-  else {
+  } else {
     gameSidebarSmall1Rect_1.x = (Sint16)((gameWidth / 5) - (SIDEBAR_SMALL_SIZE_X / 2));
     gameSidebarSmall1Rect_1.y = -(Sint16)(SIDEBAR_SMALL_SIZE_Y / 4);
     gameSidebarSmall2Rect_1.x = (Sint16)((gameWidth / 2) - (SIDEBAR_SMALL_SIZE_X / 2));
@@ -268,11 +331,11 @@ void prepareSidebar() {
     gameSidebarSmall3Rect_1.y = gameSidebarSmall1Rect_1.y;
   }
   gameSidebarSmall1Rect_1.w = game_sidebar_small_1.rect.w;
-  gameSidebarSmall1Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall1Rect_1.h = game_sidebar_small_1.srcRect.h;
   gameSidebarSmall1Rect_2.w = game_sidebar_small_2.rect.w;
   gameSidebarSmall1Rect_2.h = game_sidebar_small_2.rect.h;
   gameSidebarSmall1Rect_3.w = game_sidebar_small_3.rect.w;
-  gameSidebarSmall1Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall1Rect_3.h = game_sidebar_small_3.srcRect.h;
   gameSidebarSmall1Rect_2.x = gameSidebarSmall1Rect_1.x;
   gameSidebarSmall1Rect_2.y = gameSidebarSmall1Rect_1.y + gameSidebarSmall1Rect_1.h;
   gameSidebarSmall1Rect_3.x = gameSidebarSmall1Rect_1.x;
@@ -281,11 +344,11 @@ void prepareSidebar() {
   gameSidebarSmall1Rect.w = gameSidebarSmall1Rect_1.w;
   gameSidebarSmall1Rect.h = gameSidebarSmall1Rect_1.h + gameSidebarSmall1Rect_2.h + gameSidebarSmall1Rect_3.h;
   gameSidebarSmall2Rect_1.w = game_sidebar_small_1.rect.w;
-  gameSidebarSmall2Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall2Rect_1.h = game_sidebar_small_1.srcRect.h;
   gameSidebarSmall2Rect_2.w = game_sidebar_small_2.rect.w;
   gameSidebarSmall2Rect_2.h = game_sidebar_small_2.rect.h;
   gameSidebarSmall2Rect_3.w = game_sidebar_small_3.rect.w;
-  gameSidebarSmall2Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall2Rect_3.h = game_sidebar_small_3.srcRect.h;
   gameSidebarSmall2Rect_2.x = gameSidebarSmall2Rect_1.x;
   gameSidebarSmall2Rect_2.y = gameSidebarSmall2Rect_1.y + gameSidebarSmall2Rect_1.h;
   gameSidebarSmall2Rect_3.x = gameSidebarSmall2Rect_1.x;
@@ -294,11 +357,11 @@ void prepareSidebar() {
   gameSidebarSmall2Rect.w = gameSidebarSmall1Rect.w;
   gameSidebarSmall2Rect.h = gameSidebarSmall1Rect.h;
   gameSidebarSmall3Rect_1.w = game_sidebar_small_1.rect.w;
-  gameSidebarSmall3Rect_1.h = game_sidebar_small_1.rect.h;
+  gameSidebarSmall3Rect_1.h = game_sidebar_small_1.srcRect.h;
   gameSidebarSmall3Rect_2.w = game_sidebar_small_2.rect.w;
   gameSidebarSmall3Rect_2.h = game_sidebar_small_2.rect.h;
   gameSidebarSmall3Rect_3.w = game_sidebar_small_3.rect.w;
-  gameSidebarSmall3Rect_3.h = game_sidebar_small_3.rect.h;
+  gameSidebarSmall3Rect_3.h = game_sidebar_small_3.srcRect.h;
   gameSidebarSmall3Rect_2.x = gameSidebarSmall3Rect_1.x;
   gameSidebarSmall3Rect_2.y = gameSidebarSmall3Rect_1.y + gameSidebarSmall3Rect_1.h;
   gameSidebarSmall3Rect_3.x = gameSidebarSmall3Rect_1.x;
@@ -310,18 +373,18 @@ void prepareSidebar() {
 
 void renderMiniGrid() {
   if (miniGridState == 1) {
-    SDL_RenderCopy(renderer, miniGrid_shared_1.texture, NULL, &miniGrid_shared_1.rect);
-    SDL_RenderCopy(renderer, miniGrid_shared_2.texture, NULL, &miniGrid_shared_2.rect);
-    SDL_RenderCopy(renderer, miniGrid_shared_3.texture, NULL, &miniGrid_shared_3.rect);
-    SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
+    renderSprite(miniGrid_shared_1);
+    renderSprite(miniGrid_shared_2);
+    renderSprite(miniGrid_shared_3);
+    SDL_RenderCopy(renderer, currMiniGridCursor->texture, &currMiniGridCursor->srcRect, &currMiniGridCursor->rect);
     for (Sint8 num = 1; num < 10; num++) {
       setAndRenderNumGridSubNormal(gridNums_blue, int(num));
     }
   } else if (miniGridState == 2) {
-    SDL_RenderCopy(renderer, miniGrid_shared_1.texture, NULL, &miniGrid_shared_1.rect);
-    SDL_RenderCopy(renderer, miniGrid_shared_2.texture, NULL, &miniGrid_shared_2.rect);
-    SDL_RenderCopy(renderer, miniGrid_shared_3.texture, NULL, &miniGrid_shared_3.rect);
-    SDL_RenderCopy(renderer, currMiniGridCursor->texture, NULL, &currMiniGridCursor->rect);
+    renderSprite(miniGrid_shared_1);
+    renderSprite(miniGrid_shared_2);
+    renderSprite(miniGrid_shared_3);
+    SDL_RenderCopy(renderer, currMiniGridCursor->texture, &currMiniGridCursor->srcRect, &currMiniGridCursor->rect);
     for (Sint8 num = 1; num < 10; num++) {
       setAndRenderNumGridSubMini(gridNums_blue_mini, int(num));
     }

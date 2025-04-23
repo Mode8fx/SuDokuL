@@ -725,7 +725,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Play);
 				renderText(&text_Controls);
 				renderText(&text_Options);
@@ -767,7 +767,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Continue);
 				renderText(&text_New_Game);
 				break;
@@ -798,7 +798,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Easy);
 				renderText(&text_Normal);
 				renderText(&text_Hard);
@@ -944,10 +944,10 @@ int main(int argv, char** args) {
 				}
 				renderMiniGrid();
 				/* Draw Cursor */
-				SDL_RenderCopy(renderer, gridCursor_bottom_left.texture, NULL, &gridCursor_bottom_left.rect);
-				SDL_RenderCopy(renderer, gridCursor_bottom_right.texture, NULL, &gridCursor_bottom_right.rect);
-				SDL_RenderCopy(renderer, gridCursor_top_left.texture, NULL, &gridCursor_top_left.rect);
-				SDL_RenderCopy(renderer, gridCursor_top_right.texture, NULL, &gridCursor_top_right.rect);
+				renderSprite(gridCursor_bottom_left);
+				renderSprite(gridCursor_bottom_right);
+				renderSprite(gridCursor_top_left);
+				renderSprite(gridCursor_top_right);
 				drawSidebar();
 				break;
 			/* 10 = Pause Screen */
@@ -1087,7 +1087,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Controls_Menu);
 				renderText(&text_Video);
 				renderText(&text_Sound);
@@ -1299,7 +1299,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Frame_Rate);
 				renderFrameRateChoice();
 #if defined(ANDROID)
@@ -1412,7 +1412,7 @@ int main(int argv, char** args) {
 				setAndRenderNumThreeDigitCentered(soundSettings.sfxVolume, SOUND_MENU_NUM_POSITION_X, TEXT_SFX_VOLUME_Y);
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Music);
 				renderText(&text_Music_Volume);
 				renderText(&text_SFX_Volume);
@@ -1503,7 +1503,7 @@ int main(int argv, char** args) {
 				setAndRenderNumThreeDigitCentered(bgSettings.scale, BACKGROUND_MENU_NUM_POSITION_X, TEXT_BACKGROUND_SIZE_Y);
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Background_Type);
 				renderText(&text_Background_Size);
 				renderText(&text_Scroll_Speed);
@@ -1574,7 +1574,7 @@ int main(int argv, char** args) {
 				}
 				/* Draw Logo and Text */
 				renderLogo();
-				SDL_RenderCopy(renderer, menuCursor.texture, NULL, &menuCursor.rect);
+				renderSprite(menuCursor);
 				renderText(&text_Controller_Input);
 				renderText(&text_Touch_Screen_Input);
 				if (controlSettings.swapConfirmAndBack) {

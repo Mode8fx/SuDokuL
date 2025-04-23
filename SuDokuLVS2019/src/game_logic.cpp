@@ -437,18 +437,18 @@ void drawSidebar() {
   Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
   // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
   SDL_Rect tempRect = gameSidebarSmall1Rect_2;
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall1Rect_3);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, &game_sidebar_small_2.srcRect, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, &game_sidebar_small_3.srcRect, &gameSidebarSmall1Rect_3);
   tempRect = gameSidebarSmall2Rect_2;
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall2Rect_3);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, &game_sidebar_small_2.srcRect, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, &game_sidebar_small_3.srcRect, &gameSidebarSmall2Rect_3);
   tempRect = gameSidebarSmall3Rect_2;
-  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, NULL, &tempRect);
-  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, NULL, &gameSidebarSmall3Rect_3);
+  SDL_RenderCopy(renderer, game_sidebar_small_2.texture, &game_sidebar_small_2.srcRect, &tempRect);
+  SDL_RenderCopy(renderer, game_sidebar_small_3.texture, &game_sidebar_small_3.srcRect, &gameSidebarSmall3Rect_3);
   if (!compactDisplay) {
-    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall1Rect_1);
-    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall2Rect_1);
-    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, NULL, &gameSidebarSmall3Rect_1);
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, &game_sidebar_small_1.srcRect, &gameSidebarSmall1Rect_1);
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, &game_sidebar_small_1.srcRect, &gameSidebarSmall2Rect_1);
+    SDL_RenderCopy(renderer, game_sidebar_small_1.texture, &game_sidebar_small_1.srcRect, &gameSidebarSmall3Rect_1);
   }
   i = 0;
   renderText(&text_Time);

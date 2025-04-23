@@ -5,10 +5,12 @@
 #define SPRITE_OBJECTS_H
 
 #if defined(SDL1)
+#define renderSprite(currSprite) SDL_BlitSurface(currSprite.texture, &currSprite.srcRect, windowScreen, &currSprite.rect)
 #define SDL_RenderCopy(renderer, currSprite, srcrect, outputRect) SDL_BlitSurface(currSprite, srcrect, windowScreen, outputRect)
 #define SDL_DestroyTexture(texture) SDL_FreeSurface(texture)
 #define SDL_BlitScaled(src, srcrect, dst, dstrect) SDL_SoftStretch(src, srcrect, dst, dstrect)
 #else
+#define renderSprite(currSprite) SDL_RenderCopy(renderer, currSprite.texture, &currSprite.srcRect, &currSprite.rect)
 #define SDL_SRCCOLORKEY SDL_TRUE
 #endif
 
@@ -23,6 +25,7 @@ struct SpriteObject {
 #else
     SDL_Surface *texture;
 #endif
+    SDL_Rect srcRect;
     SDL_Rect rect;
     int width, height;
     Sint16 startPos_x, endPos_x;
@@ -94,15 +97,15 @@ extern inline void renderLogo();
 extern void renderMiniGrid();
 
 inline void renderGrid() {
-  SDL_RenderCopy(renderer, game_grid_1.texture, NULL, &game_grid_1.rect);
-  SDL_RenderCopy(renderer, game_grid_2.texture, NULL, &game_grid_2.rect);
-  SDL_RenderCopy(renderer, game_grid_3.texture, NULL, &game_grid_3.rect);
+  renderSprite(game_grid_1);
+  renderSprite(game_grid_2);
+  renderSprite(game_grid_3);
 }
 
 inline void renderLogo() {
-  SDL_RenderCopy(renderer, logo_1.texture, NULL, &logo_1.rect);
-  SDL_RenderCopy(renderer, logo_2.texture, NULL, &logo_2.rect);
-  SDL_RenderCopy(renderer, logo_3.texture, NULL, &logo_3.rect);
+  renderSprite(logo_1);
+  renderSprite(logo_2);
+  renderSprite(logo_3);
 }
 
 #define OBJ_TO_MID_SCREEN_X(obj) \
