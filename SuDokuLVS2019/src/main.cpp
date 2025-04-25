@@ -268,7 +268,11 @@ int main(int argv, char** args) {
 
 	/* Set Textures */
 	prepareLogo();
-	prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true, NO_ROUND);
+	if (gameHeightMult < 1.5) {
+		prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true, ROUND_DOWN);
+	} else {
+		prepareSprite(menuCursor, menu_cursor_png, menu_cursor_png_len, 0, 0, 2, true, NO_ROUND);
+	}
 	prepareSprite(game_grid_1, grid_384_1_png, grid_384_1_png_len, 0, 0, 2, true, NO_ROUND);
 	SDL_Surface *game_grid_2_clean = prepareGridSurface(game_grid_2, grid_384_2_png, grid_384_2_png_len, 0, 0);
 	SDL_Surface *game_grid_2_blit;

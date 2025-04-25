@@ -27,7 +27,6 @@ struct SpriteObject {
 #endif
     SDL_Rect srcRect;
     SDL_Rect rect;
-    int width, height;
     Sint16 startPos_x, endPos_x;
     Sint16 startPos_y, endPos_y;
 };
@@ -88,7 +87,6 @@ SDL_Surface* prepareGridSurface(SpriteObject &, const unsigned char *, unsigned 
 #if defined(SDL1)
 extern void blitRGBAontoRGB24(SDL_Surface *src, SDL_Surface *dst, int dx, int dy);
 #endif
-extern void setSpriteScale(SpriteObject &, double, Sint8);
 extern void setSpriteScaleTile();
 extern void prepareLogo();
 extern void prepareSidebar();
