@@ -78,11 +78,54 @@ void setTextPosY(TextCharObject*textObj, Sint16 pos_y) {
 }
 
 #if defined(PSP)
-#define TTF_RENDERTEXT TTF_RenderText_Blended
-#else
-#define TTF_RENDERTEXT TTF_RenderText_Solid
-#endif
 
+#define TTF_RENDERTEXT TTF_RenderText_Blended
+void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj,
+	Uint8 minOutlineSize, Sint8 outlineAddX, Sint8 outlineAddY, bool trim, bool keepSurface) {
+	SDL_Surface* text_surface = TTF_RENDERTEXT(font, text, text_color);
+	SDL_Surface* text_rgba = SDL_ConvertSurfaceFormat(text_surface, SDL_PIXELFORMAT_RGBA5551, 0);
+	SDL_FreeSurface(text_surface);
+	text_surface = text_rgba;
+	textObj->charWidth = text_surface->w;
+	textObj->charHeight = text_surface->h;
+
+	int outline_size = setFontOutline(font, textObj, minOutlineSize);
+	SDL_Surface *outline_surface = TTF_RENDERTEXT(font, text, outline_color);
+	TTF_SetFontOutline(font, 0);
+	textObj->outlineOffset_x = (Sint8)max((int)(outline_size * 0.5), 1) + outlineAddX;
+	textObj->outlineOffset_y = (Sint8)max((int)(outline_size * 0.9), 1) + outlineAddY;
+
+	SDL_Rect dstRect = { textObj->outlineOffset_x, textObj->outlineOffset_y, text_surface->w, text_surface->h };
+	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA5551, 0);
+	SDL_FreeSurface(outline_surface);
+	outline_surface = outline_rgba;
+
+	SDL_BlitSurface(text_surface, NULL, outline_surface, &dstRect);
+	if (trim) {
+		SDL_Surface *cropped = trimTransparentEdges(outline_surface);
+		SDL_FreeSurface(outline_surface);
+		outline_surface = cropped;
+	}
+
+
+	textObj->texture = SDL_CreateTextureFromSurface(renderer, outline_surface);
+	textObj->rect.w = outline_surface->w;
+	textObj->rect.h = outline_surface->h;
+
+	if (keepSurface) {
+		textObj->surface = outline_surface;
+	} else {
+		SDL_FreeSurface(outline_surface);
+	}
+
+	textObj->charOffset_x = (Sint8)(gridSizeA3 - textObj->rect.w) / 2;
+	textObj->charOffset_y = (Sint8)(gridSizeA3 - textObj->rect.h) / 2;
+	SDL_FreeSurface(text_surface);
+}
+
+#else
+
+#define TTF_RENDERTEXT TTF_RenderText_Solid
 void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj,
 	Uint8 minOutlineSize, Sint8 outlineAddX, Sint8 outlineAddY, bool trim, bool keepSurface) {
 	SDL_Surface *text_surface = TTF_RENDERTEXT(font, text, text_color);
@@ -143,6 +186,8 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 	textObj->charOffset_y = (Sint8)(gridSizeA3 - textObj->rect.h) / 2;
 	SDL_FreeSurface(text_surface);
 }
+
+#endif
 
 int setFontOutline(TTF_Font *font, TextCharObject *textObj, Uint8 minSize) {
 	int size = max((textObj->charHeight / 10), max(int(ceil(gameHeightMult)), (int)minSize));
