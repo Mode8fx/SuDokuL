@@ -114,7 +114,7 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
 
   // Convert it to a scaled surface if needed
   bool scaleIsChanged = (spriteObj.rect.w != original_w || spriteObj.rect.h != original_h);
-	if (scaleIsChanged) {
+  if (scaleIsChanged) {
     SDL_Surface *surface_scaled = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
     SDL_BlitScaled(surface_main, NULL, surface_scaled, NULL);
     SDL_FreeSurface(surface_main);
@@ -153,43 +153,42 @@ void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_dat
 }
 
 SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y) {
+  // Destroy the texture/surface if it already exists
   if (spriteObj.texture) {
     SDL_DestroyTexture(spriteObj.texture);
     spriteObj.texture = NULL;
   }
 
-  SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
-  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, temp_surface_unformatted->w, temp_surface_unformatted->h,
-    24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
-  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, NULL);
-  SDL_FreeSurface(temp_surface_unformatted);
+  // Load the image data into a surface, and store the dimensions
+  SDL_Surface *surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
+  int original_w = surface_unformatted->w;
+  int original_h = surface_unformatted->h;
 
-  spriteObj.rect.w = setSpriteScale_w(temp_surface->w, 2, NO_ROUND);
-  spriteObj.rect.h = setSpriteScale_h(temp_surface->h, 2, NO_ROUND);
-  bool scaleIsUnchanged = spriteObj.rect.h == temp_surface->h;
+  // Store what will later be the scaled dimensions of the image
+  spriteObj.rect.w = setSpriteScale_w(original_w, 2, NO_ROUND);
+  spriteObj.rect.h = setSpriteScale_h(original_h, 2, NO_ROUND);
 
-  if (scaleIsUnchanged) {
-    spriteObj.srcRect = { 0, 0, temp_surface->w, temp_surface->h };
-    spriteObj.rect.x = pos_x;
-    spriteObj.rect.y = pos_y;
-    return temp_surface;
+  // Convert it to a new surface with pixel format RGB24
+  SDL_Surface *surface_main = SDL_CreateRGBSurface(0, original_w, original_h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+  SDL_BlitSurface(surface_unformatted, NULL, surface_main, NULL);
+  SDL_FreeSurface(surface_unformatted);
+
+  // Convert it to a scaled surface if needed
+  bool scaleIsChanged = (spriteObj.rect.w != original_w || spriteObj.rect.h != original_h);
+  if (scaleIsChanged) {
+    SDL_Surface *surface_scaled = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+    SDL_BlitScaled(surface_main, NULL, surface_scaled, NULL);
+    SDL_FreeSurface(surface_main);
+    surface_main = surface_scaled;
   }
 
-  SDL_Surface *scaledImage = nullptr;
-  // Convert or scale with optional colorkey
-  if (scaleIsUnchanged) {
-    scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
-  } else {
-    scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
-  }
+  // Store the scaled image dimensions in srcRect
+  spriteObj.srcRect.x = 0;
+  spriteObj.srcRect.y = 0;
+  spriteObj.srcRect.w = spriteObj.rect.w;
+  spriteObj.srcRect.h = spriteObj.rect.h;
 
-  SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
-  SDL_FreeSurface(temp_surface);
-
-  spriteObj.srcRect = { 0, 0, scaledImage->w, scaledImage->h };
-  spriteObj.rect.x = pos_x;
-  spriteObj.rect.y = pos_y;
-  return scaledImage;
+  return surface_main;
 }
 
 #if defined(SDL1)
