@@ -51,6 +51,8 @@ string getExeDirectory() {
 	std::string path(buffer);
 	std::string::size_type pos = path.find_last_of("/\\");
 	return path.substr(0, pos + 1);
+#else
+	return "";
 #endif
 }
 
