@@ -23,6 +23,7 @@ set DEVKITPRO=C:/devkitPro/msys2/mingw64.exe
 
 :: Path: msys2
 set MSYS=C:/msys64/mingw64.exe
+set MSYS_x86=C:/msys64/mingw32.exe
 
 :: Path: Makefile directory
 set MAKEFILES_DKP=%REPO_DKP%/Makefiles
@@ -93,8 +94,8 @@ set OUTPUT_ANDROID_IDSIG=%OUTPUT_ANDROID_IDSIG:/=\%
 
 
 :: Running compilation commands...
-rem call :compile_windows_x64
-rem call :compile_windows_x86
+call :compile_windows_x64
+call :compile_windows_x86
 call :compile_linux
 call :compile_gc
 call :compile_wii
@@ -112,11 +113,13 @@ goto :eof
 
 
 :compile_windows_x64
-echo Windows x64: Compiling with MSYS2...
+echo Windows x64: Compiling with MSYS2 MINGW64...
 start /wait "" %MSYS% /usr/bin/bash -lc "cd %REPO_MSYS%; make -f %MAKEFILE_MSYS_WINDOWS%"
 sleep %SLEEP_COMPILE%
+echo Windows x64: Compressing with UPX...
+upx --best --lzma %REPO%/sudokul_win64.exe
 echo Windows x64: Moving compiled exe to %OUTPUT_WINDOWS%...
-mv %REPO%/SuDokuL.exe %OUTPUT_WINDOWS%
+mv %REPO%/sudokul_win64.exe %OUTPUT_WINDOWS%
 echo Windows x64: Cleaning up...
 start /wait "" %MSYS% /usr/bin/bash -lc "cd %REPO_MSYS%; make clean -f %MAKEFILE_MSYS_WINDOWS%"
 sleep %SLEEP_CLEAN%
@@ -125,13 +128,15 @@ goto :eof
 
 
 :compile_windows_x86
-echo Windows x86: Compiling with MSYS2...
-start /wait "" %MSYS% /usr/bin/bash -lc "cd %REPO_MSYS%; make -f %MAKEFILE_MSYS_WINDOWS_X86%"
+echo Windows x86: Compiling with MSYS2 MINGW32...
+start /wait "" %MSYS_x86% /usr/bin/bash -lc "cd %REPO_MSYS%; make -f %MAKEFILE_MSYS_WINDOWS_X86%"
 sleep %SLEEP_COMPILE%
+echo Windows x86: Compressing with UPX...
+upx --best --lzma %REPO%/sudokul_win32.exe
 echo Windows x86: Moving compiled exe to %OUTPUT_WINDOWS_X86%...
-mv %REPO%/SuDokuL.exe %OUTPUT_WINDOWS_X86%
+mv %REPO%/sudokul_win32.exe %OUTPUT_WINDOWS_X86%
 echo Windows x86: Cleaning up...
-start /wait "" %MSYS% /usr/bin/bash -lc "cd %REPO_MSYS%; make clean -f %MAKEFILE_MSYS_WINDOWS_X86%"
+start /wait "" %MSYS_x86% /usr/bin/bash -lc "cd %REPO_MSYS%; make clean -f %MAKEFILE_MSYS_WINDOWS_X86%"
 sleep %SLEEP_CLEAN%
 echo.
 goto :eof
