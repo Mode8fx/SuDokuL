@@ -899,6 +899,12 @@ void handlePlayerInput() {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_QUIT:
+#if defined(PC)
+				if (programState == 9 || programState == 10 || programState == 11) {
+					gameCompleted = (programState == 11);
+					savePuzzle();
+				}
+#endif
 				isRunning = false;
 				break;
 #if defined(MOUSE_INPUT) && defined(PC)

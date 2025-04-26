@@ -547,12 +547,17 @@ void sdlDestroyAll() {
 	for (i = 32; i < LEN(textChars); i++) {
 		destroyTextObjectTexture(&textChars[i]);
 	}
+	for (i = 32; i < 91; i++) {
+		destroyTextObjectTexture(&textChars_large[i]);
+	}
 	for (i = 0; i < 10; i++) {
 		destroyTextObjectTexture(&gridNums_black[i]);
 		destroyTextObjectTexture(&gridNums_blue[i]);
+		destroyTextObjectTexture(&gridNums_blue_mini[i]);
 	}
 	/* Fonts */
 	TTF_CloseFont(pixelFont);
+	TTF_CloseFont(pixelFont_large);
 	TTF_CloseFont(pixelFont_grid);
 	TTF_CloseFont(pixelFont_grid_mini);
 	TTF_Quit();
