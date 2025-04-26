@@ -7,6 +7,20 @@
 #include "puzzleBank.h"
 #include "menu_logic.h"
 
+#include <string>
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(LINUX)
+#include <unistd.h>
+#include <limits.h>
+#endif
+
+#if !defined(MAX_PATH) && defined(LINUX)
+#define MAX_PATH 4096
+#elif !defined(MAX_PATH)
+#define MAX_PATH 260
+#endif
+
 #if defined(SDL1) && !(defined(LINUX) || defined(CONSOLE))
 FILE _iob[] = { *stdin, *stdout, *stderr };
 
@@ -17,9 +31,34 @@ FILE * __cdecl __iob_func(void) {
 
 Sint64 seekPos;
 
+string getExeDirectory() {
+#if defined(_WIN32) || defined(LINUX)
+	char buffer[MAX_PATH];
+
+#if defined(_WIN32)
+	GetModuleFileNameA(NULL, buffer, MAX_PATH);
+#elif defined(LINUX)
+	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
+	if (count == -1) {
+		// Handle error if needed
+		buffer[0] = '\0';
+	}
+	else {
+		buffer[count] = '\0';
+	}
+#endif
+
+	std::string path(buffer);
+	std::string::size_type pos = path.find_last_of("/\\");
+	return path.substr(0, pos + 1);
+#endif
+}
+
 void loadSettingsFile() {
 #if defined(LINUX)
-	mkdir((string(getenv("HOME")) + "/.sudokul").c_str(), 0777);
+	mkdir((string(getenv("HOME")) + "/.local").c_str(), 0755);
+	mkdir((string(getenv("HOME")) + "/.local/share").c_str(), 0755);
+	mkdir((string(getenv("HOME")) + "/.local/share/.sudokul").c_str(), 0755);
 #elif defined(VITA)
 	mkdir("ux0:data/SuDokuL", 0777);
 #endif

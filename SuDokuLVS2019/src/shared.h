@@ -176,6 +176,7 @@ extern Uint16 SYSTEM_HEIGHT;
 #define GRID_X_AT_COL(index)  (gridStartingPosX[index])
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 
+extern string getExeDirectory();
 #if defined(VITA)
 const string rootDir = "ux0:data/SuDokuL/";
 #elif defined(WII)
@@ -184,8 +185,10 @@ const string rootDir = "sd:/apps/SuDokuL/";
 const string rootDir = "/SuDokuL/";
 #elif defined(THREEDS)
 const string rootDir = "sdmc:/3ds/SuDokuL/";
+#elif defined(_WIN32)
+const string rootDir = getExeDirectory() + "/";
 #elif defined(LINUX)
-const string rootDir = string(getenv("HOME")) + "/.sudokul/";
+const string rootDir = string(getenv("HOME")) + "/.local/share/.sudokul/";
 #else
 const string rootDir = "";
 #endif

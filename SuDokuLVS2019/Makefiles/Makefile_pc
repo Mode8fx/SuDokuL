@@ -23,7 +23,7 @@ PKG        := pkgconf
 # per-function/data sections + LTO + no RTTI/exceptions,
 # plus SDL2 include flags (static).
 CXXFLAGS   := -Os -Wall -Wextra -std=gnu++11 \
-              -DPC -DWINDOWS -DMOUSE_INPUT \
+              -DPC -D_WIN32 -DMOUSE_INPUT \
               -ffunction-sections -fdata-sections -flto=4 -fno-rtti -fno-exceptions \
               $(shell $(PKG) --static --cflags sdl2)
 
