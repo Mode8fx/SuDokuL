@@ -88,80 +88,68 @@ static Sint16 setSpriteScale_h(int baseHeight, double scale, Sint8 scaleType) {
 }
 
 /*
- * Prepares a sprite object from a 3-byte (no alpha) PNG and applies scaling+transparency only as needed. Scaling and transparency both add performance overhead when rendering.
- * Sprite loading roughly works as follows:
- * 1. Load the image data into a surface.
- * 2. Convert the surface to a new surface of pixel format (RGB24), which does not contain alpha transparency.
- * 3. Set the scale of the sprite object relative to the default resolution (480p).
- * 4. If the scale is unchanged and no alpha is used (i.e. the object is the exact same size as the sprite it comes from), use the surface as-is.
- * 5. Scale the sprite and apply color key (color #FF00FF is transparent) as needed.
- * 6. Set the position of the sprite object.
+ * Prepares a sprite object from a 3-byte (no alpha) PNG and applies scaling+transparency+padding only as needed.
+ * Scaling and transparency both add performance overhead when rendering, and some systems can't properly handle textures with a dimension less than 8px.
  */
 void prepareSprite(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y, double scale, bool useAlpha, Sint8 scaleType) {
+  // Destroy the texture/surface if it already exists
   if (spriteObj.texture) {
     SDL_DestroyTexture(spriteObj.texture);
     spriteObj.texture = NULL;
   }
+  
+  // Load the image data into a surface, and store the dimensions
+  SDL_Surface *surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
+  int original_w = surface_unformatted->w;
+  int original_h = surface_unformatted->h;
 
-  SDL_Surface *temp_surface_unformatted = IMG_Load_RW(SDL_RWFromConstMem(spriteImage_data, spriteImage_len), 1);
+  // Store what will later be the scaled dimensions of the image (pre-padding)
+  spriteObj.rect.w = setSpriteScale_w(original_w, scale, scaleType);
+  spriteObj.rect.h = setSpriteScale_h(original_h, scale, scaleType);
 
-  int original_w = temp_surface_unformatted->w;
-  int original_h = temp_surface_unformatted->h;
-  int padded_w = (original_w < 8) ? 8 : original_w;
-  int padded_h = (original_h < 8) ? 8 : original_h;
-  spriteObj.rect.w = setSpriteScale_w(padded_w, scale, scaleType);
-  spriteObj.rect.h = setSpriteScale_h(padded_h, scale, scaleType);
-  bool scaleIsUnchanged = spriteObj.rect.h == padded_h;
+  // Convert it to a new surface with pixel format RGB24
+  SDL_Surface *surface_main = SDL_CreateRGBSurface(0, original_w, original_h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+  SDL_BlitSurface(surface_unformatted, NULL, surface_main, NULL);
+  SDL_FreeSurface(surface_unformatted);
 
-  SDL_Surface *temp_surface = SDL_CreateRGBSurface(0, padded_w, padded_h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+  // Convert it to a scaled surface if needed
+  bool scaleIsChanged = (spriteObj.rect.w != original_w || spriteObj.rect.h != original_h);
+	if (scaleIsChanged) {
+    SDL_Surface *surface_scaled = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+    SDL_BlitScaled(surface_main, NULL, surface_scaled, NULL);
+    SDL_FreeSurface(surface_main);
+    surface_main = surface_scaled;
+	}
 
-  SDL_FillRect(temp_surface, NULL, SDL_MapRGB(temp_surface->format, 255, 0, 255));
-  SDL_Rect original_rect = { 0, 0, original_w, original_h };
-  SDL_BlitSurface(temp_surface_unformatted, NULL, temp_surface, &original_rect);
-  SDL_FreeSurface(temp_surface_unformatted);
-
-
-  if (scaleIsUnchanged && !useAlpha) {
-    spriteObj.srcRect = getTrimmedRect(temp_surface);
-    spriteObj.srcRect.x = 0;
-    spriteObj.srcRect.w = spriteObj.rect.w;
-#if defined(SDL1)
-    spriteObj.texture = SDL_DisplayFormat(temp_surface);
-#else
-    spriteObj.texture = SDL_CreateTextureFromSurface(renderer, temp_surface);
-#endif
-    SDL_FreeSurface(temp_surface);
-    spriteObj.rect.x = pos_x;
-    spriteObj.rect.y = pos_y;
-    return;
+  // Convert it to a new padded surface if needed
+  int padded_w = (surface_main->w < 8) ? 8 : surface_main->w;
+  int padded_h = (surface_main->h < 8) ? 8 : surface_main->h;
+  bool needsPadding = (surface_main->w != padded_w || surface_main->h != padded_h);
+  if (needsPadding) {
+    SDL_Surface *surface_padded = SDL_CreateRGBSurface(0, padded_w, padded_h, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+    SDL_FillRect(surface_padded, NULL, SDL_MapRGB(surface_padded->format, 255, 0, 255)); // Fill magenta (important since we're blitting to only part of surface_padded)
+    SDL_Rect dstrect = { 0, 0, surface_main->w, surface_main->h };
+    SDL_BlitSurface(surface_main, NULL, surface_padded, &dstrect);
+    SDL_FreeSurface(surface_main);
+    surface_main = surface_padded;
   }
-
-  SDL_Surface *scaledImage = nullptr;
-  if (scaleIsUnchanged) {
-    scaledImage = SDL_ConvertSurface(temp_surface, temp_surface->format, 0);
-  } else {
-    scaledImage = SDL_CreateRGBSurface(0, spriteObj.rect.w, spriteObj.rect.h, temp_surface->format->BitsPerPixel, temp_surface->format->Rmask, temp_surface->format->Gmask, temp_surface->format->Bmask, temp_surface->format->Amask);
-  }
-
-  if (useAlpha) {
-    SDL_SetColorKey(scaledImage, SDL_SRCCOLORKEY, SDL_MapRGB(scaledImage->format, 0xFF, 0x00, 0xFF));
-  }
-
-  SDL_BlitScaled(temp_surface, NULL, scaledImage, NULL);
-  spriteObj.srcRect = getTrimmedRect(scaledImage);
+  // Store the actual scaled image dimensions in srcRect
+  spriteObj.srcRect = getTrimmedRect(surface_main);
   spriteObj.srcRect.x = 0;
   spriteObj.srcRect.w = spriteObj.rect.w;
+
+  // Apply color key
+  if (useAlpha) {
+    SDL_SetColorKey(surface_main, SDL_SRCCOLORKEY, SDL_MapRGB(surface_main->format, 0xFF, 0x00, 0xFF));
+  }
+
+  // Create texture from final surface
 #if defined(SDL1)
-  spriteObj.texture = scaledImage; // Used as-is for SDL1
+  spriteObj.texture = surface_main; // Used as-is for SDL1
 #else
-  spriteObj.texture = SDL_CreateTextureFromSurface(renderer, scaledImage);
-  SDL_FreeSurface(scaledImage);
+  spriteObj.texture = SDL_CreateTextureFromSurface(renderer, surface_main);
+  SDL_FreeSurface(surface_main);
 #endif
-
-  SDL_FreeSurface(temp_surface);
-
-  spriteObj.rect.x = pos_x;
-  spriteObj.rect.y = pos_y;
 }
 
 SDL_Surface* prepareGridSurface(SpriteObject &spriteObj, const unsigned char *spriteImage_data, unsigned int spriteImage_len, int pos_x, int pos_y) {
