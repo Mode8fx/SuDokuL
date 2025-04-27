@@ -126,6 +126,11 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 #else
 
 #define TTF_RENDERTEXT TTF_RenderText_Solid
+#if defined(ANDROID)
+#define PIXEL_FORMAT SDL_PIXELFORMAT_ABGR8888
+#else
+#define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
+#endif
 void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_color, SDL_Color outline_color, TextCharObject *textObj,
 	Uint8 minOutlineSize, Sint8 outlineAddX, Sint8 outlineAddY, bool trim, bool keepSurface) {
 	SDL_Surface *text_surface = TTF_RENDERTEXT(font, text, text_color);
@@ -140,7 +145,7 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 
 	SDL_Rect dstRect = { textObj->outlineOffset_x, textObj->outlineOffset_y, text_surface->w, text_surface->h };
 #if !defined(SDL1)
-	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, SDL_PIXELFORMAT_RGBA8888, 0);
+	SDL_Surface *outline_rgba = SDL_ConvertSurfaceFormat(outline_surface, PIXEL_FORMAT, 0);
 	SDL_FreeSurface(outline_surface);
 	outline_surface = outline_rgba;
 
@@ -150,7 +155,6 @@ void setTextCharWithOutline(const char *text, TTF_Font *font, SDL_Color text_col
 		SDL_FreeSurface(outline_surface);
 		outline_surface = cropped;
 	}
-
 
 	textObj->texture = SDL_CreateTextureFromSurface(renderer, outline_surface);
 	textObj->rect.w = outline_surface->w;
