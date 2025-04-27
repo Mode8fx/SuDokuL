@@ -241,21 +241,28 @@ void setSpriteScaleTile() {
   setBGScrollSpeed();
 }
 
+// logo_2 messes up on Wii/Gamecube for some reason unless alpha is used
+#if defined(WII) || defined(GAMECUBE)
+#define LOGO_2_ALPHA true
+#else
+#define LOGO_2_ALPHA false
+#endif
+
 void prepareLogo() {
   if (gameHeight < 272) {
     double logoScale = 480.0 / 240;
     prepareSprite(logo_1, logo_240_1_png, logo_240_1_png_len, 0, 0, logoScale, true, NO_ROUND);
-    prepareSprite(logo_2, logo_240_2_png, logo_240_2_png_len, 0, 0, logoScale, false, NO_ROUND);
+    prepareSprite(logo_2, logo_240_2_png, logo_240_2_png_len, 0, 0, logoScale, LOGO_2_ALPHA, NO_ROUND);
     prepareSprite(logo_3, logo_240_3_png, logo_240_3_png_len, 0, 0, logoScale, true, NO_ROUND);
   } else if (gameHeight < 480) {
     double logoScale = 480.0 / 272;
     prepareSprite(logo_1, logo_272_1_png, logo_272_1_png_len, 0, 0, logoScale, true, NO_ROUND);
-    prepareSprite(logo_2, logo_272_2_png, logo_272_2_png_len, 0, 0, logoScale, false, NO_ROUND);
+    prepareSprite(logo_2, logo_272_2_png, logo_272_2_png_len, 0, 0, logoScale, LOGO_2_ALPHA, NO_ROUND);
     prepareSprite(logo_3, logo_272_3_png, logo_272_3_png_len, 0, 0, logoScale, true, NO_ROUND);
   } else if (gameHeight < 544) {
     double logoScale = 480.0 / 480;
     prepareSprite(logo_1, logo_480_1_png, logo_480_1_png_len, 0, 0, logoScale, true, NO_ROUND);
-    prepareSprite(logo_2, logo_480_2_png, logo_480_2_png_len, 0, 0, logoScale, false, NO_ROUND);
+    prepareSprite(logo_2, logo_480_2_png, logo_480_2_png_len, 0, 0, logoScale, LOGO_2_ALPHA, NO_ROUND);
     prepareSprite(logo_3, logo_480_3_png, logo_480_3_png_len, 0, 0, logoScale, true, NO_ROUND);
   } else if (gameHeight < 720) {
     double logoScale = 480.0 / 544;
