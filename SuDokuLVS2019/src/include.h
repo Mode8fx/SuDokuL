@@ -51,6 +51,7 @@
 #include <fat.h>
 #elif defined(THREEDS)
 #include <3ds.h>
+#include <sys/stat.h>
 #elif defined(LINUX)
 #include <sys/stat.h>
 #elif defined(EMSCRIPTEN)

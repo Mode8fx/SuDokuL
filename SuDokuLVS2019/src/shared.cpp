@@ -63,6 +63,8 @@ void loadSettingsFile() {
 	mkdir((string(getenv("HOME")) + "/.local/share/.sudokul").c_str(), 0755);
 #elif defined(VITA)
 	mkdir("ux0:data/SuDokuL", 0777);
+#elif defined(THREEDS)
+	mkdir("sdmc:/3ds/SuDokuL", 0777);
 #endif
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
