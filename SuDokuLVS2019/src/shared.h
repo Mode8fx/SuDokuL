@@ -177,29 +177,18 @@ extern Uint16 SYSTEM_HEIGHT;
 #define GRID_Y_AT_ROW(index)  (gridStartingPosY[index])
 
 extern string getExeDirectory();
-#if defined(VITA)
-const string rootDir = "ux0:data/SuDokuL/";
-#elif defined(WII)
-const string rootDir = "sd:/apps/SuDokuL/";
-#elif defined(GAMECUBE)
-const string rootDir = "/SuDokuL/";
-#elif defined(THREEDS)
-const string rootDir = "sdmc:/3ds/SuDokuL/";
-#elif defined(_WIN32)
-const string rootDir = getExeDirectory() + "/";
-#elif defined(LINUX)
-const string rootDir = string(getenv("HOME")) + "/.local/share/.sudokul/";
-#else
-const string rootDir = "";
-#endif
+extern string rootDir;
+
 #define SETTINGS_FILE (rootDir + "settings.bin").c_str()
 #define SAVE_FILE (rootDir + "save.bin").c_str()
 
+extern void setRootDir();
 extern void loadSettingsFile();
 extern void reloadVideoSettings();
 extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void loadSavedPuzzle();
 extern void savePuzzle();
+extern bool shouldContinue();
 extern void initDefaultBGScale();
 extern void initDefaultFrameRate();
 extern void initDefaultWindowedSetting();

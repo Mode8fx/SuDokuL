@@ -72,6 +72,7 @@ int main(int argv, char** args) {
 #if defined(THREEDS)
 	osSetSpeedupEnable(useNew3DSClockSpeed);
 #endif
+	setRootDir();
 
 	TTF_Init();
 
@@ -354,7 +355,7 @@ int main(int argv, char** args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.4",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.41",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	if (compactDisplay) {
 		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 8 / 32);
 	} else {
@@ -694,17 +695,9 @@ int main(int argv, char** args) {
 					time_anim1 = 0;
 					switch (menuCursorIndex_main) {
 						case 0:
-							canContinue = false;
-							saveFile = SDL_RWFromFile(SAVE_FILE, "rb");
-							if (saveFile != NULL) {
-								SDL_RWread(saveFile, &gameCompleted, sizeof(gameCompleted), 1);
-								SDL_RWclose(saveFile);
-								if (gameCompleted) {
-									programState = 7;
-								} else {
-									canContinue = true;
-									programState = 6;
-								}
+							canContinue = shouldContinue();
+							if (canContinue) {
+								programState = 6;
 							} else {
 								programState = 7;
 							}

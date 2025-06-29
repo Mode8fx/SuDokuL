@@ -29,6 +29,8 @@ FILE * __cdecl __iob_func(void) {
 }
 #endif
 
+string rootDir;
+
 Sint64 seekPos;
 
 string getExeDirectory() {
@@ -53,6 +55,91 @@ string getExeDirectory() {
 	return path.substr(0, pos + 1);
 #else
 	return "";
+#endif
+}
+
+#if defined(GAMECUBE)
+static bool directoryExists(const std::string &path) {
+	struct stat info;
+	if (stat(path.c_str(), &info) != 0) {
+		// Path does not exist or cannot be accessed
+		return false;
+	}
+	return (info.st_mode & S_IFDIR) != 0; // Check if it's a directory
+}
+
+#define DEV_GCSDA 1
+#define DEV_GCSDB 2
+#define DEV_GCSDC 3
+
+static bool gc_initFAT(int device) {
+	switch (device) {
+	case DEV_GCSDA:
+		__io_gcsda.startup();
+		if (!__io_gcsda.isInserted()) {
+			return false;
+		}
+		if (!fatMountSimple("sda", &__io_gcsda)) {
+			return false;
+		}
+		break;
+	case DEV_GCSDB:
+		__io_gcsdb.startup();
+		if (!__io_gcsdb.isInserted()) {
+			return false;
+		}
+		if (!fatMountSimple("sdb", &__io_gcsdb)) {
+			return false;
+		}
+		break;
+	case DEV_GCSDC:
+		__io_gcsd2.startup();
+		if (!__io_gcsd2.isInserted()) {
+			return false;
+		}
+		if (!fatMountSimple("sdc", &__io_gcsd2)) {
+			return false;
+		}
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	return true;
+}
+#endif
+
+void setRootDir() {
+#if defined(VITA)
+	rootDir = "ux0:data/SuDokuL/";
+#elif defined(WII)
+	rootDir = "sd:/apps/SuDokuL/";
+#elif defined(GAMECUBE)
+	for (int i = 1; i < 4; i++) {
+		if (gc_initFAT(i)) {
+			break;
+		}
+	}
+	string devices[] = { "sda", "sdb", "sdc" };
+	for (const auto& device : devices) {
+		rootDir = device + ":/SuDokuL/";
+		if (directoryExists(rootDir)) {
+			break;
+		}
+	}
+#elif defined(THREEDS)
+	rootDir = "sdmc:/3ds/SuDokuL/";
+#elif defined(_WIN32)
+	rootDir = getExeDirectory() + "/";
+#elif defined(LINUX)
+	rootDir = getExeDirectory() + "/";
+	//mkdir((string(getenv("HOME")) + "/.local").c_str(), 0755);
+	//mkdir((string(getenv("HOME")) + "/.local/share").c_str(), 0755);
+	//mkdir((string(getenv("HOME")) + "/.local/share/.sudokul").c_str(), 0755);
+	//rootDir = string(getenv("HOME")) + "/.local/share/.sudokul/";
+#else
+	rootDir = "";
 #endif
 }
 
@@ -158,6 +245,16 @@ void savePuzzle() {
 		SDL_RWwrite(saveFile, &menuCursorIndex_play, sizeof(menuCursorIndex_play), 1);
 		SDL_RWclose(saveFile);
 	}
+}
+
+bool shouldContinue() {
+	saveFile = SDL_RWFromFile(SAVE_FILE, "rb");
+	if (saveFile != NULL) {
+		SDL_RWread(saveFile, &gameCompleted, sizeof(gameCompleted), 1);
+		SDL_RWclose(saveFile);
+		return !gameCompleted;
+	}
+	return false;
 }
 
 void initDefaultBGScale() {
