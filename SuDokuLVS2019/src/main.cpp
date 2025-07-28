@@ -657,15 +657,6 @@ int main(int argv, char** args) {
 				transitionToStateWithTimer(time_anim1, 1, 2);
 				updateMenuCursorPositionY(menuCursorIndex_main);
 				text_PressStart.rect.y = (Sint16)(TEXT_PRESS_START_Y - SIN_WAVE(time_anim_PressStart, 1.25, text_pressStartAmplitude));
-				if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SWAP)) {
-					showFPS = !showFPS;
-				}
-#if defined(THREEDS)
-				if (buttonHeld(INPUT_DOWN) && buttonHeld(INPUT_RIGHT) && keyPressed(INPUT_SWAP)) {
-					useNew3DSClockSpeed = !useNew3DSClockSpeed;
-					osSetSpeedupEnable(useNew3DSClockSpeed);
-				}
-#endif
 				break;
 			/* 2 = Main Menu */
 			case 2:
@@ -1119,6 +1110,15 @@ int main(int argv, char** args) {
 				}
 				switch (menuIndex_credits) {
 					case 0:
+						if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SWAP)) {
+							showFPS = !showFPS;
+						}
+#if defined(THREEDS)
+						if (buttonHeld(INPUT_DOWN) && buttonHeld(INPUT_RIGHT) && keyPressed(INPUT_SWAP)) {
+							useNew3DSClockSpeed = !useNew3DSClockSpeed;
+							osSetSpeedupEnable(useNew3DSClockSpeed);
+						}
+#endif
 						renderCreditsTextPage1();
 						break;
 					case 1:
