@@ -151,12 +151,12 @@ void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions, Uint8 numSkip
 
 void controlsMenuHandleVertCursorMovement() {
     if (keyPressed(INPUT_DOWN)) {
-        menuCursorIndex_controls = (menuCursorIndex_controls + 1) % 2;
+        menuCursorIndex_controls = (menuCursorIndex_controls + 1) % 3;
         updateControlsMenuCursorPositionY();
     }
     if (keyPressed(INPUT_UP)) {
         if (--menuCursorIndex_controls < 0)
-            menuCursorIndex_controls = 1;
+            menuCursorIndex_controls = 2;
         updateControlsMenuCursorPositionY();
     }
 }

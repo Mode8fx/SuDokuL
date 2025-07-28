@@ -102,6 +102,7 @@ extern TextObject text_Video;
 extern TextObject text_Sound;
 extern TextObject text_Background;
 extern TextObject text_Controller_Input;
+extern TextObject text_Mini_Grid_Behavior;
 extern TextObject text_Touch_Screen_Input;
 extern TextObject text_A_Confirm;
 extern TextObject text_B_Back;
@@ -112,6 +113,8 @@ extern TextObject text_Disabled;
 extern TextObject text_WiimoteScheme_Horizontal;
 extern TextObject text_WiimoteScheme_General;
 extern TextObject text_WiimoteScheme_Vertical;
+extern TextObject text_Keep_On_Close;
+extern TextObject text_Reset_On_Close;
 extern TextObject text_Resolution;
 extern TextObject text_x;
 extern TextObject text_Aspect_Ratio;
@@ -358,7 +361,10 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_SOUND_Y                      (text_menuChoice3)
 #define TEXT_BACKGROUND_Y                 (text_menuChoice4)
 #define TEXT_CONTROLLER_INPUT_Y           (text_menuChoice1)
-#define TEXT_TOUCH_SCREEN_INPUT_Y         (text_menuChoice3)
+#define TEXT_MINI_GRID_BEHAVIOR_Y         (text_menuChoice3)
+#define TEXT_TOUCH_SCREEN_INPUT_Y         (text_menuChoice5)
+#define TEXT_KEEP_ON_CLOSE_Y              (text_menuChoice3)
+#define TEXT_RESET_ON_CLOSE_Y             (text_menuChoice3)
 #define TEXT_RESOLUTION_Y                 (text_menuChoice1)
 #define TEXT_ASPECT_RATIO_Y               (text_menuChoice2)
 #if defined(ANDROID) || defined(FUNKEY)

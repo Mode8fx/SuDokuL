@@ -73,7 +73,10 @@ void gameHandleMainGridNavigation() {
           }
           miniGridCursorIndex_x = max((grid[i] - 1) % 3, 0);
           miniGridCursorIndex_y = (grid[i] - 1) / 3;
-          miniGridState = 1;
+          miniGridState = savedMiniGridState;
+          if (addon142Settings.resetOnClose) {
+            miniGridState = 1;
+          }
           setGridCursorBySmallX();
           setGridCursorBySmallY();
         }
@@ -207,14 +210,14 @@ void gameHandleMiniGridNavigation() {
         }
         if (lastMiniGridState > 0) {
             if ((keyPressed(INPUT_BACK) || clickedOutsideMiniGrid())) {
+                savedMiniGridState = miniGridState;
                 miniGridState = 0;
                 if ((!keyPressed(INPUT_BACK)) || keyPressed(INPUT_BACK_ALT)) {
                   gameHandleMouseMovementMain();
                 }
                 setGridCursorByLargeX();
                 setGridCursorByLargeY();
-            }
-            else if ((keyPressed(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
+            } else if ((keyPressed(INPUT_CONFIRM) || clickedWithinMiniGrid())) {
                 i = (gridCursorIndex_y * 9) + gridCursorIndex_x;
                 if (miniGridCursorIndex_x > -1) {
                     if (miniGridState == 1) {
@@ -303,6 +306,7 @@ void setGridNum(Sint8 index, Sint8 num) {
     grid[index] = num;
     updateNumEmpty();
     checkForVictory();
+    savedMiniGridState = miniGridState;
     miniGridState = 0;
     setGridCursorByLargeX();
     setGridCursorByLargeY();

@@ -11,6 +11,7 @@ extern Sint8 miniGridCursorIndex_x;
 extern Sint8 miniGridCursorIndex_y;
 extern Sint8 miniGridState;
 extern Sint8 lastMiniGridState;
+extern Sint8 savedMiniGridState;
 extern Sint8 temp_mouseIndex_x;
 extern Sint8 temp_mouseIndex_y;
 extern Sint16 gridCursorCornerStep;

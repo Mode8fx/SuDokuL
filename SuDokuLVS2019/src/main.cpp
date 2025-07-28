@@ -355,7 +355,7 @@ int main(int argv, char** args) {
 #else
 	SET_TEXT_WITH_OUTLINE_ANIMATED("Press Enter", text_PressStart, OBJ_TO_MID_SCREEN_X(text_PressStart), TEXT_PRESS_START_Y);
 #endif
-	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.41",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
+	SET_TEXT_WITH_OUTLINE_ANIMATED("v1.42",    text_Version_Number, (gameWidth - (text_Version_Number.rect.w * 1.25)), TEXT_VERSION_NUMBER_Y);
 	if (compactDisplay) {
 		text_Version_Number.endPos_x = text_Version_Number.startPos_x + (gameWidth * 8 / 32);
 	} else {
@@ -421,6 +421,11 @@ int main(int argv, char** args) {
 	} else {
 		SET_TEXT_WITH_OUTLINE("Button Input", text_Controller_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_CONTROLLER_INPUT_Y);
 	}
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("Mini-Grid State", text_Mini_Grid_Behavior, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_MINI_GRID_BEHAVIOR_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("Mini-Grid", text_Mini_Grid_Behavior, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_MINI_GRID_BEHAVIOR_Y);
+	}
 #if defined(WII)
 	SET_TEXT_WITH_OUTLINE("Wiimote Controls", text_Touch_Screen_Input, CONTROLS_MENU_CURSOR_POSITION_X, TEXT_TOUCH_SCREEN_INPUT_Y);
 #elif defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
@@ -455,6 +460,8 @@ int main(int argv, char** args) {
 	SET_TEXT_WITH_OUTLINE("",                 text_Enabled,         OBJ_TO_SCREEN_AT_FRACTION(text_Enabled,    0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 	SET_TEXT_WITH_OUTLINE("",                 text_Disabled,        OBJ_TO_SCREEN_AT_FRACTION(text_Disabled,   0.75), TEXT_TOUCH_SCREEN_INPUT_Y);
 #endif
+	SET_TEXT_WITH_OUTLINE("Keep on Close",    text_Keep_On_Close,   OBJ_TO_SCREEN_AT_FRACTION(text_Keep_On_Close, 0.75),  TEXT_KEEP_ON_CLOSE_Y);
+	SET_TEXT_WITH_OUTLINE("Reset on Close",   text_Reset_On_Close,  OBJ_TO_SCREEN_AT_FRACTION(text_Reset_On_Close, 0.75), TEXT_RESET_ON_CLOSE_Y);
 	/* Video Menu */
 #if !(defined(ANDROID) || defined(THREEDS))
 	SET_TEXT_WITH_OUTLINE("Resolution",       text_Resolution,       VIDEO_MENU_CURSOR_POSITION_X,         TEXT_RESOLUTION_Y);
@@ -896,6 +903,7 @@ int main(int argv, char** args) {
 				gridCursorIndex_y = 0;
 				setGridCursorByLargeX();
 				setGridCursorByLargeY();
+				savedMiniGridState = 1;
 				miniGridState = 0;
 				updateNumEmpty();
 				break;
@@ -1246,7 +1254,7 @@ int main(int argv, char** args) {
 						case 2:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1271,7 +1279,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1522,7 +1530,8 @@ int main(int argv, char** args) {
 				controlsMenuHandleVertCursorMovement();
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
-					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 1);
+					controlsMenuHandleVertCursorMovementMouse(text_Mini_Grid_Behavior, 1);
+					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 2);
 				}
 #endif
 				updateControlsMenuCursorPositionX();
@@ -1534,6 +1543,9 @@ int main(int argv, char** args) {
 							controlsSetConfirmBackPos();
 							break;
 						case 1:
+							addon142Settings.resetOnClose = !addon142Settings.resetOnClose;
+							break;
+						case 2:
 #if defined(WII)
 							wiimoteSchemeTempVal -= 1;
 							if (wiimoteSchemeTempVal < 0)
@@ -1549,10 +1561,12 @@ int main(int argv, char** args) {
 #if defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Mini_Grid_Behavior.rect, CONTROLS_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Touch_Screen_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
 #else
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
-					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)))) {
+					(mouseIsInRectWithSetting(text_Controller_Input.rect, CONTROLS_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Mini_Grid_Behavior.rect, CONTROLS_MENU_ENDPOINT)))) {
 #endif
 					switch (menuCursorIndex_controls) {
 						case 0:
@@ -1560,6 +1574,9 @@ int main(int argv, char** args) {
 							controlsSetConfirmBackPos();
 							break;
 						case 1:
+							addon142Settings.resetOnClose = !addon142Settings.resetOnClose;
+							break;
+						case 2:
 #if defined(WII)
 							wiimoteSchemeTempVal = (wiimoteSchemeTempVal + 1) % 3;
 #else
@@ -1573,6 +1590,7 @@ int main(int argv, char** args) {
 				renderLogo();
 				renderSprite(menuCursor);
 				renderText(&text_Controller_Input);
+				renderText(&text_Mini_Grid_Behavior);
 				renderText(&text_Touch_Screen_Input);
 				if (controlSettings.swapConfirmAndBack) {
 					renderText(&text_A_Confirm);
@@ -1602,6 +1620,11 @@ int main(int argv, char** args) {
 					renderText(&text_Disabled);
 				}
 #endif
+				if (addon142Settings.resetOnClose) {
+					renderText(&text_Reset_On_Close);
+				} else {
+					renderText(&text_Keep_On_Close);
+				}
 				break;
 			default:
 				break;
