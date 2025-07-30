@@ -530,19 +530,19 @@ int main(int argv, char** args) {
 	}
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default_2, BACKGROUND_MENU_CURSOR_POSITION_X,  TEXT_RESET_TO_DEFAULT_2_Y);
 	/* Debug Menu */
-	SET_TEXT_WITH_OUTLINE("Debug Menu", text_debug_Menu, OBJ_TO_MID_SCREEN_X(text_debug_Menu), gameHeight * 1 / 5);
+	SET_TEXT_WITH_OUTLINE("Seed Menu", text_debug_Menu, OBJ_TO_MID_SCREEN_X(text_debug_Menu), gameHeight * 1 / 5);
 	SET_TEXT_WITH_OUTLINE("Seed", text_debug_Seed, DEBUG_MENU_CURSOR_POSITION_X, TEXT_DEBUG_SEED_Y);
 	SET_TEXT_WITH_OUTLINE("Puzzle Type", text_debug_Puzzle_Type, DEBUG_MENU_CURSOR_POSITION_X, TEXT_DEBUG_GENERATE_PUZZLE_Y);
 	SET_TEXT_WITH_OUTLINE("Generated", text_debug_Generated, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_ON_Y);
 	SET_TEXT_WITH_OUTLINE("Premade", text_debug_Premade, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_OFF_Y);
 	if (!compactDisplay) {
 		SET_TEXT_WITH_OUTLINE("NOTE: May fail and fall back to using", text_debug_Warning_1, OBJ_TO_MID_SCREEN_X(text_debug_Warning_1), TEXT_DEBUG_WARNING_1_Y);
-		SET_TEXT_WITH_OUTLINE("a premade puzzle after 15 seconds", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
-		SET_TEXT_WITH_OUTLINE("on weak devices", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
+		SET_TEXT_WITH_OUTLINE("a premade puzzle after 15 seconds,", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
+		SET_TEXT_WITH_OUTLINE("especially on weak devices", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
 	} else {
 		SET_TEXT_WITH_OUTLINE("NOTE: May fail and fall back", text_debug_Warning_1, OBJ_TO_MID_SCREEN_X(text_debug_Warning_1), TEXT_DEBUG_WARNING_1_Y);
-		SET_TEXT_WITH_OUTLINE("to using premade puzzle after", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
-		SET_TEXT_WITH_OUTLINE("15 seconds on weak devices", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
+		SET_TEXT_WITH_OUTLINE("to using a premade puzzle", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
+		SET_TEXT_WITH_OUTLINE("after 15 seconds", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
 	}
 	/* Credits */
 	setCreditsText();
@@ -1466,9 +1466,9 @@ int main(int argv, char** args) {
 					puzzleSeed -= 100;
 				}
 				if (puzzleSeed < 0) {
-					puzzleSeed = 0;
-				} else if (puzzleSeed > 9999) {
-					puzzleSeed = 9999;
+					puzzleSeed += 100000;
+				} else if (puzzleSeed > 99999) {
+					puzzleSeed -= 100000;
 				}
 				if (keyPressed(INPUT_SWAP) || keyPressed(INPUT_SELECT)
 					|| (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInRectWithSetting(text_debug_Puzzle_Type.rect, text_debug_Generated.rect.x + text_debug_Generated.rect.w))) {
@@ -1553,10 +1553,11 @@ int main(int argv, char** args) {
 				renderText(&text_debug_Menu);
 				renderText(&text_debug_Seed);
 				i = 0;
-				setAndRenderNumHelper((puzzleSeed / 1000) % 10, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_SEED_Y, 0);
-				setAndRenderNumHelper((puzzleSeed / 100) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize / 2, TEXT_DEBUG_SEED_Y, 0);
-				setAndRenderNumHelper((puzzleSeed / 10) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize, TEXT_DEBUG_SEED_Y, 0);
-				setAndRenderNumHelper(puzzleSeed % 10, DEBUG_MENU_NUM_POSITION_X + fontSize * 3 / 2, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 10000) % 10, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 1000) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize / 2, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 100) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 10) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize * 3 / 2, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper(puzzleSeed % 10, DEBUG_MENU_NUM_POSITION_X + fontSize * 2, TEXT_DEBUG_SEED_Y, 0);
 				renderText(&text_debug_Puzzle_Type);
 				if (attemptGeneratedPuzzle) {
 					renderText(&text_debug_Generated);

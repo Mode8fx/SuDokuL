@@ -51,7 +51,7 @@ set OUTPUT_LINUX=%OUTPUT_DIR%-linux/SuDokuL
 
 :: Makefile: Gamecube
 set MAKEFILE_DKP_GC=%MAKEFILES_DKP%/Makefile_gc
-set OUTPUT_GC=%OUTPUT_DIR%-gamecube/SuDokuL/boot.dol
+set OUTPUT_GC=%OUTPUT_DIR%-gamecube/SuDokuL/SuDokuL.dol
 
 :: Makefile: Wii
 set MAKEFILE_DKP_WII=%MAKEFILES_DKP%/Makefile_wii
