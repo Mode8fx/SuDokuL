@@ -412,6 +412,21 @@ void gameHandleChangeSong() {
   }
 }
 
+Sint8 debugCheatArr[11] = { INPUT_UP, INPUT_UP, INPUT_UP, INPUT_DOWN, INPUT_DOWN, INPUT_DOWN, INPUT_LEFT, INPUT_RIGHT, INPUT_LEFT, INPUT_RIGHT, INPUT_LEFT };
+
+void gameHandleCheatDebugMenu() {
+  if (cheatDebugCounter < 11) {
+    if (keyPressed(debugCheatArr[cheatDebugCounter])) {
+      cheatDebugCounter += 1;
+      if (cheatDebugCounter >= 11) {
+        Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
+      }
+    } else if (keyInputs) {
+      cheatDebugCounter = 0;
+    }
+  }
+}
+
 inline Sint16 xAtMiniGridIndex(Sint8 index) {
   return (Sint16)(miniGrid_shared_2.rect.x + gridSizeD + ((index + 1) * gridSizeA3) + ((index + 1) * gridSizeB));
 }

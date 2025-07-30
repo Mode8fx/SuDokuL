@@ -179,25 +179,25 @@ Uint32 beginning;
 /* Generates player grid in grid and solution grid in solutionGrid, and stores
  * difficulty in difficulty.
  */
-Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff) {
+Uint8 generateGridAndSolution(Uint16 minDiff, Uint16 maxDiff, Uint32 s, Uint32 maxTimeout) {
 #if defined(WII) || defined(GAMECUBE) || defined(THREEDS)
     return 0; // Wii rarely crashes from trying to save a generated puzzle... for some reason
 #endif
-    seed = SDL_GetTicks();
+    seed = s;
     srand(seed);
     // If either step fails (it times out or an invalid puzzle is created), retry the entire process
-    // If the MAX_TIMEOUT has passed, give up and use a pre-generated puzzle
+    // If the maxTimeout has passed, give up and use a pre-generated puzzle
     beginning = SDL_GetTicks();
     while (true) {
         if (generateGrid_Backtracking() != 0) {
-            if (SDL_GetTicks() - beginning > MAX_TIMEOUT) {
+            if (SDL_GetTicks() - beginning > maxTimeout) {
                 return 0;
             }
             continue;
         }
         COPY_GRID(solutionGrid, grid);
         if (digHoles(minDiff, maxDiff) != 0) {
-            if (SDL_GetTicks() - beginning > MAX_TIMEOUT) {
+            if (SDL_GetTicks() - beginning > maxTimeout) {
                 return 0;
             }
             continue;

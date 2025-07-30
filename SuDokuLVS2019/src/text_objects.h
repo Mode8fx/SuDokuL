@@ -145,6 +145,14 @@ extern TextObject text_Scroll_Direction;
 extern TextObject text_Background_Size;
 extern TextObject text_Reset_to_Default_1;
 extern TextObject text_Reset_to_Default_2;
+extern TextObject text_debug_Menu;
+extern TextObject text_debug_Seed;
+extern TextObject text_debug_Puzzle_Type;
+extern TextObject text_debug_Generated;
+extern TextObject text_debug_Premade;
+extern TextObject text_debug_Warning_1;
+extern TextObject text_debug_Warning_2;
+extern TextObject text_debug_Warning_3;
 extern TextObject text_Controls_1;
 extern TextObject text_Controls_2a;
 extern TextObject text_Controls_2b;
@@ -390,6 +398,13 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
 #define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
 #define TEXT_RESET_TO_DEFAULT_1_Y         (text_menuChoice4)
+#define TEXT_DEBUG_SEED_Y								  (text_menuChoice1 - fontSize * 2)
+#define TEXT_DEBUG_GENERATE_PUZZLE_Y      (text_menuChoice1)
+#define TEXT_DEBUG_ON_Y                   (TEXT_DEBUG_GENERATE_PUZZLE_Y)
+#define TEXT_DEBUG_OFF_Y                  (TEXT_DEBUG_GENERATE_PUZZLE_Y)
+#define TEXT_DEBUG_WARNING_1_Y            (text_menuChoice3)
+#define TEXT_DEBUG_WARNING_2_Y            (text_menuChoice4)
+#define TEXT_DEBUG_WARNING_3_Y            (text_menuChoice5)
 #define CONTROLS_MENU_CURSOR_POSITION_X   (controlsMenuCursorPosition_X)
 #define VIDEO_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define VIDEO_MENU_NUM_POSITION_X         (videoMenuNumPosition_X)
@@ -397,6 +412,8 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define BACKGROUND_MENU_NUM_POSITION_X    (backgroundMenuNumPosition_X)
 #define SOUND_MENU_CURSOR_POSITION_X      (deepMenuCursorPosition_X)
 #define SOUND_MENU_NUM_POSITION_X         (backgroundMenuNumPosition_X) // shared with background
+#define DEBUG_MENU_CURSOR_POSITION_X      (gameWidth / 10)
+#define DEBUG_MENU_NUM_POSITION_X         (gameWidth * 3 / 5) // shared with background
 #define TEXT_A_CONFIRM_Y                  (text_menuChoice1 - CONTROLS_SPACER)
 #define TEXT_B_BACK_Y                     (text_menuChoice1 + CONTROLS_SPACER)
 #define TEXT_B_CONFIRM_Y                  (TEXT_A_CONFIRM_Y)

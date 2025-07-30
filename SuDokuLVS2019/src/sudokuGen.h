@@ -5,11 +5,10 @@
 
 constexpr auto BACKTRACKING_VAL = 100;
 constexpr auto TIMEOUT = 4000;
-constexpr auto MAX_TIMEOUT = 8000;
 
 //void test_main();
 //void test_PuzzleDifficulty();
-extern Uint8 generateGridAndSolution(Uint16, Uint16);
+extern Uint8 generateGridAndSolution(Uint16, Uint16, Uint32, Uint32);
 extern Uint8 generateGrid_Backtracking();
 extern Uint8 digHoles(Sint16, Sint16);
 extern Sint16 solvePuzzle(Sint16);

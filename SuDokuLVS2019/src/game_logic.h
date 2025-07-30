@@ -45,5 +45,6 @@ extern inline Sint16 yAtMiniGridIndex(Sint8);
 extern void gameHandleCheatRevealCell();
 extern void gameHandleCheatClearIncorrectCells();
 extern void gameHandleChangeSong();
+extern void gameHandleCheatDebugMenu();
 extern void drawSidebar();
 #endif

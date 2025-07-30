@@ -24,6 +24,7 @@ extern int mouseInput_y_last;
 extern Uint8 heldDirs;
 extern Sint8 cheat1Counter;
 extern Sint8 cheat2Counter;
+extern Sint8 cheatDebugCounter;
 extern Sint8 songChangeCounter;
 
 constexpr auto INPUT_UP          = (1 << 0);

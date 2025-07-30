@@ -18,6 +18,8 @@ bool showFPS = false;
 #if defined(THREEDS)
 bool useNew3DSClockSpeed = true;
 #endif
+Sint32 puzzleSeed;
+bool attemptGeneratedPuzzle = false;
 
 #if defined(EMSCRIPTEN)
 void mainloop() {
@@ -527,6 +529,21 @@ int main(int argv, char** args) {
 		SET_TEXT_WITH_OUTLINE("Scroll Dir.", text_Scroll_Direction, BACKGROUND_MENU_CURSOR_POSITION_X, TEXT_SCROLL_DIRECTION_Y);
 	}
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default_2, BACKGROUND_MENU_CURSOR_POSITION_X,  TEXT_RESET_TO_DEFAULT_2_Y);
+	/* Debug Menu */
+	SET_TEXT_WITH_OUTLINE("Debug Menu", text_debug_Menu, OBJ_TO_MID_SCREEN_X(text_debug_Menu), gameHeight * 1 / 5);
+	SET_TEXT_WITH_OUTLINE("Seed", text_debug_Seed, DEBUG_MENU_CURSOR_POSITION_X, TEXT_DEBUG_SEED_Y);
+	SET_TEXT_WITH_OUTLINE("Puzzle Type", text_debug_Puzzle_Type, DEBUG_MENU_CURSOR_POSITION_X, TEXT_DEBUG_GENERATE_PUZZLE_Y);
+	SET_TEXT_WITH_OUTLINE("Generated", text_debug_Generated, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_ON_Y);
+	SET_TEXT_WITH_OUTLINE("Premade", text_debug_Premade, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_OFF_Y);
+	if (!compactDisplay) {
+		SET_TEXT_WITH_OUTLINE("NOTE: May fail and fall back to using", text_debug_Warning_1, OBJ_TO_MID_SCREEN_X(text_debug_Warning_1), TEXT_DEBUG_WARNING_1_Y);
+		SET_TEXT_WITH_OUTLINE("a premade puzzle after 15 seconds", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
+		SET_TEXT_WITH_OUTLINE("on weak devices", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
+	} else {
+		SET_TEXT_WITH_OUTLINE("NOTE: May fail and fall back", text_debug_Warning_1, OBJ_TO_MID_SCREEN_X(text_debug_Warning_1), TEXT_DEBUG_WARNING_1_Y);
+		SET_TEXT_WITH_OUTLINE("to using premade puzzle after", text_debug_Warning_2, OBJ_TO_MID_SCREEN_X(text_debug_Warning_2), TEXT_DEBUG_WARNING_2_Y);
+		SET_TEXT_WITH_OUTLINE("15 seconds on weak devices", text_debug_Warning_3, OBJ_TO_MID_SCREEN_X(text_debug_Warning_3), TEXT_DEBUG_WARNING_3_Y);
+	}
 	/* Credits */
 	setCreditsText();
 
@@ -786,10 +803,16 @@ int main(int argv, char** args) {
 				} else {
 					menuHandleBackButton(2);
 				}
+				gameHandleCheatDebugMenu();
 				if (keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) && (mouseIsInRect(text_Easy.rect)
 					|| mouseIsInRect(text_Normal.rect) || mouseIsInRect(text_Hard.rect) || mouseIsInRect(text_Very_Hard.rect)))) {
 					isContinue = false;
-					programState = 8;
+					if (cheatDebugCounter >= 11) {
+						programState = 23;
+						time_anim_PressStart = 0;
+					} else {
+						programState = 8;
+					}
 				}
 				/* Draw Logo and Text */
 				renderLogo();
@@ -822,7 +845,7 @@ int main(int argv, char** args) {
 							ZERO_OUT_ARRAY(originalGrid);
 							ZERO_OUT_ARRAY(solutionGrid);
 							ZERO_OUT_ARRAY(miniGrid);
-							if (!generateGridAndSolution(RANDINT(30, 35), 52)) { // it will always be the minimum, hence the use of RANDINT
+							if (!generateGridAndSolution(RANDINT(30, 35), 52, SDL_GetTicks(), 8000)) { // it will always be the minimum, hence the use of RANDINT
 								setPremadePuzzle(0, RANDINT(0, 999));
 							}
 							timer_game.now = 0.0;
@@ -834,7 +857,7 @@ int main(int argv, char** args) {
 							ZERO_OUT_ARRAY(originalGrid);
 							ZERO_OUT_ARRAY(solutionGrid);
 							ZERO_OUT_ARRAY(miniGrid);
-							if (!generateGridAndSolution(RANDINT(50, 52), 75)) { // it will always be the minimum, hence the use of RANDINT
+							if (!generateGridAndSolution(RANDINT(50, 52), 75, SDL_GetTicks(), 8000)) { // it will always be the minimum, hence the use of RANDINT
 								setPremadePuzzle(1, RANDINT(0, 999));
 							}
 							timer_game.now = 0.0;
@@ -846,7 +869,7 @@ int main(int argv, char** args) {
 							ZERO_OUT_ARRAY(originalGrid);
 							ZERO_OUT_ARRAY(solutionGrid);
 							ZERO_OUT_ARRAY(miniGrid);
-							// generateGridAndSolution(75, 300); // requires backtracking
+							// generateGridAndSolution(75, 300, SDL_GetTicks(), 8000); // requires backtracking
 							setPremadePuzzle(2, RANDINT(0, 999));
 							timer_game.now = 0.0;
 							gameCompleted = false;
@@ -857,7 +880,7 @@ int main(int argv, char** args) {
 							ZERO_OUT_ARRAY(originalGrid);
 							ZERO_OUT_ARRAY(solutionGrid);
 							ZERO_OUT_ARRAY(miniGrid);
-							// generateGridAndSolution(300, 500); // requires more backtracking
+							// generateGridAndSolution(300, 500, SDL_GetTicks(), 8000); // requires more backtracking
 							setPremadePuzzle(3, RANDINT(0, 999));
 							timer_game.now = 0.0;
 							gameCompleted = false;
@@ -897,6 +920,7 @@ int main(int argv, char** args) {
 				savedMiniGridState = 1;
 				miniGridState = 0;
 				updateNumEmpty();
+				cheatDebugCounter = 0;
 				break;
 			/* 9 = Game */
 			case 9:
@@ -1422,6 +1446,125 @@ int main(int argv, char** args) {
 				renderText(&text_Music_Volume);
 				renderText(&text_SFX_Volume);
 				renderText(&text_Reset_to_Default_1);
+				break;
+			/* 23 = Debug Menu */
+			case 23:
+				time_anim_PressStart += deltaTime;
+#if defined(FUNKEY)
+				if (time_anim_PressStart >= 4.0) {
+					time_anim_PressStart -= 4.0;
+				}
+#endif
+				menuHandleBackButton(2);
+				if (keyPressed(INPUT_RIGHT)) {
+					puzzleSeed++;
+				} else if (keyPressed(INPUT_LEFT)) {
+					puzzleSeed--;
+				} else if (keyPressed(INPUT_UP)) {
+					puzzleSeed += 100;
+				} else if (keyPressed(INPUT_DOWN)) {
+					puzzleSeed -= 100;
+				}
+				if (puzzleSeed < 0) {
+					puzzleSeed = 0;
+				} else if (puzzleSeed > 9999) {
+					puzzleSeed = 9999;
+				}
+				if (keyPressed(INPUT_SWAP) || keyPressed(INPUT_SELECT)) {
+					attemptGeneratedPuzzle = !attemptGeneratedPuzzle;
+				}
+				if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM)) {
+					/* Draw Text */
+					renderText(&text_Loading);
+					renderBorderRects();
+					/* Update Screen */
+#if !defined(SDL1)
+					SDL_RenderPresent(renderer);
+#else
+					SDL_Flip(windowScreen);
+#endif
+					preparePauseTimer();
+					ZERO_OUT_ARRAY(grid);
+					ZERO_OUT_ARRAY(originalGrid);
+					ZERO_OUT_ARRAY(solutionGrid);
+					ZERO_OUT_ARRAY(miniGrid);
+					srand(puzzleSeed + 2000);
+					switch (menuCursorIndex_play) {
+						case 0:
+							if (!(attemptGeneratedPuzzle && generateGridAndSolution(RANDINT(30, 35), 52, puzzleSeed + 2000, 15000))) {
+								setPremadePuzzle(0, RANDINT(0, 999));
+							}
+							break;
+						case 1:
+							if (!(attemptGeneratedPuzzle && generateGridAndSolution(RANDINT(50, 52), 75, puzzleSeed + 2000, 15000))) {
+								setPremadePuzzle(1, RANDINT(0, 999));
+							}
+							break;
+						case 2:
+							if (!(attemptGeneratedPuzzle && generateGridAndSolution(75, 300, puzzleSeed + 2000, 15000))) {
+								setPremadePuzzle(2, RANDINT(0, 999));
+							}
+							break;
+						case 3:
+							if (!(attemptGeneratedPuzzle && generateGridAndSolution(300, 500, puzzleSeed + 2000, 15000))) {
+								setPremadePuzzle(3, RANDINT(0, 999));
+							}
+							break;
+						default:
+							break;
+					}
+					timer_game.now = 0.0;
+					gameCompleted = false;
+					programState = 9;
+					if (game_grid_2.texture) {
+						SDL_DestroyTexture(game_grid_2.texture);
+						game_grid_2.texture = NULL;
+					}
+					game_grid_2_blit = SDL_ConvertSurface(game_grid_2_clean, game_grid_2_clean->format, 0);
+					for (i = 0; i < 81; i++) {
+						if (originalGrid[i]) {
+							setTextPosX(&gridNums_black[int(originalGrid[i])], GRID_X_AT_COL(i % 9) + gridNums_black[int(originalGrid[i])].charOffset_x - gridPosX);
+							setTextPosY(&gridNums_black[int(originalGrid[i])], GRID_Y_AT_ROW(i / 9) + gridNums_black[int(originalGrid[i])].charOffset_y - gridPosY - game_grid_1.rect.h);
+#if defined(SDL1)
+							blitRGBAontoRGB24(gridNums_black[int(originalGrid[i])].texture, game_grid_2_blit, gridNums_black[int(originalGrid[i])].rect.x, gridNums_black[int(originalGrid[i])].rect.y);
+#else
+							SDL_BlitScaled(gridNums_black[int(originalGrid[i])].surface, NULL, game_grid_2_blit, &gridNums_black[int(originalGrid[i])].rect);
+#endif
+						}
+					}
+#if defined(SDL1)
+					game_grid_2.texture = game_grid_2_blit;
+#else
+					game_grid_2.texture = SDL_CreateTextureFromSurface(renderer, game_grid_2_blit);
+					SDL_FreeSurface(game_grid_2_blit);
+#endif
+					updatePauseTimer();
+					gridCursorIndex_x = 0;
+					gridCursorIndex_y = 0;
+					setGridCursorByLargeX();
+					setGridCursorByLargeY();
+					savedMiniGridState = 1;
+					miniGridState = 0;
+					updateNumEmpty();
+					cheatDebugCounter = 0;
+				}
+				text_debug_Menu.rect.y = (Sint16)(gameHeight / 5 - fontSize / 2 - SIN_WAVE(time_anim_PressStart, 2.0, text_pressStartAmplitude));
+				renderText(&text_debug_Menu);
+				renderText(&text_debug_Seed);
+				i = 0;
+				setAndRenderNumHelper((puzzleSeed / 1000) % 10, DEBUG_MENU_NUM_POSITION_X, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 100) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize / 2, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper((puzzleSeed / 10) % 10, DEBUG_MENU_NUM_POSITION_X + fontSize, TEXT_DEBUG_SEED_Y, 0);
+				setAndRenderNumHelper(puzzleSeed % 10, DEBUG_MENU_NUM_POSITION_X + fontSize * 3 / 2, TEXT_DEBUG_SEED_Y, 0);
+				renderText(&text_debug_Puzzle_Type);
+				if (attemptGeneratedPuzzle) {
+					renderText(&text_debug_Generated);
+					renderText(&text_debug_Warning_1);
+					renderText(&text_debug_Warning_2);
+					renderText(&text_debug_Warning_3);
+				} else {
+					renderText(&text_debug_Premade);
+				}
 				break;
 			/* 24 = Background Menu */
 			case 24:

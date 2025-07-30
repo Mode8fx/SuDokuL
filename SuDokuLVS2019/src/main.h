@@ -103,6 +103,7 @@ int mouseInput_y_last;
 Uint8 heldDirs;
 Sint8 cheat1Counter;
 Sint8 cheat2Counter;
+Sint8 cheatDebugCounter;
 Sint8 songChangeCounter;
 
 /* Menu Cursors */
@@ -252,6 +253,14 @@ TextObject text_Scroll_Direction;
 TextObject text_Background_Size;
 TextObject text_Reset_to_Default_1;
 TextObject text_Reset_to_Default_2;
+TextObject text_debug_Menu;
+TextObject text_debug_Seed;
+TextObject text_debug_Puzzle_Type;
+TextObject text_debug_Generated;
+TextObject text_debug_Premade;
+TextObject text_debug_Warning_1;
+TextObject text_debug_Warning_2;
+TextObject text_debug_Warning_3;
 TextObject text_Controls_1;
 TextObject text_Controls_2a;
 TextObject text_Controls_2b;

@@ -79,6 +79,7 @@ bool menuHandleBackButton(Uint8 state) {
         menuResetCursorPositions(state);
         reloadVideoSettings();
         changedProgramState = true;
+        cheatDebugCounter = 0;
         return true;
     }
     return false;
