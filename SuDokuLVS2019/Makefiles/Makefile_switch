@@ -46,7 +46,7 @@ INCLUDES	:=	src src/fonts_include src/graphics_include/all_res src/graphics_incl
 
 APP_TITLE   := SuDokuL
 APP_AUTHOR  := Mode8fx
-APP_VERSION := 1.4
+APP_VERSION := 1.42
 ICON        := logo_icon_switch.jpg
 
 #---------------------------------------------------------------------------------

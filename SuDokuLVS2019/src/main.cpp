@@ -1470,7 +1470,8 @@ int main(int argv, char** args) {
 				} else if (puzzleSeed > 9999) {
 					puzzleSeed = 9999;
 				}
-				if (keyPressed(INPUT_SWAP) || keyPressed(INPUT_SELECT)) {
+				if (keyPressed(INPUT_SWAP) || keyPressed(INPUT_SELECT)
+					|| (keyPressed(INPUT_CONFIRM_ALT) && mouseIsInRectWithSetting(text_debug_Puzzle_Type.rect, text_debug_Generated.rect.x + text_debug_Generated.rect.w))) {
 					attemptGeneratedPuzzle = !attemptGeneratedPuzzle;
 				}
 				if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM)) {
