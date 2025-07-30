@@ -1671,12 +1671,14 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-#if defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
 				controlsMenuHandleVertCursorMovement();
+#if defined(MOUSE_INPUT)
 				if (mouseMoved()) {
 					controlsMenuHandleVertCursorMovementMouse(text_Controller_Input, 0);
 					controlsMenuHandleVertCursorMovementMouse(text_Mini_Grid_Behavior, 1);
+#if !(defined(ANDROID) || defined(THREEDS))
 					controlsMenuHandleVertCursorMovementMouse(text_Touch_Screen_Input, 2);
+#endif
 				}
 #endif
 				updateControlsMenuCursorPositionX();

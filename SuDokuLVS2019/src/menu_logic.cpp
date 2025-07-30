@@ -150,14 +150,20 @@ void menuHandleVertCursorMovement(Sint8 &cursor, Uint8 numOptions, Uint8 numSkip
     }
 }
 
+#if defined(MOUSE_INPUT) && !(defined(ANDROID) || defined(THREEDS))
+#define CONTROLS_MENU_NUM_OPTIONS 3
+#else
+#define CONTROLS_MENU_NUM_OPTIONS 2
+#endif
+
 void controlsMenuHandleVertCursorMovement() {
     if (keyPressed(INPUT_DOWN)) {
-        menuCursorIndex_controls = (menuCursorIndex_controls + 1) % 3;
+        menuCursorIndex_controls = (menuCursorIndex_controls + 1) % CONTROLS_MENU_NUM_OPTIONS;
         updateControlsMenuCursorPositionY();
     }
     if (keyPressed(INPUT_UP)) {
         if (--menuCursorIndex_controls < 0)
-            menuCursorIndex_controls = 2;
+            menuCursorIndex_controls = (CONTROLS_MENU_NUM_OPTIONS - 1);
         updateControlsMenuCursorPositionY();
     }
 }
