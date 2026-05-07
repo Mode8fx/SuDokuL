@@ -306,7 +306,9 @@ void setGridNum(Sint8 index, Sint8 num) {
     grid[index] = num;
     updateNumEmpty();
     checkForVictory();
-    savedMiniGridState = miniGridState;
+    if (miniGridState > 0) {
+      savedMiniGridState = miniGridState;
+    }
     miniGridState = 0;
     setGridCursorByLargeX();
     setGridCursorByLargeY();
