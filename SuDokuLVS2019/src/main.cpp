@@ -587,11 +587,6 @@ int main(int argv, char** args) {
 			timer_buttonHold = 0;
 			timer_buttonHold_repeater = 0;
 		}
-#if defined(SDL1)
-		SDL_FillRect(windowScreen, NULL, 0x000000);
-#else
-		SDL_RenderClear(renderer);
-#endif
 
 		handlePlayerInput();
 

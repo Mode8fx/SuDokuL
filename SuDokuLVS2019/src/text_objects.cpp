@@ -48,24 +48,24 @@ void initMenuOptionPositions(TextObject *textObj) {
 }
 
 void renderText(TextObject *textObj) {
-	STRCPY(tempCharArray, textObj->str.c_str());
 	Uint16 charWidthCounter = 0;
 	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		setTextPosX(&CHAR_AT_INDEX(charCounter), (textObj->rect.x + charWidthCounter));
-		setTextPosY(&CHAR_AT_INDEX(charCounter), textObj->rect.y);
-		renderTextChar(&textChars[tempCharArray[charCounter]]);
-		charWidthCounter += CHAR_AT_INDEX(charCounter).charWidth;
+		Uint8 charIndex = static_cast<Uint8>(textObj->str[charCounter]);
+		setTextPosX(&textChars[charIndex], (textObj->rect.x + charWidthCounter));
+		setTextPosY(&textChars[charIndex], textObj->rect.y);
+		renderTextChar(&textChars[charIndex]);
+		charWidthCounter += textChars[charIndex].charWidth;
 	}
 }
 
 void renderTextLarge(TextObject *textObj) {
-	STRCPY(tempCharArray, textObj->str.c_str());
 	Uint16 charWidthCounter = 0;
 	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		setTextPosX(&CHAR_AT_INDEX_LARGE(charCounter), (textObj->rect.x + charWidthCounter));
-		setTextPosY(&CHAR_AT_INDEX_LARGE(charCounter), textObj->rect.y);
-		renderTextChar(&textChars_large[tempCharArray[charCounter]]);
-		charWidthCounter += CHAR_AT_INDEX_LARGE(charCounter).charWidth;
+		Uint8 charIndex = static_cast<Uint8>(textObj->str[charCounter]);
+		setTextPosX(&textChars_large[charIndex], (textObj->rect.x + charWidthCounter));
+		setTextPosY(&textChars_large[charIndex], textObj->rect.y);
+		renderTextChar(&textChars_large[charIndex]);
+		charWidthCounter += textChars_large[charIndex].charWidth;
 	}
 }
 

@@ -503,16 +503,12 @@ void renderBackground() {
 	bgScroll.speedStep_y_int = static_cast<int>(floor(bgScroll.speedStep_y)) % tile->rect.w;
 	int start_x = -tile->rect.w + bgScroll.speedStep_x_int;
 	int start_y = -tile->rect.h + bgScroll.speedStep_y_int;
+	SDL_Rect outputRect = tile->rect;
 	for (int j = start_y; j <= bgScroll.final_y; j += tile->rect.h) {
 		for (int i = start_x; i <= bgScroll.final_x; i += tile->rect.w) {
-#if defined(SDL1)
-			SDL_Rect outputRect = { i, j, tile->rect.w, tile->rect.h };
+			outputRect.x = i;
+			outputRect.y = j;
 			SDL_RenderCopy(renderer, tile->texture, NULL, &outputRect);
-#else
-			tile->rect.x = i;
-			tile->rect.y = j;
-			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
-#endif
 		}
 	}
 }
@@ -524,19 +520,15 @@ void renderBackgroundNotBehindGrid() {
 	bgScroll.speedStep_y_int = static_cast<int>(floor(bgScroll.speedStep_y)) % tile->rect.w;
 	int start_x = -tile->rect.w + bgScroll.speedStep_x_int;
 	int start_y = -tile->rect.h + bgScroll.speedStep_y_int;
+	SDL_Rect outputRect = tile->rect;
 	for (int j = start_y; j <= bgScroll.final_y; j += tile->rect.h) {
 		for (int i = start_x; i <= bgScroll.final_x; i += tile->rect.w) {
 			if (i >= game_grid_2.rect.x && i <= bg_max_x && j >= game_grid_2.rect.y && j <= bg_max_y) {
 				continue;
 			}
-#if defined(SDL1)
-			SDL_Rect outputRect = { i, j, tile->rect.w, tile->rect.h };
+			outputRect.x = i;
+			outputRect.y = j;
 			SDL_RenderCopy(renderer, tile->texture, NULL, &outputRect);
-#else
-			tile->rect.x = i;
-			tile->rect.y = j;
-			SDL_RenderCopy(renderer, tile->texture, NULL, &tile->rect);
-#endif
 		}
 	}
 }
