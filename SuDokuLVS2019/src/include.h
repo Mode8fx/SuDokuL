@@ -49,8 +49,6 @@
 #include <ogc/pad.h>
 #include <dirent.h>
 #include <fat.h>
-#include <sys/stat.h>
-#include <sdcard/gcsd.h>
 #elif defined(THREEDS)
 #include <3ds.h>
 #include <sys/stat.h>
