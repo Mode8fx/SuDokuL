@@ -231,9 +231,6 @@
     <ClCompile Include="src\graphics_include\all_res\grid_mini_3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\aesnd_compat.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
