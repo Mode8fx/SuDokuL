@@ -34,12 +34,12 @@ INCLUDES	:=	src src/fonts_include src/graphics_include/all_res src/graphics_incl
 CFLAGS	= `$(PREFIX)pkg-config --cflags sdl2 SDL2_ttf SDL2_gfx SDL2_mixer SDL2_image` -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DGAMECUBE -DCONSOLE
 CXXFLAGS	=	$(CFLAGS)
 
-LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map -Wl,--wrap=AESND_SetVoiceFrequency
+LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	`$(PREFIX)pkg-config --libs sdl2 SDL2_ttf SDL2_gfx SDL2_mixer SDL2_image` -lfat -laesnd -logc -lm
+LIBS	:=	`$(PREFIX)pkg-config --libs sdl2 SDL2_ttf SDL2_gfx SDL2_mixer SDL2_image` -lfat -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
