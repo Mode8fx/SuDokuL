@@ -49,11 +49,12 @@ void initMenuOptionPositions(TextObject *textObj) {
 
 void renderText(TextObject *textObj) {
 	const std::string &text = textObj->str;
+	const unsigned char *chars = reinterpret_cast<const unsigned char*>(text.c_str());
 	const Uint8 charCount = static_cast<Uint8>(text.length());
 	Sint16 pos_x = static_cast<Sint16>(textObj->rect.x);
 	const Sint16 pos_y = static_cast<Sint16>(textObj->rect.y);
 	for (Uint8 charCounter = 0; charCounter < charCount; charCounter++) {
-		TextCharObject *currChar = &textChars[static_cast<Uint8>(text[charCounter])];
+		TextCharObject *currChar = &textChars[chars[charCounter]];
 		currChar->rect.x = pos_x;
 		currChar->rect.y = pos_y;
 		renderTextChar(currChar);
@@ -63,11 +64,12 @@ void renderText(TextObject *textObj) {
 
 void renderTextLarge(TextObject *textObj) {
 	const std::string &text = textObj->str;
+	const unsigned char *chars = reinterpret_cast<const unsigned char*>(text.c_str());
 	const Uint8 charCount = static_cast<Uint8>(text.length());
 	Sint16 pos_x = static_cast<Sint16>(textObj->rect.x);
 	const Sint16 pos_y = static_cast<Sint16>(textObj->rect.y);
 	for (Uint8 charCounter = 0; charCounter < charCount; charCounter++) {
-		TextCharObject *currChar = &textChars_large[static_cast<Uint8>(text[charCounter])];
+		TextCharObject *currChar = &textChars_large[chars[charCounter]];
 		currChar->rect.x = pos_x;
 		currChar->rect.y = pos_y;
 		renderTextChar(currChar);
@@ -408,8 +410,9 @@ void setAndRenderNumGridMainNormal(TextCharObject *textNumsObj, Uint8 num, Sint8
 }
 
 void setAndRenderNumGridMainMini(TextCharObject *textNumsObj, Uint8 num, Sint8 index) {
-	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + static_cast<int>(gameHeightMult));
-	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (Sint16)(((num - 1) / 3) * gridSizeA) + static_cast<int>(gameHeightMult));
+	const Sint16 gameHeightOffset = static_cast<Sint16>(gameHeightMult);
+	setTextPosX(&textNumsObj[num], GRID_X_AT_COL(index % 9) + (Sint16)(((num - 1) % 3) * gridSizeA) + gameHeightOffset);
+	setTextPosY(&textNumsObj[num], GRID_Y_AT_ROW(index / 9) + (Sint16)(((num - 1) / 3) * gridSizeA) + gameHeightOffset);
 	renderTextCharIgnoreOffset(&textNumsObj[num]);
 }
 
