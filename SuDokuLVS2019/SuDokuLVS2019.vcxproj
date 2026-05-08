@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\aesnd_compat.c" />
     <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\fonts_include\Commodore_Pixelized_v1_2.cpp" />
     <ClCompile Include="src\game_logic.cpp" />
