@@ -48,24 +48,30 @@ void initMenuOptionPositions(TextObject *textObj) {
 }
 
 void renderText(TextObject *textObj) {
-	Uint16 charWidthCounter = 0;
-	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		Uint8 charIndex = static_cast<Uint8>(textObj->str[charCounter]);
-		setTextPosX(&textChars[charIndex], (textObj->rect.x + charWidthCounter));
-		setTextPosY(&textChars[charIndex], textObj->rect.y);
-		renderTextChar(&textChars[charIndex]);
-		charWidthCounter += textChars[charIndex].charWidth;
+	const std::string &text = textObj->str;
+	const Uint8 charCount = static_cast<Uint8>(text.length());
+	Sint16 pos_x = static_cast<Sint16>(textObj->rect.x);
+	const Sint16 pos_y = static_cast<Sint16>(textObj->rect.y);
+	for (Uint8 charCounter = 0; charCounter < charCount; charCounter++) {
+		TextCharObject *currChar = &textChars[static_cast<Uint8>(text[charCounter])];
+		currChar->rect.x = pos_x;
+		currChar->rect.y = pos_y;
+		renderTextChar(currChar);
+		pos_x += currChar->charWidth;
 	}
 }
 
 void renderTextLarge(TextObject *textObj) {
-	Uint16 charWidthCounter = 0;
-	for (Uint8 charCounter = 0; charCounter < textObj->str.length(); charCounter++) {
-		Uint8 charIndex = static_cast<Uint8>(textObj->str[charCounter]);
-		setTextPosX(&textChars_large[charIndex], (textObj->rect.x + charWidthCounter));
-		setTextPosY(&textChars_large[charIndex], textObj->rect.y);
-		renderTextChar(&textChars_large[charIndex]);
-		charWidthCounter += textChars_large[charIndex].charWidth;
+	const std::string &text = textObj->str;
+	const Uint8 charCount = static_cast<Uint8>(text.length());
+	Sint16 pos_x = static_cast<Sint16>(textObj->rect.x);
+	const Sint16 pos_y = static_cast<Sint16>(textObj->rect.y);
+	for (Uint8 charCounter = 0; charCounter < charCount; charCounter++) {
+		TextCharObject *currChar = &textChars_large[static_cast<Uint8>(text[charCounter])];
+		currChar->rect.x = pos_x;
+		currChar->rect.y = pos_y;
+		renderTextChar(currChar);
+		pos_x += currChar->charWidth;
 	}
 }
 

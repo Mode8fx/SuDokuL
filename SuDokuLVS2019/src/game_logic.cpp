@@ -303,9 +303,11 @@ inline bool clickedOutsideMiniGrid() {
 }
 
 void setGridNum(Sint8 index, Sint8 num) {
-    grid[index] = num;
-    updateNumEmpty();
-    checkForVictory();
+    if (grid[index] != num) {
+        grid[index] = num;
+        updateNumEmpty();
+        checkForVictory();
+    }
     if (miniGridState > 0) {
       savedMiniGridState = miniGridState;
     }
@@ -456,6 +458,8 @@ void drawSidebar() {
   Sint16 pos_y_s1 = text_Time.rect.y + (gameSidebarSmall1Rect.h / 2) - fontSize;
   Sint16 pos_x_left_s2 = gameSidebarSmall2Rect.x + (gameSidebarSmall2Rect.w * 23 / 64) + fontForceOffset1;
   Sint16 pos_y_s2 = text_Empty.rect.y + (gameSidebarSmall2Rect.h / 2) - fontSize;
+  Sint16 elapsedSeconds = (Sint16)timer_game.now;
+  Sint16 emptyCount = (Sint16)numEmpty;
   // In SDL1, the y-coordinate gets reset to 0 if it's offscreen... for some reason
   SDL_Rect tempRect = gameSidebarSmall1Rect_2;
   SDL_RenderCopy(renderer, game_sidebar_small_2.texture, &game_sidebar_small_2.srcRect, &tempRect);
@@ -473,15 +477,15 @@ void drawSidebar() {
   }
   i = 0;
   renderText(&text_Time);
-  setAndRenderNumHelper((int(timer_game.now) / 600), pos_x_left_s1, pos_y_s1, 0);
-  setAndRenderNumHelper(((int(timer_game.now) / 60) % 10), pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper(elapsedSeconds / 600, pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper((elapsedSeconds / 60) % 10, pos_x_left_s1, pos_y_s1, 0);
   setAndRenderColon(pos_x_left_s1, pos_y_s1);
-  setAndRenderNumHelper(((int(timer_game.now) % 60) / 10), pos_x_left_s1, pos_y_s1, 0);
-  setAndRenderNumHelper((int(timer_game.now) % 10), pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper((elapsedSeconds % 60) / 10, pos_x_left_s1, pos_y_s1, 0);
+  setAndRenderNumHelper(elapsedSeconds % 10, pos_x_left_s1, pos_y_s1, 0);
   i = 0;
   renderText(&text_Empty);
-  setAndRenderNumHelper(int(numEmpty) / 10, pos_x_left_s2, pos_y_s2, 0);
-  setAndRenderNumHelper(int(numEmpty) % 10, pos_x_left_s2, pos_y_s2, 0);
+  setAndRenderNumHelper(emptyCount / 10, pos_x_left_s2, pos_y_s2, 0);
+  setAndRenderNumHelper(emptyCount % 10, pos_x_left_s2, pos_y_s2, 0);
   switch (menuCursorIndex_play) {
   case 0:
     renderText(&text_Game_Easy);
