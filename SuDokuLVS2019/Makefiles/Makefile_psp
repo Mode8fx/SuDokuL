@@ -41,8 +41,8 @@ LDFLAGS =
 LIBS = \
   -lSDL2main -lSDL2 \
   -lSDL2_image -ljpeg -lpng16 -lz \
-  -lSDL2_ttf -lfreetype -lbz2 \
-  -lSDL2_mixer -lxmp-lite -lvorbisfile -lvorbis -logg \
+  -lSDL2_ttf -lharfbuzz -lfreetype -lbz2 \
+  -lSDL2_mixer -lmodplug -lxmp-lite -lvorbisfile -lvorbis -logg \
   -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge \
   -lpsphprm -lpspctrl -lpsppower \
   -lm -lstdc++
