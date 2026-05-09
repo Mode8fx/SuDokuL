@@ -1815,7 +1815,7 @@ int main(int argv, char** args) {
 #endif
 
 		/* Cap Framerate */
-#if defined(SDL1)
+#if defined(SDL1) || defined(THREEDS)
 		if (true) {
 #else
 		if (frameRate < displayRefreshRate) {
