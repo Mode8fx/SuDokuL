@@ -1138,12 +1138,6 @@ int main(int argv, char** args) {
 						if (buttonHeld(INPUT_LEFT) && keyPressed(INPUT_SWAP)) {
 							showFPS = !showFPS;
 						}
-#if defined(THREEDS)
-						if (buttonHeld(INPUT_DOWN) && buttonHeld(INPUT_RIGHT) && keyPressed(INPUT_SWAP)) {
-							useNew3DSClockSpeed = !useNew3DSClockSpeed;
-							osSetSpeedupEnable(useNew3DSClockSpeed);
-						}
-#endif
 						renderCreditsTextPage1();
 						break;
 					case 1:
@@ -1169,6 +1163,12 @@ int main(int argv, char** args) {
 						break;
 					case 8:
 						renderCreditsTextPage9();
+#if defined(THREEDS)
+						if (buttonHeld(INPUT_DOWN) && buttonHeld(INPUT_RIGHT) && keyPressed(INPUT_SWAP)) {
+							useNew3DSClockSpeed = !useNew3DSClockSpeed;
+							osSetSpeedupEnable(useNew3DSClockSpeed);
+						}
+#endif
 						break;
 					default:
 						break;
