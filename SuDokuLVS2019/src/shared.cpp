@@ -33,6 +33,8 @@ string rootDir;
 
 Sint64 seekPos;
 
+Uint32 lastSongChangeTicks = 0;
+
 string getExeDirectory() {
 #if defined(_WIN32) || defined(LINUX)
 	char buffer[MAX_PATH];
@@ -198,6 +200,18 @@ bool shouldContinue() {
 		return !gameCompleted;
 	}
 	return false;
+}
+
+void saveCurrentSettingsIfNotRecentSongChange() {
+#if !defined(WII_U)
+	if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
+		Uint32 now = SDL_GetTicks();
+		if (lastSongChangeTicks == 0 || (now - lastSongChangeTicks) >= 150) {
+			saveCurrentSettings();
+		}
+		lastSongChangeTicks = now;
+	}
+#endif
 }
 
 void initDefaultBGScale() {

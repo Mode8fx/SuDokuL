@@ -603,20 +603,12 @@ int main(int argv, char** args) {
 			sdlToggleFullscreen();
 		}
 		if (keyPressed(INPUT_PREV_TRACK) && wentPastTitleScreen) {
-#if !defined(WII_U) // SDL2 counts the "Close Software" button as pressing L for... some reason
-			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
-				saveCurrentSettings();
-			}
-#endif
 			advanceMusicTrack(false);
+			saveCurrentSettingsIfNotRecentSongChange();
 		}
 		if (keyPressed(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
-#if !defined(WII_U) // SDL2 counts the "Close Software" button as pressing L for... some reason
-			if (programState != 20) {
-				saveCurrentSettings();
-			}
-#endif
 			advanceMusicTrack(true);
+			saveCurrentSettingsIfNotRecentSongChange();
 		}
 		if (wentPastTitleScreen && updateMusicPlayback() && programState != 20) {
 			saveCurrentSettings();

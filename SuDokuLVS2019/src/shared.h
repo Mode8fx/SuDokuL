@@ -9,6 +9,8 @@ extern FILE _iob[];
 extern "C" FILE * __cdecl __iob_func(void);
 #endif
 
+extern Uint32 lastSongChangeTicks;
+
 #if defined(WII)
 #define wiimoteScheme enableTouchscreen
 #endif
@@ -200,6 +202,7 @@ extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint1
 extern void loadSavedPuzzle();
 extern void savePuzzle();
 extern bool shouldContinue();
+extern void saveCurrentSettingsIfNotRecentSongChange();
 extern void initDefaultBGScale();
 extern void initDefaultFrameRate();
 extern void initDefaultWindowedSetting();
