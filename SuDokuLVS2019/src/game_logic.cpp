@@ -401,10 +401,7 @@ void gameHandleChangeSong() {
   if (keyPressed(INPUT_CONFIRM_ALT)) {
     if (clickedInRect(&gameSidebarSmall3Rect)) {
       if (++songChangeCounter >= 3) {
-        if (++soundSettings.musicIndex > 8) {
-          soundSettings.musicIndex = 1;
-        }
-        playMusicAtIndex(soundSettings.musicIndex);
+        advanceMusicTrack(true);
         if (programState != 20) {
           saveCurrentSettings();
         }

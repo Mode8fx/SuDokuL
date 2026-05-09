@@ -137,8 +137,12 @@ extern TextObject text_On;
 extern TextObject text_Off;
 extern TextObject text_Apply;
 extern TextObject text_Music;
+extern TextObject text_Music_Mode;
 extern TextObject text_Music_Volume;
 extern TextObject text_SFX_Volume;
+extern TextObject text_Loop;
+extern TextObject text_In_Order;
+extern TextObject text_Random;
 extern TextObject text_Background_Type;
 extern TextObject text_Scroll_Speed;
 extern TextObject text_Scroll_Direction;
@@ -395,9 +399,10 @@ extern Uint16 backgroundMenuNumPosition_X;
 #define TEXT_SCROLL_DIRECTION_Y           (text_menuChoice4)
 #define TEXT_RESET_TO_DEFAULT_2_Y         (text_menuChoice5)
 #define TEXT_MUSIC_Y                      (text_menuChoice1)
-#define TEXT_MUSIC_VOLUME_Y               (text_menuChoice2)
-#define TEXT_SFX_VOLUME_Y                 (text_menuChoice3)
-#define TEXT_RESET_TO_DEFAULT_1_Y         (text_menuChoice4)
+#define TEXT_MUSIC_MODE_Y                 (text_menuChoice2)
+#define TEXT_MUSIC_VOLUME_Y               (text_menuChoice3)
+#define TEXT_SFX_VOLUME_Y                 (text_menuChoice4)
+#define TEXT_RESET_TO_DEFAULT_1_Y         (text_menuChoice5)
 #define TEXT_DEBUG_SEED_Y								  (text_menuChoice1 - fontSize * 2)
 #define TEXT_DEBUG_GENERATE_PUZZLE_Y      (text_menuChoice1)
 #define TEXT_DEBUG_ON_Y                   (TEXT_DEBUG_GENERATE_PUZZLE_Y)
@@ -427,7 +432,7 @@ constexpr auto BASE_FONT_SIZE =           20; // default font size (480 / 24)
 #define TEXT_GAME_VHARD_Y                 (TEXT_GAME_EASY_Y)
 #define TEXT_YOU_WIN_Y                    ((game_grid_1.rect.y + game_grid_1.rect.h + game_grid_2.rect.h + game_grid_3.rect.h + gameHeight - fontSize) / 2)
 #define CONTROLS_MENU_ENDPOINT            (text_A_Confirm.rect.x + text_A_Confirm.rect.w)
-#define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (fontSize * 2))
+#define SOUND_MENU_ENDPOINT               (SOUND_MENU_NUM_POSITION_X + (fontSize * 5))
 #define BACKGROUND_MENU_ENDPOINT          (BACKGROUND_MENU_NUM_POSITION_X + (fontSize * 3))
 
 extern void initStartingTextVariables();
@@ -444,6 +449,7 @@ extern void setAndRenderNumThreeDigitCentered(Sint16, Sint16, Sint16);
 extern void setAndRenderNumResolution(Sint16, Sint16, Sint16, Sint16);
 extern void renderAspectRatioChoice();
 extern void renderFrameRateChoice();
+extern void renderMusicModeChoice();
 extern void setAndRenderNumAspectRatio4_3(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_9(Sint16, Sint16);
 extern void setAndRenderNumAspectRatio16_10(Sint16, Sint16);

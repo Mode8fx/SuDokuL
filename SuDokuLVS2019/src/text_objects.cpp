@@ -1,4 +1,5 @@
 #include "text_objects.h"
+#include "sound_logic.h"
 #include "general.h"
 #include "shared.h"
 #include "window.h"
@@ -368,6 +369,20 @@ void renderFrameRateChoice() {
 			break;
 		default:
 			renderText(&text_Frame_Rate_Uncapped);
+			break;
+	}
+}
+
+void renderMusicModeChoice() {
+	switch (addon144Settings.musicMode) {
+		case MUSIC_MODE_IN_ORDER:
+			renderText(&text_In_Order);
+			break;
+		case MUSIC_MODE_RANDOM:
+			renderText(&text_Random);
+			break;
+		default:
+			renderText(&text_Loop);
 			break;
 	}
 }

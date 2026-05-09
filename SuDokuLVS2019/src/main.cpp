@@ -91,6 +91,7 @@ int main(int argv, char** args) {
 
 	/* Get settings from settings.bin */
 	loadSettingsFile();
+	normalizeMusicSettings();
 	/* Set Video Settings */
 #if !defined(ANDROID)
 	switch (videoSettings.aspectRatioIndex) {
@@ -520,8 +521,15 @@ int main(int argv, char** args) {
 #endif
 	/* Music Menu */
 	SET_TEXT_WITH_OUTLINE("Music",            text_Music,            SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_Y);
+	SET_TEXT_WITH_OUTLINE("Music Mode",       text_Music_Mode,       SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_MODE_Y);
 	SET_TEXT_WITH_OUTLINE("Music Volume",     text_Music_Volume,     SOUND_MENU_CURSOR_POSITION_X,         TEXT_MUSIC_VOLUME_Y);
 	SET_TEXT_WITH_OUTLINE("SFX Volume",       text_SFX_Volume,       SOUND_MENU_CURSOR_POSITION_X,         TEXT_SFX_VOLUME_Y);
+	SET_TEXT_WITH_OUTLINE("Loop",             text_Loop,             SOUND_MENU_NUM_POSITION_X,            TEXT_MUSIC_MODE_Y);
+	SET_TEXT_WITH_OUTLINE("Order",            text_In_Order,         SOUND_MENU_NUM_POSITION_X,            TEXT_MUSIC_MODE_Y);
+	SET_TEXT_WITH_OUTLINE("Shuffle",          text_Random,           SOUND_MENU_NUM_POSITION_X,            TEXT_MUSIC_MODE_Y);
+	text_Loop.rect.x = (Sint16)(SOUND_MENU_NUM_POSITION_X + ((fontSize * 3) / 2) - (text_Loop.rect.w / 2));
+	text_In_Order.rect.x = (Sint16)(SOUND_MENU_NUM_POSITION_X + ((fontSize * 3) / 2) - (text_In_Order.rect.w / 2));
+	text_Random.rect.x = (Sint16)(SOUND_MENU_NUM_POSITION_X + ((fontSize * 3) / 2) - (text_Random.rect.w / 2));
 	SET_TEXT_WITH_OUTLINE("Reset To Default", text_Reset_to_Default_1, SOUND_MENU_CURSOR_POSITION_X,       TEXT_RESET_TO_DEFAULT_1_Y);
 	/* Background Menu */
 	SET_TEXT_WITH_OUTLINE("Type",             text_Background_Type,  BACKGROUND_MENU_CURSOR_POSITION_X,    TEXT_BACKGROUND_TYPE_Y);
@@ -595,24 +603,23 @@ int main(int argv, char** args) {
 			sdlToggleFullscreen();
 		}
 		if (keyPressed(INPUT_PREV_TRACK) && wentPastTitleScreen) {
-			if (--soundSettings.musicIndex < 1)
-				soundSettings.musicIndex = 8;
-			playMusicAtIndex(soundSettings.musicIndex);
 #if !defined(WII_U) // SDL2 counts the "Close Software" button as pressing L for... some reason
 			if (programState != 20) { // If you save in the Video settings menu, possible undesired video settings would also be saved (this could be fixed, but it's just not worth the trouble for such a small issue)
 				saveCurrentSettings();
 			}
 #endif
+			advanceMusicTrack(false);
 		}
 		if (keyPressed(INPUT_NEXT_TRACK) && wentPastTitleScreen) {
-			if (++soundSettings.musicIndex > 8)
-				soundSettings.musicIndex = 1;
-			playMusicAtIndex(soundSettings.musicIndex);
 #if !defined(WII_U) // SDL2 counts the "Close Software" button as pressing L for... some reason
 			if (programState != 20) {
 				saveCurrentSettings();
 			}
 #endif
+			advanceMusicTrack(true);
+		}
+		if (wentPastTitleScreen && updateMusicPlayback() && programState != 20) {
+			saveCurrentSettings();
 		}
 
 		if (windowSizeChanged) {
@@ -654,7 +661,14 @@ int main(int argv, char** args) {
 					Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
 					if (!wentPastTitleScreen) {
 						wentPastTitleScreen = true;
-						playMusicAtIndex(soundSettings.musicIndex);
+						if (addon144Settings.musicMode == MUSIC_MODE_RANDOM) {
+							srand(SDL_GetTicks() + soundSettings.musicIndex);
+							fillRandomMusicBag(false);
+							advanceMusicTrack(true);
+							clearRandomMusicSequence();
+						} else {
+							playMusicAtIndex(soundSettings.musicIndex);
+						}
 					}
 					time_anim1 = 0;
 					programState = 1;
@@ -1277,7 +1291,7 @@ int main(int argv, char** args) {
 						case 2:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose, addon144Settings.musicMode);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1302,7 +1316,7 @@ int main(int argv, char** args) {
 						case 3:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
 								if (settingsFile == NULL) {
-									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose);
+									initializeSettingsFileWithSettings(controlSettings.swapConfirmAndBack, controlSettings.enableTouchscreen, 1, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume, bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale, addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose, addon144Settings.musicMode);
 								} else {
 									saveCurrentSettings();
 								}
@@ -1361,12 +1375,13 @@ int main(int argv, char** args) {
 					changedProgramState = false;
 				}
 				/* Key Presses + Animate Cursor */
-				menuHandleVertCursorMovement(menuCursorIndex_sound, 4, 0);
+				menuHandleVertCursorMovement(menuCursorIndex_sound, 5, 0);
 				if (mouseMoved()) {
 					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music, SOUND_MENU_ENDPOINT, 0);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 1);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 2);
-					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Reset_to_Default_1, SOUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Mode, SOUND_MENU_ENDPOINT, 1);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Music_Volume, SOUND_MENU_ENDPOINT, 2);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_SFX_Volume, SOUND_MENU_ENDPOINT, 3);
+					menuHandleVertCursorMovementMouseWithSetting(menuCursorIndex_sound, text_Reset_to_Default_1, SOUND_MENU_ENDPOINT, 4);
 				}
 				updateSoundMenuCursorPositionX();
 				menuHandleBackButtonWithSettings(13);
@@ -1374,15 +1389,18 @@ int main(int argv, char** args) {
 					switch (menuCursorIndex_sound) {
 						case 0:
 							if (--soundSettings.musicIndex < 1)
-								soundSettings.musicIndex = 8;
+								soundSettings.musicIndex = MUSIC_TRACK_COUNT;
 							playMusicAtIndex(soundSettings.musicIndex);
 							break;
 						case 1:
+							cycleMusicMode(-1);
+							break;
+						case 2:
 							Mix_VolumeMusic((int)(--soundSettings.bgmVolume * 128.0 / 100));
 							if (soundSettings.bgmVolume < 0)
 								soundSettings.bgmVolume = 0;
 							break;
-						case 2:
+						case 3:
 							Mix_Volume(SFX_CHANNEL, ((int)(--soundSettings.sfxVolume * 128.0 / 100)));
 							if (soundSettings.sfxVolume < 0)
 								soundSettings.sfxVolume = 0;
@@ -1395,29 +1413,34 @@ int main(int argv, char** args) {
 				}
 				if (keyPressed(INPUT_RIGHT) || keyPressed(INPUT_CONFIRM) || (keyPressed(INPUT_CONFIRM_ALT) &&
 					(mouseIsInRectWithSetting(text_Music.rect, SOUND_MENU_ENDPOINT)
+					|| mouseIsInRectWithSetting(text_Music_Mode.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Music_Volume.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_SFX_Volume.rect, SOUND_MENU_ENDPOINT)
 					|| mouseIsInRectWithSetting(text_Reset_to_Default_1.rect, SOUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_sound) {
 						case 0:
-							if (++soundSettings.musicIndex > 8)
+							if (++soundSettings.musicIndex > MUSIC_TRACK_COUNT)
                                 soundSettings.musicIndex = 1;
 							playMusicAtIndex(soundSettings.musicIndex);
 							break;
 						case 1:
+							cycleMusicMode(1);
+							break;
+						case 2:
 							Mix_VolumeMusic((int)(++soundSettings.bgmVolume * 128.0 / 100));
 							if (soundSettings.bgmVolume > 100)
                                 soundSettings.bgmVolume = 100;
 							break;
-						case 2:
+						case 3:
 							Mix_Volume(SFX_CHANNEL, (int)(++soundSettings.sfxVolume * 128.0 / 100));
 							if (soundSettings.sfxVolume > 100)
                                 soundSettings.sfxVolume = 100;
 							else
 								Mix_PlayChannel(SFX_CHANNEL, sfx, 0);
 							break;
-						case 3:
+						case 4:
 							if (keyPressed(INPUT_CONFIRM) || keyPressed(INPUT_CONFIRM_ALT)) {
+								setMusicMode(MUSIC_MODE_LOOP);
 								if (soundSettings.musicIndex != 1) {
 									soundSettings.musicIndex = 1;
 									soundSettings.bgmVolume = 90;
@@ -1436,12 +1459,14 @@ int main(int argv, char** args) {
 				}
 				/* Set and Draw Numbers */
 				setAndRenderNumThreeDigitCentered(soundSettings.musicIndex, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_Y);
+				renderMusicModeChoice();
 				setAndRenderNumThreeDigitCentered(soundSettings.bgmVolume, SOUND_MENU_NUM_POSITION_X, TEXT_MUSIC_VOLUME_Y);
 				setAndRenderNumThreeDigitCentered(soundSettings.sfxVolume, SOUND_MENU_NUM_POSITION_X, TEXT_SFX_VOLUME_Y);
 				/* Draw Logo and Text */
 				renderLogo();
 				renderSprite(menuCursor);
 				renderText(&text_Music);
+				renderText(&text_Music_Mode);
 				renderText(&text_Music_Volume);
 				renderText(&text_SFX_Volume);
 				renderText(&text_Reset_to_Default_1);

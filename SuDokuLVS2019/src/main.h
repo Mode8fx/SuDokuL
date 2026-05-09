@@ -60,6 +60,7 @@ SoundSettings soundSettings;
 Addon131Settings addon131Settings;
 Addon134Settings addon134Settings;
 Addon142Settings addon142Settings;
+Addon144Settings addon144Settings;
 /* Window Width and Height */
 SDL_Rect centerViewport;
 
@@ -245,8 +246,12 @@ TextObject text_On;
 TextObject text_Off;
 TextObject text_Apply;
 TextObject text_Music;
+TextObject text_Music_Mode;
 TextObject text_Music_Volume;
 TextObject text_SFX_Volume;
+TextObject text_Loop;
+TextObject text_In_Order;
+TextObject text_Random;
 TextObject text_Background_Type;
 TextObject text_Scroll_Speed;
 TextObject text_Scroll_Direction;

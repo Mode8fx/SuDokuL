@@ -92,7 +92,7 @@ void loadSettingsFile() {
 #endif
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "rb");
 	if (settingsFile == NULL) {
-		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, defaultBGScale, defaultFrameRateIndex, defaultWindowedSetting, defaultResetOnCloseSetting);
+		initializeSettingsFileWithSettings(true, true, DEFAULT_RI, DEFAULT_ARI, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 90, 50, 1, 15, 22, defaultBGScale, defaultFrameRateIndex, defaultWindowedSetting, defaultResetOnCloseSetting, 0);
 	} else {
 		SDL_RWread(settingsFile, &controlSettings, sizeof(ControlSettings), 1);
 		SDL_RWread(settingsFile, &videoSettings, sizeof(VideoSettings), 1);
@@ -101,6 +101,7 @@ void loadSettingsFile() {
 		SDL_RWread(settingsFile, &addon131Settings, sizeof(Addon131Settings), 1);
 		SDL_RWread(settingsFile, &addon134Settings, sizeof(Addon134Settings), 1);
 		SDL_RWread(settingsFile, &addon142Settings, sizeof(Addon142Settings), 1);
+		SDL_RWread(settingsFile, &addon144Settings, sizeof(Addon144Settings), 1);
 		SDL_RWclose(settingsFile);
 	}
 }
@@ -116,7 +117,7 @@ void reloadVideoSettings() {
 	}
 }
 
-void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s, Sint8 fr, Sint8 ws, Sint8 roc) {
+void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ari, Sint16 gw, Sint16 gh, Sint8 mi, Sint8 bgmv, Sint8 sfxv, Sint8 t, Sint8 sm, Sint8 sd, Sint8 s, Sint8 fr, Sint8 ws, Sint8 roc, Sint8 mm) {
 	controlSettings.swapConfirmAndBack = scab;
 	controlSettings.enableTouchscreen = et;
 	videoSettings.resolutionIndex = ri;
@@ -133,6 +134,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 	addon131Settings.frameRateIndex = fr;
 	addon134Settings.windowedSetting = ws;
 	addon142Settings.resetOnClose = roc;
+	addon144Settings.musicMode = mm;
 	settingsFile = SDL_RWFromFile(SETTINGS_FILE, "w+b");
 	if (settingsFile != NULL) {
 		SDL_RWwrite(settingsFile, &controlSettings.swapConfirmAndBack, sizeof(Uint8), 1);
@@ -151,6 +153,7 @@ void initializeSettingsFileWithSettings(Sint8 scab, Sint8 et, Sint8 ri, Sint8 ar
 		SDL_RWwrite(settingsFile, &addon131Settings.frameRateIndex, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &addon134Settings.windowedSetting, sizeof(Sint8), 1);
 		SDL_RWwrite(settingsFile, &addon142Settings.resetOnClose, sizeof(Sint8), 1);
+		SDL_RWwrite(settingsFile, &addon144Settings.musicMode, sizeof(Sint8), 1);
 		SDL_RWclose(settingsFile);
 	}
 }
@@ -256,7 +259,7 @@ void saveCurrentSettings() {
 		videoSettings.resolutionIndex, videoSettings.aspectRatioIndex, videoSettings.widthSetting, videoSettings.heightSetting,
 		soundSettings.musicIndex, soundSettings.bgmVolume, soundSettings.sfxVolume,
 		bgSettings.type, bgSettings.speedMult, bgSettings.scrollDir, bgSettings.scale,
-		addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose);
+		addon131Settings.frameRateIndex, addon134Settings.windowedSetting, addon142Settings.resetOnClose, addon144Settings.musicMode);
 }
 
 void setNativeResolution() {

@@ -54,6 +54,10 @@ struct Addon142Settings {
 	bool resetOnClose;
 };
 
+struct Addon144Settings {
+	Sint8 musicMode;
+};
+
 struct BGScroll {
 	double speed_x, speed_y;
 	double speedStep_x, speedStep_y;
@@ -110,6 +114,7 @@ extern SoundSettings soundSettings;
 extern Addon131Settings addon131Settings;
 extern Addon134Settings addon134Settings;
 extern Addon142Settings addon142Settings;
+extern Addon144Settings addon144Settings;
 
 /* Window Width and Height */
 const Uint16 RESOLUTION_OPTIONS_WIDTH_4_3[15] =    { 0, 320,  362,  640,  725,  768,  800,  960, 1024, 1152, 1280, 1440, 1600, 1920, 2880 };
@@ -191,7 +196,7 @@ extern string rootDir;
 extern void setRootDir();
 extern void loadSettingsFile();
 extern void reloadVideoSettings();
-extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
+extern void initializeSettingsFileWithSettings(Sint8, Sint8, Sint8, Sint8, Sint16, Sint16, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8, Sint8);
 extern void loadSavedPuzzle();
 extern void savePuzzle();
 extern bool shouldContinue();
