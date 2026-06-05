@@ -1376,6 +1376,8 @@ int main(int argv, char** args) {
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_sound) {
 						case 0:
+							if (timer_buttonHold != 0)
+								break;
 							if (--soundSettings.musicIndex < 1)
 								soundSettings.musicIndex = MUSIC_TRACK_COUNT;
 							playMusicAtIndex(soundSettings.musicIndex);
@@ -1407,6 +1409,8 @@ int main(int argv, char** args) {
 					|| mouseIsInRectWithSetting(text_Reset_to_Default_1.rect, SOUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_sound) {
 						case 0:
+							if (timer_buttonHold != 0)
+								break;
 							if (++soundSettings.musicIndex > MUSIC_TRACK_COUNT)
                                 soundSettings.musicIndex = 1;
 							playMusicAtIndex(soundSettings.musicIndex);
@@ -1600,11 +1604,15 @@ int main(int argv, char** args) {
 				if (keyPressed(INPUT_LEFT)) {
 					switch (menuCursorIndex_background) {
 						case 0:
+							if (timer_buttonHold != 0)
+								break;
 							if (--bgSettings.type < 1)
 								bgSettings.type = 8;
 							setBGType();
 							break;
 						case 1:
+							if (timer_buttonHold != 0)
+								break;
 							bgSettings.scale--;
 							if (bgSettings.scale < 1)
 								bgSettings.scale = 10;
@@ -1632,11 +1640,15 @@ int main(int argv, char** args) {
 					|| mouseIsInRectWithSetting(text_Reset_to_Default_2.rect, BACKGROUND_MENU_ENDPOINT)))) {
 					switch (menuCursorIndex_background) {
 						case 0:
+							if (timer_buttonHold != 0)
+								break;
 							if (++bgSettings.type > 8)
 								bgSettings.type = 1;
 							setBGType();
 							break;
 						case 1:
+							if (timer_buttonHold != 0)
+								break;
 							bgSettings.scale++;
 							if (bgSettings.scale > 10)
 								bgSettings.scale = 1;
